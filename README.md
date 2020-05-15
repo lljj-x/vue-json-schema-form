@@ -4,6 +4,12 @@
 ### 演示
 https://buhuida.com/page_demo/demo-1911/vue-element-schema-demo.html#/demo?type=Simple
 
+### 运用场景
+
+> * 可视化编辑 - https://buhuida.com/page_demo/demo-1911/vue-editor.html#/editor 
+> 主要解决在每个配置表单的重复工作，已经服务端如何和前端保持一致的校验规则，json schema很好的解决了这些问题
+
+
 ### 说明
 
 设计思想和对schema解析索引参考 `react-jsonschema-form`，api也基本和 `react-jsonschema-form` 保持同步
