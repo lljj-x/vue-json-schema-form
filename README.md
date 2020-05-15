@@ -6,8 +6,8 @@ https://buhuida.com/page_demo/demo-1911/vue-element-schema-demo.html#/demo?type=
 
 ### 说明
 
-设计思想和对schema解析索引参考react-jsonschema-form，api也基本和react-jsonschema-form 保持同步
-react-jsonschema-form：https://rjsf-team.github.io/react-jsonschema-form/
+设计思想和对schema解析索引参考 `react-jsonschema-form`，api也基本和 `react-jsonschema-form` 保持同步
+> react-jsonschema-form：https://rjsf-team.github.io/react-jsonschema-form/
 
 
 ### 快速使用
