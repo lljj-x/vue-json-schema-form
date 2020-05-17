@@ -1,0 +1,95 @@
+@import './variable';
+
+@keyframes loading{
+    0%{ transform: rotate(0); }
+    100%{ transform: rotate(360deg); }
+}
+@keyframes reverseloading{
+    0%{ transform: scale(0.7) translate(100%,-85%) rotate(360deg); }
+    100%{ transform: scale(0.7) translate(100%,-85%) rotate(0); }
+}
+.icon-loading-ani:before, .icon-loading-ani:after {
+    font-size:1em;
+    width:1em;
+    height: 1em;
+    position: absolute;
+    left: 0;
+    right:0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    content: "\e61b";
+    color: #9c9c9c;
+}
+.icon-loading-ani:before{
+    animation: loading 2s infinite linear;
+    content: "\e61b";
+}
+.icon-loading-ani:after{
+    animation: reverseloading 2s infinite linear;
+}
+
+/*图片懒加载 灰色背景*/
+.icon-loading{
+    position: relative;
+    width: 100%;
+    &::before{
+        content: '\e6b4';
+        position: absolute;
+        z-index: 2;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+        width: 45px;
+        height: 45px;
+        font-size: 45px;
+        color: #e0e0e0;
+    }
+    &::after{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--assistBgC);
+    }
+}
+
+@keyframes placeholderAni {
+	0% { opacity: 1; }
+    50% {  opacity: .4; }
+	100% { opacity: 1; }
+}
+
+/* logo模块占位，用于异步加载 */
+.sectionModule-white{
+    position: relative;
+    &::before{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        z-index: 1;
+    }
+    &::after{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        width: 120px;
+        height: 120px;
+        background: url("../img/sprite/sp-placeholder.png") no-repeat;
+        background-size: 100% 100%;
+        z-index: 1;
+        animation: placeholderAni 2s linear infinite forwards;
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "name": "@liujun/vue-element-schema-form",
+    "version": "0.1.0",
+    "description": "vueElementSchemaForm",
+    "main": "index.js",
+    "scripts": {
+        "build": "vue-cli-service build --target lib --name vueElementSchemaForm --dest lib index.js",
+        "watch": "vue-cli-service build --watch --target lib --name vueElementSchemaForm --dest lib index.js"
+    },
+    "dependencies": {
+        "ajv": "^6.10.2",
+        "json-schema-merge-allof": "^0.6.0",
+        "jsonpointer": "^4.0.1",
+        "lodash": "^4.17.15",
+        "vue": "^2.6.10"
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-export-default-from": "^7.7.4",
+        "@vue/cli-plugin-babel": "^4.0.0",
+        "@vue/cli-plugin-eslint": "^4.0.0",
+        "@gb/eslint-config-gb": "0.0.7",
+        "@vue/cli-service": "^4.0.0",
+        "babel-eslint": "^10.0.3",
+        "eslint": "^5.16.0",
+        "eslint-plugin-vue": "^5.0.0",
+        "vue-template-compiler": "^2.6.10",
+        "copy-webpack-plugin": "^5.0.4",
+        "webpack-bundle-analyzer": "^3.7.0",
+        "webpack-manifest-plugin": "^2.2.0",
+        "yargs": "^6.6.0",
+        "postcss-color-mod-function": "^3.0.3",
+        "postcss-cssnext": "^3.1.0",
+        "postcss-import": "^12.0.1",
+        "postcss-mixins": "^6.2.0",
+        "postcss-nested": "^4.1.0"
+    },
+    "author": "Liu.Jun <870395192@qq.com>",
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ]
+}

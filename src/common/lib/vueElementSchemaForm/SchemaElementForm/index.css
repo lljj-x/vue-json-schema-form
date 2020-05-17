@@ -1,0 +1,134 @@
+.genFromComponent {
+    font-size: 14px;
+    p {
+        font-size: 14px;
+    }
+    .FieldGroupWrap+.FieldGroupWrap {
+        margin-top: 20px;
+    }
+    .FieldGroupWrap_title {
+        position: relative;
+        display: block;
+        width: 100%;
+        line-height: 26px;
+        margin-bottom: 8px;
+        font-size: 15px;
+        font-weight: bold;
+        border: 0;
+    }
+    .FieldGroupWrap_des {
+        font-size: 12px;
+        line-height: 20px;
+        margin-bottom: 10px;
+        color: rgb(153, 153, 153);
+    }
+    .genFromWidget_des {
+        font-size: 12px;
+        line-height: 20px;
+        margin-top: -10px;
+        margin-bottom: 2px;
+        color: #999;
+    }
+    .FormItemErrorBox {
+        color: #ff5757;
+        padding-top: 4px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        display: -webkit-box !important;
+        line-height: 14px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        white-space: normal;
+        font-size: 12px;
+        text-align: left;
+    }
+
+    /* type array */
+    .ArrayField {
+        margin-bottom: 22px;
+        .ArrayField {
+            margin-bottom: 10px;
+        }
+    }
+    .ArrayOrderList {
+        background: rgba(242,242,242,0.8);
+        box-shadow: 0 3px 1px -2px rgba(0,0,0,0.2), 0 0 3px 1px rgba(0,0,0,0.1);
+    }
+    .ArrayOrderList_item {
+        position: relative;
+        padding: 25px 10px 20px;
+        border-radius: 2px;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+    }
+    .ArrayOrderList_bottomAddBtn {
+        padding: 15px 10px;
+        margin-bottom: 10px;
+    }
+    .bottomAddBtn {
+        width: 100%;
+        /*box-shadow: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 1px rgba(0,0,0,0.1);*/
+    }
+    .ArrayListItem_content {
+        flex: 1;
+        margin: 0 auto;
+        .el-form-item {
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
+    }
+    .el-form-item__label {
+        line-height: 26px;
+        padding-bottom: 6px;
+        font-size: 12px;
+    }
+    .ArrayListItem_operateTool {
+        position: absolute;
+        height: 25px;
+        width: 75px;
+        right: 10px;
+        top: 0;
+        text-align: right;
+        font-size: 0;
+    }
+    .ArrayListItem_btn {
+        vertical-align: top;
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        -webkit-appearance: none;
+        appearance: none;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        background: transparent;
+        color: #666;
+        &:hover {
+            opacity: 0.6;
+        }
+        &[disabled] {
+            color: #999999;
+            opacity: 0.3 !important;
+            cursor: not-allowed;
+        }
+    }
+    .ArrayListItem_orderBtn-top {
+        background-color: #f0f9eb;
+    }
+    .ArrayListItem_orderBtn-bottom {
+        background-color: #f0f9eb;
+    }
+    .ArrayListItem_btn-delete {
+        background-color: #fef0f0;
+    }
+}
