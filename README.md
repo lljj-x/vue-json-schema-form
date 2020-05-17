@@ -2,12 +2,12 @@
 基于 Vue ElementUi JsonSchema快速构建一个带完整校验的form表单.
 
 ## 注意
-> 此版本只是为演示，实际功能和细节都不完善，后续也会存在调整 。。。
+> **此版本只是为演示，实际功能和细节都不完善，后续也会存在调整 。。。**
 
 ### 演示
-* github pages：https://buhuida.com/page_demo/demo-1911/vue-element-schema-demo.html#/demo?type=Simplemd
+* coding pages：https://buhuida.com/page_demo/demo-1911/vue-element-schema-demo.html#/demo?type=Simple
 
-* github pages：https://liujunchina.github.io/vue-element-schema-form/demo/vue-element-schema-demo.html#/demo?type=Arrays
+* github pages：https://liujunchina.github.io/vue-element-schema-form/demo/vue-element-schema-demo.html#/demo?type=Simple
 
 ### 运用场景
 
