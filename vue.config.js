@@ -14,9 +14,6 @@ const {
     openPage
 } = require('./scripts/entry.js')();
 
-console.log('!!!!! ***** !!!!!');
-console.log('!!!!! ***** !!!!!');
-
 log({
     data: chalk.green(openPage),
     des: 'openPage'
