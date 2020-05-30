@@ -1,0 +1,16 @@
+{
+    "name": "测试网页",
+    "short_name": "测试网页",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "description": "测试网页",
+    "theme_color": "blue",
+    "icons": [
+      {
+        "src": "./egg.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      }
+    ]
+}

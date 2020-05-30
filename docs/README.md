@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: ./hero.png
+heroImage: /egg.png
 heroText: Hero 标题
 tagline: Hero 副标题
 actionText: 快速上手 →
