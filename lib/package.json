@@ -1,0 +1,45 @@
+{
+    "name": "@lj/vue-json-schema-form",
+    "version": "0.0.1",
+    "description": "基于 Vue 、JsonSchema快速构建一个带完整校验的form表单",
+    "main": "dist/vueJsonSchemaForm.umd.min.js",
+    "scripts": {
+        "build": "vue-cli-service build --target lib --name vueJsonSchemaForm --dest dist src/index.js",
+        "watch": "vue-cli-service build --watch --target lib --name vueJsonSchemaForm --dest dist src/index.js"
+    },
+    "dependencies": {
+        "ajv": "^6.10.2",
+        "vue": "^2.6.10"
+    },
+    "repository": "https://github.com/liujunchina/vue-json-schema-form",
+    "homepage": "https://github.com/liujunchina/vue-json-schema-form",
+    "license": "Apache-2.0",
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-export-default-from": "^7.7.4",
+        "@vue/cli-plugin-babel": "^4.0.0",
+        "@vue/cli-plugin-eslint": "^4.0.0",
+        "eslint-config-lj": "0.1.1",
+        "@vue/cli-service": "^4.0.0",
+        "babel-eslint": "^10.0.3",
+        "eslint": "^5.16.0",
+        "eslint-plugin-vue": "^5.0.0",
+        "vue-template-compiler": "^2.6.10",
+        "copy-webpack-plugin": "^5.0.4",
+        "webpack-bundle-analyzer": "^3.7.0",
+        "webpack-manifest-plugin": "^2.2.0",
+        "postcss-color-mod-function": "^3.0.3",
+        "postcss-cssnext": "^3.1.0",
+        "postcss-import": "^12.0.1",
+        "postcss-mixins": "^6.2.0",
+        "postcss-nested": "^4.1.0"
+    },
+    "author": "Liu.Jun <870395192@qq.com>",
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ]
+}

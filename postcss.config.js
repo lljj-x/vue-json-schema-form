@@ -1,6 +1,3 @@
-/* eslint-disable global-require */
-// https://github.com/michael-ciniawsky/postcss-load-config
-
 module.exports = {
     plugins: [
         require('postcss-import')({
@@ -12,16 +9,5 @@ module.exports = {
         require('postcss-cssnext')({
             warnForDuplicates: false,
         }),
-        // optimize-css-assets-webpack-plugin 会调用
-        // require('cssnano')({
-        //     sourcemap: true,
-        //     autoprefixer: false,
-        //     safe: true,
-        //     discardComments: {
-        //         removeAll: true,
-        //     },
-        //     discardUnused: false,
-        //     zindex: false,
-        // }),
     ]
 };

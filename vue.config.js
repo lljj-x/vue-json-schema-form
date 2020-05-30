@@ -29,11 +29,11 @@ log({
 const isProduction = process.env.NODE_ENV === 'production';
 
 // config var
-const outputDir = path.resolve(__dirname, `./demo`);
+const outputDir = path.resolve(__dirname, './demo/dist');
 
 module.exports = {
     // cdn
-    publicPath: isProduction ? `/vue-element-schema-form/demo` : '/',
+    publicPath: isProduction ? '/demo/dist' : '/',
 
     // 资源目录
     outputDir,
@@ -46,16 +46,11 @@ module.exports = {
 
     lintOnSave: true,
 
-    // 是否使用包含运行时编译器的Vue核心的构建
     runtimeCompiler: true,
 
     transpileDependencies: [],
 
-    // 生产环境 sourceMap
     productionSourceMap: false,
-
-    // cors 相关 https://jakearchibald.com/2017/es-modules-in-browsers/#always-cors
-    // corsUseCredentials: false,
 
     configureWebpack: (config) => {
         config.externals = {
@@ -65,9 +60,7 @@ module.exports = {
         };
         config.resolve.alias = {
             ...config.resolve.alias,
-            common: path.resolve(__dirname, './src/common'),
-            js: path.resolve(__dirname, './src/common/js'),
-            css: path.resolve(__dirname, './src/common/css'),
+            'lj-vue-json-schema-form': path.resolve(__dirname, './lib/src/index.js')
         };
     },
 

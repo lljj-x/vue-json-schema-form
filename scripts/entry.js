@@ -30,19 +30,15 @@ const isEntry = (filePath, curDir) => {
     return isEntryFile;
 };
 
-const resolveDemo = p => path.resolve(__dirname, '../src', p);
-
 // 默认的模板文件
 const defaultTemp = path.resolve(__dirname, '../default.html');
 
-function entryFn({ project, dir }) {
+function entryFn({ dir }) {
     // entry 文件相对的目录
-    const dirPath = path.normalize(resolveDemo(project ? `pages/${project}/` : `pages/`));
+    const dirPath = path.normalize(path.resolve(__dirname, '../demo/src'));
 
     // entry 文件
-    const filePath = resolveDemo(project ? `pages/${project}/**/*.js` : `pages/**/*.js`);
-
-    debugger;
+    const filePath = path.normalize(path.resolve(__dirname, '../demo/src/**/*.js'));
 
     const temFiles = glob.sync(filePath);
     const curDir = dir ? String(dir).split(',') : [];
@@ -79,14 +75,13 @@ function entryFn({ project, dir }) {
     };
 }
 
-module.exports = (project) => {
+module.exports = () => {
     // 相对于 根目录
     const {
         dir, // 指定编译的目录
     } = envConfig.getConfig();
 
     return entryFn({
-        project,
         dir
     });
 };

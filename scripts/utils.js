@@ -2,7 +2,6 @@
  * Created by Liu.Jun on 2019/11/27 9:57.
  */
 
-// 通用的惰性单例实现
 exports.getSingle = function getSingle(fn) {
     let result;
     return function proxySingle(...args) {

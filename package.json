@@ -11,13 +11,8 @@
     },
     "dependencies": {
         "ajv": "^6.10.2",
-        "json-schema-merge-allof": "^0.6.0",
-        "jsonpointer": "^4.0.1",
-        "jsonschema": "^1.2.5",
-        "lodash": "^4.17.15",
         "normalize.css": "^7.0.0",
-        "vue": "^2.6.10",
-        "vuedraggable": "^2.23.2"
+        "vue": "^2.6.10"
     },
     "devDependencies": {
         "@babel/plugin-proposal-export-default-from": "^7.7.4",
@@ -27,6 +22,7 @@
         "babel-eslint": "^10.0.3",
         "copy-webpack-plugin": "^5.0.4",
         "eslint": "^5.16.0",
+        "eslint-config-lj": "^0.1.1",
         "eslint-plugin-vue": "^5.0.0",
         "postcss-color-mod-function": "^3.0.3",
         "postcss-cssnext": "^3.1.0",
@@ -36,8 +32,7 @@
         "vue-template-compiler": "^2.6.10",
         "vuepress": "^1.5.0",
         "webpack-bundle-analyzer": "^3.6.0",
-        "webpack-manifest-plugin": "^2.2.0",
-        "yargs": "^6.6.0"
+        "webpack-manifest-plugin": "^2.2.0"
     },
     "browserslist": [
         "> 1%",

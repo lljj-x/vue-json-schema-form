@@ -2,7 +2,7 @@
  * Created by Liu.Jun on 2018/5/31.
  */
 
-// envConfig 分为两部分参数 1、根据入口文件携带的固定参数 2、更具 npm_config 获取参数可以覆盖1的参数
+// envConfig 分为两部分参数 1、根据入口文件携带的固定参数 2、根具 npm_config 获取参数可以覆盖1的参数
 // 不同入口文件需要自己调用 initConfig
 
 const argv = require('yargs').argv;
