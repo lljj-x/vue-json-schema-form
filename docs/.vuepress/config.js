@@ -1,10 +1,33 @@
+// 默认主题配置
+// https://www.vuepress.cn/zh/theme/default-theme-config.html
+
+// ---
+//     tags:
+// - 配置
+// - 主题
+// - 索引
+// ---
+
+const lang = {
+    zh: {
+        path: '/',
+        configPack: require('./zh.config')
+    },
+    en: {
+        path: '/en',
+        configPack: require('./en.config')
+    }
+}
+
 module.exports = {
-    title: 'vue-jsonSchema-form',
-    description: '基于 Vue 、JsonSchema快速构建一个带完整校验的form表单',
-    head: [
-        ['link',
-            { rel: 'icon', href: '/egg.png' }
-            //浏览器的标签栏的网页图标，第一个'/'会遍历public文件夹的文件
-        ],
-    ],
+    locales: {
+        [lang.zh.path]: lang.zh.configPack.config,
+        // [lang.en.path]: lang.en.configPack.config,
+    },
+    themeConfig: {
+        locales: {
+            [lang.zh.path]: lang.zh.configPack.themeConfig,
+            // [lang.en.path]: lang.en.configPack.themeConfig,
+        }
+    }
 }
