@@ -9,7 +9,7 @@ module.exports = {
     env: {
         browser: true
     },
-    extends: ["eslint-config-lj", "plugin:vue/recommended"],
+    extends: ["@lljj/eslint-config", "plugin:vue/recommended"],
     plugins: ["vue"],
     rules: {
         // 修改vue/html中缩进

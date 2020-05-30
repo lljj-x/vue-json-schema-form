@@ -1,7 +1,6 @@
 {
     "name": "demo",
     "version": "0.1.0",
-    "private": true,
     "scripts": {
         "docs:dev": "vuepress dev docs",
         "docs:build": "vuepress build docs",
@@ -22,7 +21,7 @@
         "babel-eslint": "^10.0.3",
         "copy-webpack-plugin": "^5.0.4",
         "eslint": "^5.16.0",
-        "eslint-config-lj": "^0.1.1",
+        "@lljj/eslint-config": "^0.0.1",
         "eslint-plugin-vue": "^5.0.0",
         "postcss-color-mod-function": "^3.0.3",
         "postcss-cssnext": "^3.1.0",
@@ -32,7 +31,8 @@
         "vue-template-compiler": "^2.6.10",
         "vuepress": "^1.5.0",
         "webpack-bundle-analyzer": "^3.6.0",
-        "webpack-manifest-plugin": "^2.2.0"
+        "webpack-manifest-plugin": "^2.2.0",
+        "yargs": "^6.6.0"
     },
     "browserslist": [
         "> 1%",
