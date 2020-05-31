@@ -8,7 +8,7 @@
     "theme_color": "blue",
     "icons": [
       {
-        "src": "./egg.png",
+        "src": "./hero.png",
         "sizes": "144x144",
         "type": "image/png"
       }
