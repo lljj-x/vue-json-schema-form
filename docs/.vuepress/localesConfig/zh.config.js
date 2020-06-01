@@ -36,7 +36,7 @@ module.exports = {
                 text: '配置',
                 ariaLabel: '配置',
                 items: [
-                    { text: 'schema(数据)', link: '/zh/guide/Schema.md' },
+                    { text: 'schema(数据)', link: '/zh/guide/schema.md' },
                     { text: 'uiSchema(视图)', link: '/zh/guide/uiSchema.md' },
                     { text: 'errSchema(校验)', link: '/zh/guide/errSchema.md' }
                 ]

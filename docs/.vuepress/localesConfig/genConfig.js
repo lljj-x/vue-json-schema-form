@@ -29,32 +29,32 @@ exports.getGuideSidebar = ([groupA = '基础', groupB = '深入了解'], groupC 
             collapsable: false,
             children: [
                 '',
-                'getting-started',
-                'i18n',
-                'polyfill',
-                'deploy'
+                // 'getting-started',
+                // 'i18n',
+                // 'polyfill',
+                // 'deploy'
             ]
         },
         {
             title: groupB,
             collapsable: false,
             children: [
-                'markdown-slot',
-                'global-computed'
+                // 'markdown-slot',
+                // 'global-computed'
             ]
         },
         {
             title: groupC,
             collapsable: false,
             children: [
-                'markdown-slot',
+                // 'markdown-slot',
             ]
         },
         {
             title: groupD,
             collapsable: false,
             children: [
-                'markdown-slot',
+                // 'markdown-slot',
             ]
         }
     ]
@@ -68,7 +68,7 @@ exports.getConfigSidebar = ([groupA = 'Schema', groupB = 'UiSchema', groupC = 'E
             collapsable: false,
             children: [
                 '',
-                'getting-started',
+                // 'getting-started',
             ]
         },
         {
@@ -76,7 +76,7 @@ exports.getConfigSidebar = ([groupA = 'Schema', groupB = 'UiSchema', groupC = 'E
             collapsable: false,
             children: [
                 '',
-                'markdown-slot',
+                // 'markdown-slot',
             ]
         }
     ]
