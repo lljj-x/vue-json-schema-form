@@ -15,7 +15,7 @@ actionLink: /zh/guide/
 
 ``` bash
 # 安装
-npm install --save @gb/http # 或者：yarn add @gb/http
+npm install --save @lljj/vue-json-schema-form # 或者：yarn add @lljj/vue-json-schema-form
 ```
 
 ```vue
