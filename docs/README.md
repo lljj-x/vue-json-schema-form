@@ -1,19 +1,24 @@
 ---
 home: true
-heroImage: /hero.png
+pageClass: custom-page-home
+heroImage: /logo.png
 heroText: Vue JsonSchema Form
 tagline: 基于 Vue 、JsonSchema快速构建一个带完整校验的form表单
+footer: Apache2.0 Licensed | Copyright © 2018-2020 Jun
 actionText: 快速开始 →
 actionLink: /zh/guide/
-features:
-- title: 上手简单
-  details: 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成你需要的form表单
-- title: 个性化
-  details: 支持uiSchema，errSchema 快速配置个性化ui视图和校验错误信息，可快速适配常用的ui库，比如elementUi, iView 计划中...
-- title: 长期更新
-  details: 个人实际项目使用，保持更新
-footer: Apache2.0 Licensed | Copyright © 2018-2020 Jun
 ---
+
+### 上手简单
+遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成你需要的form表单
+
+### 个性化
+支持uiSchema吗 errSchema 快速配置个性化ui视图和校验错误信息，可快速适配常用的ui库，比如elementUi, iView 计划中...
+
+### 长期更新
+实际项目投入使用，保持更新
+
+
 
 ### 快速体验
 json Schema

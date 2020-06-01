@@ -18,7 +18,7 @@ module.exports = {
         ariaLabel: 'Languages',
         // 编辑链接文字
         editLinkText: '在 GitHub 上编辑此页',
-        logo: '/hero.png', // logo
+        logo: '/logo.png', // logo
         lastUpdated: 'lastUpdated', // string | boolean
         serviceWorker: {
             updatePopup: {

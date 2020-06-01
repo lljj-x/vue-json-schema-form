@@ -17,7 +17,7 @@ module.exports = {
         label: '简体中文',
         // 编辑链接文字
         editLinkText: '在 GitHub 上编辑此页',
-        logo: '/hero.png', // logo
+        logo: '/logo.png', // logo
         lastUpdated: '最后更新时间', // string | boolean
         serviceWorker: {
             updatePopup: {
