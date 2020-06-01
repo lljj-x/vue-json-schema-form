@@ -16,6 +16,7 @@
     "devDependencies": {
         "@babel/plugin-proposal-export-default-from": "^7.7.4",
         "@lljj/eslint-config": "^0.0.1",
+        "@lljj/vue-json-schema-form": "0.0.1",
         "@vue/cli-plugin-babel": "^4.0.0",
         "@vue/cli-plugin-eslint": "^4.0.0",
         "@vue/cli-service": "^4.0.0",

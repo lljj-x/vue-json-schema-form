@@ -23,6 +23,7 @@ https://github.com/yourtion/vue-json-ui-editor
 *[x] oneOf 数据校验，如object 拆开了数据校验导致异常问题，object特殊处理合并在一起
 *[x] oneOf anyOf 支持
 *[ ] 整理所有冗余代码 包括优化打包文件体积
+*[ ] uiSchema errSchema和formData使用相同的方式传递数据
 *[ ] 逐步开源发布
 *[ ] allOf配置支持可能不够全面
 *[ ] 优化源码 不需要this的组件改完 functional

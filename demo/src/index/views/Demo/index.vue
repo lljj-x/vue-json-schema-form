@@ -81,7 +81,7 @@
 </template>
 
 <script>
-    import VueElementForm from 'lj-vue-json-schema-form';
+    import VueElementForm from '@lljj/vue-json-schema-form';
 
     import CodeEditor from '../../components/CodeEditor';
     import schemaTypes from './schemaTypes';
