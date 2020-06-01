@@ -30,7 +30,7 @@
         "postcss-nested": "^4.1.0",
         "vue-template-compiler": "^2.6.10",
         "vuepress": "^1.5.0",
-        "watchpack": "@1.6.1",
+        "watchpack": "^1.6.1",
         "webpack-bundle-analyzer": "^3.6.0",
         "webpack-manifest-plugin": "^2.2.0",
         "yargs": "^6.6.0"
