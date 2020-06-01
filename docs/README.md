@@ -18,6 +18,7 @@ actionLink: /zh/guide/
 ### 长期更新
 实际项目投入使用，保持更新
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/863ec4c4-cbe6-45c9-a7b8-85ff6658947d/deploy-status)](https://app.netlify.com/sites/determined-lewin-59111e/deploys)
 
 
 ### 快速体验
