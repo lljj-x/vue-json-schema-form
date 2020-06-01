@@ -9,9 +9,9 @@ features:
 - title: 上手简单
   details: 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成你需要的form表单
 - title: 个性化
-  details: 支持uiSchema，errSchema 快速配置个性化ui视图和校验错误信息
+  details: 支持uiSchema，errSchema 快速配置个性化ui视图和校验错误信息，可快速适配常用的ui库，比如elementUi, iView 计划中...
 - title: 长期更新
-  details: 实际项目中也已使用，会
+  details: 个人实际项目使用，保持更新
 footer: Apache2.0 Licensed | Copyright © 2018-2020 Jun
 ---
 
