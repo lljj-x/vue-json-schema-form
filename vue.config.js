@@ -55,12 +55,12 @@ module.exports = {
     configureWebpack: (config) => {
         config.externals = {
             vue: 'Vue',
+            Vue: 'Vue',
             ELEMENT: 'ELEMENT',
             VueRouter: 'VueRouter',
         };
         config.resolve.alias = {
             ...config.resolve.alias,
-            Vue: 'vue',
             // '@lljj/vue-json-schema-form': path.resolve(__dirname, './lib/src/index.js')
             // '@lljj/vue-json-schema-form': path.resolve(__dirname, './lib/dist/vueJsonSchemaForm.umd.js')
         };
