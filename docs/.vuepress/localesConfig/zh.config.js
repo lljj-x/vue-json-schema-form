@@ -36,20 +36,22 @@ module.exports = {
                 text: '配置',
                 ariaLabel: '配置',
                 items: [
-                    { text: 'schema(数据)', link: '/zh/guide/schema.md' },
-                    { text: 'uiSchema(视图)', link: '/zh/guide/uiSchema.md' },
-                    { text: 'errSchema(校验)', link: '/zh/guide/errSchema.md' }
+                    { text: 'schema(数据)', link: '/zh/config/schema.md' },
+                    { text: 'uiSchema(视图)', link: '/zh/config/uiSchema.md' },
+                    { text: 'errSchema(校验)', link: '/zh/config/errSchema.md' }
                 ]
             },
             {
                 text: '类型规则',
                 ariaLabel: '类型规则',
                 items: [
-                    { text: 'Array', link: '/zh/rules/Array.md' },
-                    { text: 'Null', link: '/zh/rules/Null.md' },
-                    { text: 'Number', link: '/zh/rules/Number.md' },
-                    { text: 'Object', link: '/zh/rules/Object.md' },
-                    { text: 'String', link: '/zh/rules/String.md' },
+                    { text: 'string', link: '/zh/rules/string.md' },
+                    { text: 'number', link: '/zh/rules/number.md' },
+                    { text: 'object', link: '/zh/rules/object.md' },
+                    { text: 'array', link: '/zh/rules/array.md' },
+                    { text: 'boolean', link: '/zh/rules/boolean.md' },
+                    { text: 'null', link: '/zh/rules/null.md' },
+                    { text: 'combining', link: '/zh/rules/combining.md' },
                 ]
             },
             { text: '演示', link: 'https://buhuida.com/page_demo/demo-1911/vue-element-schema-demo.html#/demo?type=AllOf' },
@@ -61,6 +63,7 @@ module.exports = {
         sidebar: {
             '/zh/guide/': require('./genConfig').getGuideSidebar(['指南', '深入']),
             '/zh/config/': require('./genConfig').getConfigSidebar(),
+            '/zh/rules/': require('./genConfig').getRulesSidebar(),
         }
     }
 }

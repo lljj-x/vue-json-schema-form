@@ -9,7 +9,7 @@ actionText: 快速开始 →
 actionLink: /zh/guide/
 ---
 
-### 快速体验
+## 快速体验
 点击这里快速查看和编辑 [演示demo](https://form.buhuida.com/ "Vue JsonSchema Form Demo")
 或者github代码 [Vue JsonSchema Form](https://github.com/liujunchina/vue-json-schema-form "Vue JsonSchema Form Code")
 
@@ -69,7 +69,7 @@ yarn add @lljj/vue-json-schema-form
 * 快速配置个性化ui视图和校验错误信息，可快速适配常用的ui库，目前的版本默认视图依赖elementUi，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
 :::
 
-### 相关资料
+## 相关资料
 [json Schema](https://json-schema.org/understanding-json-schema/index.html)
 
 [Vue](https://cn.vuejs.org/)

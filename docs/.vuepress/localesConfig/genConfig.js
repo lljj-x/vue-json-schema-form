@@ -22,63 +22,63 @@
 //     }
 // ]
 
-exports.getGuideSidebar = ([groupA = '基础', groupB = '深入了解'], groupC = '实例', groupD = '为何开发') => {
+exports.getGuideSidebar = ([groupA = '基础', groupB = '深入了解']) => {
     return [
         {
             title: groupA,
             collapsable: false,
             children: [
                 '',
-                // 'getting-started',
-                // 'i18n',
-                // 'polyfill',
-                // 'deploy'
+                'getting-started',
+                'basic-config',
+                'i18n',
+                'polyfill',
+                'faq',
+                'demo',
             ]
         },
         {
             title: groupB,
             collapsable: false,
             children: [
-                // 'markdown-slot',
-                // 'global-computed'
-            ]
-        },
-        {
-            title: groupC,
-            collapsable: false,
-            children: [
-                // 'markdown-slot',
-            ]
-        },
-        {
-            title: groupD,
-            collapsable: false,
-            children: [
-                // 'markdown-slot',
+                'design',
+                'custom-render-component',
+                'why',
             ]
         }
     ]
 };
 
 // 配置页左侧菜单
-exports.getConfigSidebar = ([groupA = 'Schema', groupB = 'UiSchema', groupC = 'ErrorSchema'] = []) => {
+exports.getConfigSidebar = ([groupA = '配置'] = []) => {
     return [
         {
             title: groupA,
             collapsable: false,
             children: [
-                '',
-                // 'getting-started',
-            ]
-        },
-        {
-            title: groupB,
-            collapsable: false,
-            children: [
-                '',
-                // 'markdown-slot',
+                'schema',
+                'uiSchema',
+                'errSchema',
             ]
         }
     ]
 };
 
+// 配置页左侧菜单
+exports.getRulesSidebar = ([groupA = '类型规则'] = []) => {
+    return [
+        {
+            title: groupA,
+            collapsable: false,
+            children: [
+                'string',
+                'number',
+                'object',
+                'array',
+                'boolean',
+                'null',
+                'combining',
+            ]
+        }
+    ]
+};
