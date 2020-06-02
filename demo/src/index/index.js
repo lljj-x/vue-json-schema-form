@@ -10,6 +10,8 @@ import routes from './routes';
 
 import App from './App';
 
+import './style.css';
+
 Vue.use(VueRouter);
 
 // Ui

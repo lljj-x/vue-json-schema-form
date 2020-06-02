@@ -53,7 +53,7 @@ module.exports = {
                 ]
             },
             { text: '演示', link: 'https://buhuida.com/page_demo/demo-1911/vue-element-schema-demo.html#/demo?type=AllOf' },
-            { text: 'Github', link: 'https://github.com/liujunchina' },
+            { text: 'Github', link: 'https://github.com/liujunchina/vue-json-schema-form' },
         ],
 
         // 侧边栏
