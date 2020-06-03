@@ -61,7 +61,7 @@ module.exports = {
         config.resolve.alias = {
             ...config.resolve.alias,
             // '@lljj/vue-json-schema-form': path.resolve(__dirname, './lib/src/index.js')
-            '@lljj/vue-json-schema-form': path.resolve(__dirname, './lib/dist/vueJsonSchemaForm.umd.js')
+            '@lljj/vue-json-schema-form': path.resolve(__dirname, './lib/dist/vueJsonSchemaForm.esm.min.js')
         };
     },
 
