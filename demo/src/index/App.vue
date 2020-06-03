@@ -1,11 +1,11 @@
 <template>
     <div :class="$style.wrap">
         <header :class="$style.header">
-            <h1>vue-element-json-schema-form</h1>
+            <h1>vue-json-schema-form</h1>
         </header>
         <router-view></router-view>
         <footer :class="$style.footer">
-            vue-element-schema-form
+            vue-json-schema-form
         </footer>
     </div>
 </template>

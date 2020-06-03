@@ -1,13 +1,72 @@
-# vue-element-schema-form
+# vue-json-schema-form
 基于 Vue ElementUi JsonSchema快速构建一个带完整校验的form表单.
 
-## 注意
-> **此版本只是为演示，实际功能和细节都不完善，后续也会存在调整 。。。**
+## 快速体验
+点击这里快速查看和编辑 [演示demo](https://form.buhuida.com/ "Vue JsonSchema Form Demo")
+或者查看文档 [Vue JsonSchema Docs](https://vue-json-schema-form.buhuida.com/ "Vue JsonSchema Docs")
 
-### 演示
-* coding pages：https://buhuida.com/page_demo/demo-1911/vue-element-schema-demo.html#/demo?type=Simple
+``` bash
+# 安装
+npm install --save @lljj/vue-json-schema-form
 
-* github pages：https://liujunchina.github.io/vue-element-schema-form/demo/vue-element-schema-demo.html#/demo?type=Simple
+# 或者：
+yarn add @lljj/vue-json-schema-form
+```
+
+```vue
+<template>
+    <VueForm
+        v-model="formData"
+        :schema="schema"
+    >
+    </VueForm>
+</template>
+
+<script >
+    //  使用
+    import VueForm from '@lljj/vue-json-schema-form';
+
+    export default {
+        name: 'Demo',
+        components: {
+            VueForm
+        },
+        data() {
+            return {
+                formData: {},
+                schema: {
+                    type: 'object',
+                    required: [
+                        'firstName'
+                    ],
+                    properties: {
+                        firstName: {
+                            type: 'string',
+                            title: 'First name',
+                            default: 'Liu'
+                        },
+                        lastName: {
+                            type: 'string',
+                            title: 'Last name'
+                        },
+                    }
+                }
+            };
+        }
+    };
+</script>
+```
+::: tip 说明
+* 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成对应的form表单
+* 快速配置个性化ui视图和校验错误信息，可快速适配常用的ui库，目前的版本默认视图依赖elementUi，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
+:::
+
+## 相关资料
+[json Schema](https://json-schema.org/understanding-json-schema/index.html)
+
+[Vue](https://cn.vuejs.org/)
+
+[Element Ui](https://element.eleme.io/)
 
 ### 运用场景
 
