@@ -46,7 +46,7 @@
     .genFromWidget_des {
         font-size: 12px;
         line-height: 20px;
-        margin-top: -10px;
+        /*margin-top: -10px;*/
         margin-bottom: 2px;
         color: #999;
     }
@@ -123,10 +123,13 @@
             }
         }
     }
-    .el-form-item__label {
-        line-height: 26px;
-        padding-bottom: 6px;
-        font-size: 14px;
+
+    &.el-form--label-top {
+        .el-form-item__label {
+            line-height: 26px;
+            padding-bottom: 6px;
+            font-size: 14px;
+        }
     }
     .ArrayListItem_operateTool {
         position: absolute;
