@@ -22,14 +22,16 @@ https://github.com/yourtion/vue-json-ui-editor
 *[x] required 的差异性，schema 规定undefind才是不符合required的
 *[x] oneOf 数据校验，如object 拆开了数据校验导致异常问题，object特殊处理合并在一起
 *[x] oneOf anyOf 支持
-*[ ] 整理所有冗余代码 包括优化打包文件体积
-*[ ] uiSchema errSchema和formData使用相同的方式传递数据
+*[x] 整理所有冗余代码 包括优化打包文件体积
 *[ ] 逐步开源发布
+*[ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
+*[ ] Ui配置，基础的显示支持function处理，hidden title description placeholder等
+*[ ] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
+*[ ] 所有节点都支持配置 widget
+*[ ] uiSchema errSchema和formData使用相同的方式传递数据
 *[ ] allOf配置支持可能不够全面
 *[ ] 优化源码 不需要this的组件改完 functional
-*[ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
 *[ ] 性能部分 - 1、组件传参导致响应式的数据庞大 2、render函数完全重新渲染分离变和不变 3、formData 变更render 都需要重新执行
-*[ ] allOf 支持
 *[ ] depend 依赖支持
 *[ ] if else 支持
 *[ ] 对照react schema from适配更多规则支持

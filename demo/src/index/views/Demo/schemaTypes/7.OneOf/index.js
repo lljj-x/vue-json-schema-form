@@ -37,33 +37,33 @@ export default {
             'age'
         ],
         properties: {
-            age: {
-                title: '测试基础类型 oneOf',
-                oneOf: [
-                    {
-                        title: '测试基础类型 oneOf 5的倍数',
-                        type: 'integer',
-                        multipleOf: 5
-                    },
-                    {
-                        title: '测试基础类型 oneOf 3的倍数',
-                        type: 'integer',
-                        multipleOf: 3
-                    }
-                ]
-            },
-            test: {
-                title: '测试 const OneOf',
-                type: 'string',
-                oneOf: [
-                    {
-                        const: '111'
-                    },
-                    {
-                        const: '222'
-                    }
-                ]
-            },
+            // age: {
+            //     title: '测试基础类型 oneOf',
+            //     oneOf: [
+            //         {
+            //             title: '测试基础类型 oneOf 5的倍数',
+            //             type: 'integer',
+            //             multipleOf: 5
+            //         },
+            //         {
+            //             title: '测试基础类型 oneOf 3的倍数',
+            //             type: 'integer',
+            //             multipleOf: 3
+            //         }
+            //     ]
+            // },
+            // test: {
+            //     title: '测试 const OneOf',
+            //     type: 'string',
+            //     oneOf: [
+            //         {
+            //             const: '111'
+            //         },
+            //         {
+            //             const: '222'
+            //         }
+            //     ]
+            // },
             items: {
                 title: '测试OneOf Array Items',
                 type: 'array',
@@ -88,38 +88,38 @@ export default {
                 }
             }
         },
-        oneOf: [
-            {
-                title: 'First method of identification',
-                required: [
-                    'firstName'
-                ],
-                properties: {
-                    firstName: {
-                        type: 'string',
-                        title: 'First name',
-                        default: 'Chuck'
-                    },
-                    lastName: {
-                        type: 'string',
-                        title: 'Last name'
-                    }
-                }
-            },
-            {
-                title: 'Second method of identification',
-                required: [
-                    'idCode'
-                ],
-                properties: {
-                    idCode: {
-                        type: 'string',
-                        title: 'ID code',
-                        default: 'Default id'
-                    }
-                }
-            }
-        ]
+        // oneOf: [
+        //     {
+        //         title: 'First method of identification',
+        //         required: [
+        //             'firstName'
+        //         ],
+        //         properties: {
+        //             firstName: {
+        //                 type: 'string',
+        //                 title: 'First name',
+        //                 default: 'Chuck'
+        //             },
+        //             lastName: {
+        //                 type: 'string',
+        //                 title: 'Last name'
+        //             }
+        //         }
+        //     },
+        //     {
+        //         title: 'Second method of identification',
+        //         required: [
+        //             'idCode'
+        //         ],
+        //         properties: {
+        //             idCode: {
+        //                 type: 'string',
+        //                 title: 'ID code',
+        //                 default: 'Default id'
+        //             }
+        //         }
+        //     }
+        // ]
     },
     uiSchema: {
         oneOfSelect: {
