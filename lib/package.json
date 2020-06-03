@@ -44,6 +44,7 @@
         "rollup-plugin-json": "^4.0.0",
         "rollup-plugin-node-resolve": "^5.2.0",
         "rollup-plugin-postcss": "^3.1.1",
+        "rollup-plugin-terser": "^6.1.0",
         "rollup-plugin-uglify": "^6.0.4",
         "rollup-plugin-vue": "^5.1.9",
         "vue-template-compiler": "^2.6.10",
@@ -51,7 +52,7 @@
         "webpack-manifest-plugin": "^2.2.0",
         "yargs": "^6.6.0"
     },
-    "author": "Liu.Jun <870395192@qq.com>",
+    "author": "Liu.Jun",
     "browserslist": [
         "> 1%",
         "last 2 versions",
