@@ -122,6 +122,10 @@ export default {
         ]
     },
     uiSchema: {
+        oneOfSelect: {
+            'ui:title': '选择anyOf 选项',
+            'ui:widget': 'RadioWidget'
+        },
         oneOf: {
             'ui:widget': 'RadioWidget',
             'ui:title': '测试 OneOf object',
