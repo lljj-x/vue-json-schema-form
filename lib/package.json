@@ -5,9 +5,7 @@
     "main": "dist/vueJsonSchemaForm.umd.min.js",
     "scripts": {
         "watch": "node scripts/watch.js",
-        "build": "node scripts/build.js",
-        "vueCli:build": "vue-cli-service build --target lib --name vueJsonSchemaForm --dest dist src/index.js",
-        "vueCli:watch": "vue-cli-service build --watch --target lib --name vueJsonSchemaForm --dest dist src/index.js"
+        "build": "node scripts/build.js"
     },
     "dependencies": {
         "ajv": "^6.10.2",
@@ -20,13 +18,10 @@
         "access": "public"
     },
     "devDependencies": {
-        "@babel/plugin-proposal-export-default-from": "^7.7.4",
+        "@lljj/babel-preset": "^0.1.0",
         "@lljj/eslint-config": "0.0.1",
-        "@vue/cli-plugin-babel": "^4.0.0",
-        "@vue/cli-plugin-eslint": "^4.0.0",
-        "@vue/cli-service": "^4.0.0",
         "babel-eslint": "^10.0.3",
-        "copy-webpack-plugin": "^5.0.4",
+        "cssnano": "^4.1.10",
         "eslint": "^5.16.0",
         "eslint-plugin-vue": "^5.0.0",
         "postcss-color-mod-function": "^3.0.3",
@@ -46,13 +41,9 @@
         "rollup-plugin-postcss": "^3.1.1",
         "rollup-plugin-terser": "^6.1.0",
         "rollup-plugin-uglify": "^6.0.4",
+        "rollup-plugin-visualizer": "^4.0.4",
         "rollup-plugin-vue": "^5.1.9",
-        "vue-template-compiler": "^2.6.10",
-        "webpack-bundle-analyzer": "^3.7.0",
-        "webpack-manifest-plugin": "^2.2.0",
-        "yargs": "^6.6.0",
-        "cssnano": "^4.1.10",
-        "rollup-plugin-visualizer": "^4.0.4"
+        "vue-template-compiler": "^2.6.10"
     },
     "author": "Liu.Jun",
     "browserslist": [
