@@ -24,9 +24,14 @@ https://github.com/yourtion/vue-json-ui-editor
 *[x] oneOf anyOf 支持
 *[x] 整理所有冗余代码 包括优化打包文件体积
 *[ ] 逐步开源发布
+
+*[ ] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
+*[ ] 更新curNodePathArr参数为string 格式，避免重新循环后引用类型对比导致子组件 update
+*[ ] array 类型key 通过计算唯一key，不使用index
+
 *[ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
 *[ ] Ui配置，基础的显示支持function处理，hidden title description placeholder等
-*[ ] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
+*[ ] Object additionalProperties 默认false，数组嵌套anyOf 再嵌套object时对默认选中项目的计算导致展示不支持其它设置
 *[ ] 所有节点都支持配置 widget
 *[ ] uiSchema errSchema和formData使用相同的方式传递数据
 *[ ] allOf配置支持可能不够全面
