@@ -25,8 +25,8 @@ https://github.com/yourtion/vue-json-ui-editor
 *[x] 整理所有冗余代码 包括优化打包文件体积
 *[ ] 逐步开源发布
 
+*[*] 更新 curNodePath 参数为string 格式，避免重新循环后引用类型对比导致子组件 update
 *[ ] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
-*[ ] 更新curNodePathArr参数为string 格式，避免重新循环后引用类型对比导致子组件 update
 *[ ] array 类型key 通过计算唯一key，不使用index
 
 *[ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
@@ -67,3 +67,4 @@ ui:widget: 每一个具体的输入部件
 > 1. oneOfOptions oneOfAll  Array 适配oneOf里面的每一个值
 > 1. oneOf ui中适配oneOf select的配置，error中适配oneOf类型校验错误 String
 > 1. 都会合并options的选项和上一级的配置
+> 1. 定义的数据字段名称 不能包含 . 字符串，内部会使用.连接出节点path
