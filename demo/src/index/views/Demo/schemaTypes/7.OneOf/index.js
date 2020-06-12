@@ -166,7 +166,15 @@ export default {
         age: 27,
         test: '222',
         firstName: '11',
-        lastName: '11'
+        lastName: '11',
+        items: [
+            {
+                foo: '11111'
+            },
+            {
+                bar: '222222222'
+            }
+        ]
     },
     errorSchema: {
         age: {
