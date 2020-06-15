@@ -1,10 +1,3 @@
-https://github.com/rjsf-team/react-jsonschema-form
-https://rjsf-team.github.io/react-jsonschema-form/
-
-https://github.com/koumoul-dev/vuetify-jsonschema-form
-https://github.com/jarvelov/vue-form-json-schema
-https://github.com/yourtion/vue-json-ui-editor
-
 *[x] 单独的包处理提取
 *[x] 支持 v-model，value格式 区别是响应式和不响应式
 *[x] 支持通过方法创建组件和form组件
@@ -23,25 +16,6 @@ https://github.com/yourtion/vue-json-ui-editor
 *[x] oneOf 数据校验，如object 拆开了数据校验导致异常问题，object特殊处理合并在一起
 *[x] oneOf anyOf 支持
 *[x] 整理所有冗余代码 包括优化打包文件体积
-*[ ] 逐步开源发布
-
-*[*] 更新 curNodePath 参数为string 格式，避免重新循环后引用类型对比导致子组件 update
-*[*] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
-*[*] array 类型key 通过计算唯一key，不使用index
-
-*[ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
-*[ ] Ui配置，基础的显示支持function处理，hidden title description placeholder等
-*[ ] Object additionalProperties 默认false，数组嵌套anyOf 再嵌套object时对默认选中项目的计算导致展示不支持其它设置
-*[ ] 所有节点都支持配置 widget
-*[ ] uiSchema errSchema和formData使用相同的方式传递数据
-*[ ] allOf配置支持可能不够全面
-*[ ] 优化源码 不需要this的组件改完 functional
-*[ ] 性能部分 - 1、组件传参导致响应式的数据庞大 2、render函数完全重新渲染分离变和不变 3、formData 变更render 都需要重新执行
-*[ ] depend 依赖支持
-*[ ] if else 支持
-*[ ] 对照react schema from适配更多规则支持
-*[ ] 解耦elementUi 重新开发form 和formItem组件，通过配置化实现适配elementUi iView 等常用ui组件
-
 
 ### 总结
 设计思想上的借鉴，整体实现会有较大的不同，在我的项目中所有被递归的数据都是不会变化的数据
