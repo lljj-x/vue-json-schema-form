@@ -4,8 +4,12 @@
     "scripts": {
         "docs:dev": "vuepress dev docs",
         "docs:build": "vuepress build docs",
+        "lib:watch": "cd lib && npm run watch",
+        "lib:build": "cd lib && npm run build",
         "dev": "vue-cli-service serve",
         "build": "vue-cli-service build",
+        "demo:dev": "npm run dev",
+        "demo:build": "npm run build",
         "lint": "vue-cli-service lint"
     },
     "dependencies": {
