@@ -22,6 +22,9 @@ const lang = {
 
 module.exports = {
     // dest: '../../vuepress',
+    markdown: {
+        plugins: ['task-lists']
+    },
     head: [
         ['link', { rel: 'icon', href: `/icons/ico.png` }],
         ['link', { rel: 'manifest', href: '/manifest.json' }],

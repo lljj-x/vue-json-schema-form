@@ -13,8 +13,8 @@
         "lint": "vue-cli-service lint"
     },
     "dependencies": {
-        "vue": "^2.6.10",
-        "@lljj/vue-json-schema-form": "0.0.4"
+        "@lljj/vue-json-schema-form": "0.0.4",
+        "vue": "^2.6.10"
     },
     "devDependencies": {
         "@lljj/eslint-config": "^0.0.1",
@@ -32,6 +32,7 @@
         "postcss-nested": "^4.1.0",
         "vue-template-compiler": "^2.6.10",
         "vuepress": "^1.5.0",
+        "markdown-it-task-lists": "^2.1.1",
         "watchpack": "^1.6.1",
         "webpack-bundle-analyzer": "^3.6.0",
         "webpack-manifest-plugin": "^2.2.0",

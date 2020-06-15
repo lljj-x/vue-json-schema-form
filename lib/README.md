@@ -1,99 +1,98 @@
+# vue-json-schema-form
+基于 Vue ElementUi JsonSchema快速构建一个带完整校验的form表单.
 
-### 基础格式
-> 基本格式参见 `JSON Schema`
-> 数据使用对象格式，对象更加直观，也可有序排序
+## 快速体验
+点击这里快速查看和编辑 [演示demo](https://form.buhuida.com/ "Vue JsonSchema Form Demo")
+或者[查看文档](https://vue-json-schema-form.buhuida.com/ "Vue JsonSchema Docs")、
+[源代码](https://github.com/liujunchina/vue-json-schema-form "Vue JsonSchema github")
+![](https://7.luochongfei.top/vue-json-schema-form.gif)
 
-参考链接：
-> [https://json-schema.org/understanding-json-schema/index.html](https://json-schema.org/understanding-json-schema/index.html)
-> [https://juejin.im/post/5b5533e3e51d45195c0747b8](https://juejin.im/post/5b5533e3e51d45195c0747b8)
+``` bash
+# 安装
+npm install --save @lljj/vue-json-schema-form
 
-### 我们实际情况：
-> 基于 `JSON Schema draft 06`, 加上我们需要的扩展
-> 流行的校验库： 
-> * https://github.com/epoberezkin/ajv
-> * https://github.com/korzio/djv
-> * https://github.com/ebdrup/json-schema-benchmark
+# 或者：
+yarn add @lljj/vue-json-schema-form
+```
 
-确认使用：
-* `jsonschema` 作为数据校验库 https://github.com/tdegrunt/jsonschema
-* `djvi` 生成模拟数据  https://github.com/korzio/djvi
+```vue
+<template>
+    <VueForm
+        v-model="formData"
+        :schema="schema"
+    >
+    </VueForm>
+</template>
 
+<script >
+    //  使用
+    import VueForm from '@lljj/vue-json-schema-form';
 
-详细的参考如下：
-
-## 我们添加的值 - formItem
-`这里的划重点`
-* formItem - 对象，用以描述当前数据在编辑状态下，form 表单的调用组件和参数配置
-* fromItem.inputType - 字符串 - 调用的组件类型， 会通过 vue render函数渲染
-* fromItem.props - 传给如上组件的参数，如果参数以 `@` 开头，会认为是对语言key，会通过多语言方法处理 `$t(@placeholder1)`，值为对象可以支持多语言参数传递 `$t(@placeholder1.key, [@placeholder1.params])`
-
-如下例子：
-```json
-{
-    "formItem": {
-        "inputType": "el-input",
-        "props": {
-            "placeholder": "请输入内容",
-            "@placeholder1": "goods.list.pleaseInput",
-            "@placeholder2": {
-              "key": "goods.list.pleaseInput",
-              "params": [1, 2]
-            }
+    export default {
+        name: 'Demo',
+        components: {
+            VueForm
+        },
+        data() {
+            return {
+                formData: {},
+                schema: {
+                    type: 'object',
+                    required: [
+                        'firstName'
+                    ],
+                    properties: {
+                        firstName: {
+                            type: 'string',
+                            title: 'First name',
+                            default: 'Liu'
+                        },
+                        lastName: {
+                            type: 'string',
+                            title: 'Last name'
+                        },
+                    }
+                }
+            };
         }
-    }
-}
+    };
+</script>
 ```
 
-## Type-specific keywords - 特定类型的关键字
+### 说明
+* 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成对应的form表单
+* 快速配置个性化ui视图和校验错误信息，可快速适配常用的ui库，目前的版本默认视图依赖elementUi，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
+* 设计思想和对schema解析索引参考 [react-jsonschema-form](https://rjsf-team.github.io/react-jsonschema-form/)
 
-#### string
-#### number
-#### object
-#### array
-#### boolean
-#### null
+## 相关资料
+[json Schema](https://json-schema.org/understanding-json-schema/index.html) |
+[Vue](https://cn.vuejs.org/) |
+[Element Ui](https://element.eleme.io/)
 
-## 通用关键字 - Generic keywords
-### 备注 - Annotations
-* title - *字符串，将优选简短*
-* description - *字符串，描述的数据的目的的更冗长的解释*
-* default - *关键字指定的项目的默认值*
-* examples - 提供一系列针对该模式进行验证的示例的地方。不用于验证，但是可以帮助向读者解释该模式的效果和目的
+### 为何开发
+原本是在很久前公司流产的项目类似淘宝店铺装修，也可以叫做前端可视化编辑。为了解决数据配置表单的通用性，所以使用json-schema描述数据结构，动态生成表单。
 
-`Annotations 关键字都不是必需的，但鼓励您进行良好的实践，它们可以使您的模式“自我记录”。`
+这样做的好处除了解决在每个配置表单的重复工作，服务端也可以基于同一份schema保持和前端一致的校验规则，不过对于使用 vue elementUi并未找到合适库可以直接使用，所以在后面一段时间决定自己实现一个 ..
 
-例子：
-```json
-{
-    "title" : "Match anything",
-    "description" : "This is a schema that matches anything.",
-    "default" : "Default value",
-    "examples" : [
-    "Anything",
-    4035
-    ]
-}
-```
-
-### 注释 - Comments
-**New in draft 7**
-
-* $comment - 关键字严格用于添加注释，不包含含义和行为附加，也可以删除，为后人的编辑提供信息。
-
-### 枚举值 - Enumerated values
-* enum
-> 所述enum关键字被用于限制值，以一个固定的一组值。它必须是一个至少包含一个元素的数组，其中每个元素都是唯一的。
-
-```json
-{
-  "type": "string",
-  "enum": ["red", "amber", "green"]
-}
-```
+可视化编辑演示 - https://buhuida.com/page_demo/demo-1911/vue-editor.html#/editor
 
 
+### 不支持部分 （持续更新）
+目前对标准json schema不支持的部分包含可能不限于如下：
+1. object additionalProperties 属性不支持，目前统一为 false
+1. object Dependencies 属性依赖和schema依赖都不支持
+1. if else 新特性不支持
 
-
-
-
-
+### Todo
+*[x] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
+*[ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
+*[ ] 逐步开源发布
+*[ ] Ui配置，基础的显示支持function配置，接受当前formData参数，hidden title description placeholder等
+*[ ] Object additionalProperties 默认false，数组嵌套anyOf 再嵌套object时对默认选中项目的计算导致展示不支持其它设置
+*[ ] 所有节点都支持配置 widget
+*[ ] uiSchema errSchema和formData使用相同的方式传递数据
+*[ ] allOf配置支持可能不够全面
+*[ ] 优化源码 不需要this的组件调整为 functional
+*[ ] 性能部分 - 1、组件传参导致响应式的数据庞大 2、render函数完全重新渲染分离变和不变 3、formData 变更render 都需要重新执行
+*[ ] 对照react schema from适配更多规则支持
+*[ ] 解耦elementUi 重新开发form 和formItem组件，通过配置化实现适配elementUi iView 等常用ui组件
