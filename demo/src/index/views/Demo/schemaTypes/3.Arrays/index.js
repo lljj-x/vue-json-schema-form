@@ -47,6 +47,14 @@ export default {
                         title: 'a boolean value',
                         type: 'boolean',
                     },
+                    {
+                        title: 'a string value',
+                        type: 'string',
+                    },
+                    {
+                        title: 'a number value',
+                        type: 'number',
+                    }
                 ],
                 additionalItems: {
                     title: 'Additional item',
@@ -194,7 +202,7 @@ export default {
     formData: {
         listOfStrings: ['foo', 'bar'],
         multipleChoicesList: ['foo', 'bar'],
-        fixedItemsList: ['Some text', true, 123],
+        fixedItemsList: ['Some text', true],
         nestedList: [['lorem', 'ipsum'], ['dolor']],
         unorderable: ['one', 'two'],
         unremovable: ['one', 'two'],
