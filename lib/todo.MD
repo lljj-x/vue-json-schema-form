@@ -26,8 +26,8 @@ https://github.com/yourtion/vue-json-ui-editor
 *[ ] 逐步开源发布
 
 *[*] 更新 curNodePath 参数为string 格式，避免重新循环后引用类型对比导致子组件 update
-*[ ] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
-*[ ] array 类型key 通过计算唯一key，不使用index
+*[*] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
+*[*] array 类型key 通过计算唯一key，不使用index
 
 *[ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
 *[ ] Ui配置，基础的显示支持function处理，hidden title description placeholder等
