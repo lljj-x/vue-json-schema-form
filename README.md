@@ -2,10 +2,13 @@
 基于 Vue ElementUi JsonSchema快速构建一个带完整校验的form表单.
 
 ## 快速体验
-点击这里快速查看和编辑 [演示demo](https://form.buhuida.com/ "Vue JsonSchema Form Demo")
-或者[查看文档](https://vue-json-schema-form.buhuida.com/ "Vue JsonSchema Docs")、
-[源代码](https://github.com/liujunchina/vue-json-schema-form "Vue JsonSchema github")
-![](https://7.luochongfei.top/vue-json-schema-form.gif)
+* [演示demo](https://form.buhuida.com/ "Vue JsonSchema Form Demo")
+* [查看文档](https://vue-json-schema-form.buhuida.com/ "Vue JsonSchema Docs")、
+* [源代码](https://github.com/liujunchina/vue-json-schema-form "Vue JsonSchema github")
+* [使用场景 - 前端可视化编辑演示](https://buhuida.com/page_demo/demo-1911/vue-editor.html#/editor)
+* [不支持部分和更新计划](/zh/guide/todo.html)
+
+![](https://7.luochongfei.top/vue-json-schema-form.gif?1)
 
 ``` bash
 # 安装
@@ -73,8 +76,6 @@ yarn add @lljj/vue-json-schema-form
 原本是在很久前公司流产的项目类似淘宝店铺装修，也可以叫做前端可视化编辑。为了解决数据配置表单的通用性，所以使用json-schema描述数据结构，动态生成表单。
 
 这样做的好处除了解决在每个配置表单的重复工作，服务端也可以基于同一份schema保持和前端一致的校验规则，不过对于使用 vue elementUi并未找到合适库可以直接使用，所以在后面一段时间决定自己实现一个 ..
-
-可视化编辑演示 - https://buhuida.com/page_demo/demo-1911/vue-editor.html#/editor
 
 
 ### 不支持部分 （持续更新）
