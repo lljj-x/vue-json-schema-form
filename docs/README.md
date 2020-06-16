@@ -11,7 +11,7 @@ actionLink: /zh/guide/
 
 ## 快速体验
 * [演示demo](https://form.buhuida.com/ "Vue JsonSchema Form Demo")
-* [查看文档](https://vue-json-schema-form.buhuida.com/ "Vue JsonSchema Docs")、
+* [查看文档](https://vue-json-schema-form.buhuida.com/ "Vue JsonSchema Docs")
 * [源代码](https://github.com/liujunchina/vue-json-schema-form "Vue JsonSchema github")
 * [使用场景 - 前端可视化编辑演示](https://buhuida.com/page_demo/demo-1911/vue-editor.html#/editor)
 * [不支持部分和更新计划](/zh/guide/todo.html)
