@@ -25,6 +25,37 @@ module.exports = {
     markdown: {
         plugins: ['task-lists']
     },
+    plugins: {
+        'demo-block': {
+            settings: {
+                jsLib: [
+                    'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.13.2/index.js',
+                    'https://unpkg.com/@lljj/vue-json-schema-form@0.0.5/dist/vueJsonSchemaForm.umd.min.js'
+                ], // 在线示例(jsfiddle, codepen)中的js依赖
+                cssLib: ['https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css'], // 在线示例中的css依赖
+                vue: 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js', // 在线示例中的vue依赖
+                jsfiddle: true, // 是否显示 jsfiddle 链接
+                codepen: true, // 是否显示 codepen 链接
+                horizontal: false // 是否展示为横向样式
+            }
+        }
+    },
+    // plugins: [
+    //     'demo-block',
+    //     {
+    //         settings: {
+    //             jsLib: [
+    //                 'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.13.2/index.js',
+    //                 'https://unpkg.com/@lljj/vue-json-schema-form@0.0.5/dist/vueJsonSchemaForm.umd.min.js'
+    //             ], // 在线示例(jsfiddle, codepen)中的js依赖
+    //             cssLib: ['https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css'], // 在线示例中的css依赖
+    //             vue: 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js', // 在线示例中的vue依赖
+    //             jsfiddle: true, // 是否显示 jsfiddle 链接
+    //             codepen: true, // 是否显示 codepen 链接
+    //             horizontal: false // 是否展示为横向样式
+    //         }
+    //     }
+    // ],
     head: [
         ['link', { rel: 'icon', href: `/icons/ico.png` }],
         ['link', { rel: 'manifest', href: '/manifest.json' }],
@@ -33,7 +64,13 @@ module.exports = {
         ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
         ['link', { rel: 'apple-touch-icon', href: `/icons/ico.png` }],
         ['meta', { name: 'msapplication-TileImage', content: '/icons/ico.png' }],
-        ['meta', { name: 'msapplication-TileColor', content: '#000000' }]
+        ['meta', { name: 'msapplication-TileColor', content: '#000000' }],
+        ['script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js' }], // vue
+        ['script', { src: 'https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.13.2/index.js' }], // elementUi js
+        ['link', { rel: 'stylesheet', href: 'https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css' }],  // elementUi css
+        ['script', { src: 'https://unpkg.com/@lljj/vue-json-schema-form@0.0.5/dist/vueJsonSchemaForm.umd.min.js' }],
+
+        // ['script', { src: 'https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js' }],
     ],
     locales: {
         [lang.zh.path]: lang.zh.configPack.config,

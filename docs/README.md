@@ -9,6 +9,58 @@ actionText: 快速开始 →
 actionLink: /zh/guide/
 ---
 
+::: demo
+```html
+<template>
+    <VueForm
+        v-model="formData"
+        :schema="schema"
+    >
+    </VueForm>
+</template>
+
+<script>
+// 使用 es module import 导入模块
+// import VueForm from '@lljj/vue-json-schema-form';
+
+// 使用umd全局加载 (这里演示demo不支持import模块,所以使用这种形式)
+const VueForm = vueJsonSchemaForm.default;
+
+export default {
+    name: 'Demo',
+    components: {
+        VueForm
+    },
+    data() {
+        return {
+            formData: {},
+            schema: {
+                type: 'object',
+                required: [
+                    'firstName'
+                ],
+                properties: {
+                    firstName: {
+                        type: 'string',
+                        title: 'First name',
+                        default: 'Liu'
+                    },
+                    lastName: {
+                        type: 'string',
+                        title: 'Last name'
+                    },
+                }
+            }
+        };
+    }
+};
+</script>
+<style>
+.box-vue { color: red; }
+</style>
+```
+:::
+
 ## 快速体验
 * [演示demo](https://form.buhuida.com/ "Vue JsonSchema Form Demo")
 * [查看文档](https://vue-json-schema-form.buhuida.com/ "Vue JsonSchema Docs")
