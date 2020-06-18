@@ -1,7 +1,15 @@
 .DS_Store
 node_modules
-/dist
-/demo/dist
+
+/packages/docs/docs/node_modules
+/packages/docs/docs/.vuepress/dist/
+
+/packages/demo/dist
+/packages/demo/node_modules
+
+/packages/lib/dist
+/packages/lib/node_modules
+
 
 # local env files
 .env.local
@@ -20,5 +28,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-
-docs/.vuepress/dist/

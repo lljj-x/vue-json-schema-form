@@ -1,0 +1,36 @@
+{
+    "name": "demo",
+    "version": "0.1.0",
+    "scripts": {
+        "dev": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "lint": "vue-cli-service lint"
+    },
+    "dependencies": {
+        "@lljj/vue-json-schema-form": "0.0.5",
+        "vue": "^2.6.10"
+    },
+    "devDependencies": {
+        "vuepress-plugin-demo-block": "^0.7.2",
+        "@lljj/eslint-config": "^0.0.1",
+        "@vue/cli-plugin-babel": "^4.0.0",
+        "@vue/cli-plugin-eslint": "^4.0.0",
+        "@vue/cli-service": "^4.0.0",
+        "babel-eslint": "^10.0.3",
+        "copy-webpack-plugin": "^5.0.4",
+        "eslint": "^5.16.0",
+        "eslint-plugin-vue": "^5.0.0",
+        "postcss-color-mod-function": "^3.0.3",
+        "postcss-cssnext": "^3.1.0",
+        "postcss-import": "^12.0.1",
+        "postcss-mixins": "^6.2.0",
+        "postcss-nested": "^4.1.0",
+        "vue-template-compiler": "^2.6.10",
+        "vuepress": "^1.5.0",
+        "markdown-it-task-lists": "^2.1.1",
+        "watchpack": "^1.6.1",
+        "webpack-bundle-analyzer": "^3.6.0",
+        "webpack-manifest-plugin": "^2.2.0",
+        "yargs": "^6.6.0"
+    }
+}

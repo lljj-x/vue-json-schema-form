@@ -35,10 +35,10 @@ const defaultTemp = path.resolve(__dirname, '../default.html');
 
 function entryFn({ dir }) {
     // entry 文件相对的目录
-    const dirPath = path.normalize(path.resolve(__dirname, '../demo/src'));
+    const dirPath = path.normalize(path.resolve(__dirname, '../src'));
 
     // entry 文件
-    const filePath = path.normalize(path.resolve(__dirname, '../demo/src/**/*.js'));
+    const filePath = path.normalize(path.resolve(__dirname, '../src/**/*.js'));
 
     const temFiles = glob.sync(filePath);
     const curDir = dir ? String(dir).split(',') : [];

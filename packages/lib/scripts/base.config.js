@@ -82,12 +82,14 @@ module.exports = ({
             }),
             eslint(),
             babel({
-                exclude: 'node_modules/**'
+                exclude: /node_modules/
             }),
             postcss({
                 extract: config.extractcss
             }),
-            commonjs(),
+            commonjs({
+                include: /node_modules/,
+            }),
             vue({
                 //
             }),
