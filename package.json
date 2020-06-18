@@ -22,7 +22,7 @@
         "packages:list": "lerna ls -l",
         "packages:changed": "lerna changed",
         "packages:build": "lerna run --stream --sort build",
-        "publish": "lerna publish"
+        "publish": "npm run lib:build && lerna publish"
     },
     "config": {
         "commitizen": {
