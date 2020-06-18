@@ -16,7 +16,13 @@
         "lib:build": "yarn workspace @lljj/vue-json-schema-form build",
         "demo:dev": "yarn workspace demo dev",
         "demo:build": "yarn workspace demo build",
-        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 2"
+        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 2",
+        "clean": "lerna clean && rm -rf node_modules",
+        "packages:diff": "lerna diff",
+        "packages:list": "lerna ls -l",
+        "packages:changed": "lerna changed",
+        "packages:build": "lerna run --stream --sort build",
+        "publish": "lerna publish"
     },
     "config": {
         "commitizen": {
@@ -32,9 +38,10 @@
     "devDependencies": {
         "@commitlint/cli": "^8.3.5",
         "@commitlint/config-conventional": "^8.3.4",
-        "conventional-changelog-cli": "^2.0.34",
         "commitizen": "^4.1.2",
+        "conventional-changelog-cli": "^2.0.34",
         "cz-conventional-changelog": "^3.2.0",
-        "husky": "^4.2.5"
+        "husky": "^4.2.5",
+        "lerna": "^3.22.1"
     }
 }
