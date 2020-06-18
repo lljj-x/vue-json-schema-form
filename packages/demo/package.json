@@ -1,6 +1,6 @@
 {
     "name": "demo",
-    "version": "0.1.0",
+    "version": "0.0.6",
     "private": true,
     "license": "Apache-2.0",
     "scripts": {
@@ -9,7 +9,7 @@
         "lint": "vue-cli-service lint"
     },
     "dependencies": {
-        "@lljj/vue-json-schema-form": "0.0.5",
+        "@lljj/vue-json-schema-form": "0.0.6",
         "vue": "^2.6.10"
     },
     "devDependencies": {
@@ -21,13 +21,13 @@
         "copy-webpack-plugin": "^5.0.4",
         "eslint": "^5.16.0",
         "eslint-plugin-vue": "^5.0.0",
+        "markdown-it-task-lists": "^2.1.1",
         "postcss-color-mod-function": "^3.0.3",
         "postcss-cssnext": "^3.1.0",
         "postcss-import": "^12.0.1",
         "postcss-mixins": "^6.2.0",
         "postcss-nested": "^4.1.0",
         "vue-template-compiler": "^2.6.10",
-        "markdown-it-task-lists": "^2.1.1",
         "watchpack": "^1.6.1",
         "webpack-bundle-analyzer": "^3.6.0",
         "webpack-manifest-plugin": "^2.2.0",
