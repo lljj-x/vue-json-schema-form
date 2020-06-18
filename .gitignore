@@ -7,9 +7,7 @@ node_modules
 /packages/demo/dist
 /packages/demo/node_modules
 
-/packages/lib/dist
 /packages/lib/node_modules
-
 
 # local env files
 .env.local
