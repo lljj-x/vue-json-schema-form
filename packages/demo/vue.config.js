@@ -29,7 +29,7 @@ log({
 const isProduction = process.env.NODE_ENV === 'production';
 
 // config var
-const outputDir = path.resolve(__dirname, './demo/dist');
+const outputDir = path.resolve(__dirname, './dist');
 
 module.exports = {
     // cdn
