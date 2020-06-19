@@ -54,6 +54,7 @@
     .demo-block-control {
         border-top: solid 1px #eaeefb;
         height: 44px;
+        line-height: 1.5;
         box-sizing: border-box;
         background-color: #fafafa;
         border-bottom-left-radius: 4px;
@@ -129,51 +130,33 @@
             display: inline-block;
         }
 
-        .copy-action {
-            display: none;
-            color: #ccc;
-            margin-right 20px;
-            margin-left 30px;
-            &.copying {
-                color: #67C23A;
-            }
-        }
-        .copy-action-success {
-            color: #f5222d;
-        }
-
-        .demo_container-buttonToolBox {
-            height 44px;
-            float right;
+        .demoContainer_buttonToolBox {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0 20px;
+            height: 44px;
             display: flex;
             align-items: center;
         }
-        .demo_container-button {
-            border-color: transparent;
-            background-color: transparent;
-            font-size: 14px;
-            color: #3eaf7c;
-            cursor: pointer;
-            outline: none;
-            margin: 0;
-            padding 0;
-            width: 40px;
-            height: 40px;
-            position: relative;
-            -webkit-appearance: none;
+        .demoContainer_button {
+            color: #ccc;
+            font-size: 15px;
         }
-        .demo_container-icon {
-            width: 30px;
-            height: 20px;
-            fill: #ccc;
+        .demoContainer_button-copyAction {
+            &.copying {
+            }
         }
 
         &:hover {
             color: #409eff;
-            background-color: #f9fafc;
-            .demo_container-icon {
-                fill: #409eff !important;
+            .demoContainer_button {
+                color: #409eff;
             }
+            .caret-bottom:before {
+                border-top-color: #409eff;
+            }
+            background-color: #f9fafc;
         }
 
         & .text-slide-enter,

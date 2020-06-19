@@ -26,29 +26,32 @@ module.exports = {
         plugins: ['task-lists']
     },
     plugins: [
-        require('./plugins/demo-container/src'),
-        {
-            locales: [
-                {
-                    "lang": "zh-CN",
-                    "demo-block": {
-                        "hide-text": "隐藏",
-                        "show-text": "显示",
-                        "copy-text": "复制",
-                        "copy-success": "成功"
+        [
+            require('./plugins/demo-container/src'),
+            {
+                elementVersion: '2.13.2',
+                locales: [
+                    {
+                        "lang": "zh-CN",
+                        "demo-block": {
+                            "hide-text": "隐藏",
+                            "show-text": "显示",
+                            "copy-text": "复制",
+                            "copy-success": "成功"
+                        }
+                    },
+                    {
+                        "lang": "en-US",
+                        "demo-block": {
+                            "hide-text": "Hide",
+                            "show-text": "Expand",
+                            "copy-text": "Copy",
+                            "copy-success": "Successful"
+                        }
                     }
-                },
-                {
-                    "lang": "en-US",
-                    "demo-block": {
-                        "hide-text": "Hide",
-                        "show-text": "Expand",
-                        "copy-text": "Copy",
-                        "copy-success": "Successful"
-                    }
-                }
-            ]
-        }
+                ]
+            }
+        ]
     ],
     head: [
         ['link', { rel: 'icon', href: `/icons/ico.png` }],

@@ -9,14 +9,14 @@ actionText: 快速开始 →
 actionLink: /zh/guide/
 ---
 
-::: demo
+::: demo 此处放置代码示例的描述信息，支持 `Markdown` 语法，**描述信息只支持单行**
 ```html
 <template>
-    <VueForm
+    <vue-form
         v-model="formData"
         :schema="schema"
     >
-    </VueForm>
+    </vue-form>
 </template>
 
 <script>
@@ -48,9 +48,6 @@ export default {
     }
 };
 </script>
-<style>
-.box-vue { color: red; }
-</style>
 ```
 :::
 

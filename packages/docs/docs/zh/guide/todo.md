@@ -9,6 +9,7 @@
 ## Todo
 - [x] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
 - [ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
+- [ ] lib如果直接umd包导入，默认注册vue组件 类elementUi
 - [ ] 逐步开源发布
 - [ ] Ui配置，基础的显示支持function配置，接受当前formData参数，hidden title description placeholder等
 - [ ] Object additionalProperties 默认false，数组嵌套anyOf 再嵌套object时对默认选中项目的计算导致展示不支持其它设置
