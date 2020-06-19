@@ -30,6 +30,7 @@ module.exports = {
             require('./plugins/demo-container/src'),
             {
                 elementVersion: '2.13.2',
+                vjsfVersion: require('../../package.json').version,
                 locales: [
                     {
                         "lang": "zh-CN",

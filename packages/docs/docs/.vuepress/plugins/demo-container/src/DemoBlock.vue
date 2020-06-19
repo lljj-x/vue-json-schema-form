@@ -130,12 +130,12 @@
             },
             handleCodePen() {
                 const elementVersion = this.options.elementVersion || '2.13.0';
-                debugger;
+                const vjsfVersion = this.options.vjsfVersion;
                 // since 2.6.2 use code rather than jsfiddle https://blog.codepen.io/documentation/api/prefill/
                 const { script, html, style } = this.getCodeStr();
                 const resourcesTpl =
                     '<scr' + 'ipt src="//unpkg.com/vue/dist/vue.js"></scr' + 'ipt>\n' +
-                    '<scr' + 'ipt src="//unpkg.com/@lljj/vue-json-schema-form@0.0.8/dist/vueJsonSchemaForm.umd.min.js"></scr' + 'ipt>\n' +
+                    '<scr' + `ipt src="//unpkg.com/@lljj/vue-json-schema-form@${ vjsfVersion }/dist/vueJsonSchemaForm.umd.min.js"></scr` + 'ipt>\n' +
                     '<scr' + `ipt src="//unpkg.com/element-ui@${ elementVersion }/lib/index.js"></scr` + 'ipt>\n';
                 let jsTpl = (script || '').replace(/export default/, 'Vue.component(\'vue-form\', vueJsonSchemaForm.default);\n\nvar Main =').trim();
                 let htmlTpl = `${resourcesTpl}\n<div id="app">\n${html.trim()}\n</div>`;

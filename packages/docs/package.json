@@ -5,6 +5,7 @@
     "license": "Apache-2.0",
     "scripts": {
         "dev": "vuepress dev docs",
+        "dev:debug": "vuepress dev docs --no-cache --debug",
         "build": "vuepress build docs"
     },
     "dependencies": {
@@ -12,6 +13,6 @@
         "element-ui": "^2.13.2"
     },
     "devDependencies": {
-        "vuepress": "^1.5.0"
+        "vuepress": "^1.5.2"
     }
 }
