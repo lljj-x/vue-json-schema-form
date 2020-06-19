@@ -7,9 +7,15 @@
         "dev": "vuepress dev docs",
         "build": "vuepress build docs"
     },
+    "dependencies": {
+        "@lljj/vue-json-schema-form": "0.0.8",
+        "element-ui": "^2.13.2"
+    },
     "devDependencies": {
-        "vuepress": "^1.5.0",
-        "vuepress-plugin-demo-block": "^0.7.2"
+        "vuepress": "^1.5.2",
+        "vuepress-plugin-demo-block": "^0.7.2",
+        "watchpack": "^1.6.1",
+        "core-js": "^2.6.5"
     },
     "browserslist": [
         "> 1%",

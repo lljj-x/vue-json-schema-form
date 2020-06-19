@@ -20,17 +20,10 @@ actionLink: /zh/guide/
 </template>
 
 <script>
-// 使用 es module import 导入模块
 // import VueForm from '@lljj/vue-json-schema-form';
-
-// 使用umd全局加载 (这里演示demo不支持import模块,所以使用这种形式)
-const VueForm = vueJsonSchemaForm.default;
 
 export default {
     name: 'Demo',
-    components: {
-        VueForm
-    },
     data() {
         return {
             formData: {},
