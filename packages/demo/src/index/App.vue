@@ -5,7 +5,7 @@
         </header>
         <router-view></router-view>
         <footer :class="$style.footer">
-            vue-json-schema-form
+            <a href="https://vue-json-schema-form.buhuida.com/">vue-json-schema-form</a>
         </footer>
     </div>
 </template>
