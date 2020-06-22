@@ -11,6 +11,11 @@ import * as schemaValidate from './JsonSchemaForm/common/schema/validate';
 
 import JsonSchemaForm from './JsonSchemaForm';
 
+// 存在Vue 全局变量默认注册 VueForm 组件
+if (typeof window !== 'undefined' && window.Vue) {
+    window.Vue.component('VueForm', JsonSchemaForm);
+}
+
 export default JsonSchemaForm;
 
 export {
