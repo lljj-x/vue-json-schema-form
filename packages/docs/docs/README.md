@@ -28,53 +28,69 @@ yarn add @lljj/vue-json-schema-form
 <template>
     <VueForm
         v-model="formData"
+        :ui-schema="uiSchema"
         :schema="schema"
     >
     </VueForm>
 </template>
 
 <script >
-    //  使用
-    import VueForm from '@lljj/vue-json-schema-form';
+//  使用
+import VueForm from '@lljj/vue-json-schema-form';
 
-    export default {
-        name: 'Demo',
-        components: {
-            VueForm
-        },
-        data() {
-            return {
-                formData: {},
-                schema: {
-                    type: 'object',
-                    required: [
-                        'firstName'
-                    ],
-                    properties: {
-                        firstName: {
-                            type: 'string',
-                            title: 'First name',
-                            default: 'Liu'
-                        },
-                        lastName: {
-                            type: 'string',
-                            title: 'Last name'
-                        },
+export default {
+    name: 'Demo',
+    data() {
+        return {
+            formData: {},
+            schema: {
+                type: 'object',
+                required: [
+                    'userName',
+                    'age',
+                ],
+                properties: {
+                    userName: {
+                        type: 'string',
+                        title: '用户名',
+                        default: 'Liu.Jun',
+                    },
+                    age: {
+                        type: 'number',
+                        title: '年龄'
+                    },
+                    bio: {
+                        type: 'string',
+                        title: '签名',
+                        minLength: 10,
+                        default: '知道的越多、就知道的越少',
                     }
                 }
-            };
-        }
-    };
+            },
+            uiSchema: {
+                bio: {
+                    'ui:options': {
+                        placeholder: '请输入你的签名',
+                        type: 'textarea',
+                        row: 1
+                    }
+                }
+            }
+        };
+    }
+};
 </script>
 ```
 
 > 运行如下：
 
+## DEMO
 ::: demo 这里代码省略导入和使用组件 // import VueForm from '@lljj/vue-json-schema-form';
 ```html
 <template>
     <vue-form
         v-model="formData"
+        :ui-schema="uiSchema"
         :schema="schema"
     >
     </vue-form>
@@ -89,18 +105,34 @@ export default {
             schema: {
                 type: 'object',
                 required: [
-                    'firstName'
+                    'userName',
+                    'age',
                 ],
                 properties: {
-                    firstName: {
+                    userName: {
                         type: 'string',
-                        title: 'First name',
-                        default: 'Liu'
+                        title: '用户名',
+                        default: 'Liu.Jun',
                     },
-                    lastName: {
+                    age: {
+                        type: 'number',
+                        title: '年龄'
+                    },
+                    bio: {
                         type: 'string',
-                        title: 'Last name'
-                    },
+                        title: '签名',
+                        minLength: 10,
+                        default: '知道的越多、就知道的越少',
+                    }
+                }
+            },
+            uiSchema: {
+                bio: {
+                    'ui:options': {
+                        placeholder: '请输入你的签名',
+                        type: 'textarea',
+                        row: 1
+                    }
                 }
             }
         };

@@ -53,19 +53,19 @@ module.exports = {
         '.vuepress/localesConfig/genConfig.js',
         '.vuepress/localesConfig/zh.config.js',
     ],
-    // themeConfig: {
-    //     // repo: 'vuejs/vuepress',
-    //     editLinks: true,
-    //     docsDir: 'packages/docs/docs',
-    //     // #697 Provided by the official algolia team.
-    //     // algolia: ctx.isProd ? ({
-    //     //     apiKey: '3a539aab83105f01761a137c61004d85',
-    //     //     indexName: 'vuepress'
-    //     // }) : null,
-    //     smoothScroll: true,
-    //     locales: {
-    //         [lang.zh.path]: lang.zh.configPack.themeConfig,
-    //         [lang.en.path]: lang.en.configPack.themeConfig,
-    //     }
-    // }
+    themeConfig: {
+        // repo: 'vuejs/vuepress',
+        editLinks: true,
+        docsDir: 'packages/docs/docs',
+        // #697 Provided by the official algolia team.
+        // algolia: ctx.isProd ? ({
+        //     apiKey: '3a539aab83105f01761a137c61004d85',
+        //     indexName: 'vuepress'
+        // }) : null,
+        smoothScroll: true,
+        locales: {
+            [lang.zh.path]: lang.zh.configPack.themeConfig,
+            [lang.en.path]: lang.en.configPack.themeConfig,
+        }
+    }
 }
