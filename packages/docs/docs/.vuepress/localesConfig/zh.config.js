@@ -54,7 +54,7 @@ module.exports = {
                     { text: 'combining', link: '/zh/rules/combining.md' },
                 ]
             },
-            { text: '演示', link: 'https://buhuida.com/page_demo/demo-1911/vue-element-schema-demo.html#/demo?type=AllOf' },
+            { text: '演示', link: 'https://form.buhuida.com' },
             { text: 'Github', link: 'https://github.com/liujunchina/vue-json-schema-form' },
         ],
 
