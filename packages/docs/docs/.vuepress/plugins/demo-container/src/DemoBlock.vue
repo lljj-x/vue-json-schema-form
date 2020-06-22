@@ -39,7 +39,7 @@
                     :class="['demoContainer_button', { 'copying ': copied }]"
                     title="CodePen"
                     @click.stop="handleCodePen"
-                >运行代码</span>
+                >{{ runText }}</span>
             </div>
         </div>
     </div>
@@ -94,6 +94,9 @@
             },
             copiedText() {
                 return this.copied ? this.langConfig['copy-success'] : this.langConfig['copy-text'];
+            },
+            runText() {
+                return this.langConfig['online-run'];
             },
             codeArea() {
                 return this.$el.getElementsByClassName("meta")[0];

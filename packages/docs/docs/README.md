@@ -9,56 +9,12 @@ actionText: 快速开始 →
 actionLink: /zh/guide/
 ---
 
-::: demo 此处放置代码示例的描述信息，支持 `Markdown` 语法，**描述信息只支持单行**
-```html
-<template>
-    <vue-form
-        v-model="formData"
-        :schema="schema"
-    >
-    </vue-form>
-</template>
-
-<script>
-// import VueForm from '@lljj/vue-json-schema-form';
-
-export default {
-    name: 'Demo',
-    data() {
-        return {
-            formData: {},
-            schema: {
-                type: 'object',
-                required: [
-                    'firstName'
-                ],
-                properties: {
-                    firstName: {
-                        type: 'string',
-                        title: 'First name',
-                        default: 'Liu'
-                    },
-                    lastName: {
-                        type: 'string',
-                        title: 'Last name'
-                    },
-                }
-            }
-        };
-    }
-};
-</script>
-```
-:::
-
 ## 快速体验
 * [演示demo](https://form.buhuida.com/ "Vue JsonSchema Form Demo")
 * [查看文档](https://vue-json-schema-form.buhuida.com/ "Vue JsonSchema Docs")
 * [源代码](https://github.com/liujunchina/vue-json-schema-form "Vue JsonSchema github")
 * [使用场景 - 前端可视化编辑演示](https://buhuida.com/page_demo/demo-1911/vue-editor.html#/editor)
 * [不支持部分和更新计划](/zh/guide/todo.html)
-
-![](https://7.luochongfei.top/vue-json-schema-form.gif?1)
 
 ``` bash
 # 安装
@@ -112,7 +68,49 @@ yarn add @lljj/vue-json-schema-form
 </script>
 ```
 
-::: tip 说明
+> 运行如下：
+
+::: demo 这里代码省略导入和使用组件 // import VueForm from '@lljj/vue-json-schema-form';
+```html
+<template>
+    <vue-form
+        v-model="formData"
+        :schema="schema"
+    >
+    </vue-form>
+</template>
+
+<script>
+export default {
+    name: 'Demo',
+    data() {
+        return {
+            formData: {},
+            schema: {
+                type: 'object',
+                required: [
+                    'firstName'
+                ],
+                properties: {
+                    firstName: {
+                        type: 'string',
+                        title: 'First name',
+                        default: 'Liu'
+                    },
+                    lastName: {
+                        type: 'string',
+                        title: 'Last name'
+                    },
+                }
+            }
+        };
+    }
+};
+</script>
+```
+:::
+
+::: tip
 * 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成对应的form表单
 * 快速配置个性化ui视图和校验错误信息，可快速适配常用的ui库，目前的版本默认视图依赖elementUi，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
 :::
