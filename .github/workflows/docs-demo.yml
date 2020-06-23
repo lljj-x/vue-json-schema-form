@@ -1,0 +1,40 @@
+name: Deploy docs
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout # checkout
+      uses: actions/checkout@v2
+
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: "12.x"
+
+    - name: Build Blog
+      run: |
+        yarn install
+        yarn run docs:build
+        yarn run demo:build
+
+    - name: Setup aliyun oss
+      # 设置阿里云OSS配置
+      uses: manyuanrong/setup-ossutil@v1.0
+      with:
+        endpoint: "oss-cn-hongkong.aliyuncs.com"
+        access-key-id: ${{ secrets.OSS_ACCESSKEYID }}
+        access-key-secret: ${{ secrets.OSS_ACCESSKEYSECRET }}
+
+    - name: Deploy docs
+      # 发布文档
+      run: ossutil cp -rf ./packages/docs/docs/.vuepress/dist/ oss://vjsf-docs-buhuida/
+
+    - name: Deploy demo
+      # 发布demo
+      run: ossutil cp -rf ./packages/demo/dist/ oss://form-buhuida/
