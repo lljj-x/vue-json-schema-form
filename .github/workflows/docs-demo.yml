@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: "12.x"
-      
+
     - name: Build Blog
       run: |
         yarn install
@@ -33,7 +33,7 @@ jobs:
 
     - name: Deploy docs
       # 发布文档
-      run: ossutil cp -rf ./packages/docs/.vuepress/dist/ oss://vjsf-docs-buhuida/
+      run: ossutil cp -rf ./packages/docs/docs/.vuepress/dist/ oss://vjsf-docs-buhuida/
 
     - name: Deploy demo
       # 发布demo
