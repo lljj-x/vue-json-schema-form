@@ -1,6 +1,6 @@
 # 基本配置
 
-## 参数 props
+## 参数 Props
 ### formFooter
 表单footer配置 - object
 
