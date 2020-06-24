@@ -5,7 +5,7 @@
         </header>
         <router-view></router-view>
         <footer :class="$style.footer">
-            <a href="https://vue-json-schema-form.buhuida.com/">vue-json-schema-form</a>
+            <a href="https://vue-json-schema-form.lljj.me/">vue-json-schema-form</a>
         </footer>
     </div>
 </template>
