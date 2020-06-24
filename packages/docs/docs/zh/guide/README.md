@@ -12,7 +12,7 @@ yarn add @lljj/vue-json-schema-form
 
 全局引入
 ```html
-# script引入 unpkg CDN
+# script引入
 <script src="//cdn.jsdelivr.net/npm/@lljj/vue-json-schema-form/dist/vueJsonSchemaForm.umd.min.js"></script>
 ```
 
