@@ -37,7 +37,7 @@ module.exports = {
     head: [
         ['link', { rel: 'icon', href: `/icons/ico.png` }],
         ['script', '',
-            'var __replaceUrl = ~window.location.host.indexOf(\'buhuida.com\') ? window.location.href.replace(/.*?buhuida\\.com/, \'https://lljj.me\') : (window.location.protocol === \'http:\' && ~window.location.host.indexOf(\'lljj.me\') ? window.location.href.replace(/^http/, \'https\') : \'\');\n' +
+            'var __replaceUrl = ~window.location.host.indexOf(\'buhuida.com\') ? window.location.href.replace(/.*?buhuida\\.com/, \'https://vue-json-schema-form.lljj.me\') : (window.location.protocol === \'http:\' && ~window.location.host.indexOf(\'lljj.me\') ? window.location.href.replace(/^http/, \'https\') : \'\');\n' +
             '__replaceUrl && window.location.replace(__replaceUrl);'
         ],
         ['link', { rel: 'manifest', href: '/manifest.json' }],
