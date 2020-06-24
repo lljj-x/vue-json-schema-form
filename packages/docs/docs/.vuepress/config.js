@@ -36,6 +36,10 @@ module.exports = {
     ],
     head: [
         ['link', { rel: 'icon', href: `/icons/ico.png` }],
+        ['script', '',
+            'var __replaceUrl = ~window.location.host.indexOf(\'buhuida.com\') ? window.location.href.replace(/.*?buhuida\\.com/, \'https://lljj.me\') : (window.location.protocol === \'http:\' && ~window.location.host.indexOf(\'lljj.me\') ? window.location.href.replace(/^http/, \'https\') : \'\');\n' +
+            '__replaceUrl && window.location.replace(__replaceUrl);'
+        ],
         ['link', { rel: 'manifest', href: '/manifest.json' }],
         ['meta', { name: 'theme-color', content: '#3eaf7c' }],
         ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
