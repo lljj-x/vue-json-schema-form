@@ -33,15 +33,6 @@ module.exports = {
                 link: '/zh/guide/'
             },
             {
-                text: '配置',
-                ariaLabel: '配置',
-                items: [
-                    { text: 'schema(数据)', link: '/zh/config/schema.md' },
-                    { text: 'uiSchema(视图)', link: '/zh/config/uiSchema.md' },
-                    { text: 'errSchema(校验)', link: '/zh/config/errSchema.md' }
-                ]
-            },
-            {
                 text: '类型规则',
                 ariaLabel: '类型规则',
                 items: [

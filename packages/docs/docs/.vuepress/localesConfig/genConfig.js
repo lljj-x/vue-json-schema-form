@@ -29,8 +29,8 @@ exports.getGuideSidebar = ([groupA = '基础', groupB = '深入了解', groupC =
             collapsable: false,
             children: [
                 '',
-                'getting-started',
                 'basic-config',
+                'adv-config',
                 'i18n',
                 'polyfill',
                 'faq',
