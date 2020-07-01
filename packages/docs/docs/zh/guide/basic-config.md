@@ -1,11 +1,208 @@
 # 基本配置
 
 ## 参数 Props
-### formFooter
-表单footer配置 - object
 
+### schema `required`
+用于描述表单数据 - `object`
+* [点击这里深入了解 schema 配置](/zh/guide/adv-config.html#schema)
+> 例: 配置用户信息表单
+::: demo
+```html
+<template>
+    <vue-form
+        v-model="formData"
+        :schema="schema"
+    >
+    </vue-form>
+</template>
+
+<script>
+export default {
+    name: 'Demo',
+    data() {
+        return {
+            formData: {},
+            schema: {
+                title: 'UserInfo 表单',
+                description: 'A simple form example.',
+                type: 'object',
+                required: [
+                    'firstName',
+                    'lastName'
+                ],
+                properties: {
+                    firstName: {
+                        type: 'string',
+                        title: 'First name',
+                        default: 'Liu'
+                    },
+                    lastName: {
+                        type: 'string',
+                        title: 'Last name'
+                    },
+                    age: {
+                        type: 'integer',
+                        title: 'Age',
+                        maximum: 80,
+                        minimum: 16
+                    },
+                    bio: {
+                        type: 'string',
+                        title: 'Bio',
+                        minLength: 10
+                    },
+                    password: {
+                        type: 'string',
+                        title: 'Password',
+                        minLength: 3
+                    },
+                    telephone: {
+                        type: 'string',
+                        title: 'Telephone',
+                        minLength: 10
+                    }
+                }
+            }
+        };
+    }
+};
+</script>
+```
+:::
+
+### uiSchema
+用于配置表单展示样式 - `object`
+* [点击这里深入了解 uiSchema 配置](/zh/guide/adv-config.html#配置ui-uischema)
+
+::: tip
+ * 配置数据结构和schema保持一致，所有的ui配置属性 `ui:` 开头
+ * 也可以在 `ui:options` 内的配置所有的属性，不需要 `ui:` 开头
+ * 如果配置了`ui:xx` 和 `ui:options` 内配置了`xx`属性，`ui:options`内的优先级更高，实际上你可以把所有的参数都配置在 `ui:options` 内；这里可以按照个人习惯，推荐使用如下参数格式
+ :::
+
+参数格式如下：
 ```js
-{
+uiSchema = {
+    'ui:title': '覆盖schema title', // 覆盖schema title
+    'ui:description': '覆盖schema description描述信息',  // 覆盖schema description
+    'ui:emptyValue': '',   // 设置默认值
+    'ui:widget': 'el-slider', // 配置input组件，支持字符串或者传入一个vue组件
+    'ui:labelWidth': '50px', // form item label宽度
+    'ui:options': {
+            attrs: {
+                // 通过 vue render函数 attrs 传递给 widget 组件
+                autofocus: true
+            },
+            style: {
+                // 通过 vue render函数 style 传递给 widget 组件
+                boxShadow: '0 0 6px 2px #2b9939'
+            },
+            class: {
+                // 通过 vue render函数 class 传递给 widget 组件
+                className_hei: true
+            },
+
+            // 其它参数会 通过 props 传递给 widget 组件
+            type: 'textarea',
+            rows: '6',
+            placeholder: '请输入你的内容'
+    }
+}
+```
+
+> 例：重置表单样式
+::: demo
+```html
+<template>
+    <vue-form
+        v-model="formData"
+        :ui-schema="uiSchema"
+        :schema="schema"
+    >
+    </vue-form>
+</template>
+
+<script>
+export default {
+    name: 'Demo',
+    data() {
+        return {
+            formData: {
+                number: 1,
+                numberEnumRadio: 2,
+                integerRange: 50,
+            },
+            schema: {
+                type: 'object',
+                properties: {
+                    inputText: {
+                        title: 'Input Text',
+                        type: 'string'
+                    },
+                    number: {
+                        title: 'Number (默认渲染组件)',
+                        type: 'number'
+                    },
+                    integerRange: {
+                        title: 'Integer range (使用 ElSlider)',
+                        type: 'integer',
+                        minimum: 42,
+                        maximum: 100
+                    }
+                }
+            },
+            uiSchema: {
+                'ui:order': ['number', '*'],
+                inputText: {
+                    'ui:description': '这里重置了描述信息',
+                    'ui:emptyValue': '',
+                    'ui:options': {
+                        attrs: {
+                            'autofocus': true
+                        },
+                        style: {
+                            boxShadow: '0 0 6px 2px #2b9939'
+                        },
+                        class: {
+                            className_hei: true
+                        },
+                        type: 'textarea',
+                        rows: '6',
+                        placeholder: '请输入你的内容'
+                    }
+                },
+                number: {
+                    'ui:title': '这里重置了标题'
+                },
+                integerRange: {
+                    'ui:widget': 'el-slider',
+                }
+            }
+        }
+    }
+};
+</script>
+```
+:::
+
+### errorSchema
+用于配置表单校验错误文案信息 - `object`
+* [点击这里深入了解 errSchema 配置](/zh/guide/adv-config.html#配置校验错误文案-errschema)
+
+### customFormats
+自定义校验规则 - `object`
+
+### extraErrors
+额外的错误配置 - `object`
+
+todo
+
+
+### formFooter
+表单footer配置 - `object`
+```js
+// 默认值
+formFooter = {
     show: true, // 是否显示
     okBtn: '保存', // 确认按钮文字
     cancelBtn: '取消' // 取消按钮文字
@@ -13,15 +210,21 @@
 ```
 
 ### value / v-model
-表单绑定值 - object
-> 对于不需要双向绑定的值，可以传入value参数，
+表单绑定值 - `object`
+> 对于不需要双向绑定的值，可以传入value参数
 
 ### formProps
-传给form的值 - object
-true
-
-### formFooter
-
+传给form的值 - `object`
+```js
+// 默认值
+// 目前使用elementUi el-form - https://element.eleme.cn/2.13/#/zh-CN/component/form#form-attributes
+formProps = {
+    labelPosition: 'top', // 是否显示
+    labelSuffix: '：', // 表单域标签的位置，如果值为 left 或者 right 时，则需要设置 label-width
+    inline: false, // 行内表单模式
+    labelWidth: 'auto', // 表单域标签的宽度，例如 '50px'
+}
+```
 
 ## 事件 Emit Event
 ### onSubmit

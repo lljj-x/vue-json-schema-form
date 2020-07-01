@@ -8,7 +8,10 @@
 ## schema
 
 ## 配置Ui - uiSchema
-详细参考 uiSchema
+ui:widget - HiddenWidget
+ui:widget - hidden
 
-## 配置错误校验 - errSchema
+ui:order
+
+## 配置校验错误文案 - errSchema
 详细参考 errSchema
