@@ -148,3 +148,25 @@ export default {
         );
     }
 };
+
+xx = {
+    listOfStrings: {
+        type: 'array',
+        title: 'A list of strings',
+        items: {
+            type: 'string',
+            default: 'bazinga'
+        }
+    },
+    fixedItemsList: {
+        type: 'array',
+        title: 'A list of fixed items',
+        items: [
+            {
+                title: 'A string value',
+                type: 'string',
+                maxLength: 4
+            }
+        ]
+    },
+};

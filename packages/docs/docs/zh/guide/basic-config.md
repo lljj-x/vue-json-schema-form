@@ -78,6 +78,7 @@ export default {
  * 配置数据结构和schema保持一致，所有的ui配置属性 `ui:` 开头
  * 也可以在 `ui:options` 内的配置所有的属性，不需要 `ui:` 开头
  * 如果配置了`ui:xx` 和 `ui:options` 内配置了`xx`属性，`ui:options`内的优先级更高，实际上你可以把所有的参数都配置在 `ui:options` 内；这里可以按照个人习惯，推荐使用如下参数格式
+ * 注：uiSchema 为标准json数据，并非json schema语法
  :::
 
 参数格式如下：
@@ -188,6 +189,112 @@ export default {
 ### errorSchema
 用于配置表单校验错误文案信息 - `object`
 * [点击这里深入了解 errSchema 配置](/zh/guide/adv-config.html#配置校验错误文案-errschema)
+
+数据配置和 `uiSchema` 保存一致，使用 `err:` 做前缀
+::: tip
+ * 配置数据结构和schema保持一致，所有的ui配置属性 `err:` 开头
+ * 也可以在 `err:options` 内的配置所有的属性，不需要 `err:` 开头
+ * 如果配置了`err:xx` 和 `err:options` 内配置了`xx`属性，`err:options`内优先级更高，实际上你可以把所有的参数都配置在 `err:options` 内；这里可以按照个人习惯，推荐使用如下参数格式
+ * 注：errSchema 为标准json数据，并非 json schema 语法
+ :::
+
+> 例：重置表单错误信息
+
+::: demo
+```html
+<template>
+    <vue-form
+        v-model="formData"
+        :schema="schema"
+        :error-schema="errorSchema"
+    >
+    </vue-form>
+</template>
+
+<script>
+export default {
+    name: 'Demo',
+    data() {
+        return {
+            formData: {},
+            schema: {
+                type: 'object',
+                required: [
+                    'userName',
+                    'homePage',
+                    'bio'
+                ],
+                properties: {
+                    userName: {
+                        type: 'string',
+                        title: '用户名',
+                        default: 'Liu.Jun'
+                    },
+                    homePage: {
+                        type: 'string',
+                        format: 'uri',
+                        title: '个人主页'
+                    },
+                    bio: {
+                        type: 'string',
+                        title: '签名',
+                        minLength: 10
+                    },
+                    listOfStrings: {
+                        type: 'array',
+                        title: 'A list of strings',
+                        uniqueItems: true,
+                        items: {
+                            type: 'string',
+                            default: 'bazinga'
+                        }
+                    },
+                    fixedItemsList: {
+                        type: 'array',
+                        title: 'A list of fixed items',
+                        items: [
+                            {
+                                title: 'A string value',
+                                type: 'string',
+                                maxLength: 2
+                            }
+                        ]
+                    }
+                }
+            },
+            errorSchema: {
+                userName: {
+                    'err:options': {
+                        required: '请输入用户名'
+                    }
+                },
+                bio: {
+                    'err:minLength': '签名最小长度10个字符串'
+                },
+                listOfStrings: {
+                    'err:uniqueItems': '不能包含重复的值',
+                    items: {
+                        'err:options': {
+                            required: '不能为空 ~'
+                        }
+                    }
+                },
+                fixedItemsList: {
+                    items: [
+                        {
+                            'err:maxLength': '老铁，最多只能输入两个字符'
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
+</script>
+```
+:::
+
+
 
 ### customFormats
 自定义校验规则 - `object`
