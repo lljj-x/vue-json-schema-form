@@ -65,6 +65,9 @@ export default {
     methods: {
     },
     render(h) {
+        // 没有数据，且不能添加不渲染该组件
+        if (this.vNodeList <= 0 && !this.addable) return null;
+
         // 是否可继续添加元素
         return h(
             'div',
