@@ -7,6 +7,8 @@
 1. if else 新特性不支持
 
 ## Todo
+- [ ] extraErrors参数 支持
+- [ ] customRules参数 支持
 - [x] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
 - [ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
 - [x] lib如果直接umd包导入，默认注册vue组件 类elementUi

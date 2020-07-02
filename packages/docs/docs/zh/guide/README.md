@@ -20,6 +20,11 @@ yarn add @lljj/vue-json-schema-form
 * 如果存在Vue 全局变量，会注册全局组件 `VueForm`
 :::
 
+## 展现形式
+通过schema生对应的form表单，默认使用 schema `title` 属性作为formItem 标题，`description` 属性作为表单的描述。
+
+具体效果参见下面demo，点击显示代码可查看源代码或者在codepen运行
+
 ## DEMO
 ::: demo 这里代码省略导入和使用组件 // import VueForm from '@lljj/vue-json-schema-form';
 ```html
