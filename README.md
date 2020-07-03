@@ -61,12 +61,6 @@ yarn add @lljj/vue-json-schema-form
     };
 </script>
 ```
-
-### 说明
-* 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成对应的form表单
-* 快速配置个性化ui视图和校验错误信息，可快速适配常用的ui库，目前的版本默认视图依赖elementUi，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
-* 设计思想和对schema解析索引参考 [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)
-
 ## 相关资料
 [json Schema](https://json-schema.org/understanding-json-schema/index.html) |
 [Vue](https://cn.vuejs.org/) |

@@ -21,7 +21,9 @@ yarn add @lljj/vue-json-schema-form
 :::
 
 ## 展现形式
-通过schema生对应的form表单，默认使用 schema `title` 属性作为formItem 标题，`description` 属性作为表单的描述。
+通过schema生对应的form表单
+* schema `title` 属性作为formItem 标题
+* schema `description` 属性作为表单的描述
 
 具体效果参见下面demo，点击显示代码可查看源代码或者在codepen运行
 
@@ -85,6 +87,6 @@ export default {
 
 ## 说明
 * 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成对应的form表单
-* 快速配置个性化ui视图和校验错误信息，可快速适配常用的ui库，目前的版本默认视图依赖elementUi，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
+* 快速配置个性化ui视图和校验错误信息，可适配常用的ui库，目前的版本默认视图依赖elementUi，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
 * 表单schema校验使用  [ajv](https://github.com/epoberezkin/ajv)
 * 设计思想和对schema解析索引参考 [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)
