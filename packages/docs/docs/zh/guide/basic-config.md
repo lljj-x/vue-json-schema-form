@@ -349,7 +349,7 @@ emit所有事件，如：
     <vue-form
         v-model="formData"
         :schema="schema"
-        @onSubmit="handlerSubmit"
+        @on-submit="handlerSubmit"
         @on-cancel="handlerCancel"
         @on-change="handlerChange"
     >
@@ -412,9 +412,47 @@ export default {
 > 引用类型，只有重新对对象赋值，否则newVal 等于 oldVal 参见 [vue watch](https://cn.vuejs.org/v2/api/#vm-watch)
 
 ## 方法 Methods
+-- 无
 
 ## 插槽 Scope-Slot
+::: demo
+```html
+<template>
+    <vue-form
+        v-model="formData"
+        :schema="schema"
+    >
+        <div slot-scope="{ formData, formRefFn }">
+            <pre style="background-color: #eee;">{{ JSON.stringify(formData, null, 4) }}</pre>
+            <p><el-button @click="consoleLog(formRefFn)" type="primary">点击</el-button></p>
+        </div>
+    </vue-form>
+</template>
 
-jsonSchema
-elementUi
-ajv
+<script>
+export default {
+    name: 'Demo',
+    methods: {
+        consoleLog(getForm) {
+            console.log(getForm());
+        },
+    },
+    data() {
+        return {
+            formData: {
+               name: 'Liu.Jun'
+            },
+            schema: {
+                type: 'object',
+                properties: {
+                    name: {
+                        title: '输入名字',
+                        type: 'string'
+                    }
+                }
+            }
+        }
+    }
+};
+</script>
+```
