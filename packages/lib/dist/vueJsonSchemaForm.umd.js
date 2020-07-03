@@ -11068,8 +11068,8 @@
       /* style */
       const __vue_inject_styles__$4 = function (inject) {
         if (!inject) return
-        inject("data-v-794330bc_0", { source: "\n.src-JsonSchemaForm-item-e4q8 {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["/Users/ryuushun/liujun/git/vue-element-schema-form/packages/lib/src/JsonSchemaForm/FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\n    <el-form-item :class=\"$style.item\">\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">取消</el-button>\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">保存</el-button>\n    </el-form-item>\n</template>\n\n<script>\n    export default {\n        name: 'FormFooter',\n        props: {\n            okBtn: {\n                type: String,\n                default: '保存'\n            },\n            cancelBtn: {\n                type: String,\n                default: '取消'\n            },\n        }\n    };\n</script>\n\n<style module>\n    .item {\n        text-align: right;\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\n        padding-top: 10px;\n    }\n</style>\n"]}, media: undefined });
-    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-e4q8"} });
+        inject("data-v-5c6c248a_0", { source: "\n.src-JsonSchemaForm-item-1UFV {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["D:\\code\\git_my\\vue-json-schema-form\\packages\\lib\\src\\JsonSchemaForm\\FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\r\n    <el-form-item :class=\"$style.item\">\r\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">取消</el-button>\r\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">保存</el-button>\r\n    </el-form-item>\r\n</template>\r\n\r\n<script>\r\n    export default {\r\n        name: 'FormFooter',\r\n        props: {\r\n            okBtn: {\r\n                type: String,\r\n                default: '保存'\r\n            },\r\n            cancelBtn: {\r\n                type: String,\r\n                default: '取消'\r\n            },\r\n        }\r\n    };\r\n</script>\r\n\r\n<style module>\r\n    .item {\r\n        text-align: right;\r\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\r\n        padding-top: 10px;\r\n    }\r\n</style>\r\n"]}, media: undefined });
+    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-1UFV"} });
 
       };
       /* scoped */
@@ -11134,7 +11134,7 @@
         var formData = this.getStateFromData(this.$props.schema, this.$props.value); // 计算form默认值和用户传入的值不相等
         // 保持v-model双向数据及时性
 
-        if (deepEquals !== this.value) {
+        if (!deepEquals(formData, this.value)) {
           this.handlerFormDataChange(formData, this.value);
         }
 
@@ -11172,7 +11172,7 @@
           // 支持v-model ，引用类型
           this.$emit('input', newValue); // change 事件，引用类型修改属性 newValue
 
-          this.$emit('onChange', {
+          this.$emit('on-change', {
             newValue: newValue,
             oldValue: oldValue
           });
@@ -11207,12 +11207,12 @@
           },
           on: {
             onCancel: function onCancel() {
-              self.$emit('onCancel');
+              self.$emit('on-cancel');
             },
             onSubmit: function onSubmit() {
               self.$refs.genEditForm.validate().then(function () {
                 // console.log(self.$refs.genEditForm);
-                self.$emit('onSubmit', self.formData);
+                self.$emit('on-submit', self.formData);
               });
             }
           }

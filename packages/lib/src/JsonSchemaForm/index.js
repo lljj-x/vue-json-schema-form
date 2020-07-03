@@ -64,7 +64,7 @@ export default {
             this.$emit('input', newValue);
 
             // change 事件，引用类型修改属性 newValue
-            this.$emit('onChange', {
+            this.$emit('on-change', {
                 newValue,
                 oldValue
             });
@@ -100,12 +100,12 @@ export default {
                     },
                     on: {
                         onCancel() {
-                            self.$emit('onCancel');
+                            self.$emit('on-cancel');
                         },
                         onSubmit() {
                             self.$refs.genEditForm.validate().then(() => {
                                 // console.log(self.$refs.genEditForm);
-                                self.$emit('onSubmit', self.formData);
+                                self.$emit('on-submit', self.formData);
                             });
                         }
                     }
