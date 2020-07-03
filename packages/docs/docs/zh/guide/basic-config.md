@@ -342,6 +342,7 @@ formProps = {
 
 ## 事件 Emit Event
 emit所有事件，如：
+
 ::: demo
 ```html
 <template>
@@ -349,8 +350,8 @@ emit所有事件，如：
         v-model="formData"
         :schema="schema"
         @onSubmit="handlerSubmit"
-        @onCancel="handlerCancel"
-        @onChange="handlerChange"
+        @on-cancel="handlerCancel"
+        @on-change="handlerChange"
     >
     </vue-form>
 </template>
@@ -398,15 +399,15 @@ export default {
 ```
 :::
 
-### onSubmit
+### on-submit
 点击提交按钮，且表单通过校验，参数(formData)
 > 事件只有在配置了默认底部才会触发 [props formFooter](#formprops)
 
-### onCancel
+### on-cancel
 点击取消按钮
 > 事件只有在配置了默认底部才会触发 [props formFooter](#formprops)
 
-### onChange
+### on-change
 表单的值发生改变，参数(newVal, oldVal)
 > 引用类型，只有重新对对象赋值，否则newVal 等于 oldVal 参见 [vue watch](https://cn.vuejs.org/v2/api/#vm-watch)
 

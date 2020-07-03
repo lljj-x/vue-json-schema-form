@@ -69,9 +69,9 @@
                         :schema="schema"
                         :ui-schema="uiSchema"
                         :error-schema="errorSchema"
-                        @onChange="handleDataChange"
-                        @onCancel="handleCancel"
-                        @onSubmit="handleSubmit"
+                        @on-change="handleDataChange"
+                        @on-cancel="handleCancel"
+                        @on-submit="handleSubmit"
                     >
                     </VueElementForm>
                 </el-card>
