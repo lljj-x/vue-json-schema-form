@@ -1,7 +1,7 @@
 <template>
     <el-form-item :class="$style.item">
-        <el-button size="small" @click="$emit('onCancel')">{{ okBtn }}</el-button>
-        <el-button size="small" type="primary" @click="$emit('onSubmit')">{{ cancelBtn }}</el-button>
+        <el-button size="small" @click="$emit('onCancel')">{{ cancelBtn }}</el-button>
+        <el-button size="small" type="primary" @click="$emit('onSubmit')">{{ okBtn }}</el-button>
     </el-form-item>
 </template>
 
