@@ -32,6 +32,13 @@ module.exports = {
                 elementVersion: '2.13.2',
                 vjsfVersion: require('../../package.json').version
             }
+        ],
+        [
+            '@vuepress/pwa',
+            {
+                serviceWorker: true,
+                updatePopup: true
+            }
         ]
     ],
     head: [

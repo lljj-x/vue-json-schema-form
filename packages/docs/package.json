@@ -13,6 +13,7 @@
         "element-ui": "^2.13.2"
     },
     "devDependencies": {
+        "@vuepress/plugin-pwa": "^1.5.2",
         "vuepress": "^1.5.2"
     }
 }
