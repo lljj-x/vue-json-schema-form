@@ -1,1 +1,0 @@
-# errSchema 配置

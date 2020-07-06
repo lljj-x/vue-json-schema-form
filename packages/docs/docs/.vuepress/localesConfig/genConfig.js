@@ -22,7 +22,7 @@
 //     }
 // ]
 
-exports.getGuideSidebar = ([groupA = '指南', groupB = '深入', groupC = '更新计划']) => {
+exports.getGuideSidebar = ([groupA = '指南', groupB = '详细配置', groupC = '深入配置', groupD = '更新计划'] = []) => {
     return [
         {
             title: groupA,
@@ -30,10 +30,6 @@ exports.getGuideSidebar = ([groupA = '指南', groupB = '深入', groupC = '更�
             children: [
                 '',
                 'basic-config',
-                'schema',
-                'uiSchema',
-                'errSchema',
-                'adv-config',
                 'i18n',
                 'polyfill',
                 'faq',
@@ -44,13 +40,23 @@ exports.getGuideSidebar = ([groupA = '指南', groupB = '深入', groupC = '更�
             title: groupB,
             collapsable: false,
             children: [
+                'schema',
+                'uiSchema',
+                'errorSchema'
+            ]
+        },
+        {
+            title: groupC,
+            collapsable: false,
+            children: [
+                'adv-config',
                 'design',
                 'custom-render-component',
                 'why',
             ]
         },
         {
-            title: groupC,
+            title: groupD,
             collapsable: false,
             children: [
                 'todo',
@@ -68,7 +74,7 @@ exports.getConfigSidebar = ([groupA = '配置'] = []) => {
             children: [
                 'schema',
                 'uiSchema',
-                'errSchema',
+                'errorSchema',
             ]
         }
     ]

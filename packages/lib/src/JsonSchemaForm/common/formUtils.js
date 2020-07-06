@@ -158,7 +158,7 @@ export function getWidgetConfig({
     };
 }
 
-// 解析用户配置的 uiSchema options
+// 解析用户配置的 errorSchema options
 export function getUserErrOptions(errorSchema) {
     return Object.keys(errorSchema)
         .filter(key => key.indexOf('err:') === 0)

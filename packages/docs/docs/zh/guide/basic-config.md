@@ -3,10 +3,13 @@
 ## 参数 Props
 
 ### schema `required`
-用于描述表单数据json schema - `object`，
+* 类型：`object`
+* 默认值：`undefined`
+
+用于描述表单数据json schema
 遵循 [json Schema](https://json-schema.org/understanding-json-schema/index.html) 规范
 
-* [点击这里深入了解 schema 配置](/zh/guide/adv-config.html#schema)
+* [点击这里深入了解 schema 配置](/zh/guide/schema.html)
 
 **例: 配置用户信息表单**
 ::: demo
@@ -74,8 +77,11 @@ export default {
 :::
 
 ### uiSchema
-用于配置表单展示样式 - `object`，普通json数据，非`json schema`规范
-* [点击这里深入了解 uiSchema 配置](/zh/guide/adv-config.html#配置ui-uischema)
+* 类型：`object`
+* 默认值：`{}`
+
+用于配置表单展示样式，普通json数据，非`json schema`规范
+* [点击这里深入了解 uiSchema 配置](/zh/guide/uiSchema.html)
 
 ::: tip
  * 配置数据结构和schema保持一致，所有的ui配置属性 `ui:` 开头
@@ -190,15 +196,19 @@ export default {
 :::
 
 ### errorSchema
-用于配置表单校验错误文案信息 - `object`，普通json数据，非json schema规范
-* [点击这里深入了解 errSchema 配置](/zh/guide/adv-config.html#配置校验错误文案-errschema)
+* 类型：`object`
+* 默认值：`{}`
 
-数据配置和 `uiSchema` 保存一致，使用 `err:` 做前缀
+用于配置表单校验错误文案信息，普通json数据，非json schema规范
+* [点击这里深入了解 errorSchema 配置](/zh/guide/errorSchema.html)
+
+数据配置和 `uiSchema` 保存一致，区别在于使用 `err:` 做前缀
+
 ::: tip
  * 配置数据结构和schema保持一致，所有的ui配置属性 `err:` 开头
  * 也可以在 `err:options` 内的配置所有的属性，不需要 `err:` 开头
- * 如果配置了`err:xx` 和 `err:options` 内配置了`xx`属性，`err:options`内优先级更高，实际上你可以把所有的参数都配置在 `err:options` 内；这里可以按照个人习惯，推荐使用如下参数格式
- * 注：errSchema 为标准json数据，并非json schema规范语法
+ * 如果配置了`err:xx` 和 `err:options` 内配置了`xx`属性，`err:options`内优先级更高，实际上你可以把所有的参数都配置在 `err:options` 内；这里可以按照个人习惯
+ * 注：errorSchema 为标准json数据，并非json schema规范语法
  :::
 
 > 例：重置表单错误信息
@@ -300,35 +310,49 @@ export default {
 :::
 
 ### customFormats
-自定义校验规则 - `object`
+* 类型：`object`
+* 默认值：`{}`
+* todo 文档
+
+自定义校验规则 formats
 
 ### extraErrors
-额外的错误配置 - `object`
-相应式的值用来给表单直接传入校验错误信息，比如在点击了提交按钮需要和接口校验数据重新返回错误的场景
+* 类型：`object`
+* 默认值：`{}`
+
+`目前不支持，后续版本会优先实现，现阶段只能通过 自定义field 实现自定义校验;`
+
+额外的错误配置，用来给表单直接传入校验错误信息，比如在点击了提交按钮需要和接口校验数据重新返回错误的场景
 
 ### customRules
-自定义校验规则 - `object`
-实现类似elementUi form rules validator 的方式校验表单数据
+* 类型：`object`
+* 默认值：`{}`
+
+自定义校验规则，实现类似elementUi form rules validator 的方式校验表单数据
 
 `目前不支持，后续版本会优先实现，现阶段只能通过 自定义field 实现自定义校验;`
 
 ### formFooter
-表单footer配置 - `object`
+* 类型：`object`
+* 默认值：
 ```js
 // 默认值
 formFooter = {
-    show: true, // 是否显示
+    show: true, // 是否显示默认底部
     okBtn: '保存', // 确认按钮文字
     cancelBtn: '取消' // 取消按钮文字
 }
 ```
 
 ### value / v-model
-表单绑定值 - `object`
-> 对于不需要双向绑定的值，可以传入value参数
+* 类型：`object`
+* 默认值：`{}`
+
+表单绑定值，`对于不需要双向绑定的值，可以使用 value props`
 
 ### formProps
-传给form的值 - `object`
+* 类型：`object`
+* 默认值：
 ```js
 // 默认值
 // 目前使用elementUi el-form - https://element.eleme.cn/2.13/#/zh-CN/component/form#form-attributes
@@ -400,21 +424,35 @@ export default {
 :::
 
 ### on-submit
-点击提交按钮，且表单通过校验，参数(formData)
-> 事件只有在配置了默认底部才会触发 [props formFooter](#formprops)
+* 参数(formData)
+
+点击提交按钮，且表单通过校验
+
+> 事件只有在配置了显示默认底部才会触发，[props formFooter](#formFooter)
 
 ### on-cancel
+* 参数(无)
+
 点击取消按钮
-> 事件只有在配置了默认底部才会触发 [props formFooter](#formprops)
+> 事件只有在配置了显示默认底部才会触发，[props formFooter](#formFooter)
 
 ### on-change
-表单的值发生改变，参数(newVal, oldVal)
+* 参数(newVal, oldVal)
+
+表单的值发生改变
 > 引用类型，只有重新对对象赋值，否则newVal 等于 oldVal 参见 [vue watch](https://cn.vuejs.org/v2/api/#vm-watch)
 
 ## 方法 Methods
 -- 无
 
 ## 插槽 Scope-Slot
+* name `default`，自定义form 包含内容，配置后会覆盖默认 `formFooter`，参数为: { formData, formRefFn }
+
+::: tip 参数说明
+* `formData` 当前表单元素的值，响应式
+* formRefFn`function`，返回 `el-form` 组件实例
+:::
+如：
 ::: demo
 ```html
 <template>

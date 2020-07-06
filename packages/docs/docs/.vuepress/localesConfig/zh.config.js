@@ -52,7 +52,7 @@ module.exports = {
         // 侧边栏
         // 省略 .md 拓展名，同时以 / 结尾的路径将会被视为 */README.md
         sidebar: {
-            '/zh/guide/': require('./genConfig').getGuideSidebar(['指南', '深入']),
+            '/zh/guide/': require('./genConfig').getGuideSidebar(),
             '/zh/config/': require('./genConfig').getConfigSidebar(),
             '/zh/rules/': require('./genConfig').getRulesSidebar(),
         }
