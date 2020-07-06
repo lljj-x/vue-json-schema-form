@@ -16,13 +16,14 @@ yarn add @lljj/vue-json-schema-form
 <script src="//cdn.jsdelivr.net/npm/@lljj/vue-json-schema-form/dist/vueJsonSchemaForm.umd.min.js"></script>
 ```
 
-::: tip
-* 如果存在Vue 全局变量，会注册全局组件 `VueForm`
+::: tip 全局引入
+* 全局引入，会注册全局组件 `VueForm`
+* 暴露全局变量 `window.vueJsonSchemaForm`
 :::
 
 ## 展现形式
-通过schema生对应的form表单
-* schema `title` 属性作为formItem 标题
+通过 schema 生对应的form表单
+* schema `title` 属性作为 form表单的标题
 * schema `description` 属性作为表单的描述
 
 具体效果参见下面demo，点击显示代码可查看源代码或者在codepen运行

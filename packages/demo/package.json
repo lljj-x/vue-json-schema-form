@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@lljj/vue-json-schema-form": "0.0.9",
+        "ajv-i18n": "^3.5.0",
         "vue": "^2.6.10"
     },
     "devDependencies": {
