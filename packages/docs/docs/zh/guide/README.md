@@ -16,7 +16,7 @@ yarn add @lljj/vue-json-schema-form
 <script src="//cdn.jsdelivr.net/npm/@lljj/vue-json-schema-form/dist/vueJsonSchemaForm.umd.min.js"></script>
 ```
 
-::: tip 全局引入
+::: tip
 * 全局引入，会注册全局组件 `VueForm`
 * 暴露全局变量 `window.vueJsonSchemaForm`
 :::

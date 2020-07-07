@@ -314,7 +314,59 @@ export default {
 * 默认值：`{}`
 * todo 文档
 
-自定义校验规则 formats
+自定义校验规则，调用 `avj.addFormat` 方法添加新的format，[查看](https://github.com/ajv-validator/ajv#addformatstring-name-stringregexpfunctionobject-format---ajv)
+
+::: demo 金额大于0 < 999999.99，保留两位小数
+```html
+<template>
+    <vue-form
+        v-model="formData"
+        :schema="schema"
+        :custom-formats="customFormats"
+        :error-schema="errorSchema"
+    >
+    </vue-form>
+</template>
+
+<script>
+export default {
+    name: 'Demo',
+    data() {
+        return {
+            formData: {},
+            schema: {
+                type: 'object',
+                required: [
+                    'price'
+                ],
+                properties: {
+                    price: {
+                        type: 'string',
+                        title: '价格',
+                        description: '请输入数字，最多保留两位小数点，最大值999999.99',
+                        format: 'price'
+                    }
+                }
+            },
+            errorSchema: {
+                price: {
+                    'err:options': {
+                        required: '请输入价格',
+                        format: '最多保留两位小数点，最大值999999.99'
+                    }
+                }
+            },
+            customFormats: {
+                price(value) {
+                    return value !== '' && /^[0-9]\d*$|^\d+(\.\d{1,2})$/.test(value) && value >= 0 && value <= 999999.99
+                }
+           }
+        }
+    }
+}
+</script>
+```
+:::
 
 ### extraErrors
 * 类型：`object`
