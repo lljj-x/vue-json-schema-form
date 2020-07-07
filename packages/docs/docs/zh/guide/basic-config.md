@@ -1,3 +1,7 @@
+---
+sidebarDepth: 2
+---
+
 # 基本配置
 
 ## 参数 Props
