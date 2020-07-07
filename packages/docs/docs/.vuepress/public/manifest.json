@@ -1,10 +1,10 @@
 {
-    "name": "测试网页",
-    "short_name": "测试网页",
+    "name": "Vjsf",
+    "short_name": "Vue json schema form",
     "start_url": "index.html",
     "display": "standalone",
     "background_color": "#ffffff",
-    "description": "测试网页",
+    "description": "Vue json schema form",
     "theme_color": "blue",
     "icons": [
       {
