@@ -6,7 +6,8 @@ sidebarDepth: 2
 
 ## 参数 Props
 
-### schema `required`
+### schema
+* required：true
 * 类型：`object`
 * 默认值：`undefined`
 
@@ -421,7 +422,7 @@ formProps = {
 ```
 
 ## 事件 Emit Event
-emit所有事件，如：
+emit所有事件如下：
 
 ::: demo
 ```html
@@ -484,13 +485,13 @@ export default {
 
 点击提交按钮，且表单通过校验
 
-> 事件只有在配置了显示默认底部才会触发，[props formFooter](#formFooter)
+> 事件只有在配置了显示默认底部才会触发，[props formFooter](#formfooter)
 
 ### on-cancel
 * 参数(无)
 
 点击取消按钮
-> 事件只有在配置了显示默认底部才会触发，[props formFooter](#formFooter)
+> 事件只有在配置了显示默认底部才会触发，[props formFooter](#formfooter)
 
 ### on-change
 * 参数(newVal, oldVal)
@@ -502,11 +503,13 @@ export default {
 -- 无
 
 ## 插槽 Scope-Slot
-* name `default`，自定义form 包含内容，配置后会覆盖默认 `formFooter`，参数为: { formData, formRefFn }
+* name `default`，自定义form 包含内容，配置后会覆盖默认 `formFooter`
+
+参数为: { formData, formRefFn }
 
 ::: tip 参数说明
 * `formData` 当前表单元素的值，响应式
-* formRefFn`function`，返回 `el-form` 组件实例
+* formRefFn`function`，调用返回 `el-form` 组件ref
 :::
 如：
 ::: demo
