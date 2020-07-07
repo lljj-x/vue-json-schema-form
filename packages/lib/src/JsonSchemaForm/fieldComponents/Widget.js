@@ -33,6 +33,10 @@ export default {
             type: Object,
             default: () => ({})
         },
+        customFormats: {
+            type: Object,
+            default: () => ({})
+        },
         widget: {
             type: [String, Function, Object],
         },
@@ -167,7 +171,8 @@ export default {
                                     // schema ajv 校验
                                     const error = validateFormData({
                                         formData: value,
-                                        schema: self.$props.schema
+                                        schema: self.$props.schema,
+                                        customFormats: self.$props.customFormats
                                     });
 
                                     // 校验是通过逐级展开校验 这里只捕获同级错误信息

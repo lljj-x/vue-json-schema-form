@@ -115,6 +115,7 @@ export default {
             schema: this.schema,
             uiSchema: this.uiSchema,
             errorSchema: this.errorSchema,
+            customFormats: this.customFormats,
             rootSchema: this.schema,
             rootFormData: this.formData, // 根节点的数据
             curNodePath: '' // 当前节点路径

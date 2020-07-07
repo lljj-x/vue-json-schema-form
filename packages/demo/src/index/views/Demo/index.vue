@@ -69,6 +69,7 @@
                         :schema="schema"
                         :ui-schema="uiSchema"
                         :error-schema="errorSchema"
+                        :custom-formats="customFormats"
                         @on-change="handleDataChange"
                         @on-cancel="handleCancel"
                         @on-submit="handleSubmit"
@@ -97,7 +98,12 @@
         data() {
             return {
                 typeItems,
-                ...this.getDefaultSchemaMap()
+                ...this.getDefaultSchemaMap(),
+                customFormats: {
+                    price(value) {
+                        return value !== '' && /^[0-9]\d*$|^\d+(\.\d{1,2})$/.test(value) && value >= 0 && value <= 999999.99;
+                    }
+                }
             };
         },
         computed: {

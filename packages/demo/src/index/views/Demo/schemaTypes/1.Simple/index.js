@@ -14,6 +14,12 @@ export default {
                 type: 'string',
                 title: 'Last name',
             },
+            price: {
+                type: 'string',
+                description: '最多输入两位小数点，最大值 999999.99',
+                title: '价格',
+                format: 'price'
+            },
             age: {
                 type: 'integer',
                 title: 'Age',

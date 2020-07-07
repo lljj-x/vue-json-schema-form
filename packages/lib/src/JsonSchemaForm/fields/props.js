@@ -19,6 +19,11 @@ export default {
         type: Object,
         default: () => ({})
     },
+    // 自定义校验规则
+    customFormats: {
+        type: Object,
+        default: () => ({})
+    },
     // 更节点 Schema
     rootSchema: {
         type: Object,
