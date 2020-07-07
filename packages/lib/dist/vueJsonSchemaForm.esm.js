@@ -1,4 +1,4 @@
-/** @license @lljj/vue-json-schema-form v0.0.10 (c) 2020-2020 Liu.Jun License: Apache-2.0 */
+/** @license @lljj/vue-json-schema-form v0.0.11 (c) 2020-2020 Liu.Jun License: Apache-2.0 */
 import Vue from 'vue';
 
 /**
@@ -22,6 +22,13 @@ var vueProps = {
   },
   // 当前节点Error Schema
   errorSchema: {
+    type: Object,
+    default: function _default() {
+      return {};
+    }
+  },
+  // 自定义校验规则
+  customFormats: {
     type: Object,
     default: function _default() {
       return {};
@@ -8773,6 +8780,12 @@ var Widget = {
         return {};
       }
     },
+    customFormats: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
     widget: {
       type: [String, Function, Object]
     },
@@ -8906,7 +8919,8 @@ var Widget = {
 
             var error = validateFormData({
               formData: value,
-              schema: self.$props.schema
+              schema: self.$props.schema,
+              customFormats: self.$props.customFormats
             }); // 校验是通过逐级展开校验 这里只捕获同级错误信息
             // 如 object对minProperties. maxProperties. oneOf属性
 
@@ -10558,19 +10572,14 @@ var WIDGET_MAP = {
 };
 
 function getWidgetByFormat(schema, format) {
-  // 定义为渲染函数
-  if (typeof format === 'function' || _typeof(format) === 'object') {
-    return format;
-  } // 根据type和format适配合适的widget
-
-
+  // 根据type和format适配合适的widget
   var type = getSchemaType(schema);
 
   if (typeof format === 'string' && WIDGET_MAP.hasOwnProperty(type) && WIDGET_MAP[type].hasOwnProperty(format)) {
     return WIDGET_MAP[type][format];
   }
 
-  throw new Error("No widget \"".concat(format, "\" for type \"").concat(type, "\""));
+  return undefined;
 } // 解析当前节点 ui widget
 
 
@@ -10581,7 +10590,7 @@ function getUiWidget(_ref) {
       uiSchema = _ref$uiSchema === void 0 ? {} : _ref$uiSchema;
   var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
 
-  // usSchema 配置了widget 直接使用
+  // uiSchema 配置了widget 直接使用
   if (uiSchema['ui:widget']) {
     return {
       widget: uiSchema['ui:widget']
@@ -10592,9 +10601,13 @@ function getUiWidget(_ref) {
   var format = uiSchema.format || schema.format;
 
   if (format) {
-    return {
-      widget: getWidgetByFormat(schema, format)
-    };
+    var formatWidget = getWidgetByFormat(schema, format);
+
+    if (undefined !== formatWidget) {
+      return {
+        widget: formatWidget
+      };
+    }
   } // 没配置可以widget 回退到具体field方案配置
 
 
@@ -11062,7 +11075,7 @@ __vue_render__$4._withStripped = true;
   /* style */
   const __vue_inject_styles__$4 = function (inject) {
     if (!inject) return
-    inject("data-v-4a603fd7_0", { source: "\n.src-JsonSchemaForm-item-1UFV {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["D:\\code\\git_my\\vue-json-schema-form\\packages\\lib\\src\\JsonSchemaForm\\FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\n    <el-form-item :class=\"$style.item\">\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\n    </el-form-item>\n</template>\n\n<script>\n    export default {\n        name: 'FormFooter',\n        props: {\n            okBtn: {\n                type: String,\n                default: '保存'\n            },\n            cancelBtn: {\n                type: String,\n                default: '取消'\n            },\n        }\n    };\n</script>\n\n<style module>\n    .item {\n        text-align: right;\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\n        padding-top: 10px;\n    }\n</style>\n"]}, media: undefined });
+    inject("data-v-25c5ccb1_0", { source: "\n.src-JsonSchemaForm-item-1UFV {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["D:\\code\\git_my\\vue-json-schema-form\\packages\\lib\\src\\JsonSchemaForm\\FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\r\n    <el-form-item :class=\"$style.item\">\r\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\r\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\r\n    </el-form-item>\r\n</template>\r\n\r\n<script>\r\n    export default {\r\n        name: 'FormFooter',\r\n        props: {\r\n            okBtn: {\r\n                type: String,\r\n                default: '保存'\r\n            },\r\n            cancelBtn: {\r\n                type: String,\r\n                default: '取消'\r\n            },\r\n        }\r\n    };\r\n</script>\r\n\r\n<style module>\r\n    .item {\r\n        text-align: right;\r\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\r\n        padding-top: 10px;\r\n    }\r\n</style>\r\n"]}, media: undefined });
 Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-1UFV"} });
 
   };
@@ -11215,6 +11228,7 @@ var JsonSchemaForm = {
       schema: this.schema,
       uiSchema: this.uiSchema,
       errorSchema: this.errorSchema,
+      customFormats: this.customFormats,
       rootSchema: this.schema,
       rootFormData: this.formData,
       // 根节点的数据
