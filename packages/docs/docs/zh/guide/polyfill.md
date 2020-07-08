@@ -1,9 +1,9 @@
 # 兼容性
 
 ## css兼容
-原则上只兼容到ie11，因为使用了 css flex
+原则上只兼容到ie11+，因为使用了 css flex
 
-> 如果需要兼容更低版本也可以通过重置异常的样式实现.
+> 如果需要兼容更低版本也可以通过覆盖异常的样式实现.
 
 ## script 兼容
 项目内部会使用到一些es6+的api，如 String.prototype.includes 等，这类api在库文件构建的时候并未处理，需要结合实际项目自行处理。
@@ -45,7 +45,7 @@
 >
 > 注：
 >* 个人比较喜欢这种方式构建一份自己的polyfill，更容易保证每次变更资源文件的版本稳定。
->* 例如，我常用的：`@lljj/polyfill`
+>* 例如，我常用的：[@lljj/polyfill](https://github.com/liujunchina/polyfill)
 
 ```js
 // 如使用 @babel/polyfill
@@ -53,9 +53,9 @@ import "@babel/polyfill";
 ```
 
 ::: tip
-如果依旧提示存在不支持的api方法，那可能是导入的polyfill不够用，可以在手动导入缺失的方法。
+如果依旧提示存在不支持的api方法，那可能是导入的polyfill不够全，可以在手动导入缺失的方法。
 
-使用 `core-js` 按需导入
+使用 `core-js` 手动按需导入
 
 ```js
 // 比如提示缺失 Promise

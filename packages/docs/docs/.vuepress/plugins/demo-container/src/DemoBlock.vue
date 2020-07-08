@@ -139,6 +139,7 @@
                 // since 2.6.2 use code rather than jsfiddle https://blog.codepen.io/documentation/api/prefill/
                 const { script, html, style } = this.getCodeStr();
                 const resourcesTpl =
+                    '<scr' + 'ipt src="//unpkg.com/@lljj/polyfill@0.1.0/dist/polyfill.umd.min.js"></scr' + 'ipt>\n' +
                     '<scr' + 'ipt src="//unpkg.com/vue/dist/vue.js"></scr' + 'ipt>\n' +
                     '<scr' + `ipt src="//unpkg.com/element-ui@${ elementVersion }/lib/index.js"></scr` + 'ipt>\n' +
                     '<scr' + `ipt src="//unpkg.com/@lljj/vue-json-schema-form@${ vjsfVersion }/dist/vueJsonSchemaForm.umd.min.js"></scr` + 'ipt>\n';
