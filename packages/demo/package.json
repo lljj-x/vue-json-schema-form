@@ -13,7 +13,7 @@
         "@lljj/vue-json-schema-form": "0.0.11",
         "ajv-i18n": "^3.5.0",
         "vue": "^2.6.10",
-        "vuedraggable": "^2.23.2"
+        "vuedraggable": "2.23.2"
     },
     "devDependencies": {
         "@lljj/eslint-config": "^0.0.1",
