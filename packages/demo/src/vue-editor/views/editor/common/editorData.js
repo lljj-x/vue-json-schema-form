@@ -27,9 +27,9 @@ export function generateEditorItem(toolItem) {
             removeDisabled: false,
         },
         componentValue: !toolItem.componentValue || isEmptyObject(toolItem.componentValue) ? getDefaultFormState(
-            toolItem.componentPack.propsSchema,
+            currentComponentPack.propsSchema,
             {}, // 初始值为空
-            toolItem.componentPack.propsSchema
+            currentComponentPack.propsSchema
         ) : toolItem.componentValue,
         componentViewName: currentComponentPack.componentViewName,
         componentFormName: currentComponentPack.componentFormName,

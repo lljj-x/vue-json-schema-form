@@ -286,7 +286,8 @@
 
             // 用户操作数据
             handleDataChange() {
-                this.fixComponentFormPosition();
+                // todo: ie会导致输入框丢失光标
+                // this.fixComponentFormPosition();
             },
 
             // 操作单个组件
