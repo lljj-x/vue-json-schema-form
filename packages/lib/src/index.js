@@ -6,8 +6,10 @@ import fieldProps from './JsonSchemaForm/fields/props';
 import i18n from './JsonSchemaForm/i18n';
 
 import * as vueUtils from './JsonSchemaForm/common/vueUtils';
-import * as schemaUtils from './JsonSchemaForm/common/formUtils';
+import * as formUtils from './JsonSchemaForm/common/formUtils';
 import * as schemaValidate from './JsonSchemaForm/common/schema/validate';
+
+import getDefaultFormState from './JsonSchemaForm/common/schema/getDefaultFormState';
 
 import JsonSchemaForm from './JsonSchemaForm';
 
@@ -19,9 +21,10 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default JsonSchemaForm;
 
 export {
+    getDefaultFormState,
     fieldProps,
     vueUtils,
-    schemaUtils,
+    formUtils,
     schemaValidate,
     i18n
 };
