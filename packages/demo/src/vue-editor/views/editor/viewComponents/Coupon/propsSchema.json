@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "id": "SCoupon",
+    "type": "object",
+    "properties": {
+        "goodsTitle": {
+            "type": "string",
+            "uiWidget": {
+                "label": "商品标题",
+                "component": "el-input",
+                "description": "商品标题输入提示，提示提示提示提示提示提示",
+                "attrs": {
+                    "placeholder": "请输入商品标题"
+                }
+            }
+        },
+        "goodsImg": {
+            "type": "string",
+            "uiWidget": {
+                "label": "上传商品图片",
+                "component": "el-upload",
+                "attrs": {
+                    "placeholder": "请输入商品描述"
+                },
+                "props": {
+                    "action": "/xx/xx/x"
+                }
+            }
+        },
+        "goodsDescription": {
+            "type": "string",
+            "uiWidget": {
+                "label": "输入描述",
+                "component": "el-input",
+                "attrs": {
+                    "placeholder": "请输入商品描述"
+                }
+            }
+        }
+    },
+    "required": [
+        "goodsImg",
+        "goodsTitle"
+    ],
+    "additionalProperties": false
+}

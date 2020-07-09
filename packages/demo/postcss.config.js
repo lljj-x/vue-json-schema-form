@@ -1,7 +1,7 @@
 module.exports = {
     plugins: [
         require('postcss-import')({
-            path: ['src/common/css/'],
+            path: ['src/_common/css/'],
         }),
         require('postcss-mixins'),
         require('postcss-nested'),

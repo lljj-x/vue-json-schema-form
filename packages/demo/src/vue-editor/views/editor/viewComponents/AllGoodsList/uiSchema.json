@@ -1,0 +1,10 @@
+{
+  "show": {
+    "ui:options": {
+      "title": "添加全部商品",
+      "description": "全部商品模块不可编辑，不可移除，自动置底；系统会获取店铺全部商品做展示。",
+      "label": true,
+      "disabled": true
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+    "txt": {
+        "ui:placeholder": "输入你的内容",
+        "ui:attrs": {
+            "placeholder": "覆盖上面的配置，xxx"
+        }
+    }
+}

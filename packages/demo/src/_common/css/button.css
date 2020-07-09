@@ -1,0 +1,243 @@
+@import './variable';
+
+.btn {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    border: none;
+    text-align: center;
+    background: none;
+    color: var(--color-text-white);
+    cursor: pointer;
+    outline: none;
+    transition: all .2s ease;
+    @mixin fontBase;
+
+    &.wide {
+        width: 100%;
+    }
+
+    &.big {
+        height: 50px;
+        padding: 0 40px;
+        line-height: 50px;
+        font-size: 24px;
+
+        &.line,
+        &.line1 {
+            line-height: 48px;
+        }
+    }
+
+    &.middle {
+        height: 40px;
+        padding: 0 30px;
+        line-height: 40px;
+        font-size: 16px;
+
+        &.line,
+        &.line1 {
+            line-height: 38px;
+        }
+
+        &.wide {
+            font-size: 16px;
+        }
+    }
+
+    &.small {
+        height: 30px;
+        padding: 0 20px;
+        line-height: 30px;
+        font-size: 14px;
+
+        &.line,
+        &.line1 {
+            line-height: 28px;
+        }
+    }
+
+
+
+    &.strong {
+        background: var(--color-primary);
+        @extend %fontBold;
+
+        &:hover {
+            background: color(var(--color-primary) alpha(-20%));
+        }
+
+        &.loading {
+            background: linear-gradient(45deg, #fcc858 25%, #fad575 25%, #fad575 50%, #fcc858 50%, #fcc858 75%, #fad575 75%, #fad575 100%);
+            animation: button-loading 2s linear 2s infinite;
+            background-size: 2em 2em;
+        }
+    }
+
+	&.userTableBtn {
+		background: var(--color-primary);
+		width: 170px;
+		vertical-align: middle;
+        @mixin nowrap;
+        &:hover {
+            background: color(var(--color-primary) alpha(-20%));
+        }
+	}
+
+    &.dark {
+        background: var(--color-text-primary);
+
+        &:hover {
+            background: var(--color-text-regular);
+        }
+
+        &.loading {
+            background: linear-gradient(45deg, #5a5a5a 25%, #666666 25%, #666666 50%, #5a5a5a 50%, #5a5a5a 75%, #666666 75%, #666666 100%);
+            animation: button-loading 2s linear 2s infinite;
+            background-size: 2em 2em;
+        }
+    }
+
+    &.brandUpWhite{
+        background: var(--color-float-btn);
+        border: 1px solid var(--color-text-primary);
+        vertical-align: bottom;
+        font-weight: bold;
+    }
+    &.brandUpWhite:hover{
+        background: #e5e5e5;
+    }
+
+    &.light {
+        border: 1px solid var(--color-text-primary);
+        @extend %fontBold;
+    }
+
+    &.messengerBtn {
+        border: 1px var(--color-messenger-btn) solid;
+        color: var(--color-messenger-btn);
+
+        &:hover {
+            color: var(--color-main-bg);
+            background: var(--color-messenger-btn);
+        }
+    }
+
+    &.line {
+        border: 1px var(--color-text-primary) solid;
+        color: var(--mainC);
+
+        &:hover {
+            background-color: #e5e5e5;
+        }
+
+        &.loading {
+            color: transparent;
+
+            &:after {
+                position: absolute;
+                content: '';
+                top: 50%;
+                left: 50%;
+                margin: -.64285714em 0 0 -.64285714em;
+                width: 1em;
+                height: 1em;
+                animation: button-spin .6s linear;
+                animation-iteration-count: infinite;
+                border-radius: 500rem;
+                border-color: #FFF transparent transparent;
+                border-style: solid;
+                border-width: .2em;
+                box-shadow: 0 0 0 1px transparent;
+            }
+
+            &:before {
+                position: absolute;
+                content: '';
+                top: 50%;
+                left: 50%;
+                margin: -.64285714em 0 0 -.64285714em;
+                width: 1em;
+                height: 1em;
+                border-radius: 500rem;
+                border: .2em solid rgba(0, 0, 0, .15);
+            }
+        }
+    }
+    &.line1 {
+        color: var(--color-price);
+        border: 1px var(--color-price) solid;
+        white-space: nowrap;
+
+        &:hover {
+            color: white;
+            background: var(--color-price);
+        }
+
+        &.loading {
+            color: transparent;
+
+            &:after {
+                position: absolute;
+                content: '';
+                top: 50%;
+                left: 50%;
+                margin: -.64285714em 0 0 -.64285714em;
+                width: 1em;
+                height: 1em;
+                animation: button-spin .6s linear;
+                animation-iteration-count: infinite;
+                border-radius: 500rem;
+                border-color: #FFF transparent transparent;
+                border-style: solid;
+                border-width: .2em;
+                box-shadow: 0 0 0 1px transparent;
+            }
+
+            &:before {
+                position: absolute;
+                content: '';
+                top: 50%;
+                left: 50%;
+                margin: -.64285714em 0 0 -.64285714em;
+                width: 1em;
+                height: 1em;
+                border-radius: 500rem;
+                border: .2em solid rgba(0, 0, 0, .15);
+            }
+        }
+    }
+
+    &.noLeftBorder {
+        border-left: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    &.disabled,
+    &[disabled] {
+        color: var(--color-text-placeholder);
+        background: var(--color-fill-lable);
+        border-color: var(--color-fill-lable);
+        cursor: not-allowed;
+        @mixin actionFb var(--color-fill-lable);
+    }
+}
+
+@keyframes button-loading {
+    from {
+        background-position:0;
+    }
+    to {
+        background-position: 2em;
+    }
+}
+
+@keyframes button-spin {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

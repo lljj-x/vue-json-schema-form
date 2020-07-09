@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "id": "MultipleImg2",
+    "type": "object",
+    "definitions": {
+        "ImgItem": {
+            "type": "object",
+            "properties": {
+                "imgUrl": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "imgLink": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "required": [
+                "imgUrl",
+                "imgLink"
+            ]
+        }
+    },
+    "properties": {
+        "imgItem1_1": {
+            "$ref": "#/definitions/ImgItem"
+        },
+        "imgItem2_1": {
+            "$ref": "#/definitions/ImgItem"
+        },
+        "imgItem2_2": {
+            "$ref": "#/definitions/ImgItem"
+        },
+        "imgItem2_3": {
+            "$ref": "#/definitions/ImgItem"
+        }
+    }
+}

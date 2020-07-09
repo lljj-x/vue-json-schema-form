@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "id": "Text",
+    "title": "单文本输入组件",
+    "description":"单文本输入组件，用于在页面配置一条文字信息" ,
+    "type": "object",
+    "required": ["txt"],
+    "properties": {
+        "txt": {
+            "title": "文字",
+            "type": "string"
+        }
+    }
+}

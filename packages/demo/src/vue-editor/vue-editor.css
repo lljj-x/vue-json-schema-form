@@ -1,0 +1,9 @@
+@import "variable.css";
+
+body{
+    background: var(--background-color-base);
+    box-sizing: border-box;
+}
+div, ul, li{
+    box-sizing: border-box;
+}

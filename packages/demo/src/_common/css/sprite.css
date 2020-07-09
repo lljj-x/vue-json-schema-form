@@ -1,0 +1,61 @@
+@import './variable.css';
+/* 公用彩色图标 */
+
+/* 彩色向下箭头-一般用于view_more */
+.sp-arrow-down{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: url('../img/sprite/sp-arrow-down.png') no-repeat center center;
+}
+
+/* 桃心-一般用于橱窗商品收藏 */
+.sp-collect{
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 20px;
+    font-family:"iconfont" !important;
+    color: #999;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+
+	&::after{
+		content: "\E66d";
+	}
+    &.sp-collected{
+        background-image: url('../img/sprite/sp-collect_hover.png');
+		&::after{
+			content: "";
+		}
+    }
+}
+/* 兼容原收藏处理 */
+.collected .sp-collect{
+    background-image: url('../img/sprite/sp-collect_hover.png');
+    background-size: 100% auto;
+    &::after{
+        content: "";
+    }
+}
+
+/* 已收藏状态 */
+.sp-collected{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url('../img/sprite/sp-collect_hover.png') no-repeat center center;
+}
+
+/*google 图标*/
+.icon_google{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--color-border);
+    background: var(--color-main-bg) url('../icon/svg/google.svg') center center no-repeat;
+    background-size: 60%;
+    border-radius: 50%;
+}

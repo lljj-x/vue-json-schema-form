@@ -1,0 +1,31 @@
+{
+    "imgList": {
+        "ui:options": {
+            "title": "添加图片",
+            "description": "图片宽度1920px，高度固定400px。支持JPG、PNG 图片格式，大小不得超过 2 MB。<br><span>这里使用默认的field和校验提示</span>"
+        },
+        "items": {
+            "ui:options": {
+                "type": [
+                    "jpg",
+                    "jpeg",
+                    "png"
+                ],
+                "size": 2048,
+                "width": 1920,
+                "height": 400,
+                "limit": 1
+            },
+            "imgUrl": {
+                "ui:options": {
+                    "placeholder": "请输入图片地址"
+                }
+            },
+            "imgLink": {
+                "ui:options": {
+                    "placeholder": "请输入合法的链接 ."
+                }
+            }
+        }
+    }
+}

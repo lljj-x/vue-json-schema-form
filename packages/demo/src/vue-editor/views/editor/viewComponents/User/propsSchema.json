@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "id": "SVideo",
+    "type": "object",
+    "properties": {
+        "firstName": {
+            "type": "string",
+            "title": "First name",
+            "minLength": 8,
+            "pattern": "\\d+"
+        },
+        "active": {
+            "type": "boolean",
+            "title": "Active",
+            "description": "请点击选中开关"
+        }
+    },
+    "additionalProperties": false
+}
