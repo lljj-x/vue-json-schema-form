@@ -51,6 +51,7 @@
         padding: 5px;
         margin: 5px;
         text-align: left;
+        overflow: hidden;
         :global {
             .string {
                 color: #e91e63;

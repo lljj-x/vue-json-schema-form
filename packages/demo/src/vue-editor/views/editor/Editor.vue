@@ -278,16 +278,20 @@
                 // Popper 通过、父滚动容器 scroll 和window resize 来触发重新计算位置
                 // https://github.com/ElemeFE/element/blob/dev/src/utils/popper.js#L464
                 setTimeout(() => {
-                    const curLeft = this.$refs.domScrollWrap.scrollLeft;
-                    this.$refs.domScrollWrap.scrollLeft = curLeft - 1;
-                    this.$refs.domScrollWrap.scrollLeft = curLeft;
+                    const evt = window.document.createEvent('UIEvents');
+                    evt.initUIEvent('scroll', true, false, window, 0);
+                    this.$refs.domScrollWrap.dispatchEvent(evt);
+
+                    // const curLeft = this.$refs.domScrollWrap.scrollLeft;
+                    // this.$refs.domScrollWrap.scrollLeft = curLeft - 1;
+                    // this.$refs.domScrollWrap.scrollLeft = curLeft;
                 });
             },
 
             // 用户操作数据
             handleDataChange() {
-                // todo: ie会导致输入框丢失光标
-                // this.fixComponentFormPosition();
+                // todo: ie 会导致输入框丢失光标
+                this.fixComponentFormPosition();
             },
 
             // 操作单个组件

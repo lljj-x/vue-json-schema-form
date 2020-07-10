@@ -12,12 +12,16 @@
                             formData: value,
                             schema: $props.schema
                         });
+
                         if (error.errors.length > 0) {
                             // 只取第一个错误信息
                             const curErr = error.errors[0];
 
                             // 找到配置的errSchema节点
-                            const curErrorSchema = vueUtils.getPathVal(errorSchema, curErr.property.replace(/^\.+/,'').split('.'));
+                            const curErrorSchema = vueUtils.getPathVal(
+                                errorSchema,
+                                vueUtils.computedCurPath(curNodePath, curErr.property.replace(/^\.+/, ''))
+                            );
 
                             return callback(curErrorSchema && curErrorSchema[curErr.name] || curErr.message);
                         }
