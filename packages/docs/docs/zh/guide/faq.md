@@ -92,5 +92,5 @@ module.exports = {
 
 2. js 部分
 
-要么通过店铺 polyfill，要么让 `vjsf` 通过 `bable-loader` 处理即可
+要么通过垫片 polyfill，要么让 `vjsf` 通过 `bable-loader` 处理即可
 参见：[兼容性解决](/zh/guide/polyfill.html#css兼容)
