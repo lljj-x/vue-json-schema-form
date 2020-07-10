@@ -42,7 +42,6 @@ export default {
     },
     watch: {
         formData: {
-            // todo: object 引用类型 newValue = oldValue，是否需要clone一份旧值做对比
             handler(newValue, oldValue) {
                 this.handlerFormDataChange(newValue, oldValue);
             },
