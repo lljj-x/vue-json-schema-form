@@ -9721,7 +9721,9 @@
             description = _getUiOptions.description,
             addable = _getUiOptions.addable,
             sortable = _getUiOptions.sortable,
-            removable = _getUiOptions.removable;
+            removable = _getUiOptions.removable,
+            showTitle = _getUiOptions.showTitle,
+            showDescription = _getUiOptions.showDescription;
 
         var arrayItemsVNodeList = this.itemsFormData.map(function (item, index) {
           return {
@@ -9741,7 +9743,9 @@
         return h(__vue_component__, {
           props: {
             title: title,
-            description: description
+            description: description,
+            showTitle: showTitle,
+            showDescription: showDescription
           }
         }, [h(ArrayOrderList, {
           props: {
@@ -9940,7 +9944,9 @@
             description = _getUiOptions.description,
             addable = _getUiOptions.addable,
             sortable = _getUiOptions.sortable,
-            removable = _getUiOptions.removable; // 拆分为 tuple 和 additional
+            removable = _getUiOptions.removable,
+            showTitle = _getUiOptions.showTitle,
+            showDescription = _getUiOptions.showDescription; // 拆分为 tuple 和 additional
 
 
         var cutOfArr = cutOff(this.itemsFormData, this.schema.items.length - 1);
@@ -9978,7 +9984,9 @@
         return h(__vue_component__, {
           props: {
             title: title,
-            description: description
+            description: description,
+            showTitle: showTitle,
+            showDescription: showDescription
           }
         }, [].concat(_toConsumableArray(tupleVnodeArr), [// additional items
         h(ArrayOrderList, {
@@ -10266,6 +10274,12 @@
             // 枚举参数
             widget: 'SelectWidget'
           };
+        }); // title description 回退到 schema 配置，但这里不使用 uiSchema配置
+        // select ui配置需要使用 (oneOf|anyOf)Select
+
+        Object.assign(selectWidgetConfig, {
+          label: selectWidgetConfig.label || this.schema.title,
+          description: selectWidgetConfig.description || this.schema.description
         });
         var uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
         selectWidgetConfig.uiProps.enumOptions = this.selectList.map(function (option, index) {
@@ -11166,7 +11180,6 @@
       },
       watch: {
         formData: {
-          // todo: object 引用类型 newValue = oldValue，是否需要clone一份旧值做对比
           handler: function handler(newValue, oldValue) {
             this.handlerFormDataChange(newValue, oldValue);
           },
@@ -11267,8 +11280,9 @@
 
     exports.default = JsonSchemaForm;
     exports.fieldProps = vueProps;
+    exports.formUtils = formUtils;
+    exports.getDefaultFormState = getDefaultFormState;
     exports.i18n = i18n;
-    exports.schemaUtils = formUtils;
     exports.schemaValidate = validate$2;
     exports.vueUtils = vueUtils;
 
