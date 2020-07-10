@@ -90,6 +90,13 @@ export default {
             widget: 'SelectWidget'
         }));
 
+        // title description 回退到 schema 配置，但这里不使用 uiSchema配置
+        // select ui配置需要使用 (oneOf|anyOf)Select
+        Object.assign(selectWidgetConfig, {
+            label: selectWidgetConfig.label || this.schema.title,
+            description: selectWidgetConfig.description || this.schema.description,
+        });
+
         const uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
         selectWidgetConfig.uiProps.enumOptions = this.selectList.map((option, index) => ({
             label: (uiSchemaSelectList[index] && uiSchemaSelectList[index]['ui:title']) || option.title || `选项 ${index + 1}`,
