@@ -14,7 +14,20 @@ sidebarDepth: 2
 用于描述表单数据json schema
 遵循 [json Schema](https://json-schema.org/understanding-json-schema/index.html) 规范
 
-* [点击这里深入了解 schema 配置](/zh/guide/schema.html)
+```
+title: '渲染为标题',
+description: '渲染为描述信息' // 支持html代码
+```
+
+这里如果是 `object` 或者`array` 内的 `title` `description` 会被渲染为包裹容器`FieldGroupWrap` 标题和描述。
+
+内部的 `title` `description` 会被 `widget` 组件渲染为 formItem 的标题和描述
+
+:::tip 如何隐藏
+* 不配置 `title` `description` 属性不会显示
+* 特例：对于`object` `array` 类型可以通过 [uiSchema showTitle](#uischema) 参数控制是否显示
+:::
+
 
 **例: 配置用户信息表单**
 ::: demo
@@ -86,24 +99,26 @@ export default {
 * 默认值：`{}`
 
 用于配置表单展示样式，普通json数据，非`json schema`规范
-* [点击这里深入了解 uiSchema 配置](/zh/guide/uiSchema.html)
 
-::: tip
- * 配置数据结构和schema保持一致，所有的ui配置属性 `ui:` 开头
- * 也可以在 `ui:options` 内的配置所有的属性，不需要 `ui:` 开头
- * 如果配置了`ui:xx` 和 `ui:options` 内配置了`xx`属性，`ui:options`内的优先级更高，实际上你可以把所有的参数都配置在 `ui:options` 内；这里可以按照个人习惯，推荐使用如下参数格式
- * 注：uiSchema 为普通json数据，并非json schema规范语法
- :::
+:::tip
+* 配置数据结构和schema保持一致，所有的ui配置属性 `ui:` 开头
+* 也可以在 `ui:options` 内的配置所有的属性，不需要 `ui:` 开头
+* 如果配置了`ui:xx` 和 `ui:options` 内配置了`xx`属性，`ui:options`内的优先级更高，实际上你可以把所有的参数都配置在 `ui:options` 内；这里可以按照个人习惯，推荐使用如下参数格式
+> 注：uiSchema 为普通json数据，并非 json schema 规范语法
+:::
 
 参数格式如下：
 ```js
 uiSchema = {
     'ui:title': '覆盖schema title', // 覆盖schema title
     'ui:description': '覆盖schema description描述信息',  // 覆盖schema description
-    'ui:emptyValue': undefined,   // 表单元素输入为空时的值，默认 undefind
+    'ui:emptyValue': undefined,   // 表单元素输入为空时的值，默认 undefined
+    'ui:field': 'componentName', // 自定义field
     'ui:widget': 'el-slider', // 配置input组件，支持字符串或者传入一个vue组件
     'ui:labelWidth': '50px', // form item label宽度
     'ui:options': {
+            showTitle: '是否显示标题', // 只对 type为`object`、`array` 类型有效
+            showDescription: '是否显示描述信息', // 只对type为 `object`、`array` 类型有效
             attrs: {
                 // 通过 vue render函数 attrs 传递给 widget 组件
                 autofocus: true
@@ -117,13 +132,16 @@ uiSchema = {
                 className_hei: true
             },
 
-            // 其它参数会 通过 props 传递给 widget 组件
+            // 其它所有参数会通过 props 传递给 widget 组件
             type: 'textarea',
             rows: '6',
             placeholder: '请输入你的内容'
     }
 }
 ```
+
+>1. `ui:field` 自定义field组件参见这里  [自定义 field](/zh/guide/adv-config.html#自定义-field)
+>1. `ui:widget` 自定义widget组件参见这里  [自定义 widget](/zh/guide/adv-config.html#自定义-widget)
 
 **例：重置表单样式**
 ::: demo
@@ -205,7 +223,6 @@ export default {
 * 默认值：`{}`
 
 用于配置表单校验错误文案信息，普通json数据，非json schema规范
-* [点击这里深入了解 errorSchema 配置](/zh/guide/errorSchema.html)
 
 数据配置和 `uiSchema` 保存一致，区别在于使用 `err:` 做前缀
 
@@ -213,10 +230,10 @@ export default {
  * 配置数据结构和schema保持一致，所有的ui配置属性 `err:` 开头
  * 也可以在 `err:options` 内的配置所有的属性，不需要 `err:` 开头
  * 如果配置了`err:xx` 和 `err:options` 内配置了`xx`属性，`err:options`内优先级更高，实际上你可以把所有的参数都配置在 `err:options` 内；这里可以按照个人习惯
- * 注：errorSchema 为标准json数据，并非json schema规范语法
+ > 注：errorSchema 为标准json数据，并非json schema规范语法
  :::
 
-> 例：重置表单错误信息
+例：重置表单错误信息
 
 ::: demo
 ```html

@@ -36,15 +36,15 @@ exports.getGuideSidebar = ([groupA = '指南', groupB = '详细配置', groupC =
                 'demo',
             ]
         },
-        {
-            title: groupB,
-            collapsable: false,
-            children: [
-                'schema',
-                'uiSchema',
-                'errorSchema'
-            ]
-        },
+        // {
+        //     title: groupB,
+        //     collapsable: false,
+        //     children: [
+        //         'schema',
+        //         'uiSchema',
+        //         'errorSchema'
+        //     ]
+        // },
         {
             title: groupC,
             collapsable: false,
