@@ -61,7 +61,7 @@ export default {
         } = this.$props;
 
         const {
-            title, description, addable, sortable, removable
+            title, description, addable, sortable, removable, showTitle, showDescription
         } = getUiOptions({
             schema,
             uiSchema
@@ -114,6 +114,8 @@ export default {
                 props: {
                     title,
                     description,
+                    showTitle,
+                    showDescription
                 }
             },
             [
