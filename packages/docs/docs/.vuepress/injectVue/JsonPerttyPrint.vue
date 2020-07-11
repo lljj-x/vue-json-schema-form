@@ -44,7 +44,7 @@
     };
 </script>
 
-<style module>
+<style module lang="stylus">
     .pre {
         outline: 1px solid #ccc;
         background-color: #FFFFFF;

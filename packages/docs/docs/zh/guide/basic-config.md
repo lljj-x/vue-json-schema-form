@@ -58,7 +58,7 @@ export default {
                     firstName: {
                         type: 'string',
                         title: 'First name',
-                        default: 'Liu'
+                        default: 'Jun'
                     },
                     lastName: {
                         type: 'string',
@@ -143,7 +143,7 @@ uiSchema = {
 >1. `ui:field` 自定义field组件参见这里  [自定义 field](/zh/guide/adv-config.html#自定义-field)
 >1. `ui:widget` 自定义widget组件参见这里  [自定义 widget](/zh/guide/adv-config.html#自定义-widget)
 
-**例：重置表单样式**
+#### 如：重置表单widget样式
 ::: demo
 ```html
 <template>

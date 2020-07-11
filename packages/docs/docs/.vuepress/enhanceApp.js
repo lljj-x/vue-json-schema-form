@@ -10,7 +10,6 @@ function showJson({ componentProps }) {
         VueComponent: JsonPerttyPrint,
         dialogProps: {
             title: 'formData',
-            closeOnClickModal: false,
             width: '800px'
         },
         componentProps

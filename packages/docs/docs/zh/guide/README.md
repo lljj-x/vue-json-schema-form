@@ -21,7 +21,7 @@ yarn add @lljj/vue-json-schema-form
 * 暴露全局变量 `window.vueJsonSchemaForm`
 :::
 
-## 展现形式
+## 基本概念
 通过 schema 生对应的form表单
 * schema `title` 属性作为 form表单的标题
 * schema `description` 属性作为表单的描述
