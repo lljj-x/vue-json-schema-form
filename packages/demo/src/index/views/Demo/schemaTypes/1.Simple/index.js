@@ -8,7 +8,7 @@ export default {
             firstName: {
                 type: 'string',
                 title: 'First name',
-                default: 'Liu'
+                default: 'Jun'
             },
             lastName: {
                 type: 'string',
@@ -44,7 +44,7 @@ export default {
         },
     },
     formData: {
-        lastName: 'Jun',
+        lastName: 'Liu',
         age: 88,
         bio: '知道的越多、就知道的越少',
         password: 'My.Pass',
@@ -59,7 +59,7 @@ export default {
             'password',
         ],
         firstName: {
-            'ui:title': '姓',
+            'ui:title': '名字',
             'ui:description': '比如：李白姓李、孙尚香姓孙、马可波罗姓马可波',
             'ui:emptyValue': '',
             'ui:options': {

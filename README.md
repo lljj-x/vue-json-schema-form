@@ -48,7 +48,7 @@ yarn add @lljj/vue-json-schema-form
                         firstName: {
                             type: 'string',
                             title: 'First name',
-                            default: 'Liu'
+                            default: 'Jun'
                         },
                         lastName: {
                             type: 'string',
