@@ -125,7 +125,7 @@ export default {
             {
                 class: {
                     genFromComponent: true,
-                    [`genFromComponent_${this.schema.id}Form`]: true
+                    [`genFromComponent_${this.schema.id}Form`]: !!this.schema.id
                 },
                 ref: 'genEditForm',
                 props: {
