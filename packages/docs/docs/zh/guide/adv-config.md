@@ -242,7 +242,14 @@ export default {
 查看详细 [uiSchema重置表单widget样式](/zh/guide/basic-config.html#如：重置表单widget样式)
 
 ### 根据当前表单渲染的节点类名重置样式
-在渲染form表单时会根据schema的数据结构对每个节点生成唯一的 path 路径，并标记在class中，可通过该class类名来重置某个局部样式。
+在渲染form表单时会根据schema的数据结构对每个 `field` 渲染节点生成唯一的 `path` 路径，并标记在class中，可通过该class类名来重置某个局部样式。
+
+如：
+![class pathName](/pathName.png)
+
+::: tip
+所有标记为路径的css类名，统一为 `__path` 前缀，其中 `anyOf`，`oneOf` 同一个path 路径可能存在多处渲染，会存在重复 path class
+:::
 
 ## 自定义 field
 
