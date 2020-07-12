@@ -1,20 +1,20 @@
 <template>
-    <div class="FieldGroupWrap">
+    <div class="fieldGroupWrap">
         <template>
             <h3
                 v-if="showTitle && title"
-                class="FieldGroupWrap_title"
+                class="fieldGroupWrap_title"
             >
                 {{ title }}
             </h3>
             <p
                 v-if="showDescription && description"
-                class="FieldGroupWrap_des"
+                class="fieldGroupWrap_des"
                 v-html="description"
             >
             </p>
         </template>
-        <div class="FieldGroupWrap_box">
+        <div class="fieldGroupWrap_box">
             <slot></slot>
         </div>
     </div>

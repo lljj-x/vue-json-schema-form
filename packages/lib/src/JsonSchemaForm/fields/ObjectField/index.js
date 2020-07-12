@@ -85,7 +85,7 @@ export default {
                         this.needValidFieldGroup ? h(Widget, {
                             class: {
                                 validateWidget: true,
-                                validateWidget_object: true
+                                'validateWidget-object': true
                             },
                             props: {
                                 schema: Object.entries(self.$props.schema).reduce((preVal, [key, value]) => {

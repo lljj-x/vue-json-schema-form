@@ -221,7 +221,7 @@ export default {
                     // 错误只能显示一行，多余...
                     error: props => (props.error ? h('p', {
                         class: {
-                            FormItemErrorBox: true
+                            formItemErrorBox: true
                         },
                         attrs: {
                             title: props.error

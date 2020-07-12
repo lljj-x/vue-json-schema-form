@@ -17,17 +17,17 @@
         margin: 0;
         font-size: 14px;
     }
-    .HiddenWidget {
+    .hiddenWidget {
         display: none;
     }
     .el-color-picker {
         vertical-align: top;
     }
 
-    .FieldGroupWrap+.FieldGroupWrap {
+    .fieldGroupWrap+.fieldGroupWrap {
         margin-top: 20px;
     }
-    .FieldGroupWrap_title {
+    .fieldGroupWrap_title {
         position: relative;
         display: block;
         width: 100%;
@@ -37,7 +37,7 @@
         font-weight: bold;
         border: 0;
     }
-    .FieldGroupWrap_des {
+    .fieldGroupWrap_des {
         font-size: 12px;
         line-height: 20px;
         margin-bottom: 10px;
@@ -50,7 +50,7 @@
         margin-bottom: 2px;
         color: #999;
     }
-    .FormItemErrorBox {
+    .formItemErrorBox {
         color: #ff5757;
         padding-top: 4px;
         position: absolute;
@@ -81,24 +81,24 @@
     /* validateWidget 单独的校验不属于输入框的*/
     .validateWidget {
         margin-bottom: 0;
-        .FormItemErrorBox {
+        .formItemErrorBox {
             padding: 5px 0;
             position: relative;
         }
     }
 
     /* type array */
-    .ArrayField {
+    .arrayField {
         margin-bottom: 22px;
-        .ArrayField {
+        .arrayField {
             margin-bottom: 10px;
         }
     }
-    .ArrayOrderList {
+    .arrayOrderList {
         background: rgba(242,242,242,0.8);
         box-shadow: 0 3px 1px -2px rgba(0,0,0,0.2), 0 0 3px 1px rgba(0,0,0,0.1);
     }
-    .ArrayOrderList_item {
+    .arrayOrderList_item {
         position: relative;
         padding: 25px 10px 20px;
         border-radius: 2px;
@@ -106,7 +106,7 @@
         display: flex;
         align-items: center;
     }
-    .ArrayOrderList_bottomAddBtn {
+    .arrayOrderList_bottomAddBtn {
         padding: 15px 10px;
         margin-bottom: 10px;
     }
@@ -114,7 +114,7 @@
         width: 100%;
         /*box-shadow: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 1px rgba(0,0,0,0.1);*/
     }
-    .ArrayListItem_content {
+    .arrayListItem_content {
         flex: 1;
         margin: 0 auto;
         .el-form-item {
@@ -131,7 +131,7 @@
             font-size: 14px;
         }
     }
-    .ArrayListItem_operateTool {
+    .arrayListItem_operateTool {
         position: absolute;
         height: 25px;
         width: 75px;
@@ -140,7 +140,7 @@
         text-align: right;
         font-size: 0;
     }
-    .ArrayListItem_btn {
+    .arrayListItem_btn {
         vertical-align: top;
         display: inline-block;
         width: 25px;
@@ -166,13 +166,13 @@
             cursor: not-allowed;
         }
     }
-    .ArrayListItem_orderBtn-top {
+    .arrayListItem_orderBtn-top {
         background-color: #f0f9eb;
     }
-    .ArrayListItem_orderBtn-bottom {
+    .arrayListItem_orderBtn-bottom {
         background-color: #f0f9eb;
     }
-    .ArrayListItem_btn-delete {
+    .arrayListItem_btn-delete {
         background-color: #fef0f0;
     }
 }

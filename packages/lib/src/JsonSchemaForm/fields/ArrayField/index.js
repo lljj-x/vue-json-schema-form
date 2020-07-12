@@ -8,7 +8,7 @@ import getDefaultFormState from '../../common/schema/getDefaultFormState';
 
 import { allowAdditionalItems, isFixedItems, isMultiSelect } from '../../common/formUtils';
 import { getPathVal, setPathVal } from '../../common/vueUtils';
-import { genId } from '../../common/utils';
+import { genId, lowerCase } from '../../common/utils';
 
 import Widget from '../../fieldComponents/Widget';
 
@@ -165,7 +165,7 @@ export default {
                     ...this.$props,
                 },
                 class: {
-                    [CurrentField.name]: true
+                    [lowerCase(CurrentField.name)]: true
                 },
                 on: {
                     onArrayOperate: this.handleArrayOperate
@@ -176,7 +176,7 @@ export default {
             this.needValidFieldGroup ? h(Widget, {
                 class: {
                     validateWidget: true,
-                    validateWidget_array: true
+                    'validateWidget-array': true
                 },
                 props: {
                     schema: Object.entries(self.$props.schema).reduce((preVal, [key, value]) => {

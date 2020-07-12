@@ -196,7 +196,7 @@ export default {
             h(Widget, {
                 class: {
                     validateWidget: true,
-                    [`validateWidget_${this.combiningType}`]: true
+                    [`validateWidget-${this.combiningType}`]: true
                 },
                 props: {
                     schema: this.schema,

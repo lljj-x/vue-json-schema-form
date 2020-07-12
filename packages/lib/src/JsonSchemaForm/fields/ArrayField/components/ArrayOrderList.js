@@ -73,7 +73,7 @@ export default {
             'div',
             {
                 class: {
-                    ArrayOrderList: true
+                    arrayOrderList: true
                 }
             },
             this.vNodeList.map(({ key, vNode: VnodeItem }, index) => {
@@ -83,7 +83,7 @@ export default {
                     {
                         key,
                         class: {
-                            ArrayOrderList_item: true
+                            arrayOrderList_item: true
                         }
                     },
                     [
@@ -91,7 +91,7 @@ export default {
                             'div',
                             {
                                 class: {
-                                    ArrayListItem_operateTool: true
+                                    arrayListItem_operateTool: true
                                 }
                             },
                             [
@@ -109,8 +109,8 @@ export default {
                                             disabled: !this.sortable || index === 0
                                         },
                                         class: {
-                                            ArrayListItem_btn: true,
-                                            'ArrayListItem_orderBtn-top': true,
+                                            arrayListItem_btn: true,
+                                            'arrayListItem_orderBtn-top': true,
                                             'el-icon-caret-top': true,
                                         },
                                         on: {
@@ -139,8 +139,8 @@ export default {
                                             disabled: !this.sortable || index === this.vNodeList.length - 1
                                         },
                                         class: {
-                                            ArrayListItem_btn: true,
-                                            'ArrayListItem_orderBtn-bottom': true,
+                                            arrayListItem_btn: true,
+                                            'arrayListItem_orderBtn-bottom': true,
                                             'el-icon-caret-bottom': true,
                                         },
                                         on: {
@@ -169,8 +169,8 @@ export default {
                                             disabled: !this.canRemove
                                         },
                                         class: {
-                                            ArrayListItem_btn: true,
-                                            'ArrayListItem_btn-delete': true,
+                                            arrayListItem_btn: true,
+                                            'arrayListItem_btn-delete': true,
                                             'el-icon-close': true,
                                         },
                                         on: {
@@ -191,7 +191,7 @@ export default {
                             'div',
                             {
                                 class: {
-                                    ArrayListItem_content: true
+                                    arrayListItem_content: true
                                 }
                             },
                             [VnodeItem]
@@ -208,7 +208,7 @@ export default {
                             } : {})
                         },
                         class: {
-                            ArrayOrderList_bottomAddBtn: true,
+                            arrayOrderList_bottomAddBtn: true,
                         }
                     },
                     [

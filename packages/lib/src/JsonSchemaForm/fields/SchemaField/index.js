@@ -5,6 +5,7 @@
 import FIELDS_MAP from '../../config/FIELDS_MAP';
 import { getUiField, isSelect } from '../../common/formUtils';
 import { nodePath2ClassName } from '../../common/vueUtils';
+import { lowerCase } from '../../common/utils';
 import retrieveSchema from '../../common/schema/retriev';
 import vueProps from '../props';
 
@@ -75,8 +76,8 @@ export default {
                     },
                     class: {
                         ...context.data.class,
-                        [fieldComponent.name || fieldComponent]: true,
-                        HiddenWidget: isHiddenWidget,
+                        [lowerCase(fieldComponent.name) || fieldComponent]: true,
+                        hiddenWidget: isHiddenWidget,
                         [pathClassName]: true
                     }
                 })

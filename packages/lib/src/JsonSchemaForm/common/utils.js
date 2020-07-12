@@ -310,6 +310,12 @@ export function dataURItoBlob(dataURI) {
     return { blob, name };
 }
 
+// 字符串首字母小写
+export function lowerCase(str) {
+    if (undefined === str) return str;
+    return String(str).replace(/^./, s => s.toLocaleLowerCase());
+}
+
 // 最大公约数
 export function gcd(a, b) {
     if (b === 0) return a;

@@ -149,7 +149,7 @@
         }
     }
     :global {
-        .ArrayOrderList_item {
+        .arrayOrderList_item {
             :local {
                 .elFormItem {
                     margin-bottom: 0;
