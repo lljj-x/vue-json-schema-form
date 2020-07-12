@@ -7,6 +7,12 @@ import Vue from 'vue';
 // 内部使用 . ，配置数据key不能出现.
 const pathSeparator = '.';
 
+// nodePath 转css类名
+export function nodePath2ClassName(path) {
+    const rootPathName = '__pathRoot';
+    return path ? `${rootPathName}.${path}`.replace(/\./g, '_') : rootPathName;
+}
+
 // 是否为根节点
 export function isRootNodePath(path) {
     return path.split(pathSeparator).length === 0;

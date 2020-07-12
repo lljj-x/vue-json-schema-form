@@ -67,10 +67,10 @@
         text-align: left;
     }
 
-    /* oneOf anyOf -  AppendCombining_box*/
-    .AppendCombining_box {
+    /* oneOf anyOf -  appendCombining_box*/
+    .appendCombining_box {
         margin-bottom: 22px;
-        .AppendCombining_box {
+        .appendCombining_box {
             margin-bottom: 10px;
         }
         padding: 10px;

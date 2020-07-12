@@ -2,7 +2,9 @@
  * Created by Liu.Jun on 2020/5/19 10:15 下午.
  */
 
-import { getPathVal, setPathVal, deletePathVal } from '../../../common/vueUtils';
+import {
+    getPathVal, setPathVal, deletePathVal, nodePath2ClassName
+} from '../../../common/vueUtils';
 import { isEmptyObject, filterObject, guessType } from '../../../common/utils';
 
 import { getWidgetConfig, getUserUiOptions, getUserErrOptions } from '../../../common/formUtils';
@@ -41,6 +43,53 @@ export default {
 
             // 找不到默认等于原本的值
             return this.curSelectIndex || 0;
+        },
+
+        // 下拉选项 Vnode
+        getSelectBoxVnode() {
+            // 下拉选项参数
+            const selectWidgetConfig = getWidgetConfig({
+                schema: {}, // 所有参数直接通过 uiSchema获取
+                uiSchema: this.uiSchema[`${this.combiningType}Select`] || {} // 通过 uiSchema['oneOf'] 配置ui信息
+            }, () => ({
+                // 枚举参数
+                widget: 'SelectWidget'
+            }));
+
+            // title description 回退到 schema 配置，但这里不使用 uiSchema配置
+            // select ui配置需要使用 (oneOf|anyOf)Select
+            Object.assign(selectWidgetConfig, {
+                label: selectWidgetConfig.label || this.schema.title,
+                description: selectWidgetConfig.description || this.schema.description,
+            });
+
+            // 下拉列表枚举值
+            const uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
+            selectWidgetConfig.uiProps.enumOptions = this.selectList.map((option, index) => ({
+                label: (uiSchemaSelectList[index] && uiSchemaSelectList[index]['ui:title']) || option.title || `选项 ${index + 1}`,
+                value: index,
+            }));
+
+            // oneOf option 渲染
+            // 选择框 vnode
+            return this.$createElement(
+                Widget,
+                {
+                    class: {
+                        [`fieldSelect_${this.combiningType}`]: true
+                    },
+                    props: {
+                        isFormData: false,
+                        curValue: this.curSelectIndex,
+                        ...selectWidgetConfig
+                    },
+                    on: {
+                        onChange: (event) => {
+                            this.curSelectIndex = event;
+                        }
+                    }
+                }
+            );
         }
     },
     watch: {
@@ -81,52 +130,10 @@ export default {
         }
     },
     render(h) {
-        // 下拉选项参数
-        const selectWidgetConfig = getWidgetConfig({
-            schema: {}, // 所有参数直接通过 uiSchema获取
-            uiSchema: this.uiSchema[`${this.combiningType}Select`] || {} // 通过 uiSchema['oneOf'] 配置ui信息
-        }, () => ({
-            // 枚举参数
-            widget: 'SelectWidget'
-        }));
-
-        // title description 回退到 schema 配置，但这里不使用 uiSchema配置
-        // select ui配置需要使用 (oneOf|anyOf)Select
-        Object.assign(selectWidgetConfig, {
-            label: selectWidgetConfig.label || this.schema.title,
-            description: selectWidgetConfig.description || this.schema.description,
-        });
-
-        const uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
-        selectWidgetConfig.uiProps.enumOptions = this.selectList.map((option, index) => ({
-            label: (uiSchemaSelectList[index] && uiSchemaSelectList[index]['ui:title']) || option.title || `选项 ${index + 1}`,
-            value: index,
-        }));
-
-        // 选择框 vnode
-        const selectVnode = h(
-            Widget,
-            {
-                class: {
-                    [`FieldSelect_${this.combiningType}`]: true
-                },
-                props: {
-                    isFormData: false,
-                    curValue: this.curSelectIndex,
-                    ...selectWidgetConfig
-                },
-                on: {
-                    onChange: (event) => {
-                        this.curSelectIndex = event;
-                    }
-                }
-            }
-        );
-
-        let originVnode = null;
-        const childrenVnode = [selectVnode];
+        const pathClassName = nodePath2ClassName(this.$props.curNodePath);
 
         // object 需要保持原有属性，如果存在原有属性这里单独渲染
+        let originVnode = null;
         const isTypeObject = (this.schema.type === 'object' || this.schema.properties);
         if (isTypeObject && !isEmptyObject(this.schema.properties)) {
             const origSchema = Object.assign({}, this.schema);
@@ -134,7 +141,8 @@ export default {
 
             originVnode = h(SchemaField, {
                 class: {
-                    [`${this.combiningType}_origin`]: true
+                    [`${this.combiningType}_originBox`]: true,
+                    [`${pathClassName}-originBox`]: true
                 },
                 props: {
                     ...this.$props,
@@ -144,8 +152,10 @@ export default {
             });
         }
 
-        // 当前选中的oneOf vnode
-        // oneOf option 渲染
+        // 选择附加的节点
+        const childrenVnode = [this.getSelectBoxVnode()];
+
+        // 当前选中的 oneOf 附加的节点
         let curSelectSchema = this.selectList[this.curSelectIndex];
         if (curSelectSchema) {
             // 覆盖父级的属性
@@ -201,8 +211,9 @@ export default {
             originVnode,
             h('div', {
                 class: {
-                    AppendCombining_box: true,
-                    [`${this.combiningType}_AppendCombining`]: true
+                    appendCombining_box: true,
+                    [`${this.combiningType}_appendBox`]: true,
+                    [`${pathClassName}-appendBox`]: true
                 }
             }, [childrenVnode])
         ]);

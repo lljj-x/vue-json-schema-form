@@ -4,6 +4,7 @@
 
 import FIELDS_MAP from '../../config/FIELDS_MAP';
 import { getUiField, isSelect } from '../../common/formUtils';
+import { nodePath2ClassName } from '../../common/vueUtils';
 import retrieveSchema from '../../common/schema/retriev';
 import vueProps from '../props';
 
@@ -41,11 +42,14 @@ export default {
         // functional 渲染多节点
         const renderList = [];
 
+        const pathClassName = nodePath2ClassName(context.props.curNodePath);
+
         if (schema.anyOf && schema.anyOf.length > 0 && !isSelect(schema)) {
             // anyOf
             renderList.push(
                 h(FIELDS_MAP.anyOf, {
                     class: {
+                        [`${pathClassName}-anyOf`]: true,
                         AnyOfField: true
                     },
                     props: curProps
@@ -56,6 +60,7 @@ export default {
             renderList.push(
                 h(FIELDS_MAP.oneOf, {
                     class: {
+                        [`${pathClassName}-oneOf`]: true,
                         OneOfField: true
                     },
                     props: curProps
@@ -71,7 +76,8 @@ export default {
                     class: {
                         ...context.data.class,
                         [fieldComponent.name || fieldComponent]: true,
-                        HiddenWidget: isHiddenWidget
+                        HiddenWidget: isHiddenWidget,
+                        [pathClassName]: true
                     }
                 })
             );
