@@ -275,7 +275,12 @@ var i18n = {
  * Created by Liu.Jun on 2020/4/25 14:45.
  */
 
-var pathSeparator = '.'; // 是否为根节点
+var pathSeparator = '.'; // nodePath 转css类名
+
+function nodePath2ClassName(path) {
+  var rootPathName = '__pathRoot';
+  return path ? "".concat(rootPathName, ".").concat(path).replace(/\./g, '_') : rootPathName;
+} // 是否为根节点
 
 function isRootNodePath(path) {
   return path.split(pathSeparator).length === 0;
@@ -323,6 +328,7 @@ function path2prop(path) {
 
 var vueUtils = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    nodePath2ClassName: nodePath2ClassName,
     isRootNodePath: isRootNodePath,
     computedCurPath: computedCurPath,
     deletePathVal: deletePathVal,
@@ -9027,21 +9033,22 @@ var SchemaField = {
     var isHiddenWidget = props.uiSchema['ui:widget'] === 'HiddenWidget' || props.uiSchema['ui:widget'] === 'hidden'; // functional 渲染多节点
 
     var renderList = [];
+    var pathClassName = nodePath2ClassName(context.props.curNodePath);
 
     if (schema.anyOf && schema.anyOf.length > 0 && !isSelect(schema)) {
+      var _class;
+
       // anyOf
       renderList.push(h(FIELDS_MAPS.anyOf, {
-        class: {
-          AnyOfField: true
-        },
+        class: (_class = {}, _defineProperty(_class, "".concat(pathClassName, "-anyOf"), true), _defineProperty(_class, "AnyOfField", true), _class),
         props: curProps
       }));
     } else if (schema.oneOf && schema.oneOf.length > 0 && !isSelect(schema)) {
+      var _class2;
+
       // oneOf
       renderList.push(h(FIELDS_MAPS.oneOf, {
-        class: {
-          OneOfField: true
-        },
+        class: (_class2 = {}, _defineProperty(_class2, "".concat(pathClassName, "-oneOf"), true), _defineProperty(_class2, "OneOfField", true), _class2),
         props: curProps
       }));
     } else {
@@ -9050,7 +9057,7 @@ var SchemaField = {
       renderList.push( // 渲染对应子组件
       fieldComponent && h(isHiddenWidget ? 'div' : fieldComponent, {
         props: _objectSpread2({}, curProps),
-        class: _objectSpread2(_objectSpread2({}, context.data.class), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, fieldComponent.name || fieldComponent, true), _defineProperty(_objectSpread2$1, "HiddenWidget", isHiddenWidget), _objectSpread2$1))
+        class: _objectSpread2(_objectSpread2({}, context.data.class), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, fieldComponent.name || fieldComponent, true), _defineProperty(_objectSpread2$1, "HiddenWidget", isHiddenWidget), _defineProperty(_objectSpread2$1, pathClassName, true), _objectSpread2$1))
       }));
     }
 
@@ -9099,9 +9106,6 @@ var ObjectField = {
         showDescription = _getUiOptions.showDescription;
 
     return h(__vue_component__, {
-      class: {
-        ObjectFieldWrap: true
-      },
       props: {
         title: title,
         description: description,
@@ -9258,9 +9262,6 @@ var StringField = {
     }
 
     return h(Widget, {
-      class: {
-        IntegerField: schema.type === 'integer'
-      },
       props: _objectSpread2(_objectSpread2({}, this.$props), widgetConfig)
     });
   }
@@ -9272,6 +9273,21 @@ var StringField = {
  */
 var NumberField = {
   name: 'NumberField',
+  props: vueProps,
+  render: function render(h) {
+    return h(StringField, {
+      props: this.$props,
+      on: this.$listeners
+    });
+  }
+};
+
+/**
+ * Created by Liu.Jun on 2020/4/21 9:24.
+ * IntegerField 复用StringField
+ */
+var IntegerField = {
+  name: 'IntegerField',
   props: vueProps,
   render: function render(h) {
     return h(StringField, {
@@ -9303,9 +9319,6 @@ var BooleanField = {
     widgetConfig.uiProps.enumOptions = enumOptions; // debugger;
 
     return h(Widget, {
-      class: {
-        BooleanFieldWrap: true
-      },
       props: _objectSpread2(_objectSpread2({}, this.$props), widgetConfig)
     });
   }
@@ -10215,6 +10228,51 @@ var SelectLinkageField = {
       if (index !== 0) return index; // 找不到默认等于原本的值
 
       return this.curSelectIndex || 0;
+    },
+    // 下拉选项 Vnode
+    getSelectBoxVnode: function getSelectBoxVnode() {
+      var _this = this;
+
+      // 下拉选项参数
+      var selectWidgetConfig = getWidgetConfig({
+        schema: {},
+        // 所有参数直接通过 uiSchema获取
+        uiSchema: this.uiSchema["".concat(this.combiningType, "Select")] || {} // 通过 uiSchema['oneOf'] 配置ui信息
+
+      }, function () {
+        return {
+          // 枚举参数
+          widget: 'SelectWidget'
+        };
+      }); // title description 回退到 schema 配置，但这里不使用 uiSchema配置
+      // select ui配置需要使用 (oneOf|anyOf)Select
+
+      Object.assign(selectWidgetConfig, {
+        label: selectWidgetConfig.label || this.schema.title,
+        description: selectWidgetConfig.description || this.schema.description
+      }); // 下拉列表枚举值
+
+      var uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
+      selectWidgetConfig.uiProps.enumOptions = this.selectList.map(function (option, index) {
+        return {
+          label: uiSchemaSelectList[index] && uiSchemaSelectList[index]['ui:title'] || option.title || "\u9009\u9879 ".concat(index + 1),
+          value: index
+        };
+      }); // oneOf option 渲染
+      // 选择框 vnode
+
+      return this.$createElement(Widget, {
+        class: _defineProperty({}, "fieldSelect_".concat(this.combiningType), true),
+        props: _objectSpread2({
+          isFormData: false,
+          curValue: this.curSelectIndex
+        }, selectWidgetConfig),
+        on: {
+          onChange: function onChange(event) {
+            _this.curSelectIndex = event;
+          }
+        }
+      });
     }
   },
   watch: {
@@ -10255,64 +10313,30 @@ var SelectLinkageField = {
     }
   },
   render: function render(h) {
-    var _this = this;
+    var _this2 = this,
+        _class4;
 
-    // 下拉选项参数
-    var selectWidgetConfig = getWidgetConfig({
-      schema: {},
-      // 所有参数直接通过 uiSchema获取
-      uiSchema: this.uiSchema["".concat(this.combiningType, "Select")] || {} // 通过 uiSchema['oneOf'] 配置ui信息
+    var pathClassName = nodePath2ClassName(this.$props.curNodePath); // object 需要保持原有属性，如果存在原有属性这里单独渲染
 
-    }, function () {
-      return {
-        // 枚举参数
-        widget: 'SelectWidget'
-      };
-    }); // title description 回退到 schema 配置，但这里不使用 uiSchema配置
-    // select ui配置需要使用 (oneOf|anyOf)Select
-
-    Object.assign(selectWidgetConfig, {
-      label: selectWidgetConfig.label || this.schema.title,
-      description: selectWidgetConfig.description || this.schema.description
-    });
-    var uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
-    selectWidgetConfig.uiProps.enumOptions = this.selectList.map(function (option, index) {
-      return {
-        label: uiSchemaSelectList[index] && uiSchemaSelectList[index]['ui:title'] || option.title || "\u9009\u9879 ".concat(index + 1),
-        value: index
-      };
-    }); // 选择框 vnode
-
-    var selectVnode = h(Widget, {
-      class: _defineProperty({}, "FieldSelect_".concat(this.combiningType), true),
-      props: _objectSpread2({
-        isFormData: false,
-        curValue: this.curSelectIndex
-      }, selectWidgetConfig),
-      on: {
-        onChange: function onChange(event) {
-          _this.curSelectIndex = event;
-        }
-      }
-    });
     var originVnode = null;
-    var childrenVnode = [selectVnode]; // object 需要保持原有属性，如果存在原有属性这里单独渲染
-
     var isTypeObject = this.schema.type === 'object' || this.schema.properties;
 
     if (isTypeObject && !isEmptyObject(this.schema.properties)) {
+      var _class2;
+
       var origSchema = Object.assign({}, this.schema);
       delete origSchema[this.combiningType];
       originVnode = h(SchemaField, {
-        class: _defineProperty({}, "".concat(this.combiningType, "_origin"), true),
+        class: (_class2 = {}, _defineProperty(_class2, "".concat(this.combiningType, "_originBox"), true), _defineProperty(_class2, "".concat(pathClassName, "-originBox"), true), _class2),
         props: _objectSpread2(_objectSpread2({}, this.$props), {}, {
           schema: origSchema // needValidFieldGroup: false // 单独校验，这里无需处理
 
         })
       });
-    } // 当前选中的oneOf vnode
-    // oneOf option 渲染
+    } // 选择附加的节点
 
+
+    var childrenVnode = [this.getSelectBoxVnode()]; // 当前选中的 oneOf 附加的节点
 
     var curSelectSchema = this.selectList[this.curSelectIndex];
 
@@ -10322,10 +10346,10 @@ var SelectLinkageField = {
       delete curSelectSchema[this.combiningType]; // 当前节点的ui err配置
 
       var userUiOptions = filterObject(getUserUiOptions(this.uiSchema), function (key) {
-        return key === _this.combiningType ? undefined : "ui:".concat(key);
+        return key === _this2.combiningType ? undefined : "ui:".concat(key);
       });
       var userErrOptions = filterObject(getUserErrOptions(this.errorSchema), function (key) {
-        return key === _this.combiningType ? undefined : "err:".concat(key);
+        return key === _this2.combiningType ? undefined : "err:".concat(key);
       });
       childrenVnode.push(h(SchemaField, {
         props: _objectSpread2(_objectSpread2({}, this.$props), {}, {
@@ -10355,9 +10379,9 @@ var SelectLinkageField = {
       }
     }));
     return h('div', [originVnode, h('div', {
-      class: _defineProperty({
-        AppendCombining_box: true
-      }, "".concat(this.combiningType, "_AppendCombining"), true)
+      class: (_class4 = {
+        appendCombining_box: true
+      }, _defineProperty(_class4, "".concat(this.combiningType, "_appendBox"), true), _defineProperty(_class4, "".concat(pathClassName, "-appendBox"), true), _class4)
     }, [childrenVnode])]);
   }
 };
@@ -10403,7 +10427,7 @@ var OneOfField = {
 var FIELDS_MAPS = {
   array: ArrayField,
   boolean: BooleanField,
-  integer: NumberField,
+  integer: IntegerField,
   number: NumberField,
   object: ObjectField,
   string: StringField,
@@ -11089,8 +11113,8 @@ __vue_render__$4._withStripped = true;
   /* style */
   const __vue_inject_styles__$4 = function (inject) {
     if (!inject) return
-    inject("data-v-25c5ccb1_0", { source: "\n.src-JsonSchemaForm-item-1UFV {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["D:\\code\\git_my\\vue-json-schema-form\\packages\\lib\\src\\JsonSchemaForm\\FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\r\n    <el-form-item :class=\"$style.item\">\r\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\r\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\r\n    </el-form-item>\r\n</template>\r\n\r\n<script>\r\n    export default {\r\n        name: 'FormFooter',\r\n        props: {\r\n            okBtn: {\r\n                type: String,\r\n                default: '保存'\r\n            },\r\n            cancelBtn: {\r\n                type: String,\r\n                default: '取消'\r\n            },\r\n        }\r\n    };\r\n</script>\r\n\r\n<style module>\r\n    .item {\r\n        text-align: right;\r\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\r\n        padding-top: 10px;\r\n    }\r\n</style>\r\n"]}, media: undefined });
-Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-1UFV"} });
+    inject("data-v-431cede5_0", { source: "\n.src-JsonSchemaForm-item-e4q8 {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["/Users/ryuushun/liujun/git/vue-element-schema-form/packages/lib/src/JsonSchemaForm/FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\n    <el-form-item :class=\"$style.item\">\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\n    </el-form-item>\n</template>\n\n<script>\n    export default {\n        name: 'FormFooter',\n        props: {\n            okBtn: {\n                type: String,\n                default: '保存'\n            },\n            cancelBtn: {\n                type: String,\n                default: '取消'\n            },\n        }\n    };\n</script>\n\n<style module>\n    .item {\n        text-align: right;\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\n        padding-top: 10px;\n    }\n</style>\n"]}, media: undefined });
+Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-e4q8"} });
 
   };
   /* scoped */
@@ -11145,7 +11169,7 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .HiddenWidget{display:none}.genFromComponent .el-color-picker{vertical-align:top}.genFromComponent .FieldGroupWrap+.FieldGroupWrap{margin-top:20px}.genFromComponent .FieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .FieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .FormItemErrorBox{color:#ff5757;padding-top:4px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:14px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .AppendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .AppendCombining_box .AppendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0}.genFromComponent .validateWidget .FormItemErrorBox{padding:5px 0;position:relative}.genFromComponent .ArrayField{margin-bottom:22px}.genFromComponent .ArrayField .ArrayField{margin-bottom:10px}.genFromComponent .ArrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .ArrayOrderList_item{position:relative;padding:25px 10px 20px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .ArrayOrderList_bottomAddBtn{padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:100%}.genFromComponent .ArrayListItem_content{-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto}.genFromComponent .ArrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .ArrayListItem_operateTool{position:absolute;height:25px;width:75px;right:10px;top:0;text-align:right;font-size:0}.genFromComponent .ArrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .ArrayListItem_btn:hover{opacity:.6}.genFromComponent .ArrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .ArrayListItem_orderBtn-bottom,.genFromComponent .ArrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .ArrayListItem_btn-delete{background-color:#fef0f0}";
+var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .HiddenWidget{display:none}.genFromComponent .el-color-picker{vertical-align:top}.genFromComponent .FieldGroupWrap+.FieldGroupWrap{margin-top:20px}.genFromComponent .FieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .FieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .FormItemErrorBox{color:#ff5757;padding-top:4px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:14px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0}.genFromComponent .validateWidget .FormItemErrorBox{padding:5px 0;position:relative}.genFromComponent .ArrayField{margin-bottom:22px}.genFromComponent .ArrayField .ArrayField{margin-bottom:10px}.genFromComponent .ArrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .ArrayOrderList_item{position:relative;padding:25px 10px 20px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .ArrayOrderList_bottomAddBtn{padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:100%}.genFromComponent .ArrayListItem_content{-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto}.genFromComponent .ArrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .ArrayListItem_operateTool{position:absolute;height:25px;width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .ArrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .ArrayListItem_btn:hover{opacity:.6}.genFromComponent .ArrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .ArrayListItem_orderBtn-bottom,.genFromComponent .ArrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .ArrayListItem_btn-delete{background-color:#fef0f0}";
 styleInject(css_248z);
 
 var JsonSchemaForm = {
@@ -11251,7 +11275,7 @@ var JsonSchemaForm = {
     return h('el-form', {
       class: _defineProperty({
         genFromComponent: true
-      }, "genFromComponent_".concat(this.schema.id, "Form"), true),
+      }, "genFromComponent_".concat(this.schema.id, "Form"), !!this.schema.id),
       ref: 'genEditForm',
       props: _objectSpread2({
         model: self.formData,
