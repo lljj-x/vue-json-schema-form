@@ -26,6 +26,7 @@ module.exports = {
         plugins: ['task-lists']
     },
     plugins: [
+        ['@vuepress/medium-zoom'],
         [
             require('./plugins/demo-container/src'),
             {

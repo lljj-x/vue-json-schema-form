@@ -21,15 +21,10 @@ yarn add @lljj/vue-json-schema-form
 * 暴露全局变量 `window.vueJsonSchemaForm`
 :::
 
-## 基本概念
-通过 schema 生对应的form表单
-* schema `title` 属性作为 form表单的标题
-* schema `description` 属性作为表单的描述
-
-具体效果参见下面demo，点击显示代码可查看源代码或者在codepen运行
-
 ## DEMO
-::: demo 这里代码省略导入和使用组件 // import VueForm from '@lljj/vue-json-schema-form';
+演示渲染用户信息的表单，点击显示代码可查看源代码或者在codepen运行
+
+::: demo
 ```html
 <template>
     <vue-form
@@ -85,6 +80,20 @@ export default {
 </script>
 ```
 :::
+
+## 基本概念
+通过 schema 生成对应的form表单
+* schema `title` 属性作为 form表单的标题
+* schema `description` 属性作为表单的描述
+
+基于组件递归的形式，逐级渲染数据，如下图：（点击放大）
+![class pathName](/Vjsf.jpg)
+
+其中涉及到两个概念，`Field`、`Widget`
+* `Field` 用来渲染每一个节点对应的组件，可以是任意节点，一般包含 `FormItem` 组件
+* `Widget` 用来渲染用户输入信息的组件，如 `input` ，`select`，被 `FormItem` 组件包裹
+> `Field` `Widget` 都可以通过`uiSchema`自定义，
+> 详细方法可以查看 [自定义Field](/zh/guide/adv-config.html#自定义field)、[自定义Widget](/zh/guide/adv-config.html#自定义widget)
 
 ## 说明
 * 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成对应的form表单

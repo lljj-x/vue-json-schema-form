@@ -85,7 +85,7 @@ export default {
 > 运行如下：
 
 ## DEMO
-::: demo 这里代码省略导入和使用组件 // import VueForm from '@lljj/vue-json-schema-form';
+::: demo
 ```html
 <template>
     <vue-form

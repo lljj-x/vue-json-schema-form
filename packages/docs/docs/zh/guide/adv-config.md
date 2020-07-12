@@ -242,7 +242,7 @@ export default {
 查看详细 [uiSchema重置表单widget样式](/zh/guide/basic-config.html#如：重置表单widget样式)
 
 ### 根据当前表单渲染的节点类名重置样式
-在渲染form表单时会根据schema的数据结构对每个 `field` 渲染节点生成唯一的 `path` 路径，并标记在class中，可通过该class类名来重置某个局部样式。
+在渲染form表单时会根据schema的数据结构对每个 `field` 渲染节点生成唯一的 `path` 路径，并标记在class属性中，可通过该class选择器来重置某个局部样式。
 
 如：
 ![class pathName](/pathName.png)
@@ -251,7 +251,61 @@ export default {
 所有标记为路径的css类名，统一为 `__path` 前缀，其中 `anyOf`，`oneOf` 同一个path 路径可能存在多处渲染，会存在重复 path class
 :::
 
-## 自定义 field
+## 自定义Widget
+自定义Widget通过配置 `uiSchema` `ui:widget`字段
 
-## 自定义 widget
+* 类型：`String` | `Object` | `Function`
 
+> 可直接传入Vue组件，或者已注的组件名（通过 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0) 创建Vnode）
+
+:::tip
+自定义的 Widget 必须接受一个双向绑定的值
+:::
+
+:::demo 演示自定义 Widget
+```html
+<template>
+    <vue-form
+        v-model="formData"
+        :schema="schema"
+        :ui-schema="uiSchema"
+    >
+    </vue-form>
+</template>
+<script>
+   export default {
+        data() {
+            return {
+                formData: {},
+                schema: {
+                    title: '自定义Widget',
+                    type: 'object',
+                    properties: {
+                        numberEnumRadio: {
+                            type: 'number',
+                            title: '重置为 Radio 渲染',
+                            enum: [1, 2, 3],
+                            enumNames: ['Radio - 1', 'Radio - 2', 'Radio - 3']
+                        }
+                    }
+                },
+                uiSchema: {
+                    numberEnumRadio: {
+                        'ui:widget': 'RadioWidget'
+                        // 'ui:widget': {
+                        //     name: 'TestWidget',
+                        //     props: {
+                        //         value: {}
+                        //     }
+                        // }
+                    }
+                }
+            }
+        }
+   }
+</script>
+```
+:::
+
+
+## 自定义Field
