@@ -65,9 +65,6 @@ export default {
         return h(
             FieldGroupWrap,
             {
-                class: {
-                    ObjectFieldWrap: true
-                },
                 props: {
                     title,
                     description,

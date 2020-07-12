@@ -12,6 +12,9 @@ import StringField from '../fields/StringField';
 import NumberField from '../fields/NumberField';
 
 // eslint-disable-next-line import/no-cycle
+import IntegerField from '../fields/IntegerField';
+
+// eslint-disable-next-line import/no-cycle
 import BooleanField from '../fields/BooleanField';
 
 // eslint-disable-next-line import/no-cycle
@@ -27,7 +30,7 @@ import OneOfField from '../fields/combiningSchemas/OneOfField';
 const FIELDS_MAPS = {
     array: ArrayField,
     boolean: BooleanField,
-    integer: NumberField,
+    integer: IntegerField,
     number: NumberField,
     object: ObjectField,
     string: StringField,

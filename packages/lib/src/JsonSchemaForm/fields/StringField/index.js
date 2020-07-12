@@ -37,9 +37,6 @@ export default {
         return h(
             Widget,
             {
-                class: {
-                    IntegerField: schema.type === 'integer'
-                },
                 props: {
                     ...this.$props,
                     ...widgetConfig

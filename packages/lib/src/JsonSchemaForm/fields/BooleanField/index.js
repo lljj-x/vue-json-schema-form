@@ -32,9 +32,6 @@ export default {
         return h(
             Widget,
             {
-                class: {
-                    BooleanFieldWrap: true
-                },
                 props: {
                     ...this.$props,
                     ...widgetConfig
