@@ -256,13 +256,14 @@ export default {
 
 * 类型：`String` | `Object` | `Function`
 
-> 可直接传入Vue组件，或者已注的组件名（通过 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0) 创建Vnode）
+> 可直接传入Vue组件，或者已注的组件名，或者resolve 了Vue组件的 async 函数
 
 :::tip
-自定义的 Widget 必须接受一个双向绑定的值
+* 自定义的 `Widget` 必须接受一个双向绑定的值
+* 通过 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0) 创建Vnode
 :::
 
-:::demo 演示自定义 Widget
+:::demo async function 重置，在实际项目中，实际只需要 `() => import('./xxx.vue')`;
 ```html
 <template>
     <vue-form
@@ -280,10 +281,16 @@ export default {
                 schema: {
                     title: '自定义Widget',
                     type: 'object',
+                    required: ['inputText', 'numberEnumRadio'],
                     properties: {
+                        inputText: {
+                            title: '通过async function重置为span标签',
+                            type: 'string',
+                            default: String(new Date())
+                        },
                         numberEnumRadio: {
                             type: 'number',
-                            title: '重置为 Radio 渲染',
+                            title: '通过组件名(重置为 Radio 渲染)',
                             enum: [1, 2, 3],
                             enumNames: ['Radio - 1', 'Radio - 2', 'Radio - 3']
                         }
@@ -292,12 +299,31 @@ export default {
                 uiSchema: {
                     numberEnumRadio: {
                         'ui:widget': 'RadioWidget'
-                        // 'ui:widget': {
-                        //     name: 'TestWidget',
-                        //     props: {
-                        //         value: {}
-                        //     }
-                        // }
+                    },
+                    inputText: {
+                        'ui:widget': () => Promise.resolve({
+                            name: 'TestAsyncWidget',
+                            props: {
+                                value: {
+                                    type: null,
+                                    default: ''
+                                }
+                            },
+                            render(h) {
+                                return h('div', {style: { padding: '4px', boxShadow: '0 0  4px 1px rgba(0,0,0,0.1)' }}, [
+                                    h('button', {
+                                        attrs: {type: 'button'},
+                                        style: {marginRight: '6px'},
+                                        on: {
+                                            click: () => {
+                                                this.$emit('input', String(new Date()))
+                                            }
+                                        }
+                                    }, '点击更新时间'),
+                                    h('span', this.value),
+                                ]);
+                            }
+                        }),
                     }
                 }
             }
