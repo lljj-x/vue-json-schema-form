@@ -256,11 +256,12 @@ export default {
 
 * 类型：`String` | `Object` | `Function`
 
-> 可直接传入Vue组件，或者已注的组件名，或者resolve 了Vue组件的 async 函数
+可直接传入Vue组件，或者已注的组件名，或者resolve 了Vue组件的 async 函数，参加 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0)，通过调用 `$createElement` 创建 `Vnode` 。
+
+* 使用场景：需要自定义输入组件，比如结合业务的`图片上传` `商品选择` 等等
 
 :::tip
-* 自定义的 `Widget` 必须接受一个双向绑定的值
-* 通过 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0) 创建Vnode
+* 自定义的 `Widget` 组件必须接受一个双向绑定的值
 :::
 
 :::demo async function 重置，在实际项目中，实际只需要 `() => import('./xxx.vue')`;
@@ -335,3 +336,20 @@ export default {
 
 
 ## 自定义Field
+自定义Field通过配置 `uiSchema` `ui:field` 字段
+
+* 类型：String | Object | Function
+
+可直接传入Vue组件，或者已注的组件名，或者resolve 了Vue组件的 async 函数，参加 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0)，通过调用 `$createElement` 创建 `Vnode` 。
+> 参数格式和 [自定义Widget](#自定义widget) 一致
+
+* 使用场景：需要完全自定义某个节点的场景，相对比较复杂
+
+1. 自定义Filed需要实现Field以及其子节点的渲染校验逻辑，你也可以在子节点中继续调用 `Vjsf`的`SchemaField`组件，再交给`Vjsf`去继续渲染。
+1. 组件内部一般会包含 `FormItem`，`校验规则`，`Widget` 输入组件
+
+ `Field组件` 会接受一下参数：
+ ```js
+...todo
+```
+
