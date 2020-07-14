@@ -348,8 +348,59 @@ export default {
 1. 自定义Filed需要实现Field以及其子节点的渲染校验逻辑，你也可以在子节点中继续调用 `Vjsf`的`SchemaField`组件，再交给`Vjsf`去继续渲染。
 1. 组件内部一般会包含 `FormItem`，`校验规则`，`Widget` 输入组件
 
- `Field组件` 会接受一下参数：
+`Field组件` 会接受以下参数：
+:::demo showCode:查看看发双发赛扥
  ```js
-...todo
+{
+    // 当前节点schema
+    schema: {
+         type: Object,
+         default: () => ({})
+     },
+
+    // 当前节点Ui Schema
+     uiSchema: {
+         type: Object,
+         default: () => ({})
+     },
+
+     // 当前节点Error Schema
+     errorSchema: {
+         type: Object,
+         default: () => ({})
+     },
+
+     // 自定义校验规则
+     customFormats: {
+         type: Object,
+         default: () => ({})
+     },
+
+     // 跟节点 Schema
+     rootSchema: {
+         type: Object,
+         default: () => ({})
+     },
+
+     // 根节点数据
+     rootFormData: {
+         type: null,
+         default: () => ({})
+     },
+
+     // 当前节点路径
+     curNodePath: {
+         type: String,
+         default: ''
+     },
+
+     // 是否必填
+     required: {
+         type: Boolean,
+         default: false
+     }
+}
+
 ```
+:::
 

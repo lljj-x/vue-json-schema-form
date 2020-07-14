@@ -6,12 +6,15 @@
         @mouseleave="hovering = false"
     >
         <div class="demo-content">
-            <ClientOnly>
+            <div v-if="isOnlyShowCodeText">
+                {{ isOnlyShowCodeText }}
+            </div>
+            <ClientOnly v-else>
                 <slot name="demo"></slot>
             </ClientOnly>
         </div>
         <div class="meta" ref="meta">
-            <div class="description" v-if="$slots.description">
+            <div class="description" v-if="!isOnlyShowCodeText && $slots.description">
                 <slot name="description"></slot>
             </div>
             <div class="code-content">
@@ -31,7 +34,7 @@
             <transition name="text-slide">
                 <span v-show="hovering">{{ controlText }}</span>
             </transition>
-            <div class="demoContainer_buttonToolBox">
+            <div v-if="!isOnlyShowCodeText" class="demoContainer_buttonToolBox">
                 <span
                     :class="['demoContainer_button demoContainer_button-copyAction', { 'copying ': copied }]"
                     @click.stop="copyCode"
@@ -77,6 +80,20 @@
             //         jsfiddle: false
             //     }
             // },
+            isOnlyShowCodeText() {
+                try {
+                    const text = this.$slots.description && this.$slots.description[0].children[0].children[0].text;
+
+                    const regText = /^\s*showCode:/;
+                    if (regText.test(text)) {
+                        return text.replace(regText, '');
+                    }
+                } catch (e) {
+                    // nothing ...
+                }
+
+                return false;
+            },
             compoLang() {
                 return this.options.locales || defaultLang
             },
