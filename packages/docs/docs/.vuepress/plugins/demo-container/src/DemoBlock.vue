@@ -6,7 +6,8 @@
         @mouseleave="hovering = false"
     >
         <div class="demo-content">
-            <div v-if="isOnlyShowCodeText">
+            <div v-if="isOnlyShowCodeText"
+                 style="font-size: 14px;padding: 0.1rem 1.5rem; border-left-width: 0.5rem;border-left-style: solid;border-color: #42b983;">
                 {{ isOnlyShowCodeText }}
             </div>
             <ClientOnly v-else>

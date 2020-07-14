@@ -95,6 +95,12 @@ export default {
 > `Field` `Widget` 都可以通过`uiSchema`自定义，
 > 详细方法可以查看 [自定义Field](/zh/guide/adv-config.html#自定义field)、[自定义Widget](/zh/guide/adv-config.html#自定义widget)
 
+## 暴露方法
+export xxx..x.x.x
+
+todo: xx
+
+
 ## 说明
 * 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成对应的form表单
 * 快速配置个性化ui视图和校验错误信息，可适配常用的ui库，目前的版本默认视图依赖elementUi，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
