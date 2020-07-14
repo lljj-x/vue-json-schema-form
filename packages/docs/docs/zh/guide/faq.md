@@ -3,7 +3,7 @@
 ## Json schema object required
 背景：
 * json schema object required 包含的属性值只有为 `undefined` 校验才会会返回 `false`
-* javascript 里面 `undefined` `0` `空字符串` `null` 等转成 `bool` 类型都为 `false`
+* javascript 里面 `undefined` `0` `空字符串` `null` 等转成 `boolean` 类型都为 `false`
 
 为了抹平以上的差异性，在表单元素输入值时，当你的输入值变为空字符串 `''` ，会自动处理为 `undefined` 这样来和 `json schema` 规范保持一致。
 

@@ -10,6 +10,11 @@ npm install --save @lljj/vue-json-schema-form
 yarn add @lljj/vue-json-schema-form
 ```
 
+使用
+```js
+import VueForm from '@lljj/vue-json-schema-form';
+```
+
 全局引入
 ```html
 # script引入
@@ -96,10 +101,40 @@ export default {
 > 详细方法可以查看 [自定义Field](/zh/guide/adv-config.html#自定义field)、[自定义Widget](/zh/guide/adv-config.html#自定义widget)
 
 ## 暴露方法
-export xxx..x.x.x
+```js
+import VueForm, {
+    getDefaultFormState,
+    fieldProps,
+    vueUtils,
+    formUtils,
+    schemaValidate,
+    i18n
+} from '@lljj/vue-json-schema-form';
+```
 
-todo: xx
+####  VueForm
+默认导出 VueForm组件
 
+#### getDefaultFormState
+通过jsonSchema 计算当前`FormState`的值
+* 参数：(schema, formData, rootSchema, includeUndefinedValues)
+
+>* schema `object` 需要计算的schema
+>* formData `object` 当前的 formData 值，没有可以传 `undefined`
+>* rootSchema `object` 需要计算的schema的根节点schema
+>* includeUndefinedValues `boolean` 是否包含未定义的值 ，默认 `true`
+
+#### fieldProps
+Field props配置，如果需要使用 `ui:field` 自定义field 组件，需要使用它定义组件props
+
+#### vueUtils
+提供一些内部Vue相关的utils方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/vueUtils.js)
+
+#### formUtils
+提供一些内部Form相关的utils方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/formUtils.js)
+
+#### schemaValidate
+提供一些内部校验schema相关的方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/schema/validate.js)
 
 ## 说明
 * 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成对应的form表单

@@ -284,7 +284,7 @@ function mergeSchemaAllOf(...args) {
                     }
                 }
             } else if (left !== undefined && right !== undefined) {
-                // 两边都不是 undefined - 基础数据类型 string number bool...
+                // 两边都不是 undefined - 基础数据类型 string number boolean...
                 if (key === 'maxLength' || key === 'maximum' || key === 'maxItems' || key === 'exclusiveMaximum' || key === 'maxProperties') {
                     acc[key] = Math.min(left, right);
                 } else if (key === 'minLength' || key === 'minimum' || key === 'minItems' || key === 'exclusiveMinimum' || key === 'minProperties') {
