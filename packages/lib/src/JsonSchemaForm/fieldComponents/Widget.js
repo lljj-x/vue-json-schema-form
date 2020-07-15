@@ -5,11 +5,8 @@
 import {
     isRootNodePath, path2prop, getPathVal, setPathVal
 } from '../common/vueUtils';
-import { getUserErrOptions } from '../common/formUtils';
 
 import { validateFormDataAndTransformMsg } from '../common/schema/validate';
-
-import i18n from '../i18n';
 
 export default {
     name: 'Widget',
@@ -142,86 +139,21 @@ export default {
                         rules: [
                             {
                                 validator(rule, value, callback) {
-                                    if (isRootNode) {
-                                        value = self.rootFormData;
-                                    }
+                                    if (isRootNode) value = self.rootFormData;
 
-                                    // isEmpty 校验
-                                    const isEmpty = value === undefined;
-                                    if (self.required) {
-                                        if (isEmpty) {
-                                            const requireErrObj = {
-                                                keyword: 'required',
-                                                params: {
-                                                    missingProperty: path2prop(self.curNodePath)
-                                                }
-                                            };
-
-                                            // 处理多语言require提示信息 （ajv 修改原引用）
-                                            i18n.getCurrentLocalize()([requireErrObj]);
-
-                                            // errorSchema 配置覆盖错误信息
-                                            return callback(getUserErrOptions(self.errorSchema).required || requireErrObj.message);
-                                        }
-                                    } else if (isEmpty) {
-                                        // 非required 为空 校验通过
-                                        return callback();
-                                    }
-
-                                    // 校验是通过逐级展开校验 这里只捕获同级错误信息
-                                    // 如 object对minProperties. maxProperties. oneOf属性
-                                    const isOnlyValidate = !self.widget; // 单纯的校验器 不包含输入组件
-
+                                    // 校验是通过逐级展开校验 这里只捕获根节点错误
                                     const errors = validateFormDataAndTransformMsg({
                                         formData: value,
                                         schema: self.$props.schema,
                                         customFormats: self.$props.customFormats,
                                         errorSchema: self.errorSchema,
-                                        filterRootNodeError: true,
-                                        isOnlyValidate
+                                        required: self.required,
+                                        propPath: path2prop(self.curNodePath),
+                                        filterRootNodeError: true, // 过滤根节点错误
                                     });
 
                                     if (errors.length > 0) return callback(errors[0].message);
                                     return callback();
-
-                                    // // schema ajv 校验
-                                    // const error = validateFormData({
-                                    //     formData: value,
-                                    //     schema: self.$props.schema,
-                                    //     customFormats: self.$props.customFormats
-                                    // });
-
-                                    // const errors = error.errors.filter((item) => {
-                                    //     // 常规数据输入组件
-                                    //     if (!isOnlyValidate) return item.property === '';
-                                    //
-                                    //     // 校验组件
-                                    //     const schemaPathValidList = [
-                                    //         '#/oneOf',
-                                    //         '#/anyOf',
-                                    //         '#/minProperties',
-                                    //         '#/maxProperties',
-                                    //         '#/contains',
-                                    //         '#/minItems',
-                                    //         '#/maxItems',
-                                    //         '#/uniqueItems',
-                                    //     ];
-                                    //
-                                    //     return item.property === '' && schemaPathValidList.includes(item.schemaPath);
-                                    // });
-                                    //
-                                    // if (errors.length > 0) {
-                                    //     const curErr = errors[0];
-                                    //     const curErrMsg = getUserErrOptions(self.errorSchema)[curErr.name] || curErr.message;
-                                    //
-                                    //     // 强制置空错误信息 会直接校验通过
-                                    //     if (curErrMsg) {
-                                    //         // errorSchema 错误信息
-                                    //         return callback(curErrMsg);
-                                    //     }
-                                    // }
-                                    //
-                                    // return callback();
                                 },
                                 trigger: 'blur'
                             }

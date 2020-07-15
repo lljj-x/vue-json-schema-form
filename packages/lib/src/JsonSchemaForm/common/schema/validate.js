@@ -146,7 +146,6 @@ export default function validateFormData({
     };
 }
 
-
 // 校验formData 并转换错误信息
 export function validateFormDataAndTransformMsg({
     formData,
@@ -155,11 +154,39 @@ export function validateFormDataAndTransformMsg({
     additionalMetaSchemas = [],
     customFormats = {},
     errorSchema,
+    required = false,
+    propPath = '',
     filterRootNodeError = false, // 是否过滤根节点错误
     isOnlyFirstError = true, // 只取第一条错误信息
-    isOnlyValidate = false // array object anyOf oneOf 附件的专用校验组件
 } = {}) {
-    let errors = validateFormData({
+    // 校验required信息 isEmpty 校验
+    const isEmpty = formData === undefined;
+    if (required) {
+        if (isEmpty) {
+            const requireErrObj = {
+                keyword: 'required',
+                params: {
+                    missingProperty: propPath
+                }
+            };
+
+            // 用户设置校验信息
+            const errSchemaMsg = getUserErrOptions(errorSchema).required;
+            if (errSchemaMsg) {
+                requireErrObj.message = errSchemaMsg;
+            } else {
+                // 处理多语言require提示信息 （ajv 修改原引用）
+                i18n.getCurrentLocalize()([requireErrObj]);
+            }
+            return [requireErrObj];
+        }
+    } else if (isEmpty) {
+        // 非required 为空 校验通过
+        return [];
+    }
+
+    // 校验ajv错误信息
+    let ajvErrors = validateFormData({
         formData,
         schema,
         transformErrors,
@@ -169,27 +196,13 @@ export function validateFormDataAndTransformMsg({
 
     // 过滤顶级错误
     if (filterRootNodeError) {
-        errors = errors.filter((item) => {
-            // 常规数据输入组件
-            if (!isOnlyValidate) return item.property === '';
-
-            // 纯粹校验组件
-            const schemaPathValidList = [
-                '#/oneOf',
-                '#/anyOf',
-                '#/minProperties',
-                '#/maxProperties',
-                '#/contains',
-                '#/minItems',
-                '#/maxItems',
-                '#/uniqueItems',
-            ];
-
-            return item.property === '' && schemaPathValidList.includes(item.schemaPath);
-        });
+        ajvErrors = ajvErrors.filter(
+            item => item.property === ''
+                && (!item.schemaPath.includes('#/anyOf/') && !item.schemaPath.includes('#/oneOf/'))
+        );
     }
 
-    return (isOnlyFirstError && errors.length > 0 ? [errors[0]] : errors).reduce((preErrors, errorItem) => {
+    return (isOnlyFirstError && ajvErrors.length > 0 ? [ajvErrors[0]] : ajvErrors).reduce((preErrors, errorItem) => {
         // 优先获取 errorSchema 配置
         errorItem.message = getUserErrOptions(errorSchema)[errorItem.name] || errorItem.message;
         preErrors.push(errorItem);
