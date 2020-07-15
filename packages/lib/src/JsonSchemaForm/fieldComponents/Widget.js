@@ -275,3 +275,39 @@ export default {
         );
     }
 };
+
+
+const xx = {
+    id: 'MultipleImgLink',
+    type: 'object',
+    definitions: {
+        ImgItem: {
+            type: 'object',
+            properties: {
+                imgUrl: {
+                    type: 'string',
+                    format: 'uri'
+                },
+                imgLink: {
+                    type: 'string',
+                    format: 'uri'
+                }
+            },
+            required: [
+                'imgUrl',
+                'imgLink'
+            ]
+        }
+    },
+    properties: {
+        imgItem1_1: {
+            $ref: '#/definitions/ImgItem'
+        },
+        imgItem2_1: {
+            $ref: '#/definitions/ImgItem'
+        },
+        imgItem2_2: {
+            $ref: '#/definitions/ImgItem'
+        }
+    }
+};

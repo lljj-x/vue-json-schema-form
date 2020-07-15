@@ -87,7 +87,7 @@ export default {
 :::
 
 ## 基本概念
-通过 schema 生成对应的form表单
+通过 `jsonSchema` 生成对应的form表单
 * schema `title` 属性作为 form表单的标题
 * schema `description` 属性作为表单的描述
 
@@ -95,7 +95,7 @@ export default {
 ![class pathName](/Vjsf.jpg)
 
 其中涉及到两个概念，`Field`、`Widget`
-* `Field` 用来渲染每一个节点对应的组件，可以是任意节点，一般包含 `FormItem` 组件
+* `Field` 用来渲染每一个节点对应的组件，可以是任意节点，一般组件内会包含 `FormItem` 组件
 * `Widget` 用来渲染用户输入信息的组件，如 `input` ，`select`，被 `FormItem` 组件包裹
 > `Field` `Widget` 都可以通过`uiSchema`自定义，
 > 详细方法可以查看 [自定义Field](/zh/guide/adv-config.html#自定义field)、[自定义Widget](/zh/guide/adv-config.html#自定义widget)
@@ -116,7 +116,7 @@ import VueForm, {
 默认导出 VueForm组件
 
 #### getDefaultFormState
-通过jsonSchema 计算当前`FormState`的值
+通过 `jsonSchema` 计算当前 `FormState` 的值
 * 参数：(schema, formData, rootSchema, includeUndefinedValues)
 
 >* schema `object` 需要计算的schema
@@ -124,17 +124,23 @@ import VueForm, {
 >* rootSchema `object` 需要计算的schema的根节点schema
 >* includeUndefinedValues `boolean` 是否包含未定义的值 ，默认 `true`
 
+> 不使用 `uiSchema` `ui:field` 一般不会使用
+
 #### fieldProps
 Field props配置，如果需要使用 `ui:field` 自定义field 组件，需要使用它定义组件props
+> 不使用 `uiSchema` `ui:field` 一般不会使用
 
 #### vueUtils
 提供一些内部Vue相关的utils方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/vueUtils.js)
+> 不使用 `uiSchema` `ui:field` 一般不会使用
 
 #### formUtils
 提供一些内部Form相关的utils方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/formUtils.js)
+> 不使用 `uiSchema` `ui:field` 一般不会使用
 
 #### schemaValidate
 提供一些内部校验schema相关的方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/schema/validate.js)
+> 不使用 `uiSchema` `ui:field` 一般不会使用
 
 ## 说明
 * 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成对应的form表单

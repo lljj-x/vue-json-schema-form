@@ -62,7 +62,6 @@
         props: fieldProps,
         data() {
             return {
-                selectPhotoVisible: false,
                 schemaValidate,
                 vueUtils
             };
@@ -73,9 +72,11 @@
                 return this.schema.required.length > 0;
             },
             placeholder() {
-                const { uiSchema } = this.$props;
-                return (uiSchema.imgLink && uiSchema.imgLink['ui:options'] && uiSchema.imgLink['ui:options'].placeholder)
-                    || '请输入合法的链接';
+                const imgLinkOptions = formUtils.getUiOptions({
+                    schema: this.schema.properties.imgLink,
+                    uiSchema: this.uiSchema.imgLink || {}
+                });
+                return imgLinkOptions.placeholder || '请输入合法的链接';
             },
             selectProps() {
                 return formUtils.getUiOptions({
@@ -124,9 +125,6 @@
                 ];
                 this.$message.success('选择图片成功，这里随机一个图片');
                 this.imgUrl = imgs[Math.floor(Math.random() * imgs.length)];
-            },
-            handleImageSelected(data) {
-                this.imgUrl = data[0];
             }
         }
     };

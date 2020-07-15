@@ -409,7 +409,74 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
 ```
 
 * 演示：对图片和链接配置需要定义自己的ui效果
-> 当前的演示demo不支持import语法，所以这里不能直接演示，详细的代码可以点击这里查看 github.com/xxx/xx/
+
+:::demo ui:emptyValue 设置和不设置的区别
+```html
+<template>
+    <vue-form
+        v-model="formData"
+        :schema="schema"
+        :ui-schema="uiSchema"
+    >
+        <div slot-scope="{ formData, formRefFn }">
+            <pre style="background-color: #eee;">{{ JSON.stringify(formData, null, 4) }}</pre>
+        </div>
+    </vue-form>
+</template>
+<script>
+   export default {
+        data() {
+            return {
+                formData: {},
+                schema: {
+                    id: 'MultipleImgLink',
+                        type: 'object',
+                        definitions: {
+                            ImgItem: {
+                                type: 'object',
+                                properties: {
+                                    imgUrl: {
+                                        title: '图片文件地址',
+                                        type: 'string',
+                                        format: 'uri'
+                                    },
+                                    imgLink: {
+                                        title: '图片链接地址',
+                                        type: 'string',
+                                        format: 'uri'
+                                    }
+                                },
+                                required: [
+                                    'imgUrl',
+                                    'imgLink'
+                                ]
+                            }
+                        },
+                        properties: {
+                            imgItem1: {
+                                $ref: '#/definitions/ImgItem'
+                            },
+                            imgItem2: {
+                                $ref: '#/definitions/ImgItem'
+                            }
+                        }
+                },
+                uiSchema: {
+                    imgItem1: {
+                        'ui:title': '图片1（配置ui:field）',
+                        'ui:field': 'LinkImgField',
+                    },
+                    imgItem2: {
+                        'ui:title': '图片2（不配置ui:field）',
+                    }
+                }
+            }
+        }
+   }
+</script>
+:::
+
+> 当前的演示demo不支持import语法，所以这里不能直接演示，详细的代码可以[点击这里查看](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/demo/src/vue-editor/views/editor/fieldComponents/linkImgField)
 
 `LinkImgField` 代码如下：
 ```html
