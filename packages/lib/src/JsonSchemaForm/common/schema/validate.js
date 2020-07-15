@@ -72,7 +72,7 @@ function transformAjvErrors(errors = []) {
  * @param customFormats 添加 ajv 自定义 formats
  * @returns {{errors: ([]|{stack: string, schemaPath: *, name: *, property: string, message: *, params: *}[])}}
  */
-export default function validateFormData({
+export default function ajvValidateFormData({
     formData,
     schema,
     transformErrors,
@@ -186,7 +186,7 @@ export function validateFormDataAndTransformMsg({
     }
 
     // 校验ajv错误信息
-    let ajvErrors = validateFormData({
+    let ajvErrors = ajvValidateFormData({
         formData,
         schema,
         transformErrors,
