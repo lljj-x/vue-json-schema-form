@@ -7,7 +7,7 @@ import {
 } from '../common/vueUtils';
 import { getUserErrOptions } from '../common/formUtils';
 
-import validateFormData from '../common/schema/validate';
+import { validateFormDataAndTransformMsg } from '../common/schema/validate';
 
 import i18n from '../i18n';
 
@@ -168,49 +168,60 @@ export default {
                                         return callback();
                                     }
 
-                                    // schema ajv 校验
-                                    const error = validateFormData({
-                                        formData: value,
-                                        schema: self.$props.schema,
-                                        customFormats: self.$props.customFormats
-                                    });
-
                                     // 校验是通过逐级展开校验 这里只捕获同级错误信息
                                     // 如 object对minProperties. maxProperties. oneOf属性
                                     const isOnlyValidate = !self.widget; // 单纯的校验器 不包含输入组件
 
-                                    const errors = error.errors.filter((item) => {
-                                        // 常规数据输入组件
-                                        if (!isOnlyValidate) return item.property === '';
-
-                                        // 校验组件
-                                        const schemaPathValidList = [
-                                            '#/oneOf',
-                                            '#/anyOf',
-                                            '#/minProperties',
-                                            '#/maxProperties',
-                                            '#/contains',
-                                            '#/minItems',
-                                            '#/maxItems',
-                                            '#/uniqueItems',
-                                        ];
-
-                                        return item.property === ''
-                                            && schemaPathValidList.some(schemaPathItem => item.schemaPath === schemaPathItem);
+                                    const errors = validateFormDataAndTransformMsg({
+                                        formData: value,
+                                        schema: self.$props.schema,
+                                        customFormats: self.$props.customFormats,
+                                        errorSchema: self.errorSchema,
+                                        filterRootNodeError: true,
+                                        isOnlyValidate
                                     });
 
-                                    if (errors.length > 0) {
-                                        const curErr = errors[0];
-                                        const curErrMsg = getUserErrOptions(self.errorSchema)[curErr.name] || curErr.message;
-
-                                        // 强制置空错误信息 会直接校验通过
-                                        if (curErrMsg) {
-                                            // errorSchema 错误信息
-                                            return callback(curErrMsg);
-                                        }
-                                    }
-
+                                    if (errors.length > 0) return callback(errors[0].message);
                                     return callback();
+
+                                    // // schema ajv 校验
+                                    // const error = validateFormData({
+                                    //     formData: value,
+                                    //     schema: self.$props.schema,
+                                    //     customFormats: self.$props.customFormats
+                                    // });
+
+                                    // const errors = error.errors.filter((item) => {
+                                    //     // 常规数据输入组件
+                                    //     if (!isOnlyValidate) return item.property === '';
+                                    //
+                                    //     // 校验组件
+                                    //     const schemaPathValidList = [
+                                    //         '#/oneOf',
+                                    //         '#/anyOf',
+                                    //         '#/minProperties',
+                                    //         '#/maxProperties',
+                                    //         '#/contains',
+                                    //         '#/minItems',
+                                    //         '#/maxItems',
+                                    //         '#/uniqueItems',
+                                    //     ];
+                                    //
+                                    //     return item.property === '' && schemaPathValidList.includes(item.schemaPath);
+                                    // });
+                                    //
+                                    // if (errors.length > 0) {
+                                    //     const curErr = errors[0];
+                                    //     const curErrMsg = getUserErrOptions(self.errorSchema)[curErr.name] || curErr.message;
+                                    //
+                                    //     // 强制置空错误信息 会直接校验通过
+                                    //     if (curErrMsg) {
+                                    //         // errorSchema 错误信息
+                                    //         return callback(curErrMsg);
+                                    //     }
+                                    // }
+                                    //
+                                    // return callback();
                                 },
                                 trigger: 'blur'
                             }
@@ -273,41 +284,5 @@ export default {
                 )
             ]
         );
-    }
-};
-
-
-const xx = {
-    id: 'MultipleImgLink',
-    type: 'object',
-    definitions: {
-        ImgItem: {
-            type: 'object',
-            properties: {
-                imgUrl: {
-                    type: 'string',
-                    format: 'uri'
-                },
-                imgLink: {
-                    type: 'string',
-                    format: 'uri'
-                }
-            },
-            required: [
-                'imgUrl',
-                'imgLink'
-            ]
-        }
-    },
-    properties: {
-        imgItem1_1: {
-            $ref: '#/definitions/ImgItem'
-        },
-        imgItem2_1: {
-            $ref: '#/definitions/ImgItem'
-        },
-        imgItem2_2: {
-            $ref: '#/definitions/ImgItem'
-        }
     }
 };

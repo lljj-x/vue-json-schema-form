@@ -20,7 +20,7 @@ import {
     scm
 } from '../utils';
 
-import validateFormData, { getMatchingOption } from './validate';
+import { isValid, getMatchingOption } from './validate';
 
 // 自动添加分割线
 
@@ -163,11 +163,8 @@ function withExactlyOneSubschema(
                     [dependencyKey]: conditionPropertySchema,
                 },
             };
-            const { errors } = validateFormData({
-                formData,
-                schema: conditionSchema
-            });
-            return errors.length === 0;
+
+            return isValid(conditionSchema, formData);
         }
     });
     if (validSubschemas.length !== 1) {

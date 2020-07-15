@@ -4,6 +4,7 @@ import i18n from '../../i18n';
 import {
     isObject, deepEquals
 } from '../utils';
+import { getUserErrOptions } from '../formUtils';
 
 let ajv = createAjvInstance();
 
@@ -78,18 +79,18 @@ export default function validateFormData({
     additionalMetaSchemas = [],
     customFormats = {}
 } = {}) {
-    const newMetaSchemas = !deepEquals(formerMetaSchema, additionalMetaSchemas);
-    const newFormats = !deepEquals(formerCustomFormats, customFormats);
+    const hasNewMetaSchemas = !deepEquals(formerMetaSchema, additionalMetaSchemas);
+    const hasNewFormats = !deepEquals(formerCustomFormats, customFormats);
 
     // 变更了 Meta或者调整了format配置重置新的实例
-    if (newMetaSchemas || newFormats) {
+    if (hasNewMetaSchemas || hasNewFormats) {
         ajv = createAjvInstance();
     }
 
     // 添加更多要验证的模式
     if (
         additionalMetaSchemas
-        && newMetaSchemas
+        && hasNewMetaSchemas
         && Array.isArray(additionalMetaSchemas)
     ) {
         ajv.addMetaSchema(additionalMetaSchemas);
@@ -97,7 +98,7 @@ export default function validateFormData({
     }
 
     // 注册自定义的 formats - 没有变更只会注册一次 - 否则重新创建实例
-    if (customFormats && newFormats && isObject(customFormats)) {
+    if (customFormats && hasNewFormats && isObject(customFormats)) {
         Object.keys(customFormats).forEach((formatName) => {
             ajv.addFormat(formatName, customFormats[formatName]);
         });
@@ -143,6 +144,57 @@ export default function validateFormData({
     return {
         errors
     };
+}
+
+
+// 校验formData 并转换错误信息
+export function validateFormDataAndTransformMsg({
+    formData,
+    schema,
+    transformErrors,
+    additionalMetaSchemas = [],
+    customFormats = {},
+    errorSchema,
+    filterRootNodeError = false, // 是否过滤根节点错误
+    isOnlyFirstError = true, // 只取第一条错误信息
+    isOnlyValidate = false // array object anyOf oneOf 附件的专用校验组件
+} = {}) {
+    let errors = validateFormData({
+        formData,
+        schema,
+        transformErrors,
+        additionalMetaSchemas,
+        customFormats,
+    }).errors;
+
+    // 过滤顶级错误
+    if (filterRootNodeError) {
+        errors = errors.filter((item) => {
+            // 常规数据输入组件
+            if (!isOnlyValidate) return item.property === '';
+
+            // 纯粹校验组件
+            const schemaPathValidList = [
+                '#/oneOf',
+                '#/anyOf',
+                '#/minProperties',
+                '#/maxProperties',
+                '#/contains',
+                '#/minItems',
+                '#/maxItems',
+                '#/uniqueItems',
+            ];
+
+            return item.property === '' && schemaPathValidList.includes(item.schemaPath);
+        });
+    }
+
+    return (isOnlyFirstError && errors.length > 0 ? [errors[0]] : errors).reduce((preErrors, errorItem) => {
+        // 优先获取 errorSchema 配置
+        errorItem.message = getUserErrOptions(errorSchema)[errorItem.name] || errorItem.message;
+        preErrors.push(errorItem);
+        return preErrors;
+    }, []);
 }
 
 /**
