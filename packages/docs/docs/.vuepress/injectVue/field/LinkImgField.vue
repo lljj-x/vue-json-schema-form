@@ -7,25 +7,25 @@
             :rules="[
                 {
                     validator(rule, value, callback) {
-                        // 无需特殊处理 required
-                        const error = schemaValidate.default({
-                            formData: value,
-                            schema: $props.schema
+                        const validProperties = ['imgUrl', 'imgLink'];
+
+                        // 针对叶子节点做校验
+                        let errors = [];
+                        const isValidate = validProperties.every(item => {
+                            errors = schemaValidate.validateFormDataAndTransformMsg({
+                                formData: value[item],
+                                schema: $props.schema.properties[item],
+                                customFormats: $props.customFormats,
+                                errorSchema: $props.errorSchema[item],
+                                required: $props.schema.required.includes(item),
+                                propPath: $props.curNodePath
+                            });
+                            return errors.length <= 0;
                         });
 
-                        if (error.errors.length > 0) {
-                            // 只取第一个错误信息
-                            const curErr = error.errors[0];
+                        if (isValidate) return callback();
 
-                            // 找到配置的errSchema节点
-                            const curErrorSchema = vueUtils.getPathVal(
-                                errorSchema,
-                                vueUtils.computedCurPath(curNodePath, curErr.property.replace(/^\.+/, ''))
-                            );
-
-                            return callback(curErrorSchema && curErrorSchema[curErr.name] || curErr.message);
-                        }
-                        return callback();
+                        return callback(errors[0].message);
                     },
                 }
             ]"

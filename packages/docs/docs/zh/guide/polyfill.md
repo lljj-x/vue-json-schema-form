@@ -47,7 +47,7 @@ css使用了flex，这里可以重置样式兼容到低版本
 >
 > 注：
 >* 个人比较喜欢这种方式构建一份自己的polyfill，更容易保证每次变更资源文件的版本稳定。
->* 例如，我常用的：[@lljj/polyfill](https://github.com/liujunchina/polyfill)
+>* 例如，我常用的：[@lljj/polyfill](https://github.com/lljj-x/polyfill)
 
 ```js
 // 如使用 @babel/polyfill

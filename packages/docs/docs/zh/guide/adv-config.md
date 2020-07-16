@@ -345,7 +345,7 @@ export default {
 
 * 使用场景：需要完全自定义某个节点的场景，相对比较复杂
 
-1. 自定义Filed需要实现Field以及其子节点的渲染校验逻辑，意味着自定义节点后渲染逻辑都需要使用者自行处理，当然你也可以在子节点中继续调用 `Vjsf`的`SchemaField`组件，再交给`Vjsf`去继续渲染。
+1. 自定义Filed需要实现Field以及其子节点的渲染校验逻辑，意味着自定义节点后渲染逻辑都需要使用者自行处理，推荐在渲染子节点中继续调用 `Vjsf`的`SchemaField`组件，再交给`Vjsf`去继续渲染。
 1. 组件内部一般会包含 `FormItem`，`校验规则`，`Widget` 输入组件
 
 `Field组件` 会接受以下参数：
@@ -479,6 +479,7 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
 > 当前的演示demo不支持import语法，所以这里不能直接演示，详细的代码可以[点击这里查看](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/demo/src/vue-editor/views/editor/fieldComponents/linkImgField)
 
 `LinkImgField` 代码如下：
+
 ```html
 <template>
     <div :class="$style.box">
@@ -489,25 +490,25 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
             :rules="[
                 {
                     validator(rule, value, callback) {
-                        // 无需特殊处理 required
-                        const error = schemaValidate.default({
-                            formData: value,
-                            schema: $props.schema
+                        const validProperties = ['imgUrl', 'imgLink'];
+
+                        // 针对叶子节点做校验
+                        let errors = [];
+                        const isValidate = validProperties.every(item => {
+                            errors = schemaValidate.validateFormDataAndTransformMsg({
+                                formData: value[item],
+                                schema: $props.schema.properties[item],
+                                customFormats: $props.customFormats,
+                                errorSchema: $props.errorSchema[item],
+                                required: $props.schema.required.includes(item),
+                                propPath: $props.curNodePath
+                            });
+                            return errors.length <= 0;
                         });
 
-                        if (error.errors.length > 0) {
-                            // 只取第一个错误信息
-                            const curErr = error.errors[0];
+                        if (isValidate) return callback();
 
-                            // 找到配置的errSchema节点
-                            const curErrorSchema = vueUtils.getPathVal(
-                                errorSchema,
-                                vueUtils.computedCurPath(curNodePath, curErr.property.replace(/^\.+/, ''))
-                            );
-
-                            return callback(curErrorSchema && curErrorSchema[curErr.name] || curErr.message);
-                        }
-                        return callback();
+                        return callback(errors[0].message);
                     },
                 }
             ]"
@@ -544,7 +545,6 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
         props: fieldProps,
         data() {
             return {
-                selectPhotoVisible: false,
                 schemaValidate,
                 vueUtils
             };
@@ -555,9 +555,11 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
                 return this.schema.required.length > 0;
             },
             placeholder() {
-                const { uiSchema } = this.$props;
-                return (uiSchema.imgLink && uiSchema.imgLink['ui:options'] && uiSchema.imgLink['ui:options'].placeholder)
-                    || '请输入合法的链接';
+                const imgLinkOptions = formUtils.getUiOptions({
+                    schema: this.schema.properties.imgLink,
+                    uiSchema: this.uiSchema.imgLink || {}
+                });
+                return imgLinkOptions.placeholder || '请输入合法的链接';
             },
             selectProps() {
                 return formUtils.getUiOptions({
@@ -606,16 +608,12 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
                 ];
                 this.$message.success('选择图片成功，这里随机一个图片');
                 this.imgUrl = imgs[Math.floor(Math.random() * imgs.length)];
-            },
-            handleImageSelected(data) {
-                this.imgUrl = data[0];
             }
         }
     };
 </script>
 
-<style module>
-    @import 'variable.css';
+<style module lang="stylus">
     .box {
         :global {
             .el-form-item__label {
@@ -651,7 +649,7 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
         font-size: 12px;
         line-height: 20px;
         margin-bottom: 10px;
-        color: var(--color-text-light)
+        color: #999;
     }
     .uploadBox {
         cursor: pointer;
@@ -660,7 +658,7 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--background-color-base);
+        background-color: #F2F2F2;
     }
 </style>
 

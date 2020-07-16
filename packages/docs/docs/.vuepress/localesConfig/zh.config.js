@@ -46,7 +46,7 @@ module.exports = {
                 ]
             },
             { text: '演示', link: 'https://form.lljj.me' },
-            { text: 'Github', link: 'https://github.com/liujunchina/vue-json-schema-form' },
+            { text: 'Github', link: 'https://github.com/lljj-x/vue-json-schema-form' },
         ],
 
         // 侧边栏
