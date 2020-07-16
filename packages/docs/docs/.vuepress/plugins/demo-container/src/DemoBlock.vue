@@ -134,7 +134,7 @@
         },
         methods: {
             getCodeStr() {
-                const pre = this.$el.querySelectorAll("pre")[0];
+                const pre = [...this.$el.querySelectorAll("pre")].pop();
                 if(pre) {
                     const str = pre.innerText;
                     const styleBlock = str.match(/<style>([\s\S]+)<\/style>/)
