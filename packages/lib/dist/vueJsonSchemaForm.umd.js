@@ -890,6 +890,13 @@
       }, {});
     }
 
+    function lowerCase(str) {
+      if (undefined === str) return str;
+      return String(str).replace(/^./, function (s) {
+        return s.toLocaleLowerCase();
+      });
+    } // 最大公约数
+
     function gcd(a, b) {
       if (b === 0) return a;
       return gcd(b, a % b);
@@ -8078,7 +8085,7 @@
      */
 
 
-    function validateFormData() {
+    function ajvValidateFormData() {
       var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
           formData = _ref.formData,
           schema = _ref.schema,
@@ -8088,21 +8095,21 @@
           _ref$customFormats = _ref.customFormats,
           customFormats = _ref$customFormats === void 0 ? {} : _ref$customFormats;
 
-      var newMetaSchemas = !deepEquals(formerMetaSchema, additionalMetaSchemas);
-      var newFormats = !deepEquals(formerCustomFormats, customFormats); // 变更了 Meta或者调整了format配置重置新的实例
+      var hasNewMetaSchemas = !deepEquals(formerMetaSchema, additionalMetaSchemas);
+      var hasNewFormats = !deepEquals(formerCustomFormats, customFormats); // 变更了 Meta或者调整了format配置重置新的实例
 
-      if (newMetaSchemas || newFormats) {
+      if (hasNewMetaSchemas || hasNewFormats) {
         ajv$1 = createAjvInstance();
       } // 添加更多要验证的模式
 
 
-      if (additionalMetaSchemas && newMetaSchemas && Array.isArray(additionalMetaSchemas)) {
+      if (additionalMetaSchemas && hasNewMetaSchemas && Array.isArray(additionalMetaSchemas)) {
         ajv$1.addMetaSchema(additionalMetaSchemas);
         formerMetaSchema = additionalMetaSchemas;
       } // 注册自定义的 formats - 没有变更只会注册一次 - 否则重新创建实例
 
 
-      if (customFormats && newFormats && isObject(customFormats)) {
+      if (customFormats && hasNewFormats && isObject(customFormats)) {
         Object.keys(customFormats).forEach(function (formatName) {
           ajv$1.addFormat(formatName, customFormats[formatName]);
         });
@@ -8139,6 +8146,75 @@
       return {
         errors: errors
       };
+    } // 校验formData 并转换错误信息
+
+    function validateFormDataAndTransformMsg() {
+      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          formData = _ref2.formData,
+          schema = _ref2.schema,
+          transformErrors = _ref2.transformErrors,
+          _ref2$additionalMetaS = _ref2.additionalMetaSchemas,
+          additionalMetaSchemas = _ref2$additionalMetaS === void 0 ? [] : _ref2$additionalMetaS,
+          _ref2$customFormats = _ref2.customFormats,
+          customFormats = _ref2$customFormats === void 0 ? {} : _ref2$customFormats,
+          _ref2$errorSchema = _ref2.errorSchema,
+          errorSchema = _ref2$errorSchema === void 0 ? {} : _ref2$errorSchema,
+          _ref2$required = _ref2.required,
+          required = _ref2$required === void 0 ? false : _ref2$required,
+          _ref2$propPath = _ref2.propPath,
+          propPath = _ref2$propPath === void 0 ? '' : _ref2$propPath,
+          _ref2$isOnlyFirstErro = _ref2.isOnlyFirstError,
+          isOnlyFirstError = _ref2$isOnlyFirstErro === void 0 ? true : _ref2$isOnlyFirstErro;
+
+      var isEmpty = formData === undefined;
+
+      if (required) {
+        if (isEmpty) {
+          var requireErrObj = {
+            keyword: 'required',
+            params: {
+              missingProperty: propPath
+            }
+          }; // 用户设置校验信息
+
+          var errSchemaMsg = getUserErrOptions(errorSchema).required;
+
+          if (errSchemaMsg) {
+            requireErrObj.message = errSchemaMsg;
+          } else {
+            // 处理多语言require提示信息 （ajv 修改原引用）
+            i18n.getCurrentLocalize()([requireErrObj]);
+          }
+
+          return [requireErrObj];
+        }
+      } else if (isEmpty) {
+        // 非required 为空 校验通过
+        return [];
+      } // 校验ajv错误信息
+
+
+      var ajvErrors = ajvValidateFormData({
+        formData: formData,
+        schema: schema,
+        transformErrors: transformErrors,
+        additionalMetaSchemas: additionalMetaSchemas,
+        customFormats: customFormats
+      }).errors; // 过滤顶级错误
+
+      {
+        ajvErrors = ajvErrors.filter(function (item) {
+          return item.property === '' && !item.schemaPath.includes('#/anyOf/') && !item.schemaPath.includes('#/oneOf/');
+        });
+      }
+
+      var userErrOptions = getUserErrOptions(errorSchema);
+      return (isOnlyFirstError && ajvErrors.length > 0 ? [ajvErrors[0]] : ajvErrors).reduce(function (preErrors, errorItem) {
+        // 优先获取 errorSchema 配置
+        errorItem.message = userErrOptions[errorItem.name] || errorItem.message;
+        preErrors.push(errorItem);
+        return preErrors;
+      }, []);
     }
     /**
      * 根据模式验证数据，如果数据有效则返回true，否则返回* false。如果模式无效，那么这个函数将返回* false。
@@ -8212,7 +8288,8 @@
 
     var validate$2 = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': validateFormData,
+        ajvValidateFormData: ajvValidateFormData,
+        validateFormDataAndTransformMsg: validateFormDataAndTransformMsg,
         isValid: isValid,
         getMatchingOption: getMatchingOption
     });
@@ -8318,14 +8395,7 @@
             type: 'object',
             properties: _defineProperty({}, dependencyKey, conditionPropertySchema)
           };
-
-          var _validateFormData = validateFormData({
-            formData: formData,
-            schema: conditionSchema
-          }),
-              errors = _validateFormData.errors;
-
-          return errors.length === 0;
+          return isValid(conditionSchema, formData);
         }
       });
 
@@ -8445,7 +8515,7 @@
               }
             }
           } else if (left !== undefined && right !== undefined) {
-            // 两边都不是 undefined - 基础数据类型 string number bool...
+            // 两边都不是 undefined - 基础数据类型 string number boolean...
             if (key === 'maxLength' || key === 'maximum' || key === 'maxItems' || key === 'exclusiveMaximum' || key === 'maxProperties') {
               acc[key] = Math.min(left, right);
             } else if (key === 'minLength' || key === 'minimum' || key === 'minItems' || key === 'exclusiveMinimum' || key === 'minProperties') {
@@ -8712,24 +8782,24 @@
       var _c = _vm._self._c || _h;
       return _c(
         "div",
-        { staticClass: "FieldGroupWrap" },
+        { staticClass: "fieldGroupWrap" },
         [
           [
             _vm.showTitle && _vm.title
-              ? _c("h3", { staticClass: "FieldGroupWrap_title" }, [
+              ? _c("h3", { staticClass: "fieldGroupWrap_title" }, [
                   _vm._v("\n            " + _vm._s(_vm.title) + "\n        ")
                 ])
               : _vm._e(),
             _vm._v(" "),
             _vm.showDescription && _vm.description
               ? _c("p", {
-                  staticClass: "FieldGroupWrap_des",
+                  staticClass: "fieldGroupWrap_des",
                   domProps: { innerHTML: _vm._s(_vm.description) }
                 })
               : _vm._e()
           ],
           _vm._v(" "),
-          _c("div", { staticClass: "FieldGroupWrap_box" }, [_vm._t("default")], 2)
+          _c("div", { staticClass: "fieldGroupWrap_box" }, [_vm._t("default")], 2)
         ],
         2
       )
@@ -8903,61 +8973,17 @@
             prop: isRootNode ? '__$$root' : path2prop(self.curNodePath),
             rules: [{
               validator: function validator(rule, value, callback) {
-                if (isRootNode) {
-                  value = self.rootFormData;
-                } // isEmpty 校验
+                if (isRootNode) value = self.rootFormData; // 校验是通过对schema逐级展开校验 这里只捕获根节点错误
 
-
-                var isEmpty = value === undefined;
-
-                if (self.required) {
-                  if (isEmpty) {
-                    var requireErrObj = {
-                      keyword: 'required',
-                      params: {
-                        missingProperty: path2prop(self.curNodePath)
-                      }
-                    }; // 处理多语言require提示信息 （ajv 修改原引用）
-
-                    i18n.getCurrentLocalize()([requireErrObj]); // errorSchema 配置覆盖错误信息
-
-                    return callback(getUserErrOptions(self.errorSchema).required || requireErrObj.message);
-                  }
-                } else if (isEmpty) {
-                  // 非required 为空 校验通过
-                  return callback();
-                } // schema ajv 校验
-
-
-                var error = validateFormData({
+                var errors = validateFormDataAndTransformMsg({
                   formData: value,
                   schema: self.$props.schema,
-                  customFormats: self.$props.customFormats
-                }); // 校验是通过逐级展开校验 这里只捕获同级错误信息
-                // 如 object对minProperties. maxProperties. oneOf属性
-
-                var isOnlyValidate = !self.widget; // 单纯的校验器 不包含输入组件
-
-                var errors = error.errors.filter(function (item) {
-                  // 常规数据输入组件
-                  if (!isOnlyValidate) return item.property === ''; // 校验组件
-
-                  var schemaPathValidList = ['#/oneOf', '#/anyOf', '#/minProperties', '#/maxProperties', '#/contains', '#/minItems', '#/maxItems', '#/uniqueItems'];
-                  return item.property === '' && schemaPathValidList.some(function (schemaPathItem) {
-                    return item.schemaPath === schemaPathItem;
-                  });
+                  customFormats: self.$props.customFormats,
+                  errorSchema: self.errorSchema,
+                  required: self.required,
+                  propPath: path2prop(self.curNodePath)
                 });
-
-                if (errors.length > 0) {
-                  var curErr = errors[0];
-                  var curErrMsg = getUserErrOptions(self.errorSchema)[curErr.name] || curErr.message; // 强制置空错误信息 会直接校验通过
-
-                  if (curErrMsg) {
-                    // errorSchema 错误信息
-                    return callback(curErrMsg);
-                  }
-                }
-
+                if (errors.length > 0) return callback(errors[0].message);
                 return callback();
               },
               trigger: 'blur'
@@ -8968,7 +8994,7 @@
             error: function error(props) {
               return props.error ? h('p', {
                 class: {
-                  FormItemErrorBox: true
+                  formItemErrorBox: true
                 },
                 attrs: {
                   title: props.error
@@ -9063,7 +9089,7 @@
           renderList.push( // 渲染对应子组件
           fieldComponent && h(isHiddenWidget ? 'div' : fieldComponent, {
             props: _objectSpread2({}, curProps),
-            class: _objectSpread2(_objectSpread2({}, context.data.class), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, fieldComponent.name || fieldComponent, true), _defineProperty(_objectSpread2$1, "HiddenWidget", isHiddenWidget), _defineProperty(_objectSpread2$1, pathClassName, true), _objectSpread2$1))
+            class: _objectSpread2(_objectSpread2({}, context.data.class), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, lowerCase(fieldComponent.name) || fieldComponent, true), _defineProperty(_objectSpread2$1, "hiddenWidget", isHiddenWidget), _defineProperty(_objectSpread2$1, pathClassName, true), _objectSpread2$1))
           }));
         }
 
@@ -9124,7 +9150,7 @@
         this.needValidFieldGroup ? h(Widget, {
           class: {
             validateWidget: true,
-            validateWidget_object: true
+            'validateWidget-object': true
           },
           props: {
             schema: Object.entries(self.$props.schema).reduce(function (preVal, _ref) {
@@ -9592,7 +9618,7 @@
 
         return h('div', {
           class: {
-            ArrayOrderList: true
+            arrayOrderList: true
           }
         }, this.vNodeList.map(function (_ref, index) {
           var key = _ref.key,
@@ -9601,11 +9627,11 @@
           return h('div', {
             key: key,
             class: {
-              ArrayOrderList_item: true
+              arrayOrderList_item: true
             }
           }, [h('div', {
             class: {
-              ArrayListItem_operateTool: true
+              arrayListItem_operateTool: true
             }
           }, [h('button', {
             // 配置不可排序不显示排序按钮
@@ -9617,8 +9643,8 @@
               disabled: !_this.sortable || index === 0
             },
             class: {
-              ArrayListItem_btn: true,
-              'ArrayListItem_orderBtn-top': true,
+              arrayListItem_btn: true,
+              'arrayListItem_orderBtn-top': true,
               'el-icon-caret-top': true
             },
             on: {
@@ -9641,8 +9667,8 @@
               disabled: !_this.sortable || index === _this.vNodeList.length - 1
             },
             class: {
-              ArrayListItem_btn: true,
-              'ArrayListItem_orderBtn-bottom': true,
+              arrayListItem_btn: true,
+              'arrayListItem_orderBtn-bottom': true,
               'el-icon-caret-bottom': true
             },
             on: {
@@ -9665,8 +9691,8 @@
               disabled: !_this.canRemove
             },
             class: {
-              ArrayListItem_btn: true,
-              'ArrayListItem_btn-delete': true,
+              arrayListItem_btn: true,
+              'arrayListItem_btn-delete': true,
               'el-icon-close': true
             },
             on: {
@@ -9681,7 +9707,7 @@
             }
           })]), h('div', {
             class: {
-              ArrayListItem_content: true
+              arrayListItem_content: true
             }
           }, [VnodeItem])]);
         }).concat([h('p', {
@@ -9689,7 +9715,7 @@
             display: 'none'
           } : {}),
           class: {
-            ArrayOrderList_bottomAddBtn: true
+            arrayOrderList_bottomAddBtn: true
           }
         }, [h('el-button', {
           class: {
@@ -10182,7 +10208,7 @@
           props: _objectSpread2({
             itemsFormData: this.itemsFormData
           }, this.$props),
-          class: _defineProperty({}, CurrentField.name, true),
+          class: _defineProperty({}, lowerCase(CurrentField.name), true),
           on: {
             onArrayOperate: this.handleArrayOperate
           }
@@ -10190,7 +10216,7 @@
         this.needValidFieldGroup ? h(Widget, {
           class: {
             validateWidget: true,
-            validateWidget_array: true
+            'validateWidget-array': true
           },
           props: {
             schema: Object.entries(self.$props.schema).reduce(function (preVal, _ref8) {
@@ -10376,7 +10402,7 @@
         childrenVnode.push(h(Widget, {
           class: _defineProperty({
             validateWidget: true
-          }, "validateWidget_".concat(this.combiningType), true),
+          }, "validateWidget-".concat(this.combiningType), true),
           props: {
             schema: this.schema,
             errorSchema: this.errorSchema,
@@ -11119,8 +11145,8 @@
       /* style */
       const __vue_inject_styles__$4 = function (inject) {
         if (!inject) return
-        inject("data-v-431cede5_0", { source: "\n.src-JsonSchemaForm-item-e4q8 {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["/Users/ryuushun/liujun/git/vue-element-schema-form/packages/lib/src/JsonSchemaForm/FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\n    <el-form-item :class=\"$style.item\">\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\n    </el-form-item>\n</template>\n\n<script>\n    export default {\n        name: 'FormFooter',\n        props: {\n            okBtn: {\n                type: String,\n                default: '保存'\n            },\n            cancelBtn: {\n                type: String,\n                default: '取消'\n            },\n        }\n    };\n</script>\n\n<style module>\n    .item {\n        text-align: right;\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\n        padding-top: 10px;\n    }\n</style>\n"]}, media: undefined });
-    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-e4q8"} });
+        inject("data-v-25c5ccb1_0", { source: "\n.src-JsonSchemaForm-item-1UFV {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["D:\\code\\git_my\\vue-json-schema-form\\packages\\lib\\src\\JsonSchemaForm\\FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\r\n    <el-form-item :class=\"$style.item\">\r\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\r\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\r\n    </el-form-item>\r\n</template>\r\n\r\n<script>\r\n    export default {\r\n        name: 'FormFooter',\r\n        props: {\r\n            okBtn: {\r\n                type: String,\r\n                default: '保存'\r\n            },\r\n            cancelBtn: {\r\n                type: String,\r\n                default: '取消'\r\n            },\r\n        }\r\n    };\r\n</script>\r\n\r\n<style module>\r\n    .item {\r\n        text-align: right;\r\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\r\n        padding-top: 10px;\r\n    }\r\n</style>\r\n"]}, media: undefined });
+    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-1UFV"} });
 
       };
       /* scoped */
@@ -11175,7 +11201,7 @@
       }
     }
 
-    var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .HiddenWidget{display:none}.genFromComponent .el-color-picker{vertical-align:top}.genFromComponent .FieldGroupWrap+.FieldGroupWrap{margin-top:20px}.genFromComponent .FieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .FieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .FormItemErrorBox{color:#ff5757;padding-top:4px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:14px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0}.genFromComponent .validateWidget .FormItemErrorBox{padding:5px 0;position:relative}.genFromComponent .ArrayField{margin-bottom:22px}.genFromComponent .ArrayField .ArrayField{margin-bottom:10px}.genFromComponent .ArrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .ArrayOrderList_item{position:relative;padding:25px 10px 20px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .ArrayOrderList_bottomAddBtn{padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:100%}.genFromComponent .ArrayListItem_content{-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto}.genFromComponent .ArrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .ArrayListItem_operateTool{position:absolute;height:25px;width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .ArrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .ArrayListItem_btn:hover{opacity:.6}.genFromComponent .ArrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .ArrayListItem_orderBtn-bottom,.genFromComponent .ArrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .ArrayListItem_btn-delete{background-color:#fef0f0}";
+    var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .hiddenWidget{display:none}.genFromComponent .el-color-picker{vertical-align:top}.genFromComponent .fieldGroupWrap+.fieldGroupWrap{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .formItemErrorBox{color:#ff5757;padding-top:4px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:14px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 20px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:100%}.genFromComponent .arrayListItem_content{-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto}.genFromComponent .arrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px;width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}";
     styleInject(css_248z);
 
     var JsonSchemaForm = {
