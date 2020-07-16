@@ -51,7 +51,7 @@ exports.getGuideSidebar = ([groupA = '指南', groupB = '详细配置', groupC =
             children: [
                 'adv-config',
                 'design',
-                'custom-render-component',
+                // 'custom-render-component',
                 'why',
             ]
         },

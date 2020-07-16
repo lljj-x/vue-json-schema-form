@@ -476,7 +476,8 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
 </script>
 :::
 
-> 当前的演示demo不支持import语法，所以这里不能直接演示，详细的代码可以[点击这里查看](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/demo/src/vue-editor/views/editor/fieldComponents/linkImgField)
+>* 当前的演示demo不支持import语法，所以这里不能直接演示，详细的代码可以 [点击这里查看](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/demo/src/vue-editor/views/editor/fieldComponents/linkImgField)
+>* 更多使用 `ui:field` 的demo可以 [查看这里](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/demo/src/vue-editor/views/editor/fieldComponents)
 
 `LinkImgField` 代码如下：
 
