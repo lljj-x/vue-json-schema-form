@@ -12,8 +12,8 @@
         "ajv": "^6.10.2",
         "vue": "^2.6.10"
     },
-    "repository": "https://github.com/liujunchina/vue-json-schema-form",
-    "homepage": "https://github.com/liujunchina/vue-json-schema-form",
+    "repository": "https://github.com/lljj-x/vue-json-schema-form",
+    "homepage": "https://github.com/lljj-x/vue-json-schema-form",
     "license": "Apache-2.0",
     "publishConfig": {
         "access": "public"

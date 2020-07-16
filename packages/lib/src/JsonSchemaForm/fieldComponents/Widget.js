@@ -141,15 +141,14 @@ export default {
                                 validator(rule, value, callback) {
                                     if (isRootNode) value = self.rootFormData;
 
-                                    // 校验是通过逐级展开校验 这里只捕获根节点错误
+                                    // 校验是通过对schema逐级展开校验 这里只捕获根节点错误
                                     const errors = validateFormDataAndTransformMsg({
                                         formData: value,
                                         schema: self.$props.schema,
                                         customFormats: self.$props.customFormats,
                                         errorSchema: self.errorSchema,
                                         required: self.required,
-                                        propPath: path2prop(self.curNodePath),
-                                        filterRootNodeError: true, // 过滤根节点错误
+                                        propPath: path2prop(self.curNodePath)
                                     });
 
                                     if (errors.length > 0) return callback(errors[0].message);

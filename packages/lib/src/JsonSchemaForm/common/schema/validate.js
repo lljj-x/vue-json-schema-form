@@ -153,12 +153,14 @@ export function validateFormDataAndTransformMsg({
     transformErrors,
     additionalMetaSchemas = [],
     customFormats = {},
-    errorSchema,
+    errorSchema = {},
     required = false,
     propPath = '',
-    filterRootNodeError = false, // 是否过滤根节点错误
     isOnlyFirstError = true, // 只取第一条错误信息
 } = {}) {
+    // 是否过滤根节点错误 固定只能根
+    const filterRootNodeError = true;
+
     // 校验required信息 isEmpty 校验
     const isEmpty = formData === undefined;
     if (required) {
@@ -202,9 +204,11 @@ export function validateFormDataAndTransformMsg({
         );
     }
 
+    const userErrOptions = getUserErrOptions(errorSchema);
+
     return (isOnlyFirstError && ajvErrors.length > 0 ? [ajvErrors[0]] : ajvErrors).reduce((preErrors, errorItem) => {
         // 优先获取 errorSchema 配置
-        errorItem.message = getUserErrOptions(errorSchema)[errorItem.name] || errorItem.message;
+        errorItem.message = userErrOptions[errorItem.name] || errorItem.message;
         preErrors.push(errorItem);
         return preErrors;
     }, []);
