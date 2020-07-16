@@ -107,10 +107,60 @@ export default {
 > 注：uiSchema 为普通json数据，并非 json schema 规范语法
 :::
 
-:::warning
-注意：数据格式是和 `schema` 保持一致，而非 `formData` 一致
+::: warning 注意
+配置数据结构是和 `schema` 保持一致，而非 `formData` 一致
 
-警告
+比如：
+```js
+
+// schema
+schema = {
+    type: 'object',
+    properties: {
+        fixedItemsList: {
+            type: 'array',
+            title: 'A list of fixed items',
+            items: [
+                {
+                    title: 'A string value',
+                    type: 'string',
+                    maxLength: 2
+                }
+            ]
+        }
+    }
+}
+```
+
+```js
+// 正确的配置
+uiSchema = {
+    fixedItemsList: {
+         // 这里保持和 schema 结构相同
+         items: [
+             {
+                 'ui:options': {
+                    ...
+                }
+             }
+         ]
+    }
+}
+```
+
+```js
+// 错误的配置
+uiSchema = {
+    fixedItemsList: [
+         {
+             'ui:options': {
+                ...
+            }
+        }
+    ]
+}
+```
+
 :::
 
 参数格式如下：
@@ -230,7 +280,9 @@ export default {
 
 用于配置表单校验错误文案信息，普通json数据，非json schema规范
 
-数据配置和 `uiSchema` 保存一致，区别在于使用 `err:` 做前缀
+数据配置和 `uiSchema` 保存一致，区别在于：
+1. 使用 `err:` 做前缀
+1. 使用配置的 schema 错误类型的 `err:${name}` 做key，比如 `err:format` 、`err:required` 、`err:type`
 
 ::: tip
  * 配置数据结构和schema保持一致，所有的ui配置属性 `err:` 开头

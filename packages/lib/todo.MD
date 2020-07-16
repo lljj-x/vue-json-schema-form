@@ -22,16 +22,6 @@
 故意区分了，静态和用户的formData数据，这样在用户输入的时候可以让vue更精准的知道被依赖的组件，而不是，递归了整个formData，这棵树的逐一级别依赖
 这样做绝大部分的场景都是只需要重新render输入内容的最小field，oneof anyof会不同，因为需要依赖用户输入的的值来改变form的展现形态
 
-rootFormData + 属性path来传递，避免数据逐级递归数据，导致一次change事件链内的组件都需要重新render
-
-需要注意，required 在schema里面规定，有值就校验通过，所以空字符串也是true
-这里如果自己实现field直接返回输入控件的时候，按你的场景可能需要自己特殊处理 required 规则 校验条件，
-当然内部继续调用下一级SchemaField内部会自动处理差异，并且是把requred的错误覆盖配置在了最后一级
-
-对于number类型的特殊处理，如1.0 1. 1.0110 这类数据如何处理
-后面想通过一个hack，故意让视图输入了这类特殊值的时候不去触发vm中的数据更新
-但是element为了解决另一个问题，做了一次强制的数据对比更新，所以在element ui中无法hack
-https://github.com/ElemeFE/element/issues/12850
 
 ui:field: 栏目组件 比如 -> 对象
 ui:widget: 每一个具体的输入部件
