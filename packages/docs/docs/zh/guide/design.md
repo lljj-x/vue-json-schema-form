@@ -22,23 +22,80 @@
 :::
 
 ## 数据校验
-数据校验使用 [ajv](https://github.com/epoberezkin/ajv) 校验schema，搭配 `errorSchema` 自定义校验信息
+数据校验使用 [ajv](https://github.com/epoberezkin/ajv) 校验schema，搭配 [errorSchema](/zh/guide/basic-config.html#errorschema) 自定义校验错误提示
 
-#### **schema数据是通过逐级校验的，而非全量校验**
-
+#### 数据是通过逐级拆分校验的
 举个例子：
+
+```js
+// 如下schema
+schema = {
+     type: 'object',
+     minProperties: 2,
+     required: [
+         'firstName',
+         'lastName'
+     ],
+     properties: {
+         firstName: {
+             type: 'string',
+             title: 'First name',
+             default: 'Jun'
+         },
+         lastName: {
+             type: 'string',
+             title: 'Last name'
+         }
+     }
+};
+
+// formData
+formData = {
+    firstName: 'Jun'
+}
+```
+
+进行如下拆分：
 ![vjsf-vaidate](/vjsf-vaidate.jpg)
-这里上面的schema会拆分为下面三处校验，分别是对属性property和对object自身。
-。。。todo:写文档了
 
-#### **为何如此 ？**
+上面的schema会拆分为下面三处校验，分别是依次对属性property值和和对object自身。
 
-错误校验逐级校验的好处和带来的问题
+#### 为何如此 ？
+方便将每个叶子节点的校验定义在 `formItem` 上，用户输入时，只校验用户操作的输入框。
 
-#### 特殊处理：`object` `required` 配置
-对required 的校验是放在每个 property 里面去校验的，保证校验提示在具体的property上
+好处：
+> 可以只校验当前活动的输入框计算会更快，省去了对整个表单校验再去匹配ajv到每个formItem的步骤，同时也不会导致非活动的输入框提示出校验信息。
 
-#### **其它补充**
+弊端：
+> 有些属性是无法拆分到叶子节点上，比如 object的minProperties，array的minItems，oneOf，anyOf等
+>* 所以会在 `object`，`array`，`oneOf`，`anyOf` 节点会加一个单独的校验，在 `submit` 的时候触发校验，如上图 `object校验`
+
+#### 特殊处理： `required` 配置
+`object required` 会拆分到每个 `property` 里面去校验，通过 `object field`  计算每个 `property` 是否需要 `required`
+
+```js
+// 伪代码 - required 通过父节点传递props
+function render(h) {
+    const propertiesVnode = propertiesNameList.map(name => {
+        return h(
+            ChildField,
+            {
+                props: {
+                    ...,
+                    required: Array.isArray(schema.required)
+                        && schema.required.includes(name),
+                }
+            }
+        );
+    });
+}
+```
+
+:::tip
+对于 `array` 类型，每个 `item` 都是 `required`
+:::
+
+#### 其它补充
 校验错误配置 `errorSchema` 和 `uischema` 配置都是和 `schema` 保持一致，如果和formData保持一致，
 会导致一些场景无法配置到，比如 `anyOf` 但这样确实更简单点。
 
@@ -50,6 +107,4 @@
 * 设计思想借鉴[react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)，
 在对schema的解析索引也使用了 `react-json-schema` 的源码。
 
-* 在项目中所有被递归的都是低频率变化的，故意区分了schema和formData的处理方式。尽量让用户输入的时候可以最小程度的重新渲染，
-在绝大部分的场景都是只需要重新render输入内容的最小`Widget`，oneof anyof会不同，因为需要依赖用户输入的的值来改变form的展现形态。
-
+* 让用户输入的时候可以最小程度的重新渲染，做到在绝大部分的场景都是只需要重新渲染输入内容的 `Widget` 组件。

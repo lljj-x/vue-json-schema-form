@@ -22,7 +22,7 @@
 //     }
 // ]
 
-exports.getGuideSidebar = ([groupA = '指南', groupB = '详细配置', groupC = '深入配置', groupD = '更新计划'] = []) => {
+exports.getGuideSidebar = ([groupA = '指南', groupB = '详细配置', groupC = '深入了解', groupD = '更新计划'] = []) => {
     return [
         {
             title: groupA,

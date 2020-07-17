@@ -5,6 +5,7 @@
 1. object additionalProperties 属性不支持，目前统一为 false
 1. object Dependencies 属性依赖和schema依赖都不支持
 1. if else 新特性不支持
+1. $ref 不支持跨文件调用
 
 ## Todo
 - [ ] extraErrors参数 支持
