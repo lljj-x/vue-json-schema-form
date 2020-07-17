@@ -1,20 +1,8 @@
 // eslint-disable-next-line import/no-cycle
 import FIELDS_MAP from '../config/FIELDS_MAP';
-import WIDGET_MAP from '../config/WIDGET_MAP';
 import retrieveSchema from './schema/retriev';
 
 import { isObject, getSchemaType } from './utils';
-
-// 根据 format 获取当前渲染组件
-function getWidgetByFormat(schema, format) {
-    // 根据type和format适配合适的widget
-    const type = getSchemaType(schema);
-    if (typeof format === 'string' && WIDGET_MAP.hasOwnProperty(type) && WIDGET_MAP[type].hasOwnProperty(format)) {
-        return WIDGET_MAP[type][format];
-    }
-
-    return undefined;
-}
 
 // 解析当前节点 ui widget
 export function getUiWidget({
@@ -28,18 +16,7 @@ export function getUiWidget({
         };
     }
 
-    // schema 配置了format 自动匹配类型
-    const format = uiSchema.format || schema.format;
-    if (format) {
-        const formatWidget = getWidgetByFormat(schema, format);
-        if (undefined !== formatWidget) {
-            return {
-                widget: formatWidget
-            };
-        }
-    }
-
-    // 没配置可以widget 回退到具体field方案配置
+    // 没配置widget 回退到具体field方案配置
     return fallback({ schema, uiSchema });
 }
 

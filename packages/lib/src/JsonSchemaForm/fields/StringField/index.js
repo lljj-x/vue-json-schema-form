@@ -5,7 +5,7 @@
 import vueProps from '../props';
 import { getWidgetConfig, isSelect, optionsList } from '../../common/formUtils';
 import Widget from '../../fieldComponents/Widget';
-import SelectWidget from '../../widgets/SelectWidget';
+import WIDGET_MAP from '../../config/WIDGET_MAP';
 
 export default {
     name: 'StringField',
@@ -25,7 +25,9 @@ export default {
             const isNumber = schema.type === 'number' || schema.type === 'integer';
 
             return {
-                widget: enumOptions ? SelectWidget : isNumber ? 'el-input-number' : 'el-input'
+                widget: enumOptions
+                    ? WIDGET_MAP.common.select
+                    : isNumber ? WIDGET_MAP.types.number : WIDGET_MAP.types.string
             };
         });
 
