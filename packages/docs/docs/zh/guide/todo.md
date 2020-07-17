@@ -8,6 +8,7 @@
 1. $ref 不支持跨文件调用
 
 ## Todo
+- [ ] 添加ui:fieldProps 传递给自定义field的参数
 - [ ] extraErrors参数 支持
 - [ ] customRules参数 支持
 - [ ] 对表单所有渲染节点打上唯一class类名，方便重置样式
