@@ -170,6 +170,73 @@ export default {
 >* 推荐使用 `anyOf`，`oneOf` 只能有一个符合的结果
 >* 后续版本会考虑通过 `uiSchema` 配置函数表达式来实现类似交互效果
 
+## 树形结构
+* 树形结构需要使用 `$ref` 来递归调用自己
+* 详细 `$ref` 配置请 [点击查看](https://json-schema.org/understanding-json-schema/structuring.html?highlight=definitions#reuse)
+> $ref 不支持跨文件调用
+
+如下demo：
+
+:::demo 无限递归调用
+```html
+<template>
+    <vue-form
+        v-model="formData"
+        :schema="schema"
+        :ui-schema="uiSchema"
+    >
+        <div slot-scope="{ formData, formRefFn }">
+            <pre style="background-color: #eee;">{{ JSON.stringify(formData, null, 4) }}</pre>
+        </div>
+    </vue-form>
+</template>
+<script>
+   export default {
+        data() {
+            return {
+                schema: {
+                    title: 'Refer 和 Refer递归调用',
+                    definitions: {
+                        node: {
+                            type: 'object',
+                            properties: {
+                                name: { title: '输入节点名', type: 'string' },
+                                children: {
+                                    type: 'array',
+                                    items: {
+                                        $ref: '#/definitions/node',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    type: 'object',
+                    properties: {
+                        tree: {
+                            $ref: '#/definitions/node',
+                        },
+                    },
+                },
+                formData: {
+                    billing_address: {
+                        street_address: '21, Jump Street',
+                        city: 'Babel',
+                        state: 'Neverland',
+                    },
+                    tree: {
+                        name: 'root',
+                        children: [{ name: 'leaf' }],
+                    }
+                }
+            }
+        }
+   }
+</script>
+```
+:::
+
+
+
 ## 空数据默认值
 默认在用户输入时如果清空了表单的数据为空时，即空字符串 `''`，会默认设置值为 `undefined`，这样是为了保证和json schema 规范保持一致。
 

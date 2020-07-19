@@ -2,7 +2,7 @@
 
 ## 描述
 >* type `number` 相关配置演示
->* 官方文档 - [json schema string](https://json-schema.org/understanding-json-schema/reference/numeric.html)
+>* 官方文档 - [json schema number](https://json-schema.org/understanding-json-schema/reference/numeric.html)
 
 
 ## 数据校验

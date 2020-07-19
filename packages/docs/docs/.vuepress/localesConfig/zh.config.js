@@ -38,10 +38,10 @@ module.exports = {
                 items: [
                     { text: 'string', link: '/zh/rules/string.md' },
                     { text: 'number', link: '/zh/rules/number.md' },
-                    { text: 'object', link: '/zh/rules/object.md' },
-                    { text: 'array', link: '/zh/rules/array.md' },
                     { text: 'boolean', link: '/zh/rules/boolean.md' },
                     { text: 'null', link: '/zh/rules/null.md' },
+                    { text: 'object', link: '/zh/rules/object.md' },
+                    { text: 'array', link: '/zh/rules/array.md' },
                     { text: 'combining', link: '/zh/rules/combining.md' },
                 ]
             },
