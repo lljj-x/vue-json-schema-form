@@ -94,3 +94,6 @@ module.exports = {
 
 要么通过垫片 polyfill，要么让 `vjsf` 通过 `bable-loader` 处理即可
 参见：[兼容性解决](/zh/guide/polyfill.html#css兼容)
+
+## 单字符串节点如何处理
+根节点必须是 object ，其它暂不支持

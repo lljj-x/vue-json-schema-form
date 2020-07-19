@@ -1,1 +1,0 @@
-# errorSchema 配置
