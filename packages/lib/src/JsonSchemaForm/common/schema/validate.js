@@ -199,8 +199,9 @@ export function validateFormDataAndTransformMsg({
     // 过滤顶级错误
     if (filterRootNodeError) {
         ajvErrors = ajvErrors.filter(
-            item => item.property === ''
-                && (!item.schemaPath.includes('#/anyOf/') && !item.schemaPath.includes('#/oneOf/'))
+            item => (item.property === ''
+                && (!item.schemaPath.includes('#/anyOf/') && !item.schemaPath.includes('#/oneOf/')))
+            || item.name === 'additionalProperties'
         );
     }
 

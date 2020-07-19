@@ -89,7 +89,7 @@ export default {
                             },
                             props: {
                                 schema: Object.entries(self.$props.schema).reduce((preVal, [key, value]) => {
-                                    if (key !== 'properties') preVal[key] = value;
+                                    if (self.$props.schema.additionalProperties === false || key !== 'properties') preVal[key] = value;
                                     return preVal;
                                 }, {}),
                                 errorSchema: this.errorSchema,

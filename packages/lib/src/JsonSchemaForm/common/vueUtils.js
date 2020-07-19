@@ -15,7 +15,7 @@ export function nodePath2ClassName(path) {
 
 // 是否为根节点
 export function isRootNodePath(path) {
-    return path.split(pathSeparator).length === 0;
+    return path === '';
 }
 
 // 计算当前节点path
