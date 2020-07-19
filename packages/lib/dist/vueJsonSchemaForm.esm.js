@@ -9684,7 +9684,10 @@ function computeDefaults(_schema, parentDefaults, rootSchema) {
 
 
   switch (getSchemaType(schema)) {
+    case 'null':
+      return null;
     // We need to recur for object schema inner default values.
+
     case 'object':
       return Object.keys(schema.properties || {}).reduce(function (acc, key) {
         // Compute the defaults for this node, with the parent defaults we might
@@ -10593,7 +10596,11 @@ var FIELDS_MAPS = {
   number: NumberField,
   object: ObjectField,
   string: StringField,
-  null: 'NullField',
+  null: {
+    render: function render() {
+      return null;
+    }
+  },
   anyOf: AnyOfField,
   oneOf: OneOfField
 };
