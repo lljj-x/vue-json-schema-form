@@ -107,62 +107,6 @@ export default {
 > 注：uiSchema 为普通json数据，并非 json schema 规范语法
 :::
 
-::: warning 注意
-配置数据结构是和 `schema` 保持一致，而非 `formData` 一致
-
-比如：
-```js
-
-// schema
-schema = {
-    type: 'object',
-    properties: {
-        fixedItemsList: {
-            type: 'array',
-            title: 'A list of fixed items',
-            items: [
-                {
-                    title: 'A string value',
-                    type: 'string',
-                    maxLength: 2
-                }
-            ]
-        }
-    }
-}
-```
-
-```js
-// 正确的配置
-uiSchema = {
-    fixedItemsList: {
-         // 这里保持和 schema 结构相同
-         items: [
-             {
-                 'ui:options': {
-                    ...
-                }
-             }
-         ]
-    }
-}
-```
-
-```js
-// 错误的配置
-uiSchema = {
-    fixedItemsList: [
-         {
-             'ui:options': {
-                ...
-            }
-        }
-    ]
-}
-```
-
-:::
-
 参数格式如下：
 ```js
 uiSchema = {
@@ -272,6 +216,62 @@ export default {
 };
 </script>
 ```
+:::
+
+::: warning 注意
+配置数据结构是和 `schema` 保持一致，而非 `formData` 一致
+
+比如：
+```js
+
+// schema
+schema = {
+    type: 'object',
+    properties: {
+        fixedItemsList: {
+            type: 'array',
+            title: 'A list of fixed items',
+            items: [
+                {
+                    title: 'A string value',
+                    type: 'string',
+                    maxLength: 2
+                }
+            ]
+        }
+    }
+}
+```
+
+```js
+// 正确的配置
+uiSchema = {
+    fixedItemsList: {
+         // 这里保持和 schema 结构相同
+         items: [
+             {
+                 'ui:options': {
+                    ...
+                }
+             }
+         ]
+    }
+}
+```
+
+```js
+// 错误的配置
+uiSchema = {
+    fixedItemsList: [
+         {
+             'ui:options': {
+                ...
+            }
+        }
+    ]
+}
+```
+
 :::
 
 ### errorSchema
@@ -395,6 +395,8 @@ export default {
 * todo 文档
 
 自定义校验规则，调用 `avj.addFormat` 方法添加新的format，[查看](https://github.com/ajv-validator/ajv#addformatstring-name-stringregexpfunctionobject-format---ajv)
+
+如下，演示添加一种价格校验类型：
 
 ::: demo 金额大于0 < 999999.99，保留两位小数
 ```html

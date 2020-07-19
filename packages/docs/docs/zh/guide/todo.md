@@ -8,7 +8,9 @@
 1. $ref 不支持跨文件调用
 
 ## Todo
+- [ ] ajv 作为外部依赖不在直接打包到lib内
 - [ ] 添加ui:fieldProps 传递给自定义field的参数
+- [ ] ui:widget 支持在array级别传入
 - [ ] extraErrors参数 支持
 - [ ] customRules参数 支持
 - [ ] 对表单所有渲染节点打上唯一class类名，方便重置样式
@@ -16,7 +18,7 @@
 - [ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
 - [x] lib如果直接umd包导入，默认注册vue组件 类elementUi
 - [ ] 逐步开源发布
-- [ ] Ui配置，基础的显示支持function配置，接受当前formData参数，hidden title description placeholder等
+- [ ] Ui配置，支持函数表达式配置，hidden title description placeholder等
 - [ ] Object additionalProperties 默认false，数组嵌套anyOf 再嵌套object时对默认选中项目的计算导致展示不支持其它设置
 - [ ] 所有节点都支持配置 widget
 - [ ] uiSchema errSchema和formData使用相同的方式传递数据

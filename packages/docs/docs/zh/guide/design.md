@@ -96,15 +96,14 @@ function render(h) {
 :::
 
 #### 其它补充
-校验错误配置 `errorSchema` 和 `uischema` 配置都是和 `schema` 保持一致，如果和formData保持一致，
-会导致一些场景无法配置到，比如 `anyOf` 但这样确实更简单点。
+`errorSchema` 和 `uischema` 配置数据结构都是和 `schema` 保持一致，如果和formData保持一致，
+会导致一些场景无法配置到，比如 `anyOf`，所以选择如此。
 
-后续会考虑 `uiSchema`、`errorSchema` 可以支持配置 `schema` 文件中来减少这份配置。
-
+> 后续会考虑 `uiSchema`、`errorSchema` 可以支持配置 `schema` 文件中来减少这份配置工作量。
 
 ## 设计思想
 
 * 设计思想借鉴[react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)，
 在对schema的解析索引也使用了 `react-json-schema` 的源码。
 
-* 让用户输入的时候可以最小程度的重新渲染，做到在绝大部分的场景都是只需要重新渲染输入内容的 `Widget` 组件。
+* 在用户输入的时候可以最小程度的重新渲染，做到在绝大部分的场景都是只需要重新渲染输入内容的 `Widget` 组件。

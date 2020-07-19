@@ -248,7 +248,7 @@ export default {
 ![class pathName](/pathName.png)
 
 ::: tip
-所有标记为路径的css类名，统一为 `__path` 前缀，其中 `anyOf`，`oneOf` 同一个path 路径可能存在多处渲染，会存在重复 path class
+所有标记为路径的css类名，统一为 `__path` 前缀，其中 `anyOf`，`oneOf` 同一个path 路径会存在多处渲染，可能会存在重复 path className
 :::
 
 ## 自定义Widget
