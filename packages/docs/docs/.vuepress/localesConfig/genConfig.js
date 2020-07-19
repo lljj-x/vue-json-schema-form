@@ -89,10 +89,10 @@ exports.getRulesSidebar = ([groupA = '类型规则'] = []) => {
             children: [
                 'string',
                 'number',
-                'object',
-                'array',
                 'boolean',
                 'null',
+                'object',
+                'array',
                 'combining',
             ]
         }

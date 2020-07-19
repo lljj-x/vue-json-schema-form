@@ -173,7 +173,11 @@ export default {
 ## 树形结构
 * 树形结构需要使用 `$ref` 来递归调用自己
 * 详细 `$ref` 配置请 [点击查看](https://json-schema.org/understanding-json-schema/structuring.html?highlight=definitions#reuse)
-> $ref 不支持跨文件调用
+
+:::warning
+* $ref 不支持跨文件调用
+* `uiSchema` `errorSchema` 暂不支持递归配置，需要逐级配置 Orz...
+:::
 
 如下demo：
 
@@ -200,7 +204,7 @@ export default {
                         node: {
                             type: 'object',
                             properties: {
-                                name: { title: '输入节点名', type: 'string' },
+                                name: { title: '输入当前节点名', type: 'string' },
                                 children: {
                                     type: 'array',
                                     items: {
@@ -217,12 +221,15 @@ export default {
                         },
                     },
                 },
+                uiSchema: {
+                    tree: {
+                        name: {
+                            'ui:description': 'uiSchema配置描述信息，不支持递归'
+                        }
+                    }
+
+                },
                 formData: {
-                    billing_address: {
-                        street_address: '21, Jump Street',
-                        city: 'Babel',
-                        state: 'Neverland',
-                    },
                     tree: {
                         name: 'root',
                         children: [{ name: 'leaf' }],

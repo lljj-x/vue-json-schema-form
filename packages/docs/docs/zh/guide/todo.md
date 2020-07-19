@@ -21,6 +21,7 @@
 - [ ] 对表单所有渲染节点打上唯一class类名，方便重置样式
 - [ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
 - [ ] 逐步开源发布
+- [ ] 添加代码测试
 - [ ] Ui配置，支持函数表达式配置，hidden title description placeholder等
 - [ ] Object additionalProperties 默认false，数组嵌套anyOf 再嵌套object时对默认选中项目的计算导致展示不支持其它设置
 - [ ] 所有节点都支持配置 widget
