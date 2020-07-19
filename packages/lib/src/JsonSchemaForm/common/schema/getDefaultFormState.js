@@ -121,9 +121,11 @@ function computeDefaults(
     if (typeof defaults === 'undefined') {
         defaults = schema.default;
     }
-
     // eslint-disable-next-line default-case
     switch (getSchemaType(schema)) {
+    case 'null':
+        return null;
+
     // We need to recur for object schema inner default values.
     case 'object':
         return Object.keys(schema.properties || {}).reduce((acc, key) => {

@@ -34,7 +34,11 @@ const FIELDS_MAPS = {
     number: NumberField,
     object: ObjectField,
     string: StringField,
-    null: 'NullField',
+    null: {
+        render() {
+            return null;
+        }
+    },
     anyOf: AnyOfField,
     oneOf: OneOfField
 };
