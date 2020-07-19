@@ -4,7 +4,13 @@
 
 // 统一widget组件配置
 
-import SelectWidget from '../widgets/SelectWidget';
+import widgetComponents from '../widgets';
+
+const {
+    CheckboxesWidget,
+    RadioWidget,
+    SelectWidget
+} = widgetComponents;
 
 export default {
     types: {
@@ -15,6 +21,8 @@ export default {
         // array: '',
     },
     common: {
-        select: SelectWidget
+        select: SelectWidget,
+        radioGroup: RadioWidget,
+        checkboxGroup: CheckboxesWidget,
     }
 };
