@@ -2,33 +2,6 @@
  * Created by Liu.Jun on 2020/5/19 15:00.
  */
 
-// setTimeout(() => {
-//     const fnList = [
-//         () => 1,
-//         p => Promise.resolve(p + 1),
-//         p => p + 2,
-//         p => Promise.resolve(p + 3),
-//         p => Promise.resolve(p + 4),
-//         p => p + 5,
-//         p => p
-//     ];
-//
-//     let preResult;
-//     while (fnList.length > 0) {
-//         const curFn = fnList.shift();
-//         if (preResult) {
-//             preResult = preResult.then((res) => {
-//                 console.log(res);
-//                 return Promise.resolve(curFn(res));
-//             });
-//         } else {
-//             // 首次调用无参数
-//             preResult = Promise.resolve(curFn());
-//         }
-//     }
-// }, 1000);
-
-
 export default {
     schema: {
         type: 'object',

@@ -5,15 +5,15 @@
 >* 官方文档 - [json schema array](https://json-schema.org/understanding-json-schema/reference/array.html)
 
 ## 数据校验
-* `items` 数组每一项的配置 ，可以是对个schema对象或者数组 schema 列表
+* `items` 数组每一项的配置 ，可以是单个schema对象或者数组 schema 列表
 * `additionalItems` 数组中除项目定义之外的有效项，items 配置单个schema时无意义
 * `contains` 数组元素需要包含 如：{ "type": "number" }
 * `minItems` 数组最小长度
 * `maxItems` 数组最大长度
 * `uniqueItems` 是否每一项唯一，默认 `false`
 
-如下演示：
-`schema` `uiSchema` `errorSchema` 相关配置
+如下演示：`schema` `uiSchema` `errorSchema` 相关配置
+
 > 或者点击这里查看 [array demo页面](https://form.lljj.me/#/demo?type=Arrays)
 :::demo
 ```html
@@ -240,4 +240,5 @@
    }
 </script>
 ```
+:::
 
