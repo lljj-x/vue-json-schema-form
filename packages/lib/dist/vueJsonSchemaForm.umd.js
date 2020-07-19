@@ -289,7 +289,7 @@
     } // 是否为根节点
 
     function isRootNodePath(path) {
-      return path.split(pathSeparator).length === 0;
+      return path === '';
     } // 计算当前节点path
 
     function computedCurPath(prePath, curKey) {
@@ -8204,7 +8204,7 @@
 
       {
         ajvErrors = ajvErrors.filter(function (item) {
-          return item.property === '' && !item.schemaPath.includes('#/anyOf/') && !item.schemaPath.includes('#/oneOf/');
+          return item.property === '' && !item.schemaPath.includes('#/anyOf/') && !item.schemaPath.includes('#/oneOf/') || item.name === 'additionalProperties';
         });
       }
 
@@ -9158,7 +9158,7 @@
                   key = _ref2[0],
                   value = _ref2[1];
 
-              if (key !== 'properties') preVal[key] = value;
+              if (self.$props.schema.additionalProperties === false || key !== 'properties') preVal[key] = value;
               return preVal;
             }, {}),
             errorSchema: this.errorSchema,
@@ -9270,6 +9270,22 @@
         undefined
       );
 
+    /**
+     * Created by Liu.Jun on 2020/4/21 18:23.
+     */
+    var WIDGET_MAP = {
+      types: {
+        boolean: 'el-switch',
+        string: 'el-input',
+        number: 'el-input-number',
+        integer: 'el-input-number' // array: '',
+
+      },
+      common: {
+        select: __vue_component__$1
+      }
+    };
+
     var StringField = {
       name: 'StringField',
       props: vueProps,
@@ -9285,7 +9301,7 @@
         }, function () {
           var isNumber = schema.type === 'number' || schema.type === 'integer';
           return {
-            widget: enumOptions ? __vue_component__$1 : isNumber ? 'el-input-number' : 'el-input'
+            widget: enumOptions ? WIDGET_MAP.common.select : isNumber ? WIDGET_MAP.types.number : WIDGET_MAP.types.string
           };
         }); // 存在枚举数据列表 传入 enumOptions
 
@@ -10468,191 +10484,6 @@
       oneOf: OneOfField
     };
 
-    //
-    //
-    //
-    //
-    //
-    //
-    var script$3 = {
-      name: 'RadioWidget',
-      props: {
-        value: {
-          default: function _default() {
-            return '';
-          },
-          type: [String, Number, Boolean]
-        },
-        enumOptions: {
-          default: function _default() {
-            return [];
-          },
-          type: [Array]
-        }
-      },
-      computed: {
-        checkList: {
-          get: function get() {
-            return this.value;
-          },
-          set: function set(value) {
-            this.$emit('input', value);
-          }
-        }
-      }
-    };
-
-    /* script */
-    const __vue_script__$3 = script$3;
-
-    /* template */
-    var __vue_render__$3 = function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c(
-        "el-radio-group",
-        {
-          model: {
-            value: _vm.checkList,
-            callback: function($$v) {
-              _vm.checkList = $$v;
-            },
-            expression: "checkList"
-          }
-        },
-        _vm._l(_vm.enumOptions, function(item, index) {
-          return _c("el-radio", { key: index, attrs: { label: item.value } }, [
-            _vm._v(_vm._s(item.label))
-          ])
-        }),
-        1
-      )
-    };
-    var __vue_staticRenderFns__$3 = [];
-    __vue_render__$3._withStripped = true;
-
-      /* style */
-      const __vue_inject_styles__$3 = undefined;
-      /* scoped */
-      const __vue_scope_id__$3 = undefined;
-      /* module identifier */
-      const __vue_module_identifier__$3 = undefined;
-      /* functional template */
-      const __vue_is_functional_template__$3 = false;
-      /* style inject */
-      
-      /* style inject SSR */
-      
-      /* style inject shadow dom */
-      
-
-      
-      const __vue_component__$3 = /*#__PURE__*/normalizeComponent(
-        { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
-        __vue_inject_styles__$3,
-        __vue_script__$3,
-        __vue_scope_id__$3,
-        __vue_is_functional_template__$3,
-        __vue_module_identifier__$3,
-        false,
-        undefined,
-        undefined,
-        undefined
-      );
-
-    // const files = require.context('.', true, /\.js|vue$/);
-    // const widgetComponents = files.keys().reduce((preVal, curKey) => {
-    //     if (curKey !== './index.js') {
-    //         preVal[curKey.replace(/(\.\/|\/index\.(js|vue))/g, '')] = files(curKey).default;
-    //     }
-    //     return preVal;
-    // }, {});
-
-    var widgetComponents = {
-      CheckboxesWidget: __vue_component__$2,
-      RadioWidget: __vue_component__$3,
-      SelectWidget: __vue_component__$1
-    }; // 注册组件
-
-    Object.entries(widgetComponents).forEach(function (_ref) {
-      var _ref2 = _slicedToArray(_ref, 2),
-          key = _ref2[0],
-          value = _ref2[1];
-
-      return Vue.component(key, value);
-    });
-
-    /**
-     * Created by Liu.Jun on 2020/4/21 18:23.
-     */
-    var CheckboxesWidget = widgetComponents.CheckboxesWidget,
-        RadioWidget = widgetComponents.RadioWidget,
-        SelectWidget = widgetComponents.SelectWidget;
-    var WIDGET_MAP = {
-      boolean: {
-        checkbox: CheckboxesWidget,
-        radio: RadioWidget,
-        select: SelectWidget,
-        hidden: null
-      },
-      string: {
-        text: 'el-input',
-        password: 'PasswordWidget',
-        email: 'el-input',
-        hostname: 'el-input',
-        ipv4: 'el-input',
-        ipv6: 'el-input',
-        uri: 'el-input',
-        'data-url': 'el-input',
-        radio: RadioWidget,
-        select: SelectWidget,
-        textarea: 'el-input',
-        hidden: null,
-        date: 'el-date-picker',
-        datetime: 'el-date-picker',
-        'date-time': 'el-date-picker',
-        'alt-date': 'el-input',
-        'alt-datetime': 'el-input',
-        color: 'el-color-picker',
-        file: 'el-input'
-      },
-      number: {
-        text: 'el-input-number',
-        select: SelectWidget,
-        updown: 'el-input-number',
-        range: 'RangeWidget',
-        radio: RadioWidget,
-        hidden: 'HiddenWidget'
-      },
-      integer: {
-        text: 'el-input-number',
-        select: SelectWidget,
-        updown: 'el-input-number',
-        range: 'el-slider',
-        radio: RadioWidget,
-        hidden: 'HiddenWidget'
-      },
-      array: {
-        select: SelectWidget,
-        checkboxes: CheckboxesWidget,
-        files: 'el-input',
-        hidden: null
-      }
-    };
-
-    function getWidgetByFormat(schema, format) {
-      // 根据type和format适配合适的widget
-      var type = getSchemaType(schema);
-
-      if (typeof format === 'string' && WIDGET_MAP.hasOwnProperty(type) && WIDGET_MAP[type].hasOwnProperty(format)) {
-        return WIDGET_MAP[type][format];
-      }
-
-      return undefined;
-    } // 解析当前节点 ui widget
-
-
     function getUiWidget(_ref) {
       var _ref$schema = _ref.schema,
           schema = _ref$schema === void 0 ? {} : _ref$schema,
@@ -10665,20 +10496,7 @@
         return {
           widget: uiSchema['ui:widget']
         };
-      } // schema 配置了format 自动匹配类型
-
-
-      var format = uiSchema.format || schema.format;
-
-      if (format) {
-        var formatWidget = getWidgetByFormat(schema, format);
-
-        if (undefined !== formatWidget) {
-          return {
-            widget: formatWidget
-          };
-        }
-      } // 没配置可以widget 回退到具体field方案配置
+      } // 没配置widget 回退到具体field方案配置
 
 
       return fallback({
@@ -11031,7 +10849,7 @@
     //
     //
     //
-    var script$4 = {
+    var script$3 = {
       name: 'FormFooter',
       props: {
         okBtn: {
@@ -11099,10 +10917,10 @@
     }
 
     /* script */
-    const __vue_script__$4 = script$4;
+    const __vue_script__$3 = script$3;
 
     /* template */
-    var __vue_render__$4 = function() {
+    var __vue_render__$3 = function() {
       var _vm = this;
       var _h = _vm.$createElement;
       var _c = _vm._self._c || _h;
@@ -11139,35 +10957,35 @@
         1
       )
     };
-    var __vue_staticRenderFns__$4 = [];
-    __vue_render__$4._withStripped = true;
+    var __vue_staticRenderFns__$3 = [];
+    __vue_render__$3._withStripped = true;
 
       /* style */
-      const __vue_inject_styles__$4 = function (inject) {
+      const __vue_inject_styles__$3 = function (inject) {
         if (!inject) return
-        inject("data-v-25c5ccb1_0", { source: "\n.src-JsonSchemaForm-item-1UFV {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["D:\\code\\git_my\\vue-json-schema-form\\packages\\lib\\src\\JsonSchemaForm\\FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\r\n    <el-form-item :class=\"$style.item\">\r\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\r\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\r\n    </el-form-item>\r\n</template>\r\n\r\n<script>\r\n    export default {\r\n        name: 'FormFooter',\r\n        props: {\r\n            okBtn: {\r\n                type: String,\r\n                default: '保存'\r\n            },\r\n            cancelBtn: {\r\n                type: String,\r\n                default: '取消'\r\n            },\r\n        }\r\n    };\r\n</script>\r\n\r\n<style module>\r\n    .item {\r\n        text-align: right;\r\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\r\n        padding-top: 10px;\r\n    }\r\n</style>\r\n"]}, media: undefined });
-    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-1UFV"} });
+        inject("data-v-431cede5_0", { source: "\n.src-JsonSchemaForm-item-e4q8 {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["/Users/ryuushun/liujun/git/vue-element-schema-form/packages/lib/src/JsonSchemaForm/FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\n    <el-form-item :class=\"$style.item\">\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\n    </el-form-item>\n</template>\n\n<script>\n    export default {\n        name: 'FormFooter',\n        props: {\n            okBtn: {\n                type: String,\n                default: '保存'\n            },\n            cancelBtn: {\n                type: String,\n                default: '取消'\n            },\n        }\n    };\n</script>\n\n<style module>\n    .item {\n        text-align: right;\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\n        padding-top: 10px;\n    }\n</style>\n"]}, media: undefined });
+    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-e4q8"} });
 
       };
       /* scoped */
-      const __vue_scope_id__$4 = undefined;
+      const __vue_scope_id__$3 = undefined;
       /* module identifier */
-      const __vue_module_identifier__$4 = undefined;
+      const __vue_module_identifier__$3 = undefined;
       /* functional template */
-      const __vue_is_functional_template__$4 = false;
+      const __vue_is_functional_template__$3 = false;
       /* style inject SSR */
       
       /* style inject shadow dom */
       
 
       
-      const __vue_component__$4 = /*#__PURE__*/normalizeComponent(
-        { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
-        __vue_inject_styles__$4,
-        __vue_script__$4,
-        __vue_scope_id__$4,
-        __vue_is_functional_template__$4,
-        __vue_module_identifier__$4,
+      const __vue_component__$3 = /*#__PURE__*/normalizeComponent(
+        { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
+        __vue_inject_styles__$3,
+        __vue_script__$3,
+        __vue_scope_id__$3,
+        __vue_is_functional_template__$3,
+        __vue_module_identifier__$3,
         false,
         createInjector,
         undefined,
@@ -11276,7 +11094,7 @@
           formRefFn: function formRefFn() {
             return self.$refs.genEditForm;
           }
-        }) : this.footerParams.show ? h(__vue_component__$4, {
+        }) : this.footerParams.show ? h(__vue_component__$3, {
           props: {
             okBtn: self.footerParams.okBtn,
             cancelBtn: self.footerParams.cancelBtn
