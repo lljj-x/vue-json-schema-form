@@ -9169,16 +9169,14 @@ var ObjectField = {
 //
 //
 //
-//
-//
 var script$1 = {
-  name: 'SelectWidget',
+  name: 'CheckboxesWidget',
   props: {
     value: {
       default: function _default() {
-        return '';
+        return [];
       },
-      type: [String, Number, Boolean]
+      type: [Array]
     },
     enumOptions: {
       default: function _default() {
@@ -9188,7 +9186,7 @@ var script$1 = {
     }
   },
   computed: {
-    selectList: {
+    checkList: {
       get: function get() {
         return this.value;
       },
@@ -9208,26 +9206,20 @@ var __vue_render__$1 = function() {
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
   return _c(
-    "el-select",
-    _vm._b(
-      {
-        model: {
-          value: _vm.selectList,
-          callback: function($$v) {
-            _vm.selectList = $$v;
-          },
-          expression: "selectList"
-        }
-      },
-      "el-select",
-      _vm.$attrs,
-      false
-    ),
+    "el-checkbox-group",
+    {
+      model: {
+        value: _vm.checkList,
+        callback: function($$v) {
+          _vm.checkList = $$v;
+        },
+        expression: "checkList"
+      }
+    },
     _vm._l(_vm.enumOptions, function(item, index) {
-      return _c("el-option", {
-        key: index,
-        attrs: { label: item.label, value: item.value }
-      })
+      return _c("el-checkbox", { key: index, attrs: { label: item.value } }, [
+        _vm._v(_vm._s(item.label))
+      ])
     }),
     1
   )
@@ -9264,9 +9256,228 @@ __vue_render__$1._withStripped = true;
     undefined
   );
 
+//
+//
+//
+//
+//
+//
+var script$2 = {
+  name: 'RadioWidget',
+  props: {
+    value: {
+      default: function _default() {
+        return '';
+      },
+      type: [String, Number, Boolean]
+    },
+    enumOptions: {
+      default: function _default() {
+        return [];
+      },
+      type: [Array]
+    }
+  },
+  computed: {
+    checkList: {
+      get: function get() {
+        return this.value;
+      },
+      set: function set(value) {
+        this.$emit('input', value);
+      }
+    }
+  }
+};
+
+/* script */
+const __vue_script__$2 = script$2;
+
+/* template */
+var __vue_render__$2 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(
+    "el-radio-group",
+    {
+      model: {
+        value: _vm.checkList,
+        callback: function($$v) {
+          _vm.checkList = $$v;
+        },
+        expression: "checkList"
+      }
+    },
+    _vm._l(_vm.enumOptions, function(item, index) {
+      return _c("el-radio", { key: index, attrs: { label: item.value } }, [
+        _vm._v(_vm._s(item.label))
+      ])
+    }),
+    1
+  )
+};
+var __vue_staticRenderFns__$2 = [];
+__vue_render__$2._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$2 = undefined;
+  /* scoped */
+  const __vue_scope_id__$2 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$2 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$2 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+  /* style inject shadow dom */
+  
+
+  
+  const __vue_component__$2 = /*#__PURE__*/normalizeComponent(
+    { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
+    __vue_inject_styles__$2,
+    __vue_script__$2,
+    __vue_scope_id__$2,
+    __vue_is_functional_template__$2,
+    __vue_module_identifier__$2,
+    false,
+    undefined,
+    undefined,
+    undefined
+  );
+
+//
+//
+//
+//
+//
+//
+//
+//
+var script$3 = {
+  name: 'SelectWidget',
+  props: {
+    value: {
+      default: function _default() {
+        return '';
+      },
+      type: [String, Number, Boolean]
+    },
+    enumOptions: {
+      default: function _default() {
+        return [];
+      },
+      type: [Array]
+    }
+  },
+  computed: {
+    selectList: {
+      get: function get() {
+        return this.value;
+      },
+      set: function set(value) {
+        this.$emit('input', value);
+      }
+    }
+  }
+};
+
+/* script */
+const __vue_script__$3 = script$3;
+
+/* template */
+var __vue_render__$3 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(
+    "el-select",
+    _vm._b(
+      {
+        model: {
+          value: _vm.selectList,
+          callback: function($$v) {
+            _vm.selectList = $$v;
+          },
+          expression: "selectList"
+        }
+      },
+      "el-select",
+      _vm.$attrs,
+      false
+    ),
+    _vm._l(_vm.enumOptions, function(item, index) {
+      return _c("el-option", {
+        key: index,
+        attrs: { label: item.label, value: item.value }
+      })
+    }),
+    1
+  )
+};
+var __vue_staticRenderFns__$3 = [];
+__vue_render__$3._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$3 = undefined;
+  /* scoped */
+  const __vue_scope_id__$3 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$3 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$3 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+  /* style inject shadow dom */
+  
+
+  
+  const __vue_component__$3 = /*#__PURE__*/normalizeComponent(
+    { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
+    __vue_inject_styles__$3,
+    __vue_script__$3,
+    __vue_scope_id__$3,
+    __vue_is_functional_template__$3,
+    __vue_module_identifier__$3,
+    false,
+    undefined,
+    undefined,
+    undefined
+  );
+
+// const files = require.context('.', true, /\.js|vue$/);
+// const widgetComponents = files.keys().reduce((preVal, curKey) => {
+//     if (curKey !== './index.js') {
+//         preVal[curKey.replace(/(\.\/|\/index\.(js|vue))/g, '')] = files(curKey).default;
+//     }
+//     return preVal;
+// }, {});
+
+var widgetComponents = {
+  CheckboxesWidget: __vue_component__$1,
+  RadioWidget: __vue_component__$2,
+  SelectWidget: __vue_component__$3
+}; // 注册组件
+
+Object.entries(widgetComponents).forEach(function (_ref) {
+  var _ref2 = _slicedToArray(_ref, 2),
+      key = _ref2[0],
+      value = _ref2[1];
+
+  return Vue.component(key, value);
+});
+
 /**
  * Created by Liu.Jun on 2020/4/21 18:23.
  */
+var CheckboxesWidget = widgetComponents.CheckboxesWidget,
+    RadioWidget = widgetComponents.RadioWidget,
+    SelectWidget = widgetComponents.SelectWidget;
 var WIDGET_MAP = {
   types: {
     boolean: 'el-switch',
@@ -9276,7 +9487,9 @@ var WIDGET_MAP = {
 
   },
   common: {
-    select: __vue_component__$1
+    select: SelectWidget,
+    radioGroup: RadioWidget,
+    checkboxGroup: CheckboxesWidget
   }
 };
 
@@ -9810,99 +10023,6 @@ var ArrayFieldNormal = {
   }
 };
 
-//
-//
-//
-//
-//
-//
-var script$2 = {
-  name: 'CheckboxesWidget',
-  props: {
-    value: {
-      default: function _default() {
-        return [];
-      },
-      type: [Array]
-    },
-    enumOptions: {
-      default: function _default() {
-        return [];
-      },
-      type: [Array]
-    }
-  },
-  computed: {
-    checkList: {
-      get: function get() {
-        return this.value;
-      },
-      set: function set(value) {
-        this.$emit('input', value);
-      }
-    }
-  }
-};
-
-/* script */
-const __vue_script__$2 = script$2;
-
-/* template */
-var __vue_render__$2 = function() {
-  var _vm = this;
-  var _h = _vm.$createElement;
-  var _c = _vm._self._c || _h;
-  return _c(
-    "el-checkbox-group",
-    {
-      model: {
-        value: _vm.checkList,
-        callback: function($$v) {
-          _vm.checkList = $$v;
-        },
-        expression: "checkList"
-      }
-    },
-    _vm._l(_vm.enumOptions, function(item, index) {
-      return _c("el-checkbox", { key: index, attrs: { label: item.value } }, [
-        _vm._v(_vm._s(item.label))
-      ])
-    }),
-    1
-  )
-};
-var __vue_staticRenderFns__$2 = [];
-__vue_render__$2._withStripped = true;
-
-  /* style */
-  const __vue_inject_styles__$2 = undefined;
-  /* scoped */
-  const __vue_scope_id__$2 = undefined;
-  /* module identifier */
-  const __vue_module_identifier__$2 = undefined;
-  /* functional template */
-  const __vue_is_functional_template__$2 = false;
-  /* style inject */
-  
-  /* style inject SSR */
-  
-  /* style inject shadow dom */
-  
-
-  
-  const __vue_component__$2 = /*#__PURE__*/normalizeComponent(
-    { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
-    __vue_inject_styles__$2,
-    __vue_script__$2,
-    __vue_scope_id__$2,
-    __vue_is_functional_template__$2,
-    __vue_module_identifier__$2,
-    false,
-    undefined,
-    undefined,
-    undefined
-  );
-
 var ArrayFieldMultiSelect = {
   name: 'ArrayFieldMultiSelect',
   props: _objectSpread2(_objectSpread2({}, vueProps), {}, {
@@ -9924,7 +10044,7 @@ var ArrayFieldMultiSelect = {
       var itemsSchema = retrieveSchema(_this.schema.items, _this.rootSchema, _this.itemsFormData);
       var enumOptions = optionsList(itemsSchema);
       return {
-        widget: __vue_component__$2,
+        widget: __vue_component__$1,
         enumOptions: enumOptions
       };
     });
@@ -10843,7 +10963,7 @@ var vueProps$1 = {
 //
 //
 //
-var script$3 = {
+var script$4 = {
   name: 'FormFooter',
   props: {
     okBtn: {
@@ -10911,10 +11031,10 @@ function addStyle(id, css) {
 }
 
 /* script */
-const __vue_script__$3 = script$3;
+const __vue_script__$4 = script$4;
 
 /* template */
-var __vue_render__$3 = function() {
+var __vue_render__$4 = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
@@ -10951,35 +11071,35 @@ var __vue_render__$3 = function() {
     1
   )
 };
-var __vue_staticRenderFns__$3 = [];
-__vue_render__$3._withStripped = true;
+var __vue_staticRenderFns__$4 = [];
+__vue_render__$4._withStripped = true;
 
   /* style */
-  const __vue_inject_styles__$3 = function (inject) {
+  const __vue_inject_styles__$4 = function (inject) {
     if (!inject) return
     inject("data-v-431cede5_0", { source: "\n.src-JsonSchemaForm-item-e4q8 {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["/Users/ryuushun/liujun/git/vue-element-schema-form/packages/lib/src/JsonSchemaForm/FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\n    <el-form-item :class=\"$style.item\">\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\n    </el-form-item>\n</template>\n\n<script>\n    export default {\n        name: 'FormFooter',\n        props: {\n            okBtn: {\n                type: String,\n                default: '保存'\n            },\n            cancelBtn: {\n                type: String,\n                default: '取消'\n            },\n        }\n    };\n</script>\n\n<style module>\n    .item {\n        text-align: right;\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\n        padding-top: 10px;\n    }\n</style>\n"]}, media: undefined });
 Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-e4q8"} });
 
   };
   /* scoped */
-  const __vue_scope_id__$3 = undefined;
+  const __vue_scope_id__$4 = undefined;
   /* module identifier */
-  const __vue_module_identifier__$3 = undefined;
+  const __vue_module_identifier__$4 = undefined;
   /* functional template */
-  const __vue_is_functional_template__$3 = false;
+  const __vue_is_functional_template__$4 = false;
   /* style inject SSR */
   
   /* style inject shadow dom */
   
 
   
-  const __vue_component__$3 = /*#__PURE__*/normalizeComponent(
-    { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
-    __vue_inject_styles__$3,
-    __vue_script__$3,
-    __vue_scope_id__$3,
-    __vue_is_functional_template__$3,
-    __vue_module_identifier__$3,
+  const __vue_component__$4 = /*#__PURE__*/normalizeComponent(
+    { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
+    __vue_inject_styles__$4,
+    __vue_script__$4,
+    __vue_scope_id__$4,
+    __vue_is_functional_template__$4,
+    __vue_module_identifier__$4,
     false,
     createInjector,
     undefined,
@@ -11088,7 +11208,7 @@ var JsonSchemaForm = {
       formRefFn: function formRefFn() {
         return self.$refs.genEditForm;
       }
-    }) : this.footerParams.show ? h(__vue_component__$3, {
+    }) : this.footerParams.show ? h(__vue_component__$4, {
       props: {
         okBtn: self.footerParams.okBtn,
         cancelBtn: self.footerParams.cancelBtn
