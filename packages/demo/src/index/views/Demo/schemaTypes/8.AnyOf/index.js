@@ -88,7 +88,7 @@ export default {
         ]
     },
     uiSchema: {
-        'ui:anyOf': {
+        anyOfSelect: {
             'ui:widget': 'RadioWidget',
             'ui:title': '测试 anyOf object',
             'ui:options': {
@@ -98,7 +98,7 @@ export default {
             }
         },
         age: {
-            'ui:anyOf': {
+            anyOfSelect: {
                 'ui:widget': 'RadioWidget',
                 'ui:title': '选择选项',
                 'ui:options': {
