@@ -12,14 +12,14 @@
 - [x] lib如果直接umd包导入，默认注册vue组件 类elementUi
 - [x] 配置化所有调用外部组件的地方，方便后续扩展支持不同的ui库
 - [x] enumNames 支持 uiSchema 配置
+- [x] 对表单所有渲染节点打上唯一class类名，方便重置样式
+- [x] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
 
-- [ ] ajv 作为外部依赖不在直接打包到lib内
-- [ ] 添加ui:fieldProps 传递给自定义field的参数
+- [ ] 添加 d.ts 文件
+- [ ] 添加 ui:fieldProps 传递给自定义field的参数
 - [ ] ui:widget 支持在array级别传入
 - [ ] extraErrors参数 支持
 - [ ] customRules参数 支持
-- [ ] 对表单所有渲染节点打上唯一class类名，方便重置样式
-- [ ] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
 - [ ] 逐步开源发布
 - [ ] 添加代码测试
 - [ ] Ui配置，支持函数表达式配置，hidden title description placeholder等

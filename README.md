@@ -61,6 +61,23 @@ yarn add @lljj/vue-json-schema-form
     };
 </script>
 ```
+
+## 运行Demo
+```ssh
+# 安装依赖
+yarn install
+
+# 运行demo页 （同时运行 vue-editor，schema-form-eidtor）
+yarn run demo:dev
+
+# 运行demo页 (单个 schema-form-eidtor)
+yarn run demo:dev --dir=index
+
+# 运行demo页 (单个 vue-editor)
+yarn run demo:dev --dir=vue-editor
+
+```
+
 ## 相关资料
 [json Schema](https://json-schema.org/understanding-json-schema/index.html) |
 [Vue](https://cn.vuejs.org/) |
