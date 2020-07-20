@@ -6,10 +6,23 @@
 
 ## 数据校验
 > 可以使用minLength和maxLength关键字来限制字符串的长度
-* `minLength` 最小长度
-* `maxLength` 最大长度
-* `pattern` 正则表达式
-* `format` 常用类型校，如 `uri` `email`，参见jsonSchema 官方文档
+### `minLength`
+最小长度
+
+### `maxLength`
+最大长度
+
+### `pattern`
+正则表达式
+
+### `format`
+常用类型校，如 `uri` `email`，参见jsonSchema 官方文档
+
+## 特殊字段
+
+### enum
+* `enum` 默认会被渲染为单选下拉框，`enumNames` 会被渲染为下拉框的 label
+* `ui:enumNames` 可以覆盖默认下拉框label
 
 如下演示：
 
@@ -73,7 +86,8 @@
                         }
                     },
                     stringEnum: {
-                        'ui:widget': 'RadioWidget'
+                        'ui:widget': 'RadioWidget',
+                        'ui:enumNames': ['UiColor - 1', 'UiColor - 2', 'UiColor - 3']
                     }
                 },
                 errorSchema: {

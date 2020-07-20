@@ -6,14 +6,22 @@
 
 
 ## 数据校验
-* `integer` 整数类型
-* `multipleOf` 基数，必须为基数的倍数
-* `minimum` 最小值
-* `maximum` 最大值
+### `integer`
+整数类型
+
+### `multipleOf`
+基数，必须为基数的倍数
+
+### `minimum`
+最小值
+
+### `maximum`
+最大值
 
 
 :::tip
 * integer 需要使用 type 来设置
+
 ```js
 { type: 'integer' }
 ```
@@ -34,6 +42,8 @@
         props.max = schema.maximum;
     }
 ```
+
+* `enum` 配置和 `string` 类型一致，[查看enum](/zh/rules/string.html#enum)
 :::
 
 如下演示：

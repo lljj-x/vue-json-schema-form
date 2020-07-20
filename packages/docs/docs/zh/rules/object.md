@@ -5,10 +5,17 @@
 >* 官方文档 - [json schema object](https://json-schema.org/understanding-json-schema/reference/object.html)
 
 ## 数据校验
-* `additionalProperties` 是否可以有其它属性。默认允许，只支持配置配置 `false` 不允许，object 不支持
-* `required` 数组，包含需要必须的属性key
-* `minProperties` 最小对象的属性数量
-* `maxProperties` 最大对象的属性数量
+### `additionalProperties`
+是否可以有其它属性。默认允许，只支持配置配置 `false` 不允许，object 不支持
+
+### `required`
+数组，包含需要必须的属性key
+
+### `minProperties`
+最小对象的属性数量
+
+### `maxProperties`
+最大对象的属性数量
 
 ::: warning
 * `Dependencies` 依赖相关的属性依赖，schema 依赖都不支持

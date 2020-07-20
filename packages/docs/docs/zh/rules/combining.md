@@ -123,6 +123,11 @@ sidebarDepth: 2
 >* [Demo](https://form.lljj.me/#/demo?type=AnyOf)
 >* [数据联动](/zh/guide/adv-config.html#数据联动)
 
+
+## 特殊字段
+### const
+* `const` 如果被包含在 `anyOf` 内，会默认被渲染为单选框，`const` 为单选框 value，`title` 为单选框 label。
+
 如下演示：`schema` `uiSchema` `errorSchema` 相关配置
 
 :::demo 1、使用 anyOfSelect 配置下拉选项组件 <br> 2、anyOf同级的配置会作为公共配置传给当前选中的子schema
@@ -146,9 +151,22 @@ sidebarDepth: 2
             return {
                 formData: {},
                 schema: {
-                    title: '演示：type boolean',
+                    title: '演示：anyOf',
                     type: 'object',
                     properties: {
+                        constVal: {
+                            title: 'AnyOf const',
+                            type: 'string',
+                            anyOf: [
+                                {
+                                    title: 'schema option1',
+                                    const: '111'
+                                },
+                                {
+                                    const: '222'
+                                }
+                            ]
+                        },
                         number: {
                             title: '基础类型anyOf',
                             anyOf: [
@@ -198,6 +216,15 @@ sidebarDepth: 2
                     }
                 },
                 uiSchema: {
+                    constVal: {
+                        'ui:widget': 'RadioWidget',
+                        anyOf: [
+                            {},
+                            {
+                                'ui:title': 'ui-option2'
+                            }
+                        ]
+                    },
                     number: {
                         anyOfSelect: {
                             'ui:widget': 'RadioWidget'
