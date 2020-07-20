@@ -215,6 +215,9 @@ export default {
                         h(
                             'button',
                             {
+                                attrs: {
+                                    type: 'button'
+                                },
                                 class: {
                                     bottomAddBtn: true,
                                     'is-plain': true,
