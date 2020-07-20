@@ -2,7 +2,7 @@
 
 ## 表单渲染
 基于组件递归的形式，逐级渲染数据，如下图：（点击放大）
-![Vjsf](/Vjsf.jpg)
+![Vjsf](/vjsf.jpg)
 
 :::tip 递归说明
 * `schema` `uiSchema` `errorSchema` 是基于递归逐个节点拆解渲染，这部分数据基本不会变化。

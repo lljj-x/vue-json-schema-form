@@ -117,7 +117,7 @@ sidebarDepth: 2
 ### 描述
 * 对任何一个 `schema` 有效即可，推荐在 `oneOf`  `anyOf` 都可以时使用 `anyOf`
 * 官方文档 - [json schema anyOf](https://json-schema.org/understanding-json-schema/reference/combining.html#anyof)
-
+* 使用了`oneOfSelect` `anyOfSelect` 配置下拉选项组件
 ### 数据校验
 * 其它对schema的校验可查看这里：
 >* [Demo](https://form.lljj.me/#/demo?type=AnyOf)
@@ -125,7 +125,7 @@ sidebarDepth: 2
 
 如下演示：`schema` `uiSchema` `errorSchema` 相关配置
 
-:::demo
+:::demo 1、使用 anyOfSelect 配置下拉选项组件 <br> 2、anyOf同级的配置会作为公共配置传给当前选中的子schema
 ```html
 <template>
     <vue-form
@@ -134,8 +134,9 @@ sidebarDepth: 2
         :ui-schema="uiSchema"
         :error-schema="errorSchema"
     >
-        <div slot-scope="{ formData }">
+        <div slot-scope="{ formData, formRefFn }">
             <pre style="background-color: #eee;">{{ JSON.stringify(formData, null, 4) }}</pre>
+            <p><el-button @click="formRefFn().validate()" type="primary">校验数据</el-button></p>
         </div>
     </vue-form>
 </template>
@@ -148,6 +149,21 @@ sidebarDepth: 2
                     title: '演示：type boolean',
                     type: 'object',
                     properties: {
+                        number: {
+                            title: '基础类型anyOf',
+                            anyOf: [
+                                {
+                                    title: '数字为 5 的倍数',
+                                    type: 'integer',
+                                    multipleOf: 5
+                                },
+                                {
+                                    title: '数字为 3 的倍数',
+                                    type: 'integer',
+                                    multipleOf: 3
+                                }
+                            ]
+                        },
                         userInfo: {
                             title: '个人资料设置方式',
                             anyOf: [
@@ -182,7 +198,18 @@ sidebarDepth: 2
                     }
                 },
                 uiSchema: {
+                    number: {
+                        anyOfSelect: {
+                            'ui:widget': 'RadioWidget'
+                        },
+                        // 使用 anyOf 同级的配置会作为公共配置传给当前选中的子schema
+                        'ui:widget': 'el-slider',
+                        'ui:options': {
+                            description: '通过公共配置设置anyOf每一个选项',
+                        }
+                    },
                     userInfo: {
+                        // 使用 anyOfSelect 配置下拉选项组件
                         anyOfSelect: {
                             'ui:title': '选择配置用户类型',
                             // 'ui:widget': 'RadioWidget',
@@ -225,10 +252,9 @@ sidebarDepth: 2
 :::
 
 ::: tip
-* `anyOf` `oneOf` 使用了`oneOfSelect` `anyOfSelect` 配置下拉选项，`schema` 配置了同名key会导致 `errorSchema`，`uiSchema` 无法正常工作
-* 都会合并options的选项和上一级的配置
-* 当前 `anyOf` `schema` 会原有 schema 做浅合并 `Object.assign`
-* todo: 合并规则
+* `anyOf` `oneOf` 使用了 `oneOfSelect` `anyOfSelect` 配置下拉选项，`schema` 配置了同名key会导致 `errorSchema`，`uiSchema` 无法正常工作
+* 当前 `anyOf` 选中的 `schema` 会和原有 `schema` 做浅合并， `Object.assign({}, this.schema, curSelectSchema)`
+* `uiSchema`、`errorSchema` 在anyOf同级的配置会作为公共配置传给当前选中的子`schema`
 :::
 
 ## oneOf

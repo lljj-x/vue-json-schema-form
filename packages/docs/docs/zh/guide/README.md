@@ -92,7 +92,7 @@ export default {
 * schema `description` 属性作为表单的描述
 
 基于组件递归的形式，逐级渲染数据，如下图：（点击放大）
-![Vjsf](/Vjsf.jpg)
+![Vjsf](/vjsf.jpg)
 
 其中涉及到两个概念，`Field`、`Widget`
 * `Field` 用来渲染每一个节点对应的组件，可以是任意节点，一般组件内会包含 `FormItem` 组件
