@@ -1,8 +1,8 @@
 {
     "private": true,
     "description": "基于 Vue 、JsonSchema快速构建一个带完整校验的form表单",
-    "repository": "https://github.com/liujunchina/vue-json-schema-form",
-    "homepage": "https://github.com/liujunchina/vue-json-schema-form",
+    "repository": "https://github.com/lljj-x/vue-json-schema-form",
+    "homepage": "https://github.com/lljj-x/vue-json-schema-form",
     "author": "Liu.Jun",
     "workspaces": [
         "packages/lib",
