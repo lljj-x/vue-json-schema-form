@@ -213,14 +213,12 @@ export default {
                     },
                     [
                         h(
-                            'el-button',
+                            'button',
                             {
                                 class: {
                                     bottomAddBtn: true,
-                                },
-                                props: {
-                                    plain: true,
-                                    icon: 'el-icon-plus'
+                                    'is-plain': true,
+                                    genFormBtn: true
                                 },
                                 on: {
                                     click: () => {
@@ -230,7 +228,7 @@ export default {
                                     }
                                 }
                             },
-                            [this.maxItems ? `( ${this.vNodeList.length} / ${this.maxItems} )` : '']
+                            [this.maxItems ? `( ${this.vNodeList.length} / ${this.maxItems} )` : '', h('i', { class: 'el-icon-plus' })]
                         ),
                     ]
                 ),

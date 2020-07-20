@@ -10,9 +10,9 @@
 ## Todo
 - [x] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
 - [x] lib如果直接umd包导入，默认注册vue组件 类elementUi
+- [x] 配置化所有调用外部组件的地方，方便后续扩展支持不同的ui库
+- [x] enumNames 支持 uiSchema 配置
 
-- [ ] 配置化所有调用外部组件的地方，方便后续扩展支持不同的ui库
-- [ ] enumNames 支持 uiSchema 配置
 - [ ] ajv 作为外部依赖不在直接打包到lib内
 - [ ] 添加ui:fieldProps 传递给自定义field的参数
 - [ ] ui:widget 支持在array级别传入

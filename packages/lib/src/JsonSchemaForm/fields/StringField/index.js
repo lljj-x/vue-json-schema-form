@@ -16,7 +16,7 @@ export default {
         } = this.$props;
 
         // 可能是枚举数据使用select组件，否则使用 input
-        const enumOptions = isSelect(schema) && optionsList(schema);
+        const enumOptions = isSelect(schema) && optionsList(schema, uiSchema);
 
         const widgetConfig = getWidgetConfig({
             schema,

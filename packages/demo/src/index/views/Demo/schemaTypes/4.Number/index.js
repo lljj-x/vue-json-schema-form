@@ -44,7 +44,8 @@ export default {
     },
     uiSchema: {
         numberEnumRadio: {
-            'ui:widget': 'RadioWidget'
+            'ui:widget': 'RadioWidget',
+            'ui:enumNames': ['ui-radio1', 'ui-radio2', 'ui-radio3']
         },
         integerRange: {
             'ui:widget': 'el-slider',

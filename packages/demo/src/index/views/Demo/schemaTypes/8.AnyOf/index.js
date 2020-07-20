@@ -29,6 +29,7 @@ export default {
                 type: 'string',
                 anyOf: [
                     {
+                        title: 'schema option1',
                         const: '111'
                     },
                     {
@@ -107,6 +108,12 @@ export default {
         },
         test: {
             // 'ui:widget': 'RadioWidget',
+            anyOf: [
+                {},
+                {
+                    'ui:title': 'ui-option2'
+                }
+            ]
         }
     },
     formData: {

@@ -250,17 +250,20 @@ export function allowAdditionalItems(schema) {
 }
 
 // 下拉选项
-export function optionsList(schema) {
+export function optionsList(schema, uiSchema) {
     if (schema.enum) {
+        const uiOptions = getUserUiOptions(uiSchema);
         return schema.enum.map((value, i) => {
-            const label = (schema.enumNames && schema.enumNames[i]) || String(value);
+            const label = (uiOptions.enumNames && uiOptions.enumNames[i]) || (schema.enumNames && schema.enumNames[i]) || String(value);
             return { label, value };
         });
     }
     const altSchemas = schema.oneOf || schema.anyOf;
+    const altUiSchemas = uiSchema.oneOf || uiSchema.anyOf;
     return altSchemas.map((curSchema, i) => {
+        const uiOptions = (altUiSchemas && altUiSchemas[i]) ? getUserUiOptions(altUiSchemas[i]) : {};
         const value = toConstant(curSchema);
-        const label = curSchema.title || String(value);
+        const label = uiOptions.title || curSchema.title || String(value);
         return { label, value };
     });
 

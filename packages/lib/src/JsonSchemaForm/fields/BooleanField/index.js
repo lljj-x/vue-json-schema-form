@@ -2,6 +2,8 @@
  * Created by Liu.Jun on 2020/4/23 10:50.
  */
 
+import WIDGET_MAP from '../../config/WIDGET_MAP';
+
 import { getWidgetConfig, optionsList } from '../../common/formUtils';
 import Widget from '../../fieldComponents/Widget';
 import vueProps from '../props';
@@ -23,7 +25,7 @@ export default {
             schema,
             uiSchema
         }, () => ({
-            widget: 'el-switch'
+            widget: WIDGET_MAP.types.boolean
         }));
 
         widgetConfig.uiProps.enumOptions = enumOptions;
