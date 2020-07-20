@@ -5,7 +5,7 @@
 * [演示demo](https://form.lljj.me/ "Vue JsonSchema Form Demo")
 * [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JsonSchema Docs")
 * [源代码](https://github.com/lljj-x/vue-json-schema-form "Vue JsonSchema github")
-* [使用场景 - 前端可视化编辑演示](https://lljj.me/page_demo/demo-1911/vue-editor.html#/editor)
+* [使用场景 - 前端可视化编辑演示](https://form.lljj.me/vue-editor.html)
 * [不支持部分和更新计划](/zh/guide/todo.html)
 
 ![](https://7.luochongfei.top/vue-json-schema-form.gif?1)
