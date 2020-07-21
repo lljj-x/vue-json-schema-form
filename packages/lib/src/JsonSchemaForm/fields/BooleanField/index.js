@@ -19,7 +19,7 @@ export default {
         // Bool 会默认传入枚举类型选项 true false
         const enumOptions = optionsList({
             enum: schema.enum || [true, false]
-        });
+        }, this.uiSchema);
 
         const widgetConfig = getWidgetConfig({
             schema,

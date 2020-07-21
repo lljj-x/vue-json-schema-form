@@ -25,11 +25,11 @@ export default {
     render(h) {
         const widgetConfig = getWidgetConfig({
             schema: this.schema,
-            uiSchema: this.schema
+            uiSchema: this.uiSchema
         }, () => {
             // 这里需要索引当前节点，通过到schemaField组件的会统一处理
             const itemsSchema = retrieveSchema(this.schema.items, this.rootSchema, this.itemsFormData);
-            const enumOptions = optionsList(itemsSchema);
+            const enumOptions = optionsList(itemsSchema, this.uiSchema);
             return {
                 widget: CheckboxesWidget,
                 enumOptions
