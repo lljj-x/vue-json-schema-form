@@ -27,7 +27,7 @@ export default {
             return {
                 widget: enumOptions
                     ? WIDGET_MAP.common.select
-                    : isNumber ? WIDGET_MAP.types.number : WIDGET_MAP.types.string
+                    : isNumber ? WIDGET_MAP.types.number : WIDGET_MAP.formats[schema.format] || WIDGET_MAP.types.string
             };
         });
 
