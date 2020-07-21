@@ -24,7 +24,7 @@ export default {
         type: Object,
         default: () => ({})
     },
-    // 更节点 Schema
+    // 根节点 Schema
     rootSchema: {
         type: Object,
         default: () => ({})
