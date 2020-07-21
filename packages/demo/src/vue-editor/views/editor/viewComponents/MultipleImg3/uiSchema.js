@@ -12,6 +12,10 @@ const line2Item = genImgItem({
 export default {
     imgItem1_1: {
         'ui:title': '图片上左',
+        'ui:fieldProps': {
+            props1: '1',
+            props2: '2',
+        },
         ...genImgItem({
             width: 786,
             height: 420,

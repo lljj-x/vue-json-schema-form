@@ -107,14 +107,19 @@ export default {
 > 注：uiSchema 为普通json数据，并非 json schema 规范语法
 :::
 
+:::warning 注意
+* `ui:widget` `ui:field` `ui:fieldProps` 不支持配置在 `ui:options` 中
+:::
+
 参数格式如下：
 ```js
 uiSchema = {
     'ui:title': '覆盖schema title', // 覆盖schema title
     'ui:description': '覆盖schema description描述信息',  // 覆盖schema description
     'ui:emptyValue': undefined,   // 表单元素输入为空时的值，默认 undefined
-    'ui:field': 'componentName', // 自定义field
-    'ui:widget': 'el-slider', // 配置input组件，支持字符串或者传入一个vue组件
+    'ui:field': 'componentName', // 自定义field，不支持配置在options中
+    'ui:fieldProps': undefined, // 传给field的参数，自定义field可以使用，props: { fieldProps }
+    'ui:widget': 'el-slider', // 配置input组件，支持字符串或者传入一个vue组件，不支持配置在options中
     'ui:labelWidth': '50px', // form item label宽度
     'ui:options': {
             showTitle: '是否显示标题', // 只对 type为`object`、`array` 类型有效

@@ -29,26 +29,28 @@ export function getUiField(
 ) {
     const field = uiSchema['ui:field'];
 
-    // vue 组件
-    if (typeof field === 'function' || typeof field === 'object') {
-        return field;
-    }
-
-    // string - 组件名, 认为是用户已注册的组件
-    if (typeof field === 'string') {
-        return field;
+    // vue 组件，或者已注册的组件名
+    if (typeof field === 'function' || typeof field === 'object' || typeof field === 'string') {
+        return {
+            field,
+            fieldProps: uiSchema['ui:fieldProps'], // 自定义field ，支持传入额外的 props
+        };
     }
 
     // 类型默认 field
     const fieldCtor = FIELDS_MAP[getSchemaType(schema)];
     if (fieldCtor) {
-        return fieldCtor;
+        return {
+            field: fieldCtor
+        };
     }
 
     // 如果包含 oneOf anyOf 返回空不异常
     // SchemaField 会附加onyOf anyOf信息
     if (!fieldCtor && (schema.anyOf || schema.oneOf)) {
-        return null;
+        return {
+            field: null
+        };
     }
 
     // 不支持的类型

@@ -34,7 +34,10 @@ export default {
         }
 
         // 获取节点Ui配置渲染field组件
-        const fieldComponent = getUiField(curProps);
+        const {
+            field: fieldComponent,
+            fieldProps
+        } = getUiField(curProps);
 
         // hidden 可以通过如下2种任意一种配置
         const isHiddenWidget = props.uiSchema['ui:widget'] === 'HiddenWidget'
@@ -72,7 +75,8 @@ export default {
                 // 渲染对应子组件
                 fieldComponent && h(isHiddenWidget ? 'div' : fieldComponent, {
                     props: {
-                        ...curProps
+                        ...curProps,
+                        fieldProps
                     },
                     class: {
                         ...context.data.class,

@@ -231,7 +231,10 @@ export default {
                                     }
                                 }
                             },
-                            [this.maxItems ? `( ${this.vNodeList.length} / ${this.maxItems} )` : '', h('i', { class: 'el-icon-plus' })]
+                            [
+                                h('i', { class: 'el-icon-plus', style: { marginRight: '5px' } }),
+                                this.maxItems ? `( ${this.vNodeList.length} / ${this.maxItems} )` : ''
+                            ]
                         ),
                     ]
                 ),

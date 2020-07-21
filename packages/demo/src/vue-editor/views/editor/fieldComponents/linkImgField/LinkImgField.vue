@@ -32,6 +32,9 @@
             :required="elItemRequired"
         >
             <div v-if="selectProps.description" :class="$style.description" v-html="selectProps.description"></div>
+            <div v-if="fieldProps">
+                {{ fieldProps }}
+            </div>
             <div :class="$style.formItem">
                 <div :class="$style.uploadBox" @click="selectImg">
                     <img v-if="imgUrl" :src="imgUrl" alt="" style="max-width: 100%;max-height: 100%;">
@@ -59,7 +62,13 @@
 
     export default {
         name: 'LinkImgField',
-        props: fieldProps,
+        props: {
+            ...fieldProps,
+            fieldProps: {
+                type: null,
+                default: null
+            }
+        },
         data() {
             return {
                 schemaValidate,
