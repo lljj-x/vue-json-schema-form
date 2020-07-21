@@ -24,7 +24,7 @@ declare namespace formUtils {
     function getUserErrOptions(errorSchema: object): object;
 
      /** ui:order object-> properties 排序 */
-    function orderProperties(properties: object, order: array): object;
+    function orderProperties(properties: object, order): object;
 
      /** 当前schema 值是否为常量 */
     function isConstant(schema: object): boolean;
@@ -43,7 +43,7 @@ declare namespace formUtils {
     function allowAdditionalItems(schemaOption: Options): boolean;
 
     /** 下拉选项 **/
-    function optionsList(schemaOption: Options): array;
+    function optionsList(schemaOption: Options);
 }
 
 export default formUtils;
