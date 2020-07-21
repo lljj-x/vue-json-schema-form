@@ -2,7 +2,7 @@
 
 ## 描述
 >* type `object` 相关配置演示
->* 官方文档 - [json schema object](https://json-schema.org/understanding-json-schema/reference/object.html)
+>* 官方文档 - [JSON Schema object](https://json-schema.org/understanding-json-schema/reference/object.html)
 
 ## 数据校验
 ### `additionalProperties`

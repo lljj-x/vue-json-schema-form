@@ -87,7 +87,7 @@ export default {
 :::
 
 ## 基本概念
-通过 `jsonSchema` 生成对应的form表单
+通过 `JSON Schema` 生成对应的form表单
 * schema `title` 属性作为 form表单的标题
 * schema `description` 属性作为表单的描述
 
@@ -116,7 +116,7 @@ import VueForm, {
 默认导出 VueForm组件
 
 #### getDefaultFormState
-通过 `jsonSchema` 计算当前 `FormState` 的值
+通过 `JSON Schema` 计算当前 `FormState` 的值
 * 参数：(schema, formData, rootSchema, includeUndefinedValues)
 
 >* schema `object` 需要计算的schema
@@ -143,7 +143,7 @@ Field props配置，如果需要使用 `ui:field` 自定义field 组件，需要
 > 不使用 `uiSchema` `ui:field` 一般不会使用
 
 ## 说明
-* 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成对应的form表单
+* 遵循 JSON Schema 规范，只需要给定jsonSchema，即可生成对应的form表单
 * 快速配置个性化ui视图和校验错误信息，可适配常用的ui库，目前的版本默认视图依赖elementUi，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
 * 表单schema校验使用  [ajv](https://github.com/epoberezkin/ajv)
 * 设计思想和对schema解析索引参考 [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)

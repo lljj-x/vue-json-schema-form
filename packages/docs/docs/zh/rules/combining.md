@@ -3,7 +3,7 @@ sidebarDepth: 2
 ---
 
 # combining
->* 官方文档 - [json schema combining](https://json-schema.org/understanding-json-schema/reference/combining.html)
+>* 官方文档 - [JSON Schema combining](https://json-schema.org/understanding-json-schema/reference/combining.html)
 
 包含如下几种类型：
 * [allOf](#allof)
@@ -14,7 +14,7 @@ sidebarDepth: 2
 ## allOf
 ### 描述
 * 需要对所有的 `schema` 有效
-* 官方文档 - [json schema allOf](https://json-schema.org/understanding-json-schema/reference/combining.html#allof)
+* 官方文档 - [JSON Schema allOf](https://json-schema.org/understanding-json-schema/reference/combining.html#allof)
 
 ### 数据校验
 * `allOf` 需要对所有的 `schema` 有效
@@ -116,7 +116,7 @@ sidebarDepth: 2
 ## anyOf
 ### 描述
 * 对任何一个 `schema` 有效即可，推荐在 `oneOf`  `anyOf` 都可以时使用 `anyOf`
-* 官方文档 - [json schema anyOf](https://json-schema.org/understanding-json-schema/reference/combining.html#anyof)
+* 官方文档 - [JSON Schema anyOf](https://json-schema.org/understanding-json-schema/reference/combining.html#anyof)
 * 使用了`oneOfSelect` `anyOfSelect` 配置下拉选项组件
 ### 数据校验
 * 其它对schema的校验可查看这里：
@@ -287,7 +287,7 @@ sidebarDepth: 2
 ## oneOf
 ### 描述
 * 有且只能对一个 `schema` 有效
-* 官方文档 - [json schema oneOf](https://json-schema.org/understanding-json-schema/reference/combining.html#oneof)
+* 官方文档 - [JSON Schema oneOf](https://json-schema.org/understanding-json-schema/reference/combining.html#oneof)
 
 ### 数据校验
 这里和 `anyof` 使用方法一致，[查看anyof](#anyof)
@@ -295,7 +295,7 @@ sidebarDepth: 2
 ## not
 ### 描述
 * 对当前 `schema` 无效
-* 官方文档 - [json schema not](https://json-schema.org/understanding-json-schema/reference/combining.html#not)
+* 官方文档 - [JSON Schema not](https://json-schema.org/understanding-json-schema/reference/combining.html#not)
 
 ### 数据校验
 >1. 好像不支持 吧 ...

@@ -2,7 +2,7 @@
 
 ## 描述
 >* type `array` 相关配置演示
->* 官方文档 - [json schema array](https://json-schema.org/understanding-json-schema/reference/array.html)
+>* 官方文档 - [JSON Schema array](https://json-schema.org/understanding-json-schema/reference/array.html)
 
 ## 数据校验
 ### `items`

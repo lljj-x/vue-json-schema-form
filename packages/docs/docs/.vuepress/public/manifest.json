@@ -1,10 +1,10 @@
 {
     "name": "Vjsf",
-    "short_name": "Vue json schema form",
+    "short_name": "Vue JSON Schema form",
     "start_url": "index.html",
     "display": "standalone",
     "background_color": "#ffffff",
-    "description": "Vue json schema form",
+    "description": "Vue JSON Schema form",
     "theme_color": "blue",
     "icons": [
       {

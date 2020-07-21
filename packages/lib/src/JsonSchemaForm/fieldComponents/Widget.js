@@ -68,7 +68,7 @@ export default {
             type: Boolean,
             default: false
         },
-        // 解决 json schema和实际输入元素中空字符串 required 判定的差异性
+        // 解决 JSON Schema和实际输入元素中空字符串 required 判定的差异性
         // 元素输入为 '' 使用 emptyValue 的值
         emptyValue: {
             type: null,

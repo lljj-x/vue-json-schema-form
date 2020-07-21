@@ -2,7 +2,7 @@
 home: true
 pageClass: custom-page-home
 heroImage: /logo.png
-heroText: Vue JsonSchema Form
+heroText: Vue JSON Schema Form
 tagline: 基于 Vue 、JsonSchema快速构建一个带完整校验的form表单
 footer: Apache2.0 Licensed | Copyright © 2020-2020 Jun
 actionText: 快速开始 →
@@ -10,9 +10,9 @@ actionLink: /zh/guide/
 ---
 
 ## 快速体验
-* [演示demo](https://form.lljj.me/ "Vue JsonSchema Form Demo")
-* [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JsonSchema Docs")
-* [源代码](https://github.com/lljj-x/vue-json-schema-form "Vue JsonSchema github")
+* [演示demo](https://form.lljj.me/ "Vue JSON Schema Form Demo")
+* [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JSON Schema Docs")
+* [源代码](https://github.com/lljj-x/vue-json-schema-form "Vue JSON Schema github")
 * [使用场景 - 前端可视化编辑演示](https://form.lljj.me/vue-editor.html)
 * [不支持部分和更新计划](/zh/guide/todo.html)
 
@@ -143,7 +143,7 @@ export default {
 :::
 
 ## 相关资料
-[json Schema](https://json-schema.org/understanding-json-schema/index.html) |
+[JSON Schema](https://json-schema.org/understanding-json-schema/index.html) |
 [Vue](https://cn.vuejs.org/) |
 [Element Ui](https://element.eleme.io/)
 

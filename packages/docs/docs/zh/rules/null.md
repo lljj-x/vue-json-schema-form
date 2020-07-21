@@ -2,7 +2,7 @@
 
 ## 描述
 >* type `null` 相关配置演示
->* 官方文档 - [json schema null](https://json-schema.org/understanding-json-schema/reference/null.html)
+>* 官方文档 - [JSON Schema null](https://json-schema.org/understanding-json-schema/reference/null.html)
 
 ## 数据校验
 * `null` 类型 固定值为 null，null field 不渲染，`formData` 值为 `null`

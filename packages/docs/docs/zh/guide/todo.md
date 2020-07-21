@@ -1,7 +1,7 @@
 # TODO
 
 ## 不支持 （持续更新）
-目前对标准json schema不支持的部分包含可能不限于如下：
+目前对标准JSON Schema不支持的部分包含可能不限于如下：
 1. object additionalProperties 属性只支持配置false
 1. object Dependencies 属性依赖和schema依赖都不支持
 1. if else 新特性不支持

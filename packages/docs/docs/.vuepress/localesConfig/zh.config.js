@@ -7,7 +7,7 @@ module.exports = {
         // 键名是该语言所属的子路径
         // 作为特例，默认语言可以使用 '/' 作为其路径。
         lang: 'zh-CN',
-        title: 'Vue JsonSchema Form',
+        title: 'Vue JSON Schema Form',
         description: '基于 Vue 、JsonSchema快速构建一个带完整校验的form表单'
     },
     themeConfig: {

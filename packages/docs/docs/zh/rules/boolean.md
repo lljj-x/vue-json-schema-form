@@ -1,7 +1,7 @@
 # boolean
 ## 描述
 >* type `boolean` 相关配置演示
->* 官方文档 - [json schema boolean](https://json-schema.org/understanding-json-schema/reference/boolean.html)
+>* 官方文档 - [JSON Schema boolean](https://json-schema.org/understanding-json-schema/reference/boolean.html)
 
 ## 数据校验
 * `boolean` 类型 `true` 和 `false`

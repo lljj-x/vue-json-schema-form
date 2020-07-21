@@ -11,8 +11,8 @@ sidebarDepth: 2
 * 类型：`object`
 * 默认值：`undefined`
 
-用于描述表单数据的 json schema，
-遵循 [json Schema](https://json-schema.org/understanding-json-schema/index.html) 规范
+用于描述表单数据的 JSON Schema，
+遵循 [JSON Schema](https://json-schema.org/understanding-json-schema/index.html) 规范
 
 ```
 title: '渲染为标题',
@@ -98,13 +98,13 @@ export default {
 * 类型：`object`
 * 默认值：`{}`
 
-用于配置表单展示样式，普通json数据，非`json schema`规范
+用于配置表单展示样式，普通json数据，非`JSON Schema`规范
 
 :::tip
 * 配置数据结构和 `schema` 保持一致，所有的ui配置属性 `ui:` 开头
 * 也可以在 `ui:options` 内的配置所有的属性，不需要 `ui:` 开头
 * 如果配置了`ui:xx` 和 `ui:options` 内配置了`xx`属性，`ui:options`内的优先级更高，实际上你可以把所有的参数都配置在 `ui:options` 内；这里可以按照个人习惯，推荐使用如下参数格式
-> 注：uiSchema 为普通json数据，并非 json schema 规范语法
+> 注：uiSchema 为普通json数据，并非 JSON Schema 规范语法
 :::
 
 :::warning 注意
@@ -283,7 +283,7 @@ uiSchema = {
 * 类型：`object`
 * 默认值：`{}`
 
-用于配置表单校验错误文案信息，普通json数据，非json schema规范
+用于配置表单校验错误文案信息，普通json数据，非JSON Schema规范
 
 数据配置和 `uiSchema` 保存一致，区别在于：
 1. 使用 `err:` 做前缀
@@ -293,7 +293,7 @@ uiSchema = {
  * 配置数据结构和schema保持一致，所有的ui配置属性 `err:` 开头
  * 也可以在 `err:options` 内的配置所有的属性，不需要 `err:` 开头
  * 如果配置了`err:xx` 和 `err:options` 内配置了`xx`属性，`err:options`内优先级更高，实际上你可以把所有的参数都配置在 `err:options` 内；这里可以按照个人习惯
- > 注：errorSchema 为标准json数据，并非json schema规范语法
+ > 注：errorSchema 为标准json数据，并非JSON Schema规范语法
  :::
 
 例：重置表单错误信息

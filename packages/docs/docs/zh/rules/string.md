@@ -2,7 +2,7 @@
 
 ## 描述
 >* type `string` 相关配置演示
->* 官方文档 - [json schema string](https://json-schema.org/understanding-json-schema/reference/string.html)
+>* 官方文档 - [JSON Schema string](https://json-schema.org/understanding-json-schema/reference/string.html)
 
 ## 数据校验
 > 可以使用minLength和maxLength关键字来限制字符串的长度

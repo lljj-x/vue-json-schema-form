@@ -2,9 +2,9 @@
 基于 Vue ElementUi JsonSchema快速构建一个带完整校验的form表单.
 
 ## 快速体验
-* [演示demo](https://form.lljj.me/ "Vue JsonSchema Form Demo")
-* [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JsonSchema Docs")
-* [源代码](https://github.com/lljj-x/vue-json-schema-form "Vue JsonSchema github")
+* [演示demo](https://form.lljj.me/ "Vue JSON Schema Form Demo")
+* [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JSON Schema Docs")
+* [源代码](https://github.com/lljj-x/vue-json-schema-form "Vue JSON Schema github")
 * [使用场景 - 前端可视化编辑演示](https://form.lljj.me/vue-editor.html)
 * [不支持部分和更新计划](/zh/guide/todo.html)
 
@@ -63,12 +63,12 @@ yarn add @lljj/vue-json-schema-form
 ```
 
 ### 说明
-* 遵循 jsonSchema 规范，只需要给定jsonSchema，即可生成对应的form表单
+* 遵循 JSON Schema 规范，只需要给定jsonSchema，即可生成对应的form表单
 * 快速配置个性化ui视图和校验错误信息，可适配常用的ui库，目前的版本默认视图依赖elementUi，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
 * 设计思想和对schema解析索引参考 [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)
 
 ## 相关资料
-[json Schema](https://json-schema.org/understanding-json-schema/index.html) |
+[JSON Schema](https://json-schema.org/understanding-json-schema/index.html) |
 [Vue](https://cn.vuejs.org/) |
 [Element Ui](https://element.eleme.io/)
 

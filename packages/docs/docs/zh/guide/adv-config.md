@@ -1,7 +1,7 @@
 # 高级配置
 
 ## 数据联动
-* 数据联动的实现需要遵循 `json schema` [anyOf](https://form.lljj.me/#/demo?type=AnyOf) [oneOf](https://form.lljj.me/#/demo?type=OneOf) 格式来实现
+* 数据联动的实现需要遵循 `JSON Schema` [anyOf](https://form.lljj.me/#/demo?type=AnyOf) [oneOf](https://form.lljj.me/#/demo?type=OneOf) 格式来实现
 * 详细 AnyOf、oneOf 配置请 [点击查看](/zh/rules/combining.html)
 
 如下演示：
@@ -120,7 +120,7 @@ export default {
                                             description: {
                                                 type: 'string',
                                                 title: '项目表述',
-                                                default: '基于json schema 快速生成form表单'
+                                                default: '基于JSON Schema 快速生成form表单'
                                             }
                                         }
                                     }
@@ -245,7 +245,7 @@ export default {
 
 
 ## 空数据默认值
-默认在用户输入时如果清空了表单的数据为空时，即空字符串 `''`，会默认设置值为 `undefined`，这样是为了保证和json schema 规范保持一致。
+默认在用户输入时如果清空了表单的数据为空时，即空字符串 `''`，会默认设置值为 `undefined`，这样是为了保证和JSON Schema 规范保持一致。
 
 可以通过配置 `uiSchema` `ui:emptyValue` 的值来重置空数据默认值。
 
@@ -301,7 +301,7 @@ export default {
 :::
 
 * 参考
-1. [Json schema object required](/zh/guide/faq.html#json-schema-object-required)
+1. [JSON Schema object required](/zh/guide/faq.html#json-schema-object-required)
 1. [uiSchema 配置](/zh/guide/basic-config.html#uischema)
 
 

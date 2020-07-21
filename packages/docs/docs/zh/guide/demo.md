@@ -9,7 +9,7 @@
 ## demo页面
 * 说明
 
-演示和测试目前支持的 json schema 格式
+演示和测试目前支持的 JSON Schema 格式
 
 * 地址：
 [vjsf demo 演示页面](https://form.lljj.me)
