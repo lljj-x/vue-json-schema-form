@@ -18,6 +18,31 @@
                     "imgLink": {
                         "type": "string",
                         "format": "uri"
+                    },
+                    "time": {
+                        "title": "Time",
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "dateTime": {
+                        "title": "Date Time",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "dateTimeNumber": {
+                        "title": "Date Time",
+                        "type": "number",
+                        "format": "date-time"
+                    },
+                    "date": {
+                        "title": "Date",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "dateNumber": {
+                        "title": "Date Number",
+                        "type": "number",
+                        "format": "date"
                     }
                 },
                 "required": [

@@ -7,6 +7,10 @@ import Vue from 'vue';
 import CheckboxesWidget from './CheckboxesWidget';
 import RadioWidget from './RadioWidget';
 import SelectWidget from './SelectWidget';
+import DatePickerWidget from './DatePickerWidget';
+import DateTimePickerWidget from './DateTimePickerWidget';
+import TimePickerWidget from './TimePickerWidget';
+
 
 // webpack -> rollup
 // const files = require.context('.', true, /\.js|vue$/);
@@ -21,7 +25,10 @@ import SelectWidget from './SelectWidget';
 const widgetComponents = {
     CheckboxesWidget,
     RadioWidget,
-    SelectWidget
+    SelectWidget,
+    TimePickerWidget,
+    DatePickerWidget,
+    DateTimePickerWidget
 };
 
 // 注册组件

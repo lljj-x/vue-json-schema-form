@@ -17,29 +17,30 @@ export default {
 
         // 可能是枚举数据使用select组件，否则使用 input
         const enumOptions = isSelect(schema) && optionsList(schema, uiSchema);
+        const isNumber = schema.type === 'number' || schema.type === 'integer';
 
         const widgetConfig = getWidgetConfig({
             schema,
             uiSchema
-        }, () => {
-            const isNumber = schema.type === 'number' || schema.type === 'integer';
-
-            return {
-                widget: enumOptions
-                    ? WIDGET_MAP.common.select
-                    : isNumber ? WIDGET_MAP.types.number : WIDGET_MAP.formats[schema.format] || WIDGET_MAP.types.string
-            };
-        });
+        }, () => ({
+            widget: enumOptions
+                ? WIDGET_MAP.common.select
+                : WIDGET_MAP.formats[schema.format]
+                        || (isNumber ? WIDGET_MAP.types.number : WIDGET_MAP.types.string)
+        }));
 
         // 存在枚举数据列表 传入 enumOptions
         if (enumOptions) {
             widgetConfig.uiProps.enumOptions = enumOptions;
         }
 
+        widgetConfig.uiProps.isNumber = isNumber;
+
         return h(
             Widget,
             {
                 props: {
+                    isNumber,
                     ...this.$props,
                     ...widgetConfig
                 }
