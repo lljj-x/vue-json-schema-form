@@ -171,7 +171,7 @@
                         },
                     },
                     multipleChoicesList: {
-                        'ui:widget': 'checkboxes',
+                        'ui:widget': 'CheckboxesWidget',
                     },
                     fixedItemsList: {
                         items: [

@@ -4,7 +4,7 @@
 ### 组件说明
 单文件夹为单个组件，组件需要统一为v-model双向绑定值
 
-#### Checkboxes
+#### CheckboxesWidget
 说明：多选列表，接受value 和 enumOptions参数
 > value - array，选中的值
 > enumOptions - Array ，下拉选项
