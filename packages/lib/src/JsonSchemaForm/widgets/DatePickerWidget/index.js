@@ -6,11 +6,11 @@ export default {
     name: 'DatePickerWidget',
     functional: true,
     render(h, context) {
-        const { isNumber, ...otherProps } = context.data.props;
+        const { isNumberValue, isRange, ...otherProps } = context.data.props;
 
         context.data.props = {
-            type: 'date',
-            'value-format': isNumber ? 'timestamp' : 'yyyy-MM-dd',
+            type: isRange ? 'daterange' : 'date',
+            'value-format': isNumberValue ? 'timestamp' : 'yyyy-MM-dd',
             ...otherProps
         };
         return h('el-date-picker', context.data, context.children);

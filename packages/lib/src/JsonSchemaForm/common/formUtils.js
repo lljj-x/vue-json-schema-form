@@ -88,6 +88,18 @@ export function getUiOptions({
         spec.max = schema.maximum;
     }
 
+    if (schema.format === 'date-time' || schema.format === 'date') {
+        // 数组类型 时间区间
+        // 打破了schema的规范，type array 配置了 format
+        if (schema.type === 'array') {
+            spec.isRange = true;
+            spec.isNumberValue = !(schema.items && schema.items.type === 'string');
+        } else {
+            // 字符串 ISO 时间
+            spec.isNumberValue = !(schema.type === 'string');
+        }
+    }
+
     // 计算ui配置
     return {
         title: schema.title, // 默认使用 schema 的配置

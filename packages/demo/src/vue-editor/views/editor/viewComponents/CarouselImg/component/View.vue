@@ -1,5 +1,6 @@
 <template>
     <div :class="$style.box">
+        {{ formData }}
         <template v-if="isNoEmpty">
             <el-carousel
                 :autoplay="true"

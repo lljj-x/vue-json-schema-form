@@ -6,7 +6,9 @@ import vueProps from '../props';
 
 import getDefaultFormState from '../../common/schema/getDefaultFormState';
 
-import { allowAdditionalItems, isFixedItems, isMultiSelect } from '../../common/formUtils';
+import {
+    allowAdditionalItems, getWidgetConfig, isFixedItems, isMultiSelect
+} from '../../common/formUtils';
 import { getPathVal, setPathVal } from '../../common/vueUtils';
 import { genId, lowerCase } from '../../common/utils';
 
@@ -17,6 +19,7 @@ import * as arrayMethods from '../../common/arrayUtils';
 import ArrayFieldNormal from './arrayTypes/ArrayFieldNormal';
 import ArrayFieldMultiSelect from './arrayTypes/ArrayFieldMultiSelect';
 import ArrayFieldTuple from './arrayTypes/ArrayFieldTuple';
+import WIDGET_MAP from '../../config/WIDGET_MAP';
 
 export default {
     name: 'ArrayField',
@@ -137,6 +140,7 @@ export default {
         const self = this;
         const {
             schema,
+            uiSchema,
             rootSchema,
             rootFormData,
             curNodePath,
@@ -144,6 +148,27 @@ export default {
 
         if (!schema.hasOwnProperty('items')) {
             throw new Error(`[${schema}] 请先定义 items属性`);
+        }
+
+        // 特殊处理date datetime format
+        if (schema.format && WIDGET_MAP.formats[schema.format]) {
+            const widgetConfig = getWidgetConfig({
+                schema,
+                uiSchema: {
+                    'ui:widget': WIDGET_MAP.formats[schema.format],
+                    ...uiSchema
+                }
+            });
+
+            return h(
+                Widget,
+                {
+                    props: {
+                        ...this.$props,
+                        ...widgetConfig
+                    }
+                }
+            );
         }
 
         // https://json-schema.org/understanding-json-schema/reference/array.html#list-validation

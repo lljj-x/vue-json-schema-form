@@ -6,10 +6,10 @@ export default {
     name: 'DateTimePickerWidget',
     functional: true,
     render(h, context) {
-        const { isNumber, ...otherProps } = context.data.props;
+        const { isNumberValue, isRange, ...otherProps } = context.data.props;
 
         context.data.props = {
-            type: 'datetime',
+            type: isRange ? 'datetimerange' : 'datetime',
             ...otherProps
         };
 
@@ -18,7 +18,14 @@ export default {
         context.data.on = {
             ...context.data.on,
             input(val) {
-                oldInputCall.apply(context.data.on, [(new Date(val))[isNumber ? 'valueOf' : 'toISOString']()]);
+                let trueVal;
+                if (isRange) {
+                    trueVal = (val === null) ? [] : val.map(item => (new Date(item))[isNumberValue ? 'valueOf' : 'toISOString']());
+                } else {
+                    trueVal = (new Date(val))[isNumberValue ? 'valueOf' : 'toISOString']();
+                }
+
+                oldInputCall.apply(context.data.on, [trueVal]);
             }
         };
 

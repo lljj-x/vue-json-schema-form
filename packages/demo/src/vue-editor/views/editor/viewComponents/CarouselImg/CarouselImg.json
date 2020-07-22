@@ -11,6 +11,22 @@
             "items": {
                 "type": "object",
                 "properties": {
+                    "dateTimeArray": {
+                        "title": "Date Time Range",
+                        "type": "array",
+                        "format": "date-time",
+                        "items": {
+                            "type": "number"
+                        }
+                    },
+                    "dateArray": {
+                        "title": "Date Range",
+                        "type": "array",
+                        "format": "date",
+                        "items": {
+                            "type": "number"
+                        }
+                    },
                     "imgUrl": {
                         "type": "string",
                         "format": "uri"
@@ -30,7 +46,7 @@
                         "format": "date-time"
                     },
                     "dateTimeNumber": {
-                        "title": "Date Time",
+                        "title": "Date Time number",
                         "type": "number",
                         "format": "date-time"
                     },
@@ -46,8 +62,8 @@
                     }
                 },
                 "required": [
-                    "imgUrl",
-                    "imgLink"
+                    "imgUrl1",
+                    "imgLink1"
                 ]
             }
         }
