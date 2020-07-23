@@ -8166,7 +8166,7 @@
           _ref2$isOnlyFirstErro = _ref2.isOnlyFirstError,
           isOnlyFirstError = _ref2$isOnlyFirstErro === void 0 ? true : _ref2$isOnlyFirstErro;
 
-      var isEmpty = formData === undefined;
+      var isEmpty = formData === undefined || schema.type === 'array' && Array.isArray(formData) && formData.length === 0;
 
       if (required) {
         if (isEmpty) {
