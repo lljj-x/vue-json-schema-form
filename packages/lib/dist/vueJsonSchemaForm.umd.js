@@ -33,6 +33,11 @@
           return {};
         }
       },
+      // 自定义校验
+      customRule: {
+        type: Function,
+        default: null
+      },
       // 自定义校验规则
       customFormats: {
         type: Object,
@@ -8166,7 +8171,7 @@
           _ref2$isOnlyFirstErro = _ref2.isOnlyFirstError,
           isOnlyFirstError = _ref2$isOnlyFirstErro === void 0 ? true : _ref2$isOnlyFirstErro;
 
-      var isEmpty = formData === undefined;
+      var isEmpty = formData === undefined || schema.type === 'array' && Array.isArray(formData) && formData.length === 0;
 
       if (required) {
         if (isEmpty) {
@@ -8868,6 +8873,11 @@
             return {};
           }
         },
+        // 自定义校验
+        customRule: {
+          type: Function,
+          default: null
+        },
         widget: {
           type: [String, Function, Object]
         },
@@ -8983,7 +8993,19 @@
                   required: self.required,
                   propPath: path2prop(self.curNodePath)
                 });
-                if (errors.length > 0) return callback(errors[0].message);
+                if (errors.length > 0) return callback(errors[0].message); // customRule 如果存在自定义校验
+
+                var curCustomRule = self.$props.customRule;
+
+                if (curCustomRule && typeof curCustomRule === 'function') {
+                  return curCustomRule({
+                    field: self.curNodePath,
+                    value: value,
+                    rootFormData: self.rootFormData,
+                    callback: callback
+                  });
+                }
+
                 return callback();
               },
               trigger: 'blur'
@@ -9044,8 +9066,7 @@
       functional: true,
       render: function render(h, context) {
         var props = context.props;
-        var rootSchema = props.rootSchema; // 检索当前schema 节点 （）
-        // todo: 不需要 anyOf oneOf 可以不传递 formData 参数，避免被getter捕获到依赖
+        var rootSchema = props.rootSchema; // 目前不支持schema依赖和additionalProperties 展示不需要传递formData
         // const schema = retrieveSchema(props.schema, rootSchema, formData);
 
         var schema = retrieveSchema(props.schema, rootSchema); // 当前参数
@@ -11095,12 +11116,10 @@
           return {};
         }
       },
-      // 额外的错误配置
-      extraErrors: {
-        type: Object,
-        default: function _default() {
-          return {};
-        }
+      // 自定义校验
+      customRule: {
+        type: Function,
+        default: null
       },
       // 重置自定义错误
       errorSchema: {
@@ -11232,8 +11251,8 @@
       /* style */
       const __vue_inject_styles__$4 = function (inject) {
         if (!inject) return
-        inject("data-v-25c5ccb1_0", { source: "\n.src-JsonSchemaForm-item-1UFV {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["D:\\code\\git_my\\vue-json-schema-form\\packages\\lib\\src\\JsonSchemaForm\\FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\r\n    <el-form-item :class=\"$style.item\">\r\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\r\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\r\n    </el-form-item>\r\n</template>\r\n\r\n<script>\r\n    export default {\r\n        name: 'FormFooter',\r\n        props: {\r\n            okBtn: {\r\n                type: String,\r\n                default: '保存'\r\n            },\r\n            cancelBtn: {\r\n                type: String,\r\n                default: '取消'\r\n            },\r\n        }\r\n    };\r\n</script>\r\n\r\n<style module>\r\n    .item {\r\n        text-align: right;\r\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\r\n        padding-top: 10px;\r\n    }\r\n</style>\r\n"]}, media: undefined });
-    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-1UFV"} });
+        inject("data-v-431cede5_0", { source: "\n.src-JsonSchemaForm-item-e4q8 {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["/Users/ryuushun/liujun/git/vue-element-schema-form/packages/lib/src/JsonSchemaForm/FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\n    <el-form-item :class=\"$style.item\">\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\n    </el-form-item>\n</template>\n\n<script>\n    export default {\n        name: 'FormFooter',\n        props: {\n            okBtn: {\n                type: String,\n                default: '保存'\n            },\n            cancelBtn: {\n                type: String,\n                default: '取消'\n            },\n        }\n    };\n</script>\n\n<style module>\n    .item {\n        text-align: right;\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\n        padding-top: 10px;\n    }\n</style>\n"]}, media: undefined });
+    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-e4q8"} });
 
       };
       /* scoped */
@@ -11385,6 +11404,7 @@
           uiSchema: this.uiSchema,
           errorSchema: this.errorSchema,
           customFormats: this.customFormats,
+          customRule: this.customRule,
           rootSchema: this.schema,
           rootFormData: this.formData,
           // 根节点的数据
