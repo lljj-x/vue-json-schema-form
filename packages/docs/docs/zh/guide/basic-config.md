@@ -456,12 +456,12 @@ export default {
 :::
 
 ### customRule
-* 类型：`object`
+* 类型：`function`
 * 默认值：`-`
 
-自定义校验规则，实现类似elementUi form rules validator 的方式校验表单数据
+* 自定义校验规则，实现类似elementUi form rules validator 的方式校验表单数据
+* 详细查看这里
 
-`目前不支持，后续版本会优先实现，现阶段只能通过 自定义field 实现自定义校验;`
 
 ### formFooter
 * 类型：`object`

@@ -31,6 +31,7 @@ exports.getGuideSidebar = ([groupA = '指南', groupB = '详细配置', groupC =
                 '',
                 'basic-config',
                 'datetime-config',
+                'validate',
                 'i18n',
                 'polyfill',
                 'faq',
