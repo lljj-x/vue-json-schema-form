@@ -162,7 +162,8 @@ export function validateFormDataAndTransformMsg({
     const filterRootNodeError = true;
 
     // 校验required信息 isEmpty 校验
-    const isEmpty = formData === undefined;
+    const isEmpty = formData === undefined || (schema.type === 'array' && Array.isArray(formData) && formData.length === 0);
+
     if (required) {
         if (isEmpty) {
             const requireErrObj = {

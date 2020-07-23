@@ -7,6 +7,7 @@ export default {
         title: '时间日期选择',
         type: 'object',
         description: '日期和日期时间支持区间选择（默认格式为时间戳，配置 type string 会格式化为 ISO 时间）',
+        required: ['dateTimeRange', 'dateTime'],
         properties: {
             dateTimeRange: {
                 title: '日期时间区间选择',
