@@ -13,7 +13,7 @@ export default {
             ...otherProps
         };
 
-        // 字符串为 0 时区标准时间
+        // 字符串为 0 时区ISO标准时间
         const oldInputCall = context.data.on.input;
         context.data.on = {
             ...context.data.on,
@@ -22,7 +22,7 @@ export default {
                 if (isRange) {
                     trueVal = (val === null) ? [] : val.map(item => (new Date(item))[isNumberValue ? 'valueOf' : 'toISOString']());
                 } else {
-                    trueVal = (new Date(val))[isNumberValue ? 'valueOf' : 'toISOString']();
+                    trueVal = (val === null) ? undefined : (new Date(val))[isNumberValue ? 'valueOf' : 'toISOString']();
                 }
 
                 oldInputCall.apply(context.data.on, [trueVal]);

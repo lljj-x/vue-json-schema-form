@@ -13,6 +13,16 @@ export default {
             'value-format': isNumberValue ? 'timestamp' : 'yyyy-MM-dd',
             ...otherProps
         };
+
+        const oldInputCall = context.data.on.input;
+        context.data.on = {
+            ...context.data.on,
+            input(val) {
+                const trueVal = val === null ? (isRange ? [] : undefined) : val;
+                oldInputCall.apply(context.data.on, [trueVal]);
+            }
+        };
+
         return h('el-date-picker', context.data, context.children);
     }
 };
