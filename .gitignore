@@ -1,4 +1,5 @@
 .DS_Store
+CHANGELOG.md
 node_modules
 
 /packages/docs/docs/node_modules
