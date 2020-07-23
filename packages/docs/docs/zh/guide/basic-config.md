@@ -455,17 +455,9 @@ export default {
 ```
 :::
 
-### extraErrors
+### customRule
 * 类型：`object`
-* 默认值：`{}`
-
-`目前不支持，后续版本会优先实现，现阶段只能通过 自定义field 实现自定义校验;`
-
-额外的错误配置，用来给表单直接传入校验错误信息，比如在点击了提交按钮需要和接口校验数据重新返回错误的场景
-
-### customRules
-* 类型：`object`
-* 默认值：`{}`
+* 默认值：`-`
 
 自定义校验规则，实现类似elementUi form rules validator 的方式校验表单数据
 

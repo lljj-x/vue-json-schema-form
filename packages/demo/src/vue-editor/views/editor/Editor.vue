@@ -62,6 +62,7 @@
                                         :schema="item.componentPack.propsSchema"
                                         :ui-schema="item.componentPack.uiSchema"
                                         :error-schema="item.componentPack.errorSchema"
+                                        :custom-rule="item.componentPack.customRule"
                                         :value="item.componentValue"
                                         @on-change="handleDataChange"
                                         @on-cancel="item.isEdit = false"

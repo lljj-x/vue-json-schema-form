@@ -22,8 +22,8 @@ declare class VueForm extends Vue {
     /** 自定义校验规则 */
     customFormats: object
 
-    /** 额外的错误配置 */
-    extraErrors: object
+    /** 自定义校验规则 */
+    customRule: null
 }
 
 export default VueForm;

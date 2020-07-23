@@ -34,6 +34,11 @@ export default {
             type: Object,
             default: () => ({})
         },
+        // 自定义校验
+        customRule: {
+            type: Function,
+            default: null
+        },
         widget: {
             type: [String, Function, Object],
         },
@@ -150,8 +155,19 @@ export default {
                                         required: self.required,
                                         propPath: path2prop(self.curNodePath)
                                     });
-
                                     if (errors.length > 0) return callback(errors[0].message);
+
+                                    // customRule 如果存在自定义校验
+                                    const curCustomRule = self.$props.customRule;
+                                    if (curCustomRule && (typeof curCustomRule === 'function')) {
+                                        return curCustomRule({
+                                            field: self.curNodePath,
+                                            value,
+                                            rootFormData: self.rootFormData,
+                                            callback
+                                        });
+                                    }
+
                                     return callback();
                                 },
                                 trigger: 'blur'

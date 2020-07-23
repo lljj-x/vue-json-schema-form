@@ -17,8 +17,7 @@ export default {
         const props = context.props;
         const { rootSchema } = props;
 
-        // 检索当前schema 节点 （）
-        // todo: 不需要 anyOf oneOf 可以不传递 formData 参数，避免被getter捕获到依赖
+        // 目前不支持schema依赖和additionalProperties 展示不需要传递formData
         // const schema = retrieveSchema(props.schema, rootSchema, formData);
         const schema = retrieveSchema(props.schema, rootSchema);
 

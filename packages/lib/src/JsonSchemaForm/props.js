@@ -35,10 +35,10 @@ export default {
         type: Object,
         default: () => ({})
     },
-    // 额外的错误配置
-    extraErrors: {
-        type: Object,
-        default: () => ({})
+    // 自定义校验
+    customRule: {
+        type: Function,
+        default: null
     },
     // 重置自定义错误
     errorSchema: {

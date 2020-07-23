@@ -19,6 +19,11 @@ export default {
         type: Object,
         default: () => ({})
     },
+    // 自定义校验
+    customRule: {
+        type: Function,
+        default: null
+    },
     // 自定义校验规则
     customFormats: {
         type: Object,

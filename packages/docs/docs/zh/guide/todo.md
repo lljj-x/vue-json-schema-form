@@ -17,9 +17,8 @@
 - [x] 添加 ui:fieldProps 传递给自定义field的参数
 - [x] 添加 d.ts 文件
 - [x] ui:widget 支持在array级别传入
+- [x] customRule 参数 支持
 
-- [ ] extraErrors参数 支持
-- [ ] customRules参数 支持
 - [ ] 逐步开源发布
 - [ ] 添加代码测试
 - [ ] Ui配置，支持函数表达式配置，hidden title description placeholder等
