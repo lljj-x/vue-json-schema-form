@@ -16,8 +16,8 @@
 - [x] 整理文档，逐步梳理 基本使用方法和个性化配置field、组件、错误信息处理、options配置等
 - [x] 添加 ui:fieldProps 传递给自定义field的参数
 - [x] 添加 d.ts 文件
+- [x] ui:widget 支持在array级别传入
 
-- [ ] ui:widget 支持在array级别传入
 - [ ] extraErrors参数 支持
 - [ ] customRules参数 支持
 - [ ] 逐步开源发布

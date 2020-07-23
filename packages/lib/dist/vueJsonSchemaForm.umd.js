@@ -40,7 +40,7 @@
           return {};
         }
       },
-      // 更节点 Schema
+      // 根节点 Schema
       rootSchema: {
         type: Object,
         default: function _default() {
@@ -8904,7 +8904,7 @@
           type: Boolean,
           default: false
         },
-        // 解决 json schema和实际输入元素中空字符串 required 判定的差异性
+        // 解决 JSON Schema和实际输入元素中空字符串 required 判定的差异性
         // 元素输入为 '' 使用 emptyValue 的值
         emptyValue: {
           type: null,
@@ -9060,7 +9060,10 @@
         } // 获取节点Ui配置渲染field组件
 
 
-        var fieldComponent = getUiField(curProps); // hidden 可以通过如下2种任意一种配置
+        var _getUiField = getUiField(curProps),
+            fieldComponent = _getUiField.field,
+            fieldProps = _getUiField.fieldProps; // hidden 可以通过如下2种任意一种配置
+
 
         var isHiddenWidget = props.uiSchema['ui:widget'] === 'HiddenWidget' || props.uiSchema['ui:widget'] === 'hidden'; // functional 渲染多节点
 
@@ -9088,7 +9091,9 @@
 
           renderList.push( // 渲染对应子组件
           fieldComponent && h(isHiddenWidget ? 'div' : fieldComponent, {
-            props: _objectSpread2({}, curProps),
+            props: _objectSpread2(_objectSpread2({}, curProps), {}, {
+              fieldProps: fieldProps
+            }),
             class: _objectSpread2(_objectSpread2({}, context.data.class), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, lowerCase(fieldComponent.name) || fieldComponent, true), _defineProperty(_objectSpread2$1, "hiddenWidget", isHiddenWidget), _defineProperty(_objectSpread2$1, pathClassName, true), _objectSpread2$1))
           }));
         }
@@ -9456,6 +9461,89 @@
         undefined
       );
 
+    /**
+     * Created by Liu.Jun on 2020/7/22 13:21.
+     */
+    var DatePickerWidget = {
+      name: 'DatePickerWidget',
+      functional: true,
+      render: function render(h, context) {
+        var _context$data$props = context.data.props,
+            isNumberValue = _context$data$props.isNumberValue,
+            isRange = _context$data$props.isRange,
+            otherProps = _objectWithoutProperties(_context$data$props, ["isNumberValue", "isRange"]);
+
+        context.data.props = _objectSpread2({
+          type: isRange ? 'daterange' : 'date',
+          'value-format': isNumberValue ? 'timestamp' : 'yyyy-MM-dd'
+        }, otherProps);
+        var oldInputCall = context.data.on.input;
+        context.data.on = _objectSpread2(_objectSpread2({}, context.data.on), {}, {
+          input: function input(val) {
+            var trueVal = val === null ? isRange ? [] : undefined : val;
+            oldInputCall.apply(context.data.on, [trueVal]);
+          }
+        });
+        return h('el-date-picker', context.data, context.children);
+      }
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/7/22 13:21.
+     */
+    var DateTimePickerWidget = {
+      name: 'DateTimePickerWidget',
+      functional: true,
+      render: function render(h, context) {
+        var _context$data$props = context.data.props,
+            isNumberValue = _context$data$props.isNumberValue,
+            isRange = _context$data$props.isRange,
+            otherProps = _objectWithoutProperties(_context$data$props, ["isNumberValue", "isRange"]);
+
+        context.data.props = _objectSpread2({
+          type: isRange ? 'datetimerange' : 'datetime'
+        }, otherProps); // 字符串为 0 时区ISO标准时间
+
+        var oldInputCall = context.data.on.input;
+        context.data.on = _objectSpread2(_objectSpread2({}, context.data.on), {}, {
+          input: function input(val) {
+            var trueVal;
+
+            if (isRange) {
+              trueVal = val === null ? [] : val.map(function (item) {
+                return new Date(item)[isNumberValue ? 'valueOf' : 'toISOString']();
+              });
+            } else {
+              trueVal = val === null ? undefined : new Date(val)[isNumberValue ? 'valueOf' : 'toISOString']();
+            }
+
+            oldInputCall.apply(context.data.on, [trueVal]);
+          }
+        });
+        return h('el-date-picker', context.data, context.children);
+      }
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/7/22 13:22.
+     */
+    var TimePickerWidget = {
+      name: 'TimePickerWidget',
+      functional: true,
+      render: function render(h, context) {
+        context.data.props = _objectSpread2({
+          'value-format': 'HH:mm:ss'
+        }, context.data.props);
+        var oldInputCall = context.data.on.input;
+        context.data.on = _objectSpread2(_objectSpread2({}, context.data.on), {}, {
+          input: function input(val) {
+            oldInputCall.apply(context.data.on, [val === null ? undefined : val]);
+          }
+        });
+        return h('el-time-picker', context.data, context.children);
+      }
+    };
+
     // const files = require.context('.', true, /\.js|vue$/);
     // const widgetComponents = files.keys().reduce((preVal, curKey) => {
     //     if (curKey !== './index.js') {
@@ -9467,7 +9555,10 @@
     var widgetComponents = {
       CheckboxesWidget: __vue_component__$1,
       RadioWidget: __vue_component__$2,
-      SelectWidget: __vue_component__$3
+      SelectWidget: __vue_component__$3,
+      TimePickerWidget: TimePickerWidget,
+      DatePickerWidget: DatePickerWidget,
+      DateTimePickerWidget: DateTimePickerWidget
     }; // 注册组件
 
     Object.entries(widgetComponents).forEach(function (_ref) {
@@ -9483,13 +9574,24 @@
      */
     var CheckboxesWidget = widgetComponents.CheckboxesWidget,
         RadioWidget = widgetComponents.RadioWidget,
-        SelectWidget = widgetComponents.SelectWidget;
+        SelectWidget = widgetComponents.SelectWidget,
+        TimePickerWidget$1 = widgetComponents.TimePickerWidget,
+        DatePickerWidget$1 = widgetComponents.DatePickerWidget,
+        DateTimePickerWidget$1 = widgetComponents.DateTimePickerWidget;
     var WIDGET_MAP = {
       types: {
         boolean: 'el-switch',
         string: 'el-input',
         number: 'el-input-number',
         integer: 'el-input-number' // array: '',
+
+      },
+      formats: {
+        time: TimePickerWidget$1,
+        // 20:20:39+00:00
+        date: DatePickerWidget$1,
+        // 2018-11-13
+        'date-time': DateTimePickerWidget$1 // 2018-11-13T20:20:39+00:00
 
       },
       common: {
@@ -9514,7 +9616,7 @@
         }, function () {
           var isNumber = schema.type === 'number' || schema.type === 'integer';
           return {
-            widget: enumOptions ? WIDGET_MAP.common.select : isNumber ? WIDGET_MAP.types.number : WIDGET_MAP.types.string
+            widget: enumOptions ? WIDGET_MAP.common.select : WIDGET_MAP.formats[schema.format] || (isNumber ? WIDGET_MAP.types.number : WIDGET_MAP.types.string)
           };
         }); // 存在枚举数据列表 传入 enumOptions
 
@@ -9568,7 +9670,7 @@
 
         var enumOptions = optionsList({
           enum: schema.enum || [true, false]
-        });
+        }, this.uiSchema);
         var widgetConfig = getWidgetConfig({
           schema: schema,
           uiSchema: uiSchema
@@ -9965,9 +10067,12 @@
               });
             }
           }
-        }, [this.maxItems ? "( ".concat(this.vNodeList.length, " / ").concat(this.maxItems, " )") : '', h('i', {
-          class: 'el-icon-plus'
-        })])])]));
+        }, [h('i', {
+          class: 'el-icon-plus',
+          style: {
+            marginRight: '5px'
+          }
+        }), this.maxItems ? "( ".concat(this.vNodeList.length, " / ").concat(this.maxItems, " )") : ''])])]));
       }
     };
 
@@ -10046,20 +10151,22 @@
         }
       }),
       render: function render(h) {
-        var _this = this;
-
+        // 这里需要索引当前节点，通过到schemaField组件的会统一处理
+        var itemsSchema = retrieveSchema(this.schema.items, this.rootSchema, this.itemsFormData);
+        var enumOptions = optionsList(itemsSchema, this.uiSchema);
         var widgetConfig = getWidgetConfig({
           schema: this.schema,
-          uiSchema: this.schema
+          uiSchema: this.uiSchema
         }, function () {
-          // 这里需要索引当前节点，通过到schemaField组件的会统一处理
-          var itemsSchema = retrieveSchema(_this.schema.items, _this.rootSchema, _this.itemsFormData);
-          var enumOptions = optionsList(itemsSchema);
           return {
-            widget: __vue_component__$1,
-            enumOptions: enumOptions
+            widget: WIDGET_MAP.common.checkboxGroup
           };
-        });
+        }); // 存在枚举数据列表 传入 enumOptions
+
+        if (enumOptions) {
+          widgetConfig.uiProps.enumOptions = enumOptions;
+        }
+
         return h(Widget, {
           props: _objectSpread2(_objectSpread2({}, this.$props), widgetConfig)
         });
@@ -10327,12 +10434,26 @@
         var self = this;
         var _this$$props3 = this.$props,
             schema = _this$$props3.schema,
+            uiSchema = _this$$props3.uiSchema,
             rootSchema = _this$$props3.rootSchema,
             rootFormData = _this$$props3.rootFormData,
             curNodePath = _this$$props3.curNodePath;
 
         if (!schema.hasOwnProperty('items')) {
           throw new Error("[".concat(schema, "] \u8BF7\u5148\u5B9A\u4E49 items\u5C5E\u6027"));
+        } // 特殊处理date datetime format
+
+
+        if (schema.format && WIDGET_MAP.formats[schema.format]) {
+          var widgetConfig = getWidgetConfig({
+            schema: schema,
+            uiSchema: _objectSpread2({
+              'ui:widget': WIDGET_MAP.formats[schema.format]
+            }, uiSchema)
+          });
+          return h(Widget, {
+            props: _objectSpread2(_objectSpread2({}, this.$props), widgetConfig)
+          });
         } // https://json-schema.org/understanding-json-schema/reference/array.html#list-validation
 
 
@@ -10640,28 +10761,31 @@
           schema = _ref2$schema === void 0 ? {} : _ref2$schema,
           _ref2$uiSchema = _ref2.uiSchema,
           uiSchema = _ref2$uiSchema === void 0 ? {} : _ref2$uiSchema;
-      var field = uiSchema['ui:field']; // vue 组件
+      var field = uiSchema['ui:field']; // vue 组件，或者已注册的组件名
 
-      if (typeof field === 'function' || _typeof(field) === 'object') {
-        return field;
-      } // string - 组件名, 认为是用户已注册的组件
+      if (typeof field === 'function' || _typeof(field) === 'object' || typeof field === 'string') {
+        return {
+          field: field,
+          fieldProps: uiSchema['ui:fieldProps'] // 自定义field ，支持传入额外的 props
 
-
-      if (typeof field === 'string') {
-        return field;
+        };
       } // 类型默认 field
 
 
       var fieldCtor = FIELDS_MAPS[getSchemaType(schema)];
 
       if (fieldCtor) {
-        return fieldCtor;
+        return {
+          field: fieldCtor
+        };
       } // 如果包含 oneOf anyOf 返回空不异常
       // SchemaField 会附加onyOf anyOf信息
 
 
       if (!fieldCtor && (schema.anyOf || schema.oneOf)) {
-        return null;
+        return {
+          field: null
+        };
       } // 不支持的类型
 
 
@@ -10698,6 +10822,18 @@
 
       if (schema.maximum || schema.maximum === 0) {
         spec.max = schema.maximum;
+      }
+
+      if (schema.format === 'date-time' || schema.format === 'date') {
+        // 数组类型 时间区间
+        // 打破了schema的规范，type array 配置了 format
+        if (schema.type === 'array') {
+          spec.isRange = true;
+          spec.isNumberValue = !(schema.items && schema.items.type === 'string');
+        } else {
+          // 字符串 ISO 时间
+          spec.isNumberValue = !(schema.type === 'string');
+        }
       } // 计算ui配置
 
 
@@ -11096,8 +11232,8 @@
       /* style */
       const __vue_inject_styles__$4 = function (inject) {
         if (!inject) return
-        inject("data-v-431cede5_0", { source: "\n.src-JsonSchemaForm-item-e4q8 {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["/Users/ryuushun/liujun/git/vue-element-schema-form/packages/lib/src/JsonSchemaForm/FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\n    <el-form-item :class=\"$style.item\">\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\n    </el-form-item>\n</template>\n\n<script>\n    export default {\n        name: 'FormFooter',\n        props: {\n            okBtn: {\n                type: String,\n                default: '保存'\n            },\n            cancelBtn: {\n                type: String,\n                default: '取消'\n            },\n        }\n    };\n</script>\n\n<style module>\n    .item {\n        text-align: right;\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\n        padding-top: 10px;\n    }\n</style>\n"]}, media: undefined });
-    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-e4q8"} });
+        inject("data-v-25c5ccb1_0", { source: "\n.src-JsonSchemaForm-item-1UFV {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["D:\\code\\git_my\\vue-json-schema-form\\packages\\lib\\src\\JsonSchemaForm\\FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\r\n    <el-form-item :class=\"$style.item\">\r\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\r\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\r\n    </el-form-item>\r\n</template>\r\n\r\n<script>\r\n    export default {\r\n        name: 'FormFooter',\r\n        props: {\r\n            okBtn: {\r\n                type: String,\r\n                default: '保存'\r\n            },\r\n            cancelBtn: {\r\n                type: String,\r\n                default: '取消'\r\n            },\r\n        }\r\n    };\r\n</script>\r\n\r\n<style module>\r\n    .item {\r\n        text-align: right;\r\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\r\n        padding-top: 10px;\r\n    }\r\n</style>\r\n"]}, media: undefined });
+    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-1UFV"} });
 
       };
       /* scoped */
@@ -11152,7 +11288,7 @@
       }
     }
 
-    var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .el-color-picker{vertical-align:top}.genFromComponent .fieldGroupWrap+.fieldGroupWrap{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .formItemErrorBox{color:#ff5757;padding-top:4px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:14px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 20px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:30%;min-width:80px;max-width:160px}.genFromComponent .arrayListItem_content{-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto}.genFromComponent .arrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px;width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}";
+    var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .el-color-picker{vertical-align:top}.genFromComponent .fieldGroupWrap+.fieldGroupWrap{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .formItemErrorBox{color:#ff5757;padding-top:4px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:14px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 20px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto}.genFromComponent .arrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px;width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}";
     styleInject(css_248z);
 
     var JsonSchemaForm = {
