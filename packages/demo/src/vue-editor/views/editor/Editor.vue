@@ -520,6 +520,21 @@
                     }
                 }
             }
+            .module-name-tip {
+                position: absolute;
+                top: 0;
+                right: 0;
+                font-size: 26px;
+                padding: 10px;
+                background: rgba(0,0,0,0.8);
+                color: #FFFFFF;
+            }
+            .emptyBox {
+                min-height: 350px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
             .viewEmpty_IconBox {
                 color: color(var(--checkbox-color) a(0.7));
                 font-size: 50px;

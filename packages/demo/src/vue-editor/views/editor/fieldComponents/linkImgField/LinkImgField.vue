@@ -116,6 +116,7 @@
         methods: {
             selectImg() {
                 const imgs = [
+                    'https://m.360buyimg.com/babel/jfs/t1/136164/18/4633/216335/5f1176b9E0d2e6f59/e41c72e01932fd73.jpg.webp',
                     'https://gw.alicdn.com/tfs/TB1DKP9zCtYBeNjSspkXXbU8VXa-1920-450.jpg_Q90.jpg',
                     'https://aecpm.alicdn.com/simba/img/TB1W4nPJFXXXXbSXpXXSutbFXXX.jpg',
                     'https://aecpm.alicdn.com/simba/img/TB1_JXrLVXXXXbZXVXXSutbFXXX.jpg',
@@ -143,9 +144,6 @@
     @import 'variable.css';
     .box {
         :global {
-            .el-form-item__label {
-                font-weight: bold;
-            }
             .el-form-item.is-error {
                 :local {
                     .uploadBox {
@@ -170,7 +168,7 @@
     }
     .input {
         flex: 1;
-        margin-left: 5px;
+        margin-left: 15px;
     }
     .description {
         font-size: 12px;
@@ -180,11 +178,11 @@
     }
     .uploadBox {
         cursor: pointer;
-        width: 60px;
+        width: 80px;
         height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--background-color-base);
+        background-color: #e2e2e2;
     }
 </style>

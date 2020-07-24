@@ -10,14 +10,12 @@ export default function ({
 } = { }) {
     return {
         'ui:field': field,
-        'ui:description': `宽度${width}px,高度${height}x。支持JPG、PNG 图片格式，大小不得超过 2 MB。<br><span style="background: #f6f6f6;">这里使用自定义field配置</span>`,
+        'ui:description': `宽度${width}px,高度${height}x。支持JPG、PNG 图片格式，大小不得超过 2 MB。<br>`,
         'ui:options': {
             type: ['jpg', 'jpeg', 'png'],
             size: 2048,
             width,
             height,
-            widthLogical: '===',
-            heightLogical: '===',
             limit: 1
         }
     };

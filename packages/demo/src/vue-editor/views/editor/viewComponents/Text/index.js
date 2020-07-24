@@ -5,7 +5,7 @@
 import propsSchema from './propsSchema.json';
 import uiSchema from './uiSchema.json';
 
-const View = () => import('./component/View.vue');
+const View = () => import('./View.vue');
 
 // Text
 const NAME = propsSchema.id;

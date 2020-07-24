@@ -1,15 +1,23 @@
 <template>
     <div :class="$style.box">
-        {{ formData }}
         <template v-if="isNoEmpty">
             <el-carousel
                 :autoplay="true"
-                height="400px"
+                height="420px"
             >
                 <el-carousel-item v-for="(item, index) in formData.imgList" :key="index" height="400px">
                     <a :class="$style.imgitem" :href="item.imgLink">
-                        <img :class="$style.imgitem_img" :src="item.imgUrl" alt="">
-                    </a>
+                        <el-image
+                            :class="$style.imgitem_img"
+                            :src="item.imgUrl"
+                            :style="{
+                                width: '1920px',
+                                height: '420px',
+                            }"
+                            fit="cover"
+                            alt=""
+                        >
+                        </el-image></a>
                 </el-carousel-item>
             </el-carousel>
         </template>
@@ -51,7 +59,7 @@
         width: 1920px;
     }
     .emptyBox {
-        min-height: 250px;
+        min-height: 350px;
         display: flex;
         justify-content: center;
         align-items: center;

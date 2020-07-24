@@ -23,6 +23,5 @@
 - [ ] 添加代码测试
 - [ ] Ui配置，支持函数表达式配置，hidden title description placeholder等
 - [ ] 优化源码 不需要this的组件调整为 functional
-- [ ] 性能部分 - 1、组件传参导致响应式的数据庞大 2、render函数完全重新渲染分离变和不变 3、formData 变更render 都需要重新执行
 - [ ] 对照react schema from适配更多规则支持
 - [ ] 解耦elementUi 重新开发form 和formItem组件，通过配置化实现适配elementUi iView 等常用ui组件

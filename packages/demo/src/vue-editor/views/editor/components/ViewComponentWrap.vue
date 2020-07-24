@@ -190,12 +190,14 @@
     }
     .formTitle {
         position: relative;
-        line-height: 18px;
         padding: 15px 0;
+        line-height: 18px;
         border-bottom: 1px solid color(var(--color-black) a(0.08));
+        font-weight: bold;
     }
     .form {
-        max-height: calc(100vh - 140px);
+        padding: 10px 0;
+        max-height: calc(100vh - 160px);
         overflow: auto;
         &::-webkit-scrollbar {
             width: 0;

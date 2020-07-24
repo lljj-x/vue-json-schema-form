@@ -6,64 +6,25 @@
         "imgList": {
             "type": "array",
             "minItems": 1,
-            "maxItems": 5,
+            "maxItems": 4,
             "uniqueItems": true,
             "items": {
                 "type": "object",
                 "properties": {
-                    "dateTimeArray": {
-                        "title": "Date Time Range",
-                        "type": "array",
-                        "format": "date-time",
-                        "items": {
-                            "type": "number"
-                        }
-                    },
-                    "dateArray": {
-                        "title": "Date Range",
-                        "type": "array",
-                        "format": "date",
-                        "items": {
-                            "type": "number"
-                        }
-                    },
                     "imgUrl": {
                         "type": "string",
-                        "format": "uri"
+                        "format": "uri",
+                        "default": "https://m.360buyimg.com/babel/jfs/t1/116779/33/13215/494116/5f19a54fE4e3bf7cc/8a2a7b0732385d19.jpg.webp"
                     },
                     "imgLink": {
                         "type": "string",
-                        "format": "uri"
-                    },
-                    "time": {
-                        "title": "Time",
-                        "type": "string",
-                        "format": "time"
-                    },
-                    "dateTime": {
-                        "title": "Date Time",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "dateTimeNumber": {
-                        "title": "Date Time number",
-                        "type": "number",
-                        "format": "date-time"
-                    },
-                    "date": {
-                        "title": "Date",
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "dateNumber": {
-                        "title": "Date Number",
-                        "type": "number",
-                        "format": "date"
+                        "format": "uri",
+                        "default": "https://www.google.com"
                     }
                 },
                 "required": [
-                    "imgUrl1",
-                    "imgLink1"
+                    "imgUrl",
+                    "imgLink"
                 ]
             }
         }

@@ -20,7 +20,7 @@
     .box {
         h2 {
             text-align: center;
-            font-size: 20px;
+            font-size: 38px;
             padding: 40px 10px;
             font-weight: bold;
         }

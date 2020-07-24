@@ -2,9 +2,8 @@
  * Created by Liu.Jun on 2019/12/4 15:06.
  */
 
-import propsSchema from './CarouselImg.json';
+import propsSchema from './schema.json';
 import uiSchema from './uiSchema.js';
-import errorSchema from './errSchema.js';
 
 const View = () => import('./View.vue');
 
@@ -15,6 +14,5 @@ export {
     componentViewName,
     View,
     propsSchema,
-    uiSchema,
-    errorSchema
+    uiSchema
 };
