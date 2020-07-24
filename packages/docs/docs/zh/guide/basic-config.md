@@ -290,7 +290,7 @@ uiSchema = {
 1. 使用配置的 schema 错误类型的 `err:${name}` 做key，比如 `err:format` 、`err:required` 、`err:type`
 
 ::: tip
- * 配置数据结构和schema保持一致，所有的ui配置属性 `err:` 开头
+ * 配置数据结构和schema保持一致，所有的 `error` 配置属性 `err:` 开头
  * 也可以在 `err:options` 内的配置所有的属性，不需要 `err:` 开头
  * 如果配置了`err:xx` 和 `err:options` 内配置了`xx`属性，`err:options`内优先级更高，实际上你可以把所有的参数都配置在 `err:options` 内；这里可以按照个人习惯
  > 注：errorSchema 为标准json数据，并非JSON Schema规范语法
