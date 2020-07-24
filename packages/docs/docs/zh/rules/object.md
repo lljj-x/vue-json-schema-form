@@ -9,7 +9,7 @@
 是否可以有其它属性。默认允许，只支持配置配置 `false` 不允许，object 不支持
 
 ### `required`
-数组，包含需要必须的属性key
+数组类型，包含需要必须的属性key
 
 ### `minProperties`
 最小对象的属性数量
@@ -104,3 +104,17 @@
 </style>
 ```
 :::
+
+## 其它配置
+* 支持通过配置 `uiSchema` `ui:order` 对属性渲染顺序进行排序。
+* 参见 [uiSchema order 配置](https://form.lljj.me/#/demo?type=Simple)
+
+比如：
+```js
+// 支持 * 匹配其它值
+uiSchema = {
+    'ui:order': ['number', '*'],
+    // 'ui:order': ['firstName', 'lastName'],
+}
+```
+
