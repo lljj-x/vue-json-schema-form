@@ -1,6 +1,6 @@
 <template>
     <div :class="$style.box">
-        <h4 :class="$style.title">{{ title }}</h4>
+        <span :class="$style.moduleNameTip">{{ title }}</span>
         <div v-for="(item, index) in lineNumArr" :key="index" :class="$style.goodsLine">
             <div v-for="(innerItem, innerIndex) in lineItemsArr" :key="innerIndex" :class="$style.goodsItem">
                 <SkeletonGoods :animation="false" :length="1"></SkeletonGoods>
@@ -46,10 +46,15 @@
     .box {
         background: #FFFFFF;
     }
-    .title {
-        text-align: center;
-        font-size: 18px;
-        padding: 20px;
+    .moduleNameTip {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 22px;
+        padding: 10px;
+        background: rgba(0,0,0,0.8);
+        color: #FFFFFF;
+        z-index: 3;
     }
     .goodsLine {
         width: 100%;

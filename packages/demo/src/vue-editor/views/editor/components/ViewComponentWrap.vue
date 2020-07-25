@@ -124,7 +124,7 @@
             cursor: no-drop;
         }
         &>div {
-            pointer-events: none;
+            /*pointer-events: none;*/
         }
         &:hover {
             z-index: 2;

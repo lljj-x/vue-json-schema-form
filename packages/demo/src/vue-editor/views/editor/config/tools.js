@@ -8,6 +8,9 @@ import * as componentPackCarouselImg from '../viewComponents/CarouselImg';
 // 多图模块 3
 import * as componentPackMultipleImg3 from '../viewComponents/MultipleImg3';
 
+// 多图模块 3
+import * as componentPackMultipleImg5 from '../viewComponents/MultipleImg5';
+
 // 纯文本
 import * as componentPackText from '../viewComponents/Text';
 
@@ -47,7 +50,12 @@ const tools = [
             icon: 'el-icon-picture',
             componentPack: componentPackFlashSaleGoodsList
         }, {
-            title: '多图',
+            title: '多图(5)',
+            maxNum: 5,
+            icon: 'el-icon-picture',
+            componentPack: componentPackMultipleImg5
+        }, {
+            title: '多图(2-3))',
             maxNum: 10,
             icon: 'el-icon-s-grid',
             componentPack: componentPackMultipleImg3

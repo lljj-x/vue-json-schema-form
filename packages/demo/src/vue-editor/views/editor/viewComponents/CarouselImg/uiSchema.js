@@ -15,8 +15,7 @@ export default {
                 width: 1920,
                 height: 500,
             }),
-            'ui:title': '轮播图片配置',
-            'ui:description': ''
+            'ui:title': '轮播图片配置'
         }
     }
 };

@@ -1,13 +1,13 @@
 /**
- * Created by Liu.Jun on 2019/9/29 19:01.
+ * Created by Liu.Jun on 2019/12/4 15:06.
  */
 
-import propsSchema from './propsSchema.json';
+import propsSchema from './schema.json';
 import uiSchema from './uiSchema.js';
+import errorSchema from './errorSchema.js';
 
 const View = () => import('./View.vue');
 
-// Text
 const NAME = propsSchema.id;
 const componentViewName = `${NAME}View`;
 
@@ -15,5 +15,6 @@ export {
     componentViewName,
     View,
     propsSchema,
-    uiSchema
+    uiSchema,
+    errorSchema
 };

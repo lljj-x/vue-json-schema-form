@@ -16,21 +16,19 @@ export default {
     },
     seckillBrand: {
         ...genImgItem(),
-        'ui:title': '广告位配置',
-        'ui:description': ''
+        'ui:title': '右侧固定广告位配置'
     },
     goodsList: {
         'ui:options': {
             title: '添加商品',
-            description: '添加秒杀商品，这里应该是结合具体业务调用添加商品'
+            description: '添加秒杀商品，这里应该是结合具体业务调用添加商品逻辑'
         },
         items: {
             ...genImgItem({
                 width: 1920,
                 height: 500,
             }),
-            'ui:title': '商品配置',
-            'ui:description': ''
+            'ui:title': '商品配置'
         }
     }
 };

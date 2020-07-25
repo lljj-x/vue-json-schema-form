@@ -9,6 +9,11 @@
         "txt": {
             "title": "文字",
             "type": "string"
+        },
+        "txtColor": {
+            "title": "选择文字颜色",
+            "type": "string",
+            "default": "#ff0132"
         }
     }
 }

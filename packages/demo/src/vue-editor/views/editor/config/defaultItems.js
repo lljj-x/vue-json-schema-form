@@ -30,7 +30,7 @@ export default [
             startTime: (new Date((+new Date() + 60 * 60 * 1000 * 3))).toISOString(),
             seckillBrand: {
                 // eslint-disable-next-line max-len
-                imgUrl: 'https://img10.360buyimg.com/seckillcms/s140x140_jfs/t1/138861/40/2943/176146/5f0d93baE2aaf46b7/007ce03faa2b6cbf.jpg.webp',
+                imgUrl: 'https://img30.360buyimg.com/babel/s290x370_jfs/t1/133470/23/5172/252715/5f1a3b3cE2c82f4cf/4a92d18397680eee.jpg!cc_290x370.webp',
                 imgLink: 'https://www.jd.com'
             },
             goodsList: [
@@ -64,7 +64,23 @@ export default [
     {
         name: 'Text',
         value: {
-            txt: '频道广场'
+            txt: '超值进口新发现',
+            txtColor: '#ff0132'
+        }
+    },
+    {
+        name: 'MultipleImg5',
+        value: {
+            imgList: [
+                'https://img.alicdn.com/tps/i4/TB1Q2Mnd2zO3e4jSZFxwu1P_FXa.png_500x1000q75.jpg_.webp',
+                'https://img.alicdn.com/tps/i4/TB1t2dzOvb2gK0jSZK9wu1EgFXa.png_500x1000q75.jpg_.webp',
+                'https://img.alicdn.com/tps/i4/TB1ZJtFOAL0gK0jSZFAwu3A9pXa.png_500x1000q75.jpg_.webp',
+                'https://img.alicdn.com/tps/i4/TB1y4tuOxz1gK0jSZSgSuuvwpXa.jpg_500x1000q75s0.jpg_.webp',
+                'https://img.alicdn.com/tps/i4/TB14GVJOAT2gK0jSZFkwu3IQFXa.png_500x1000q75.jpg_.webp',
+            ].map(item => ({
+                imgUrl: item,
+                imgLink: 'https://www.tmall.com',
+            }))
         }
     },
     {
