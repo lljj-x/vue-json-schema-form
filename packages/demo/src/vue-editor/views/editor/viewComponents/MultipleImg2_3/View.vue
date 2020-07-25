@@ -1,8 +1,9 @@
 <template>
     <div :class="[$style.iconBox, !isNoEmpty ? $style.emptyBox : $style.contentBox]" class="viewEmpty_IconBox">
+        <span class="module-name-tip">多图模块(2-3)</span>
         <div :class="[$style.line1, $style.block]">
             <div :class="$style.imgItem">
-                <a v-if="formData.imgItem1_1 && formData.imgItem1_1.imgLink"
+                <a v-if="isNoEmpty"
                    :href="formData.imgItem1_1.imgLink"
                 >
                     <el-image
@@ -19,7 +20,7 @@
                 <i v-else class="el-icon-picture"></i>
             </div>
             <div :class="$style.imgItem">
-                <a v-if="formData.imgItem1_2 && formData.imgItem1_1.imgLink"
+                <a v-if="isNoEmpty"
                    :href="formData.imgItem1_2.imgLink"
                 >
                     <el-image
@@ -38,7 +39,7 @@
         </div>
         <div :class="[$style.line2, $style.block]">
             <div :class="$style.imgItem">
-                <a v-if="formData.imgItem2_1 && formData.imgItem2_1.imgLink"
+                <a v-if="isNoEmpty"
                    :href="formData.imgItem2_1.imgLink"
                 >
                     <el-image
@@ -55,7 +56,7 @@
                 <i v-else class="el-icon-picture"></i>
             </div>
             <div :class="$style.imgItem">
-                <a v-if="formData.imgItem2_2 && formData.imgItem2_2.imgLink"
+                <a v-if="isNoEmpty"
                    :href="formData.imgItem2_2.imgLink"
                 >
                     <el-image
@@ -72,7 +73,7 @@
                 <i v-else class="el-icon-picture"></i>
             </div>
             <div :class="$style.imgItem">
-                <a v-if="formData.imgItem2_3 && formData.imgItem2_3.imgLink"
+                <a v-if="isNoEmpty"
                    :href="formData.imgItem2_3.imgLink"
                 >
                     <el-image
@@ -112,7 +113,7 @@
             },
             isNoEmpty() {
                 // 配置了一个图片就不为空
-                return !!this.formData.imgItem1_1.imgUrl;
+                return this.formData.imgItem1_1.imgUrl && this.formData.imgItem1_1.imgLink;
             }
         },
     };

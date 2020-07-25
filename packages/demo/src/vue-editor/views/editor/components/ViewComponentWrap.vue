@@ -197,7 +197,7 @@
     }
     .form {
         padding: 10px 0;
-        max-height: calc(100vh - 160px);
+        max-height: calc(100vh - 200px);
         overflow: auto;
         &::-webkit-scrollbar {
             width: 0;

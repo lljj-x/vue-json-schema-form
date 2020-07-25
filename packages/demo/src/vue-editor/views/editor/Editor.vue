@@ -524,7 +524,7 @@
                 position: absolute;
                 top: 0;
                 right: 0;
-                font-size: 26px;
+                font-size: 22px;
                 padding: 10px;
                 background: rgba(0,0,0,0.8);
                 color: #FFFFFF;

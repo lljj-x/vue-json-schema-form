@@ -5,17 +5,17 @@
 // 轮播图
 import * as componentPackCarouselImg from '../viewComponents/CarouselImg';
 
-// 多图模块 3
-import * as componentPackMultipleImg3 from '../viewComponents/MultipleImg3';
-
-// 多图模块 3
-import * as componentPackMultipleImg5 from '../viewComponents/MultipleImg5';
+// 秒杀商品
+import * as componentPackFlashSaleGoodsList from '../viewComponents/FlashSaleGoodsList';
 
 // 纯文本
 import * as componentPackText from '../viewComponents/Text';
 
-// 纯文本
-import * as componentPackFlashSaleGoodsList from '../viewComponents/FlashSaleGoodsList';
+// 多图模块一排5个
+import * as componentPackMultipleImg5 from '../viewComponents/MultipleImg5';
+
+// 多图模块 2-3
+import * as componentPackMultipleImg23 from '../viewComponents/MultipleImg2_3';
 
 // 推荐
 import * as componentPackRecommendedGoodsList from '../viewComponents/RecommendedGoodsList';
@@ -55,10 +55,10 @@ const tools = [
             icon: 'el-icon-picture',
             componentPack: componentPackMultipleImg5
         }, {
-            title: '多图(2-3))',
+            title: '多图(2-3)',
             maxNum: 10,
             icon: 'el-icon-s-grid',
-            componentPack: componentPackMultipleImg3
+            componentPack: componentPackMultipleImg23
         }, {
             title: '纯文本',
             maxNum: 20,

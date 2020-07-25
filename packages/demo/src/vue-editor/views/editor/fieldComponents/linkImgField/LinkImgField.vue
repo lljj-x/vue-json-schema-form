@@ -32,9 +32,6 @@
             :required="elItemRequired"
         >
             <div v-if="selectProps.description" :class="$style.description" v-html="selectProps.description"></div>
-            <div v-if="fieldProps">
-                {{ fieldProps }}
-            </div>
             <div :class="$style.formItem">
                 <div :class="$style.uploadBox" @click="selectImg">
                     <img v-if="imgUrl" :src="imgUrl" alt="" style="max-width: 100%;max-height: 100%;">
@@ -137,6 +134,11 @@
                     'https://img.alicdn.com/tps/i4/TB1ZJtFOAL0gK0jSZFAwu3A9pXa.png_500x1000q75.jpg_.webp',
                     'https://img.alicdn.com/tps/i4/TB1y4tuOxz1gK0jSZSgSuuvwpXa.jpg_500x1000q75s0.jpg_.webp',
                     'https://img.alicdn.com/tps/i4/TB1y4tuOxz1gK0jSZSgSuuvwpXa.jpg_500x1000q75s0.jpg_.webp',
+                    'https://img.alicdn.com/tps/i4/TB1fbhiawoQMeJjy0FnSuv8gFXa.jpg_490x490q100.jpg_.webp',
+                    'https://gw.alicdn.com/tfs/TB1UzOqoWL7gK0jSZFBXXXZZpXa-468-602.jpg',
+                    'https://img.alicdn.com/tfs/TB1XjMYnfb2gK0jSZK9XXaEgFXa-468-1236.jpg',
+                    'https://img.alicdn.com/tps/i4/TB1MesKcWmWQ1JjSZPhwu0CJFXa.png',
+                    'https://gw.alicdn.com/tfs/TB1xVR9oFP7gK0jSZFjXXc5aXXa-468-602.jpg'
                 ];
                 this.$message.success('选择图片成功，这里随机一个图片');
                 this.imgUrl = imgs[Math.floor(Math.random() * imgs.length)];

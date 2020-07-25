@@ -84,8 +84,36 @@ export default [
         }
     },
     {
-        // 默认显示一个多图模块
-        name: 'MultipleImg3'
+        name: 'Text',
+        value: {
+            txt: '超值进口新发现',
+            txtColor: '#487cff'
+        }
+    },
+    {
+        name: 'MultipleImg2_3',
+        value: {
+            imgItem1_1: {
+                imgUrl: 'https://img.alicdn.com/tps/i4/TB1fbhiawoQMeJjy0FnSuv8gFXa.jpg_490x490q100.jpg_.webp',
+                imgLink: 'https://www.jd.com/'
+            },
+            imgItem1_2: {
+                imgUrl: 'https://gw.alicdn.com/tfs/TB1UzOqoWL7gK0jSZFBXXXZZpXa-468-602.jpg',
+                imgLink: 'https://www.jd.com/'
+            },
+            imgItem2_1: {
+                imgUrl: 'https://img.alicdn.com/tfs/TB1XjMYnfb2gK0jSZK9XXaEgFXa-468-1236.jpg',
+                imgLink: 'https://www.jd.com/'
+            },
+            imgItem2_2: {
+                imgUrl: 'https://gw.alicdn.com/tfs/TB1s720BxD1gK0jSZFyXXciOVXa-468-1236.jpg',
+                imgLink: 'https://www.jd.com/'
+            },
+            imgItem2_3: {
+                imgUrl: 'https://gw.alicdn.com/tfs/TB1xVR9oFP7gK0jSZFjXXc5aXXa-468-602.jpg',
+                imgLink: 'https://www.jd.com/'
+            }
+        }
     },
     {
         // 默认显示所有商品
