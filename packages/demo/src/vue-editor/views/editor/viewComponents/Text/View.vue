@@ -24,6 +24,7 @@
 
 <style module>
     .box {
+        background-color: #FFFFFF;
         h2 {
             text-align: center;
             font-size: 38px;

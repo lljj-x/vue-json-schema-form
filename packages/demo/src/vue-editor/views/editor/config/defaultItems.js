@@ -200,9 +200,6 @@ export default [
         }
     },
     {
-        name: 'CategoryGoods'
-    },
-    {
         name: 'RecommendedGoodsList'
     },
     {

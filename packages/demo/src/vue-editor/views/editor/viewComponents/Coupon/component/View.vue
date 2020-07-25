@@ -22,6 +22,7 @@
     @import 'variable.css';
     .box {
         padding: 20px;
+        background-color: #FFFFFF;
     }
     .item {
         display: flex;

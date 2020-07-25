@@ -124,6 +124,7 @@
         height: 260px;
         display: flex;
         flex-direction: row;
+        background-color: #FFFFFF;
     }
     .countdown {
         width: 190px;

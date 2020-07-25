@@ -56,6 +56,7 @@
 <style module>
     @import 'variable.css';
     .box {
+        background-color: #FFFFFF;
         width: 1920px;
     }
     .emptyBox {
