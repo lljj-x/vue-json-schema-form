@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "id": "CategoryGoods",
+    "type": "object",
+    "required": ["title"],
+    "definitions": {
+        "ImgItem": {
+            "type": "object",
+            "properties": {
+                "imgUrl": {
+                    "title": "图片地址",
+                    "type": "string",
+                    "format": "uri"
+                },
+                "imgLink": {
+                    "title": "链接地址",
+                    "type": "string",
+                    "format": "uri",
+                    "default": "https://www.jd.com"
+                }
+            },
+            "required": [
+                "imgUrl",
+                "imgLink"
+            ]
+        }
+    },
+    "properties": {
+        "title": {
+            "title": "标题",
+            "type": "string",
+            "maxLength": 10
+        },
+        "subTitle": {
+            "title": "副标题",
+            "type": "string",
+            "maxLength": 30
+        },
+        "banner": {
+            "title": "左侧banner配置",
+            "type": "object",
+            "properties": {
+                "link": {
+                    "title": "banner图片和链接配置",
+                    "$ref": "#/definitions/ImgItem"
+                },
+                "bannerTitle": {
+                    "title": "banner主标题",
+                    "type": "string",
+                    "maxLength": 4
+                },
+                "bannerSubTitle": {
+                    "title": "banner副标题",
+                    "type": "string",
+                    "maxLength": 8
+                }
+            }
+        },
+        "goodsList": {
+            "type": "array",
+            "title": "商品信息配置",
+            "minItems": 4,
+            "maxItems": 8,
+            "items": {
+                "title": "配置商品信息",
+                "$ref": "#/definitions/ImgItem"
+            }
+        }
+    },
+    "additionalProperties": false
+}

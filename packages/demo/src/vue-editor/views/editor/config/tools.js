@@ -20,6 +20,9 @@ import * as componentPackMultipleImg23 from '../viewComponents/MultipleImg2_3';
 // 多图模块 1-2
 import * as componentPackMultipleImg13 from '../viewComponents/MultipleImg1_3';
 
+// 分类管区
+import * as componentPackCategoryGoods from '../viewComponents/CategoryGoods';
+
 // 推荐
 import * as componentPackRecommendedGoodsList from '../viewComponents/RecommendedGoodsList';
 
@@ -67,6 +70,11 @@ const tools = [
             maxNum: 10,
             icon: 'el-icon-s-grid',
             componentPack: componentPackMultipleImg13
+        }, {
+            title: '分类管区',
+            maxNum: 10,
+            icon: 'el-icon-s-grid',
+            componentPack: componentPackCategoryGoods
         }, {
             title: '纯文本',
             maxNum: 20,

@@ -498,7 +498,7 @@
     .dragArea {
         /* min-height: calc(100vh - var(--site-top-height) - 50px); */
         min-height: calc(100vh + 100px);
-        background: var(--color-white);
+        background-color: #f5f5f5;
         padding: 10px 0;
         :global {
             .draggableToolItem {

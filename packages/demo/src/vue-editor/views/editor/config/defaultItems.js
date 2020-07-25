@@ -24,6 +24,13 @@ export default [
         }
     },
     {
+        name: 'Text',
+        value: {
+            txt: '抢购商品',
+            txtColor: '#507aa0'
+        }
+    },
+    {
         // 默认秒杀商品
         name: 'FlashSaleGoodsList',
         value: {
@@ -119,7 +126,7 @@ export default [
         name: 'Text',
         value: {
             txt: '超值进口新发现',
-            txtColor: '#000'
+            txtColor: '#589A6D'
         }
     },
     {
@@ -142,6 +149,58 @@ export default [
                 imgLink: 'http://127.0.0.1:8800/vue-editor.html#/editor'
             }
         }
+    },
+    {
+        name: 'CategoryGoods',
+        value: {
+            title: '打造爱巢',
+            subTitle: 'HOME',
+            banner: {
+                link: {
+                    imgUrl: 'https://img.alicdn.com/tps/i4/TB1MesKcWmWQ1JjSZPhwu0CJFXa.png',
+                    imgLink: 'https://www.jd.com'
+                },
+                bannerTitle: '广告位',
+                bannerSubTitle: '广告位副标题'
+            },
+            goodsList: [
+                {
+                    imgUrl: 'https://gw.alicdn.com/bao/uploaded/i3/3243519086/O1CN016gQ0Ia2GzR82IAhdR_!!0-item_pic.jpg',
+                    imgLink: 'https://www.jd.com'
+                },
+                {
+                    imgUrl: 'https://gw.alicdn.com/bao/uploaded/i1/2145455856/O1CN01tJoDJ11t85wjbqfVw_!!0-item_pic.jpg',
+                    imgLink: 'https://www.jd.com'
+                },
+                {
+                    imgUrl: 'https://gw.alicdn.com/bao/uploaded/i1/2750439771/TB14Nr2MVXXXXbMapXXXXXXXXXX_!!0-item_pic.jpg',
+                    imgLink: 'https://www.jd.com'
+                },
+                {
+                    imgUrl: 'https://gw.alicdn.com/bao/uploaded/i2/2619099633/O1CN01XQNyC82L1xuQm6aeX_!!0-item_pic.jpg',
+                    imgLink: 'https://www.jd.com'
+                },
+                {
+                    imgUrl: 'https://gw.alicdn.com/bao/uploaded/i1/748159429/O1CN01xeiYck2JWX37gKDJk_!!2-item_pic.png',
+                    imgLink: 'https://www.jd.com'
+                },
+                {
+                    imgUrl: 'https://gw.alicdn.com/bao/uploaded/i1/3294603858/O1CN01HpuPy31eN0YdGTTkz_!!2-item_pic.png',
+                    imgLink: 'https://www.jd.com'
+                },
+                {
+                    imgUrl: 'https://gw.alicdn.com/bao/uploaded/i1/2105113961/O1CN01C6b1kj1f8BJxju0i4_!!0-item_pic.jpg',
+                    imgLink: 'https://www.jd.com'
+                },
+                {
+                    imgUrl: 'https://gw.alicdn.com/bao/uploaded/i3/670743919/TB1ikrMawnH8KJjSspcXXb3QFXa_!!0-item_pic.jpg',
+                    imgLink: 'https://www.jd.com'
+                }
+            ]
+        }
+    },
+    {
+        name: 'CategoryGoods'
     },
     {
         name: 'RecommendedGoodsList'
