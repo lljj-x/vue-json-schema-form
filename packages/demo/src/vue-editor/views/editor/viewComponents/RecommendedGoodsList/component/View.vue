@@ -2,7 +2,7 @@
     <GoodsListView
         :line-num="1"
         :line-items="5"
-        title="店铺推荐"
+        title="推荐商品"
     ></GoodsListView>
 </template>
 <script>

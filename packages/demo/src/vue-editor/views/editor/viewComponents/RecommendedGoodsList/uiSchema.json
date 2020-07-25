@@ -2,7 +2,7 @@
   "show": {
     "ui:options": {
       "title": "添加推荐商品",
-      "description": "<a style='padding: 5px 0;' href='/store.html#/store/goods-shop-window' target='_blank'>编辑橱窗</a><br>推荐商品模块不可编辑，系统统会自动抓取您已经创建的推荐橱窗商品",
+      "description": "推荐商品模块不可编辑，系统自动基于大数据做商品推荐",
       "label": true,
       "disabled": true
     }

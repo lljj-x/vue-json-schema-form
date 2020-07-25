@@ -116,10 +116,37 @@ export default [
         }
     },
     {
-        // 默认显示所有商品
-        name: 'AllGoodsList',
+        name: 'Text',
         value: {
-            show: true
+            txt: '超值进口新发现',
+            txtColor: '#000'
         }
+    },
+    {
+        name: 'MultipleImg1_3',
+        value: {
+            imgItem1_1: {
+                imgUrl: 'https://aecpm.alicdn.com/simba/img/TB1W4nPJFXXXXbSXpXXSutbFXXX.jpg',
+                imgLink: 'http://127.0.0.1:8800/vue-editor.html#/editor'
+            },
+            imgItem2_1: {
+                imgUrl: 'https://img.alicdn.com/tps/i4/TB1KhvGOAY2gK0jSZFgSuw5OFXa.jpg',
+                imgLink: 'http://127.0.0.1:8800/vue-editor.html#/editor'
+            },
+            imgItem2_2: {
+                imgUrl: 'https://img.alicdn.com/tps/i4/TB17qddaOERMeJjSspiSuvZLFXa.jpg_320x5000q100.jpg_.webp',
+                imgLink: 'http://127.0.0.1:8800/vue-editor.html#/editor'
+            },
+            imgItem2_3: {
+                imgUrl: 'https://img.alicdn.com/tfs/TB1XjMYnfb2gK0jSZK9XXaEgFXa-468-1236.jpg',
+                imgLink: 'http://127.0.0.1:8800/vue-editor.html#/editor'
+            }
+        }
+    },
+    {
+        name: 'RecommendedGoodsList'
+    },
+    {
+        name: 'AllGoodsList'
     }
 ];

@@ -2,7 +2,7 @@
  * Created by Liu.Jun on 2019/12/4 15:06.
  */
 
-import propsSchema from './MultipleImg2.json';
+import propsSchema from './schema.json';
 import uiSchema from './uiSchema.js';
 import errorSchema from './errorSchema.js';
 

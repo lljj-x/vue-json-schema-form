@@ -305,9 +305,11 @@
                         return arrayMethods.moveDown(target, arrayItem);
                     },
                     copy(target, arrayItem) {
-                        // 特殊处理
-                        const newItem = generateEditorItem(arrayItem);
-                        return target.splice(target.indexOf(arrayItem) + 1, 0, newItem);
+                        // 不copy数据
+                        // eslint-disable-next-line no-unused-vars
+                        const { componentValue, ...emptyPack } = arrayItem;
+
+                        return target.splice(target.indexOf(arrayItem) + 1, 0, generateEditorItem(emptyPack));
                     },
                     remove(target, arrayItem) {
                         return arrayMethods.remove(target, arrayItem);

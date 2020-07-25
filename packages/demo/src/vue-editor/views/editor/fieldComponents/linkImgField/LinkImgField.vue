@@ -138,9 +138,10 @@
                     'https://gw.alicdn.com/tfs/TB1UzOqoWL7gK0jSZFBXXXZZpXa-468-602.jpg',
                     'https://img.alicdn.com/tfs/TB1XjMYnfb2gK0jSZK9XXaEgFXa-468-1236.jpg',
                     'https://img.alicdn.com/tps/i4/TB1MesKcWmWQ1JjSZPhwu0CJFXa.png',
-                    'https://gw.alicdn.com/tfs/TB1xVR9oFP7gK0jSZFjXXc5aXXa-468-602.jpg'
+                    'https://gw.alicdn.com/tfs/TB1xVR9oFP7gK0jSZFjXXc5aXXa-468-602.jpg',
+                    'https://img.alicdn.com/tps/i4/TB1R8tlXxvbeK8jSZPfSuuriXXa.jpg_490x490q100.jpg_.webp'
                 ];
-                this.$message.success('选择图片成功，这里随机一个图片');
+                this.$message.success('选择图片成功，随机一个图片');
                 this.imgUrl = imgs[Math.floor(Math.random() * imgs.length)];
             }
         }

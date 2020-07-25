@@ -18,24 +18,28 @@
                     :disabled="editorItem.toolBar.moveUpDisabled"
                     :class="$style.toolBarBtn"
                     class="el-icon-caret-top"
+                    title="上移"
                     @click="$emit('onOperate', { item: editorItem, command: 'moveUp'})"
                 ></button>
                 <button
                     :disabled="editorItem.toolBar.moveDownDisabled"
                     :class="$style.toolBarBtn"
                     class="el-icon-caret-bottom"
+                    title="下移"
                     @click="$emit('onOperate', { item: editorItem, command: 'moveDown'})"
                 ></button>
                 <button
                     :disabled="editorItem.toolBar.copyDisabled"
                     :class="[$style.topLine, $style.toolBarBtn]"
                     class="el-icon-copy-document"
+                    title="复制"
                     @click="$emit('onOperate', { item: editorItem, command: 'copy' })"
                 ></button>
                 <button
                     :disabled="editorItem.toolBar.removeDisabled"
                     :class="$style.toolBarBtn"
                     class="el-icon-delete"
+                    title="移除"
                     @click="$emit('onOperate', { item: editorItem, command: 'remove' })"
                 ></button>
             </div>

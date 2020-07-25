@@ -17,6 +17,9 @@ import * as componentPackMultipleImg5 from '../viewComponents/MultipleImg5';
 // 多图模块 2-3
 import * as componentPackMultipleImg23 from '../viewComponents/MultipleImg2_3';
 
+// 多图模块 1-2
+import * as componentPackMultipleImg13 from '../viewComponents/MultipleImg1_3';
+
 // 推荐
 import * as componentPackRecommendedGoodsList from '../viewComponents/RecommendedGoodsList';
 
@@ -59,6 +62,11 @@ const tools = [
             maxNum: 10,
             icon: 'el-icon-s-grid',
             componentPack: componentPackMultipleImg23
+        }, {
+            title: '多图(1-3)',
+            maxNum: 10,
+            icon: 'el-icon-s-grid',
+            componentPack: componentPackMultipleImg13
         }, {
             title: '纯文本',
             maxNum: 20,

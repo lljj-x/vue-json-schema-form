@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "id": "MultipleImg2",
+    "id": "MultipleImg1_3",
     "type": "object",
     "definitions": {
         "ImgItem": {
@@ -12,7 +12,8 @@
                 },
                 "imgLink": {
                     "type": "string",
-                    "format": "uri"
+                    "format": "uri",
+                    "default": "https://www.tmall.com/"
                 }
             },
             "required": [

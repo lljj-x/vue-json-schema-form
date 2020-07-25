@@ -2,7 +2,7 @@ declare function getDefaultFormState(
     schema: object,
     formData: object,
     rootSchema: object,
-    includeUndefinedValues: boolean,
+    includeUndefinedValues?: boolean,
 ): any;
 
 export default getDefaultFormState;

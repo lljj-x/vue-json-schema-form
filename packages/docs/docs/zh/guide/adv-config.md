@@ -681,7 +681,7 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
                     'https://img.alicdn.com/bao/uploaded/i1/TB1M31ANFXXXXaOXpXXwu0bFXXX.png',
                     'https://img.alicdn.com/imgextra/i2/143584903/O1CN01qdnUD81m5cPPJlXog_!!143584903.jpg'
                 ];
-                this.$message.success('选择图片成功，这里随机一个图片');
+                this.$message.success('选择图片成功，随机一个图片');
                 this.imgUrl = imgs[Math.floor(Math.random() * imgs.length)];
             }
         }
