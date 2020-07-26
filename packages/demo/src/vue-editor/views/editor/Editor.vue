@@ -1,12 +1,23 @@
 <template>
     <div v-loading="loading" :class="$style.box">
-        <EditorHeader
-            v-model="scale"
-            @onUpdateScale="fixComponentFormPosition"
-            @onPreview="handlePreview"
-            @onSave="handleSave"
-            @onPublish="handlePublish"
-        ></EditorHeader>
+        <transition name="el-zoom-in-top">
+            <EditorHeader
+                v-if="!isPreview"
+                v-model="scale"
+                @onUpdateScale="fixComponentFormPosition"
+                @onPreview="handlePreview"
+                @onSave="handleSave"
+                @onPublish="handlePublish"
+            ></EditorHeader>
+            <el-button
+                v-else
+                type="primary"
+                style="position: fixed;right: 20px;top: 20px;z-index: 5;"
+                @click="isPreview = false;"
+            >
+                结束预览
+            </el-button>
+        </transition>
         <div :class="[$style.container, showToolBar ? $style.hasTools : '']">
             <span :class="$style.leftCaret" @click="showToolBar = !showToolBar">
                 <i class="el-icon-caret-right"></i>
@@ -41,6 +52,7 @@
                             >
                                 <ViewComponentWrap
                                     :editor-item="item"
+                                    :is-preview="isPreview"
                                     @onOperate="handleItemOperate"
                                 >
                                     <!-- 传入form使用传入的form组件 -->
@@ -55,7 +67,7 @@
                                     >
                                     </component>
 
-                                    <!-- 不传入使用 schema生成form -->
+                                    <!-- schema生成form -->
                                     <VueElementForm
                                         v-else
                                         slot="componentForm"
@@ -78,7 +90,6 @@
                                 </ViewComponentWrap>
                             </div>
                         </draggable>
-
                         <div v-if="trueComponentList.length === 0" :class="$style.tipBox">
                             <img src="./assets/img/empty-tip.png" alt="empty-img">
                             <p>左边选择模块拖入该区域</p>
@@ -137,12 +148,12 @@
                     // fallbackTolerance: 0
                 },
                 loading: false,
+                isPreview: false,
                 scale: 65,
                 editComponentList: [],
                 editHeaderComponentList: [], // 兼容header slot ，插件内部实现导致必须分割多分数据
                 editFooterComponentList: [], // 兼容footer slot ，插件内部实现导致必须分割多分数据
                 showToolBar: true,
-                // defaultDragWidth: 1920,
             };
         },
 
@@ -200,6 +211,7 @@
                 for (let i = 0; i < this.trueComponentList.length; i += 1) {
                     const item = this.trueComponentList[i];
                     if (!schemaValidate.isValid(item.componentPack.propsSchema, item.componentValue)) {
+                        debugger;
                         // 验证失败
                         // item.isEdit = true; // 打开编辑窗口
 
@@ -231,12 +243,8 @@
                     }
                 });
             },
-            handleSave() {
-                this.handlePreview();
-            },
-            handlePreview() {
-                // schema validate
-                if (!this.validateDataList()) return;
+            handleSave(validData) {
+                if (!this.validateDataList(validData)) return;
 
                 componentWithDialog({
                     VueComponent: JsonPerttyPrint,
@@ -248,8 +256,12 @@
                     }
                 });
             },
+            handlePreview() {
+                this.isPreview = true;
+                this.dragOptions.disabled = true;
+            },
             handlePublish() {
-                this.handlePreview();
+                this.handleSave(true);
             },
             // 计算各个组件状态栏按钮状态
             computedComponentToolBarStatus() {

@@ -44,8 +44,7 @@
         }
     },
     "required": [
-        "startTime",
-        "goodsTitle"
+        "startTime"
     ],
     "additionalProperties": false
 }

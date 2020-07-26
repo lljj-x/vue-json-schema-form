@@ -75,6 +75,10 @@
     export default {
         name: 'ViewComponentWrap',
         props: {
+            isPreview: {
+                type: Boolean,
+                default: false
+            },
             editorItem: {
                 type: Object,
                 default: () => ({})
@@ -86,9 +90,10 @@
         methods: {
             // 点击只能打开，并且打开状态下只能执行一次
             handelClickView(e) {
-                // 阻止浏览器默认时间
-                e.preventDefault();
-
+                if (!this.isPreview) {
+                    // 阻止浏览器默认事件
+                    e.preventDefault();
+                }
                 if (!this.editorItem.isEdit) this.showEditForm();
             },
 

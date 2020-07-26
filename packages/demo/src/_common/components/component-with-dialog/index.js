@@ -101,16 +101,26 @@ export default ({
                 this.$el.parentElement.removeChild(this.$el);
             }
         },
-        template: `
-            <el-dialog
-                v-bind="curDialogProps"
-                v-on="curDialogListeners"
-                :visible.sync="visible">
-               <VueComponent v-bind="componentProps"
-                             v-on="componentListeners"
-               ></VueComponent>
-            </el-dialog>
-        `,
+        render(h) {
+            const self = this;
+            return h('el-dialog', {
+                on: {
+                    ...this.curDialogListeners,
+                    'update:visible': function (val) {
+                        self.visible = val;
+                    }
+                },
+                props: {
+                    visible: this.visible,
+                    ...this.curDialogProps,
+                },
+            }, [
+                h(VueComponent, {
+                    on: this.componentListeners,
+                    props: this.componentProps,
+                })
+            ]);
+        },
     });
 
     const componentDialog = (new DialogComponentConstructor({
