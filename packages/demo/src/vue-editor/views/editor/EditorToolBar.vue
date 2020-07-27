@@ -87,7 +87,7 @@
 <style module>
     @import "variable.css";
     .box{
-        padding: 20px 30px;
+        padding: 20px;
     }
     .group {
         margin-top: 20px;
@@ -102,14 +102,14 @@
     .groupList {
         display: flex;
         flex-wrap: wrap;
-        padding: 10px;
+        padding: 0 10px;
         justify-content: space-between;
     }
     .listItem {
         position: relative;
         width: 50%;
         max-width: 120px;  /* 避免拖动ghost样式异常 */
-        height: 100px;
+        height: 80px;
         cursor: move;
         flex-shrink: 0;
         transition: box-shadow 0.3s ease;

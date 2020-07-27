@@ -17,7 +17,7 @@
                 v-else
                 type="primary"
                 style="position: fixed;right: 20px;top: 20px;z-index: 5;"
-                @click="(scale = 65) && (isPreview = false)"
+                @click="(scale = 70) && (isPreview = false)"
             >
                 结束预览
             </el-button>
@@ -143,7 +143,7 @@
             return {
                 loading: false,
                 isPreview: false,
-                scale: 65,
+                scale: 70,
                 editComponentList: [],
                 editHeaderComponentList: [], // 兼容header slot ，插件内部实现导致必须分割多分数据
                 editFooterComponentList: [], // 兼容footer slot ，插件内部实现导致必须分割多分数据
@@ -417,7 +417,7 @@
     @import 'variable.css';
     :root {
         --site-top-height: 80px;
-        --tool-bar-width: 320px;
+        --tool-bar-width: 260px;
         --drag-area-width: 1920px;
     }
     /*预览模式 同步样式重置*/
@@ -429,7 +429,7 @@
             height: 100vh;
             padding-left: 0;
         }
-        .contentWrap {
+        .contentWrap, .dragAreaWrap{
             overflow-x: hidden;
         }
         .contentBox, .dragAreaWrap{
@@ -517,7 +517,7 @@
     }
     .contentBox {
         position: relative;
-        width: 2600px;
+        width: 2000px;
         min-height: 100%;
     }
     .dragAreaWrap {
