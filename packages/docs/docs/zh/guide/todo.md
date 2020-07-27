@@ -18,8 +18,8 @@
 - [x] 添加 d.ts 文件
 - [x] ui:widget 支持在array级别传入
 - [x] customRule 参数 支持
+- [x] 逐步开源发布
 
-- [ ] 逐步开源发布
 - [ ] 添加代码测试
 - [ ] Ui配置，支持函数表达式配置，hidden title description placeholder等
 - [ ] 优化源码 不需要this的组件调整为 functional
