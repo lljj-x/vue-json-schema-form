@@ -4,6 +4,8 @@
             <a v-for="(item, index) in formData.imgList"
                :key="index"
                :href="item.imgLink"
+               target="_blank"
+               class="hover-animation"
             >
                 <el-image
                     :src="item.imgUrl"
@@ -11,6 +13,7 @@
                         width: '228px',
                         height: '269px',
                     }"
+                    class="hover-animation"
                     fit="cover"
                     alt=""
                 >

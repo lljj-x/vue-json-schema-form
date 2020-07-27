@@ -24,7 +24,7 @@
                             :key="goodsItemIndex"
                             :class="$style.goodsItem"
                         >
-                            <a :class="$style.goodsLink" :href="goodsItem.imgLink">
+                            <a :class="$style.goodsLink" :href="goodsItem.imgLink" target="_blank">
                                 <el-image
                                     :class="$style.goodsImg"
                                     :src="goodsItem.imgUrl"
@@ -32,6 +32,7 @@
                                         width: '140px',
                                         height: '140px',
                                     }"
+                                    class="hover-animation"
                                     fit="cover"
                                     alt=""
                                 >
@@ -55,7 +56,7 @@
                 </el-carousel>
             </div>
             <div :class="$style.brand">
-                <a :href="formData.seckillBrand.imgLink">
+                <a :href="formData.seckillBrand.imgLink" target="_blank">
                     <el-image
                         :src="formData.seckillBrand.imgUrl"
                         :style="{
@@ -63,6 +64,7 @@
                             height: '206px',
                         }"
                         fit="cover"
+                        class="hover-animation"
                     >
                     </el-image>
                 </a>

@@ -3,7 +3,7 @@ const routes = [
         path: '/editor',
         name: 'editor',
         meta: {
-            title: 'editor'
+            title: 'Vue Editor'
         },
         component: () => import('../../views/editor/Editor.vue'),
     },

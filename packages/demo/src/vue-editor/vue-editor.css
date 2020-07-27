@@ -7,3 +7,19 @@ body{
 div, ul, li{
     box-sizing: border-box;
 }
+.hover-animation {
+    transition: opacity .3s ease-out;
+    &:hover {
+        opacity: .7;
+    }
+}
+
+.module-name-tip {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 16px;
+    padding: 8px 15px;
+    background: rgba(0,0,0,0.8);
+    color: #FFFFFF;
+}

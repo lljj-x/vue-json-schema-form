@@ -50,8 +50,9 @@
         position: absolute;
         top: 0;
         right: 0;
-        font-size: 22px;
-        padding: 10px;
+        font-size: 16px;
+        padding: 8px 15px;
+        border-radius: 4px;
         background: rgba(0,0,0,0.8);
         color: #FFFFFF;
         z-index: 3;

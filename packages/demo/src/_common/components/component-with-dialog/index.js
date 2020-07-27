@@ -106,7 +106,7 @@ export default ({
             return h('el-dialog', {
                 on: {
                     ...this.curDialogListeners,
-                    'update:visible': function (val) {
+                    'update:visible': function update(val) {
                         self.visible = val;
                     }
                 },

@@ -5,6 +5,7 @@
         :visible-arrow="false"
         :popper-class="$style.editFormpopper"
         placement="right-start"
+        :disabled="isPreview"
         width="400"
         class="js_viewComponentWrap viewComponentWrap"
         style="display: block;"
@@ -59,7 +60,8 @@
              :class="{
                  [$style.viewBox]: true,
                  [$style.active]: editorItem.isEdit,
-                 js_viewComponentBox: true
+                 js_viewComponentBox: true,
+                 vueEditor_viewComponentBox: true,
              }"
              :style="{
                  width: editorItem.viewWidth || '1190px'

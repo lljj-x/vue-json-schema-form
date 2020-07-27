@@ -5,6 +5,7 @@
             <div :class="$style.imgItem">
                 <a v-if="isNoEmpty"
                    :href="formData.imgItem1_1.imgLink"
+                   target="_blank"
                 >
                     <el-image
                         :src="formData.imgItem1_1.imgUrl"
@@ -13,6 +14,7 @@
                             height: '420px',
                         }"
                         :lazy="true"
+                        class="hover-animation"
                         fit="cover"
                         alt=""
                     ></el-image>
@@ -22,6 +24,7 @@
             <div :class="$style.imgItem">
                 <a v-if="isNoEmpty"
                    :href="formData.imgItem1_2.imgLink"
+                   target="_blank"
                 >
                     <el-image
                         :src="formData.imgItem1_2.imgUrl"
@@ -30,6 +33,7 @@
                             height: '420px',
                         }"
                         :lazy="true"
+                        class="hover-animation"
                         fit="cover"
                         alt=""
                     ></el-image>
@@ -41,6 +45,7 @@
             <div :class="$style.imgItem">
                 <a v-if="isNoEmpty"
                    :href="formData.imgItem2_1.imgLink"
+                   target="_blank"
                 >
                     <el-image
                         :src="formData.imgItem2_1.imgUrl"
@@ -49,6 +54,7 @@
                             height: '500px',
                         }"
                         :lazy="true"
+                        class="hover-animation"
                         fit="cover"
                         alt=""
                     ></el-image>
@@ -58,6 +64,7 @@
             <div :class="$style.imgItem">
                 <a v-if="isNoEmpty"
                    :href="formData.imgItem2_2.imgLink"
+                   target="_blank"
                 >
                     <el-image
                         :src="formData.imgItem2_2.imgUrl"
@@ -66,6 +73,7 @@
                             height: '500px',
                         }"
                         :lazy="true"
+                        class="hover-animation"
                         fit="cover"
                         alt=""
                     ></el-image>
@@ -75,6 +83,7 @@
             <div :class="$style.imgItem">
                 <a v-if="isNoEmpty"
                    :href="formData.imgItem2_3.imgLink"
+                   target="_blank"
                 >
                     <el-image
                         :src="formData.imgItem2_3.imgUrl"
@@ -83,6 +92,7 @@
                             height: '500px',
                         }"
                         :lazy="true"
+                        class="hover-animation"
                         fit="cover"
                         alt=""
                     ></el-image>

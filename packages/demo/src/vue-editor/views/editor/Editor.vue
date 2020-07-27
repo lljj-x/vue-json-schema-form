@@ -1,11 +1,15 @@
 <template>
-    <div v-loading="loading" :class="$style.box">
+    <div v-loading="loading" :class="{
+        [$style.box]: true,
+        [$style.previewBox]: isPreview
+    }"
+    >
         <transition name="el-zoom-in-top">
             <EditorHeader
                 v-if="!isPreview"
                 v-model="scale"
                 @onUpdateScale="fixComponentFormPosition"
-                @onPreview="handlePreview"
+                @onPreview="(scale = 100) && (isPreview = true)"
                 @onSave="handleSave"
                 @onPublish="handlePublish"
             ></EditorHeader>
@@ -13,11 +17,12 @@
                 v-else
                 type="primary"
                 style="position: fixed;right: 20px;top: 20px;z-index: 5;"
-                @click="isPreview = false;"
+                @click="(scale = 65) && (isPreview = false)"
             >
                 结束预览
             </el-button>
         </transition>
+
         <div :class="[$style.container, showToolBar ? $style.hasTools : '']">
             <span :class="$style.leftCaret" @click="showToolBar = !showToolBar">
                 <i class="el-icon-caret-right"></i>
@@ -30,6 +35,7 @@
                 >
                 </EditorToolBar>
             </div>
+
             <div ref="domScrollWrap" :class="$style.contentWrap">
                 <div :class="[$style.contentBox]">
                     <div :class="$style.dragAreaWrap" :style="{transform: `scale(${scale/100})`}">
@@ -135,18 +141,6 @@
         },
         data() {
             return {
-                dragOptions: {
-                    animation: 300,
-                    group: 'listComponentsGroup',
-                    disabled: false,
-                    ghostClass: this.$style.ghost,
-                    filter: this.$style.disabled,
-                    draggable: '.draggableItem',
-                    tag: 'div',
-                    swapThreshold: 0.3,
-                    // forceFallback: true
-                    // fallbackTolerance: 0
-                },
                 loading: false,
                 isPreview: false,
                 scale: 65,
@@ -158,6 +152,20 @@
         },
 
         computed: {
+            dragOptions() {
+                return {
+                    animation: 300,
+                    group: 'listComponentsGroup',
+                    disabled: this.isPreview,
+                    ghostClass: this.$style.ghost,
+                    filter: this.$style.disabled,
+                    draggable: '.draggableItem',
+                    tag: 'div',
+                    swapThreshold: 0.3,
+                    // forceFallback: true
+                    // fallbackTolerance: 0
+                };
+            },
             // 头部、中间、底部各个list集合
             componentListGroup() {
                 return [this.editHeaderComponentList, this.editComponentList, this.editFooterComponentList];
@@ -255,10 +263,6 @@
                         jsonString: vm2Api(this.trueComponentList)
                     }
                 });
-            },
-            handlePreview() {
-                this.isPreview = true;
-                this.dragOptions.disabled = true;
             },
             handlePublish() {
                 this.handleSave(true);
@@ -416,7 +420,35 @@
         --tool-bar-width: 320px;
         --drag-area-width: 1920px;
     }
+    /*预览模式 同步样式重置*/
+    .previewBox {
+        .toolsBar,.leftCaret {
+            display: none;
+        }
+        .container {
+            height: 100vh;
+            padding-left: 0;
+        }
+        .contentWrap {
+            overflow-x: hidden;
+        }
+        .contentBox, .dragAreaWrap{
+            width: auto;
+        }
+        :global {
+            .vueEditor_viewComponentBox {
+                margin-left: 50%;
+                transform: translate(-50%, 0);
+                cursor: auto;
+                box-shadow: none;
+                &:hover, &:active{
+                    box-shadow: none;
+                }
+            }
+        }
+    }
     .container {
+        position: relative;
         box-sizing: border-box;
         padding-left: 0;
         padding-top: 10px;
@@ -440,7 +472,7 @@
         height: 50px;
         background: var(--color-white);
         top: 50%;
-        margin-top: -15px;
+        margin-top: -25px;
         box-shadow: 0 0 4px 0 color(var(--color-black) a(0.1));
         transition: all ease 0.3s;
         border-radius: 0 10px 10px 0;
@@ -451,9 +483,9 @@
         }
     }
     .toolsBar {
-        position: fixed;
+        position: absolute;
         left: 0;
-        top: var(--site-top-height);
+        top: 10px;
         bottom: 0;
         background: var(--color-white);
         width: var(--tool-bar-width);
@@ -486,7 +518,7 @@
     .contentBox {
         position: relative;
         width: 2600px;
-        height: 100%;
+        min-height: 100%;
     }
     .dragAreaWrap {
         transform-origin: top center;
@@ -533,15 +565,6 @@
                         }
                     }
                 }
-            }
-            .module-name-tip {
-                position: absolute;
-                top: 0;
-                right: 0;
-                font-size: 22px;
-                padding: 10px;
-                background: rgba(0,0,0,0.8);
-                color: #FFFFFF;
             }
             .emptyBox {
                 min-height: 350px;

@@ -6,8 +6,9 @@
                 height="420px"
             >
                 <el-carousel-item v-for="(item, index) in formData.imgList" :key="index" height="400px">
-                    <a :class="$style.imgitem" :href="item.imgLink">
+                    <a :class="$style.imgitem" :href="item.imgLink" target="_blank">
                         <el-image
+                            class="hover-animation"
                             :class="$style.imgitem_img"
                             :src="item.imgUrl"
                             :style="{

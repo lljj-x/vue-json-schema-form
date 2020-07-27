@@ -1,13 +1,4 @@
-// import beSyncUserState from './guardsModule/beforeEachSyncUserState.js';
-// import bePublishSave from './guardsModule/beforeEachPublishSave.js';
-// import beRedirect from './guardsModule/beforeEachRedirect.js';
-
-// 顺序执行
-const beListConfig = [
-    // beSyncUserState, // 新开标签页时，同步用户状态信息
-    // bePublishSave, // 发布保存提示框
-    // beRedirect // 分析用户状态，重定向落地页
-];
+const beListConfig = [];
 
 // 路由守卫
 export default function guards(router) {
@@ -43,7 +34,7 @@ export default function guards(router) {
 
     // after each 不用改变路由行为，不采用上述模式
     router.afterEach((to, from) => {
-        const baseTitle = 'Demo';
+        const baseTitle = 'vue-json-schema-form';
         document.title = to.meta.title ? `${to.meta.title} | ${baseTitle}` : baseTitle;
     });
 }

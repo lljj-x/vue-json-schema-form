@@ -8,13 +8,14 @@
             </div>
             <div :class="$style.contentBox">
                 <div :class="$style.bannerBox">
-                    <a :href="formData.banner.link.imgLink">
+                    <a :href="formData.banner.link.imgLink" target="_blank">
                         <el-image
                             :src="formData.banner.link.imgUrl"
                             :style="{
                                 width: '235px',
                                 height: '618px',
                             }"
+                            class="hover-animation"
                             fit="cover"
                         >
                         </el-image>
@@ -33,7 +34,7 @@
                         :key="goodsItemIndex"
                         :class="$style.goodsItem"
                     >
-                        <a :class="$style.goodsLink" :href="goodsItem.imgLink">
+                        <a :class="$style.goodsLink" :href="goodsItem.imgLink" target="_blank">
                             <el-image
                                 :class="$style.goodsImg"
                                 :src="goodsItem.imgUrl"
@@ -41,6 +42,7 @@
                                     width: '185px',
                                     height: '185px',
                                 }"
+                                class="hover-animation"
                                 fit="cover"
                                 alt=""
                             >
