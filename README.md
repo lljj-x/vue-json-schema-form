@@ -70,6 +70,9 @@ yarn install
 # 运行demo页 （同时运行 vue-editor，schema-form-eidtor）
 yarn run demo:dev
 
+# formEditor http://127.0.0.1:8800/
+# 活动编辑器 http://127.0.0.1:8800/vue-editor.html
+
 # 运行demo页 (单个 schema-form-eidtor)
 yarn run demo:dev --dir=index
 
