@@ -22,7 +22,9 @@
         "packages:list": "lerna ls -l",
         "packages:changed": "lerna changed",
         "packages:build": "lerna run --stream --sort build",
-        "publish": "yarn run lib:build && lerna publish"
+        "publish": "yarn run lib:build && lerna publish",
+        "autoPublish": "lerna publish --conventional-commits --yes",
+        "version": "lerna version --conventional-commits --yes"
     },
     "config": {
         "commitizen": {
@@ -39,8 +41,8 @@
         "@commitlint/cli": "^8.3.5",
         "@commitlint/config-conventional": "^8.3.4",
         "commitizen": "^4.1.2",
-        "conventional-changelog-cli": "^2.0.34",
         "cz-conventional-changelog": "^3.2.0",
+        "conventional-changelog-cli": "^2.0.34",
         "husky": "^4.2.5",
         "lerna": "^3.22.1"
     }
