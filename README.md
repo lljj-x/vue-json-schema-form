@@ -67,16 +67,16 @@ yarn add @lljj/vue-json-schema-form
 # 安装依赖
 yarn install
 
-# 运行demo页 （同时运行 vue-editor，schema-form-eidtor）
+# 运行demo页 （同时运行表单编辑器和活动编辑器）
 yarn run demo:dev
 
-# formEditor http://127.0.0.1:8800/
-# 活动编辑器 http://127.0.0.1:8800/vue-editor.html
+# （formEditr）表单编辑器 http://127.0.0.1:8800/
+# （H5）活动编辑器 http://127.0.0.1:8800/vue-editor.html
 
-# 运行demo页 (单个 schema-form-eidtor)
+# 运行（formEditr）表单编辑器
 yarn run demo:dev --dir=index
 
-# 运行demo页 (单个 vue-editor)
+# 运行（H5）活动编辑器
 yarn run demo:dev --dir=vue-editor
 
 ```
