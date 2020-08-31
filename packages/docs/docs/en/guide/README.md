@@ -1,33 +1,36 @@
-# 介绍
+# Introduction
 
-## 快速开始
-使用npm
+## Quick start
+
+* Install
+
 ``` bash
-# 安装
+# npm
 npm install --save @lljj/vue-json-schema-form
 
 # yarn
 yarn add @lljj/vue-json-schema-form
 ```
 
-使用
+* Import
+
 ```js
 import VueForm from '@lljj/vue-json-schema-form';
 ```
 
-全局引入
+* CDN
 ```html
-# script引入
+# As a script served from a CDN
 <script src="//cdn.jsdelivr.net/npm/@lljj/vue-json-schema-form/dist/vueJsonSchemaForm.umd.min.js"></script>
 ```
 
-::: tip 全局引入
-* 会注册全局组件 `VueForm`
-* 暴露全局变量 `window.vueJsonSchemaForm`
+::: tip Global import
+* Register global components `VueForm`
+* Expose global variables `window.vueJsonSchemaForm`
 :::
 
 ## DEMO
-演示渲染用户信息的表单，点击显示代码可查看源代码或者在codepen运行
+Demonstrate the form of rendering user information, click the display code to view the source code or run it in `codepen`
 
 ::: demo
 ```html
@@ -55,25 +58,25 @@ export default {
                 properties: {
                     userName: {
                         type: 'string',
-                        title: '用户名',
+                        title: 'Username',
                         default: 'Liu.Jun',
                     },
                     age: {
                         type: 'number',
-                        title: '年龄'
+                        title: 'Age'
                     },
                     bio: {
                         type: 'string',
-                        title: '签名',
+                        title: 'Bio',
                         minLength: 10,
-                        default: '知道的越多、就知道的越少',
+                        default: 'The more you know, the less you know',
                     }
                 }
             },
             uiSchema: {
                 bio: {
                     'ui:options': {
-                        placeholder: '请输入你的签名',
+                        placeholder: 'Please enter your bio.',
                         type: 'textarea',
                         row: 1
                     }
@@ -86,21 +89,25 @@ export default {
 ```
 :::
 
-## 基本概念
-通过 `JSON Schema` 生成对应的form表单
-* schema `title` 属性作为 form表单的标题
-* schema `description` 属性作为表单的描述
+## Basic concepts
+Generate the HTML forms through `JSON Schema`
 
-基于组件递归的形式，逐级渲染数据，如下图：（点击放大）
+* Schema `title` attribute as the title of the form
+* Schema `description` attribute as the description of the form
+
+Based on the form of component recursion, the data is rendered step by step, as shown in the following figure .
 ![Vjsf](/vjsf.jpg)
 
-其中涉及到两个概念，`Field`、`Widget`
-* `Field` 用来渲染每一个节点对应的组件，可以是任意节点，一般组件内会包含 `FormItem` 组件
-* `Widget` 用来渲染用户输入信息的组件，如 `input` ，`select`，被 `FormItem` 组件包裹
-> `Field` `Widget` 都可以通过`uiSchema`自定义，
-> 详细方法可以查看 [自定义Field](/zh/guide/adv-config.html#自定义field)、[自定义Widget](/zh/guide/adv-config.html#自定义widget)
+Two concepts are involved, Field and Widget
 
-## 暴露方法
+* `Field` is used to render the component corresponding to each node. It can be any node. Generally, the component will contain the `FormItem` component
+* `Widget` is a component used to render user input information, such as `input` and `select`, which are wrapped by the `FormItem` component
+
+> `Field` and `Widget` can pass `uiSchema`
+>
+> [Custom Field](/zh/guide/adv-config.html#自定义field)、[Custom Widget](/zh/guide/adv-config.html#自定义widget)
+
+## Exposure methods
 ```js
 import VueForm, {
     getDefaultFormState,
@@ -113,37 +120,37 @@ import VueForm, {
 ```
 
 ####  VueForm
-默认导出 VueForm组件
+Export VueForm components by default.
 
 #### getDefaultFormState
-通过 `JSON Schema` 计算当前 `FormState` 的值
-* 参数：(schema, formData, rootSchema, includeUndefinedValues)
+Calculate the current value of `FormState` through `JSON Schema`
+* Parameters: (`schema`, `formData`, `rootSchema`, `includeUndefinedValues`)
 
->* schema `object` 需要计算的schema
->* formData `object` 当前的 formData 值，没有可以传 `undefined`
->* rootSchema `object` 需要计算的schema的根节点schema
->* includeUndefinedValues `boolean` 是否包含未定义的值 ，默认 `true`
+>* Schema `object` The schema to be calculated
+>* FormData `object` current formData value, no `undefined` can be passed
+>* RootSchema `object` The root node schema of the schema to be calculated
+>* IncludeUndefinedValues `boolean` whether to include undefined values, the default is `true`
 
-> 不使用 `uiSchema` `ui:field` 一般不会使用
+> Do not use `uiSchema`, `ui:field` is generally not used
 
 #### fieldProps
-Field props配置，如果需要使用 `ui:field` 自定义field 组件，需要使用它定义组件props
-> 不使用 `uiSchema` `ui:field` 一般不会使用
+Field props configuration, if you need to use `ui:field` to customize the field component, you need to use it to define component props.
+> Do not use `uiSchema`, `ui:field` is generally not used
 
 #### vueUtils
-提供一些内部Vue相关的utils方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/vueUtils.js)
-> 不使用 `uiSchema` `ui:field` 一般不会使用
+Provide some internal Vue-related utils methods, the details can be [see source code](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/vueUtils.js)
+> Do not use `uiSchema`, `ui:field` is generally not used
 
 #### formUtils
-提供一些内部Form相关的utils方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/formUtils.js)
-> 不使用 `uiSchema` `ui:field` 一般不会使用
+Provide some internal Form-related utils methods, which can be detailed [see source code](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/formUtils.js)
+> Do not use `uiSchema`, `ui:field` is generally not used
 
 #### schemaValidate
-提供一些内部校验schema相关的方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/schema/validate.js)
-> 不使用 `uiSchema` `ui:field` 一般不会使用
+Provide some internal verification schema-related methods, the details can be [see source code](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/schema/validate.js)
+> Do not use `uiSchema`, `ui:field` is generally not used
 
-## 说明
-* 遵循 JSON Schema 规范，只需要给定JsonSchema，即可生成对应的form表单
-* 快速配置个性化ui视图和校验错误信息，可适配常用的ui库，目前的版本默认视图依赖elementUi，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
-* 表单schema校验使用  [ajv](https://github.com/epoberezkin/ajv)
-* 设计思想和对schema解析索引参考 [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)
+## Description
+* Follow the JSON Schema specification, only need to give the JsonSchema, you can generate the corresponding form
+* Quickly configure personalized UI views and check error messages, which can be adapted to commonly used ui libraries. The default view of the current version depends on elementUi, and subsequent versions will be decoupled. You can adapt ElementUi, iView or your own development through configuration Component library
+* Use [ajv](https://github.com/epoberezkin/ajv) for form schema verification
+* Design ideas and reference to schema analysis index [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)

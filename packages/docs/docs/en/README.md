@@ -6,10 +6,10 @@ heroText: Vue JSON Schema Form
 tagline: Quickly building HTML form based on Vue and JsonSchema
 footer: Apache2.0 Licensed | Copyright © 2020-2020 Jun
 actionText: Quick start →
-actionLink: /zh/guide/
+actionLink: /en/guide/
 ---
 
-## 快速体验
+## Experience quickly
 * [Live playground](https://form.lljj.me/ "Vue JSON Schema Form Demo")
 * [Document](https://vue-json-schema-form.lljj.me/ "Vue JSON Schema Docs")
 * [Github](https://github.com/lljj-x/vue-json-schema-form "Vue JSON Schema github")
@@ -145,6 +145,6 @@ export default {
 [Element Ui](https://element.eleme.io/)
 
 ## Why
-原本是在很久前公司流产的项目类似淘宝店铺装修，也可以叫做前端可视化编辑。为了解决数据配置表单的通用性，所以使用json-schema描述数据结构，动态生成表单。
+Originated from shop decoration scenes, it can also be called front-end visual editing. In order to solve the universality of the component data configuration form, the form is generated through `JsonSchema`.
 
-这样做的好处除了解决在每个配置表单的重复工作，服务端也可以基于同一份schema保持和前端一致的校验规则，不过对于使用 vue elementUi并未找到合适库可以直接使用，所以在后面一段时间决定自己实现一个 ..
+The advantage of this is to solve the repetitive work of each configuration form, and the server can also maintain the same verification rules as the front-end based on the same schema.

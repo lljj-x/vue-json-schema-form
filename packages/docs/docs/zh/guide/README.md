@@ -1,7 +1,9 @@
 # 介绍
 
 ## 快速开始
-使用npm
+
+*使用npm
+
 ``` bash
 # 安装
 npm install --save @lljj/vue-json-schema-form
@@ -10,12 +12,12 @@ npm install --save @lljj/vue-json-schema-form
 yarn add @lljj/vue-json-schema-form
 ```
 
-使用
+* 使用
 ```js
 import VueForm from '@lljj/vue-json-schema-form';
 ```
 
-全局引入
+* 全局引入
 ```html
 # script引入
 <script src="//cdn.jsdelivr.net/npm/@lljj/vue-json-schema-form/dist/vueJsonSchemaForm.umd.min.js"></script>

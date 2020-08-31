@@ -29,33 +29,38 @@ module.exports = {
         // 顶部导航
         nav: [
             {
-                text: '指南',
-                ariaLabel: '指南',
-                link: '/zh/guide/'
+                text: 'Guide',
+                ariaLabel: 'Guide',
+                link: '/en/guide/'
             },
             {
-                text: '类型规则',
-                ariaLabel: '类型规则',
+                text: 'Type rules',
+                ariaLabel: 'Type rules',
                 items: [
-                    { text: 'string', link: '/zh/rules/string.md' },
-                    { text: 'number', link: '/zh/rules/number.md' },
-                    { text: 'boolean', link: '/zh/rules/boolean.md' },
-                    { text: 'null', link: '/zh/rules/null.md' },
-                    { text: 'object', link: '/zh/rules/object.md' },
-                    { text: 'array', link: '/zh/rules/array.md' },
-                    { text: 'combining', link: '/zh/rules/combining.md' },
+                    { text: 'string', link: '/en/rules/string.md' },
+                    { text: 'number', link: '/en/rules/number.md' },
+                    { text: 'boolean', link: '/en/rules/boolean.md' },
+                    { text: 'null', link: '/en/rules/null.md' },
+                    { text: 'object', link: '/en/rules/object.md' },
+                    { text: 'array', link: '/en/rules/array.md' },
+                    { text: 'combining', link: '/en/rules/combining.md' },
                 ]
             },
-            { text: '演示', link: 'https://form.lljj.me' },
+            { text: 'Playground', link: 'https://form.lljj.me' },
             { text: 'Github', link: 'https://github.com/lljj-x/vue-json-schema-form' },
         ],
 
         // 侧边栏
         // 省略 .md 拓展名，同时以 / 结尾的路径将会被视为 */README.md
         sidebar: {
-            '/zh/guide/': require('./genConfig').getGuideSidebar(),
-            '/zh/config/': require('./genConfig').getConfigSidebar(),
-            '/zh/rules/': require('./genConfig').getRulesSidebar(),
+            '/en/guide/': require('./genConfig').getGuideSidebar([
+                'Guide',
+                'Configuration',
+                'Principle',
+                'Update plan'
+            ]),
+            '/en/config/': require('./genConfig').getConfigSidebar(),
+            '/en/rules/': require('./genConfig').getRulesSidebar(),
         }
     }
 }
