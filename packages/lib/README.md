@@ -1,14 +1,14 @@
 # vue-json-schema-form
-Quickly building HTML form based on Vue and JsonSchema.
+Quickly building HTML form based on `Vue`, `ElementUi` and `JsonSchema`.
 
-* [中文文档](https://github.com/lljj-x/vue-json-schema-form/README_zh-ch.md)
+* [中文文档](https://github.com/lljj-x/vue-json-schema-form/blob/master/README_zh-ch.md)
 
 ## Experience quickly
 * [Live playground](https://form.lljj.me/ "Vue JSON Schema Form Demo")
 * [Document](https://vue-json-schema-form.lljj.me/en/ "Vue JSON Schema Docs")
 * [Github](https://github.com/lljj-x/vue-json-schema-form "Vue JSON Schema github")
 * [Usage scenario - visual activity editor](https://form.lljj.me/vue-editor.html)
-* [Todo](/en/guide/todo.html)
+* [Todo](https://vue-json-schema-form.lljj.me/en/guide/todo.html)
 
 ![](https://7.luochongfei.top/vue-json-schema-form.gif?1)
 
@@ -65,7 +65,7 @@ yarn add @lljj/vue-json-schema-form
 
 ### Description
 * Follow the JSON Schema specification, only need to give the `JsonSchema`, you can generate the corresponding form
-* Quickly configure personalized UI views and check error messages, which can be adapted to commonly used UI libraries. The default view of the current version depends on `elementUi`.
+* Quickly configure personalized UI views and check error messages, which can be adapted to commonly used UI libraries. The default view of the current version depends on `ElementUi`.
 * Design ideas and reference to the schema analysis index [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)
 
 ## Relevant

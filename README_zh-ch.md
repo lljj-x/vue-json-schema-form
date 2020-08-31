@@ -1,5 +1,5 @@
 # vue-json-schema-form
-基于 Vue ElementUi JsonSchema快速构建一个带完整校验的form表单.
+基于 `Vue`、`ElementUi`、`JsonSchema` 快速构建一个带完整校验的form表单.
 
 ## 快速体验
 * [演示demo](https://form.lljj.me/ "Vue JSON Schema Form Demo")
