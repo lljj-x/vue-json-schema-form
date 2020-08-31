@@ -1,20 +1,22 @@
 # vue-json-schema-form
-基于 Vue ElementUi JsonSchema快速构建一个带完整校验的form表单.
+Quickly building HTML form based on Vue and JsonSchema.
 
-## 快速体验
-* [演示demo](https://form.lljj.me/ "Vue JSON Schema Form Demo")
-* [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JSON Schema Docs")
-* [源代码](https://github.com/lljj-x/vue-json-schema-form "Vue JSON Schema github")
-* [使用场景 - 可视化活动编辑器（H5活动编辑器）](https://form.lljj.me/vue-editor.html)
-* [不支持部分和更新计划](https://vue-json-schema-form.lljj.me/zh/guide/todo.html)
+* [中文文档](https://github.com/lljj-x/vue-json-schema-form/README_zh-ch.md)
+
+## Experience quickly
+* [Live playground](https://form.lljj.me/ "Vue JSON Schema Form Demo")
+* [Document](https://vue-json-schema-form.lljj.me/en/ "Vue JSON Schema Docs")
+* [Github](https://github.com/lljj-x/vue-json-schema-form "Vue JSON Schema github")
+* [Usage scenario - visual activity editor](https://form.lljj.me/vue-editor.html)
+* [Todo](/en/guide/todo.html)
 
 ![](https://7.luochongfei.top/vue-json-schema-form.gif?1)
 
 ``` bash
-# 安装
+# Npm
 npm install --save @lljj/vue-json-schema-form
 
-# 或者：
+# Yarn
 yarn add @lljj/vue-json-schema-form
 ```
 
@@ -28,7 +30,6 @@ yarn add @lljj/vue-json-schema-form
 </template>
 
 <script >
-    //  使用
     import VueForm from '@lljj/vue-json-schema-form';
 
     export default {
@@ -62,34 +63,17 @@ yarn add @lljj/vue-json-schema-form
 </script>
 ```
 
-## 运行Demo
-```ssh
-# 安装依赖
-yarn install
+### Description
+* Follow the JSON Schema specification, only need to give the `JsonSchema`, you can generate the corresponding form
+* Quickly configure personalized UI views and check error messages, which can be adapted to commonly used UI libraries. The default view of the current version depends on `elementUi`.
+* Design ideas and reference to the schema analysis index [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)
 
-# 运行demo页 （同时运行表单编辑器和活动编辑器）
-yarn run demo:dev
-
-# （formEditr）表单编辑器 http://127.0.0.1:8800/
-# （H5）活动编辑器 http://127.0.0.1:8800/vue-editor.html
-
-# 运行（formEditr）表单编辑器
-yarn run demo:dev --dir=index
-
-# 运行（H5）活动编辑器
-yarn run demo:dev --dir=vue-editor
-
-```
-
-## 相关资料
+## Relevant
 [JSON Schema](https://json-schema.org/understanding-json-schema/index.html) |
 [Vue](https://cn.vuejs.org/) |
 [Element Ui](https://element.eleme.io/)
 
-### 为何开发
-原本是在很久前公司流产的项目类似淘宝店铺装修，也可以叫做前端可视化编辑。为了解决数据配置表单的通用性，所以使用json-schema描述数据结构，动态生成表单。
+### Why
+Originated from shop decoration scenes, it can also be called front-end visual editing. In order to solve the universality of the component data configuration form, the form is generated through `JsonSchema`.
 
-这样做的好处除了解决在每个配置表单的重复工作，服务端也可以基于同一份schema保持和前端一致的校验规则，不过对于使用 vue elementUi并未找到合适库可以直接使用，所以在后面一段时间决定自己实现一个 ..
-
-## License
-Apache-2.0
+The advantage of this is to solve the repetitive work of each configuration form, and the server can also maintain the same verification rules as the front-end based on the same schema.

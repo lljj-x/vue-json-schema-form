@@ -3,24 +3,24 @@ home: true
 pageClass: custom-page-home
 heroImage: /logo.png
 heroText: Vue JSON Schema Form
-tagline: Quickly building HTML form based on Vue and JsonSchema
+tagline: 基于 Vue 、JsonSchema快速构建一个带完整校验的form表单
 footer: Apache2.0 Licensed | Copyright © 2020-2020 Jun
-actionText: Quick start →
+actionText: 快速开始 →
 actionLink: /zh/guide/
 ---
 
 ## 快速体验
-* [Live playground](https://form.lljj.me/ "Vue JSON Schema Form Demo")
-* [Document](https://vue-json-schema-form.lljj.me/ "Vue JSON Schema Docs")
-* [Github](https://github.com/lljj-x/vue-json-schema-form "Vue JSON Schema github")
-* [Usage scenario - visual activity editor](https://form.lljj.me/vue-editor.html)
-* [Partial plan and update plans are not supported](/zh/guide/todo.html)
+* [演示demo](https://form.lljj.me/ "Vue JSON Schema Form Demo")
+* [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JSON Schema Docs")
+* [源代码](https://github.com/lljj-x/vue-json-schema-form "Vue JSON Schema github")
+* [使用场景 - 可视化活动编辑器（H5活动编辑器）](https://form.lljj.me/vue-editor.html)
+* [不支持部分和更新计划](/zh/guide/todo.html)
 
 ``` bash
-# NPM
+# 安装
 npm install --save @lljj/vue-json-schema-form
 
-# Yarn
+# 或者：
 yarn add @lljj/vue-json-schema-form
 ```
 
@@ -35,6 +35,7 @@ yarn add @lljj/vue-json-schema-form
 </template>
 
 <script >
+//  使用
 import VueForm from '@lljj/vue-json-schema-form';
 
 export default {
@@ -51,25 +52,25 @@ export default {
                 properties: {
                     userName: {
                         type: 'string',
-                        title: 'Username',
+                        title: '用户名',
                         default: 'Liu.Jun',
                     },
                     age: {
                         type: 'number',
-                        title: 'Age'
+                        title: '年龄'
                     },
                     bio: {
                         type: 'string',
-                        title: 'Bio',
+                        title: '签名',
                         minLength: 10,
-                        default: 'The more you know, the less you know',
+                        default: '知道的越多、就知道的越少',
                     }
                 }
             },
             uiSchema: {
                 bio: {
                     'ui:options': {
-                        placeholder: 'Please enter your bio.',
+                        placeholder: '请输入你的签名',
                         type: 'textarea',
                         row: 1
                     }
@@ -80,6 +81,8 @@ export default {
 };
 </script>
 ```
+
+> 运行如下：
 
 ## DEMO
 ::: demo
@@ -108,25 +111,25 @@ export default {
                 properties: {
                     userName: {
                         type: 'string',
-                        title: 'Username',
+                        title: '用户名',
                         default: 'Liu.Jun',
                     },
                     age: {
                         type: 'number',
-                        title: 'Age'
+                        title: '年龄'
                     },
                     bio: {
                         type: 'string',
-                        title: 'Bio',
+                        title: '签名',
                         minLength: 10,
-                        default: 'This is default bio .',
+                        default: '知道的越多、就知道的越少',
                     }
                 }
             },
             uiSchema: {
                 bio: {
                     'ui:options': {
-                        placeholder: 'Please enter your bio.',
+                        placeholder: '请输入你的签名',
                         type: 'textarea',
                         row: 1
                     }
@@ -139,12 +142,12 @@ export default {
 ```
 :::
 
-## Relevant
+## 相关资料
 [JSON Schema](https://json-schema.org/understanding-json-schema/index.html) |
 [Vue](https://cn.vuejs.org/) |
 [Element Ui](https://element.eleme.io/)
 
-## Why
+## 为何开发
 原本是在很久前公司流产的项目类似淘宝店铺装修，也可以叫做前端可视化编辑。为了解决数据配置表单的通用性，所以使用json-schema描述数据结构，动态生成表单。
 
 这样做的好处除了解决在每个配置表单的重复工作，服务端也可以基于同一份schema保持和前端一致的校验规则，不过对于使用 vue elementUi并未找到合适库可以直接使用，所以在后面一段时间决定自己实现一个 ..
