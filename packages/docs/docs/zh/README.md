@@ -3,7 +3,7 @@ home: true
 pageClass: custom-page-home
 heroImage: /logo.png
 heroText: Vue JSON Schema Form
-tagline: 基于 Vue 、JsonSchema快速构建一个带完整校验的form表单
+tagline: 基于 Vue 、Json Schema快速构建一个带完整校验的form表单
 footer: Apache2.0 Licensed | Copyright © 2020-2020 Jun
 actionText: 快速开始 →
 actionLink: /zh/guide/

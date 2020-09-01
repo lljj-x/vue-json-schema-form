@@ -16,7 +16,7 @@
 正则表达式
 
 ### `format`
-常用类型校，如 `uri` `email`，参见JsonSchema 官方文档
+常用类型校，如 `uri` `email`，参见 `Json Schema` 官方文档
 
 ## 特殊字段
 

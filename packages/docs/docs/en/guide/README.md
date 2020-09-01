@@ -150,7 +150,7 @@ Provide some internal verification schema-related methods, the details can be [s
 > Do not use `uiSchema`, `ui:field` is generally not used
 
 ## Description
-* Follow the JSON Schema specification, only need to give the JsonSchema, you can generate the corresponding form
+* Follow the JSON Schema specification, only need to give the `Json Schema`, you can generate the corresponding form
 * Quickly configure personalized UI views and check error messages, which can be adapted to commonly used ui libraries. The default view of the current version depends on elementUi, and subsequent versions will be decoupled. You can adapt ElementUi, iView or your own development through configuration Component library
 * Use [ajv](https://github.com/epoberezkin/ajv) for form schema verification
 * Design ideas and reference to schema analysis index [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)
