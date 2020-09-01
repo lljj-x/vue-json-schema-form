@@ -84,7 +84,7 @@ yarn run demo:dev --dir=vue-editor
 ### Description
 * Follow the JSON Schema specification, only need to give the `Json Schema`, you can generate the corresponding form
 * Quickly configure personalized UI views and check error messages, which can be adapted to commonly used UI libraries. The default view of the current version depends on `ElementUi`.
-* uses the [ajv validator](https://github.com/epoberezkin/ajv)
+* Uses the [ajv validator](https://github.com/epoberezkin/ajv)
 * Design ideas and reference to the schema analysis index [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)
 
 ## Relevant
