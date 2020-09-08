@@ -22,7 +22,9 @@
         "packages:list": "lerna ls -l",
         "packages:changed": "lerna changed",
         "packages:build": "lerna run --stream --sort build",
-        "publish": "yarn run lib:build && lerna publish"
+        "publish": "yarn run lib:build && lerna publish",
+        "autoPublish": "lerna publish --conventional-commits --yes",
+        "autoVersion": "lerna version --conventional-commits --yes"
     },
     "config": {
         "commitizen": {
