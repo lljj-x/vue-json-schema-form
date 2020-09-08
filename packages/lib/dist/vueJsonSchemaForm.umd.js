@@ -9185,7 +9185,7 @@
                   key = _ref2[0],
                   value = _ref2[1];
 
-              if (self.$props.schema.additionalProperties === false || key !== 'properties') preVal[key] = value;
+              if (self.$props.schema.additionalProperties === false || !['properties', 'id', '$id'].includes(key)) preVal[key] = value;
               return preVal;
             }, {}),
             errorSchema: this.errorSchema,
