@@ -98,7 +98,9 @@ export default {
 * 类型：`object`
 * 默认值：`{}`
 
-用于配置表单展示样式，普通json数据，非`JSON Schema`规范
+> `0.0.16` 之后版本支持配置 `uiSchema` 在 `schema` 参数中 [点击查看](#uischema配置在schema中)
+
+用于配置表单展示样式，普通json数据，非 `JSON Schema` 规范
 
 :::tip
 * 配置数据结构和 `schema` 保持一致，所有的ui配置属性 `ui:` 开头
@@ -148,7 +150,46 @@ uiSchema = {
 >1. `ui:field` 自定义field组件参见这里  [自定义 field](/zh/guide/adv-config.html#自定义-field)
 >1. `ui:widget` 自定义widget组件参见这里  [自定义 widget](/zh/guide/adv-config.html#自定义-widget)
 
-#### 如：重置表单widget样式
+
+#### uiSchema配置在schema中
+
+`0.0.16` 之后版本，`uiSchema` 所有配置都支持直接配置在 `schema` 参数中
+
+* `uiSchema` 单独配置优先级大于 `schema` 中配置
+* 好处可以一份配置，不过会使 `schema` 不再是一份纯粹的 `JsonSchema` 文件，结合实际场景选择方案。
+
+如下格式：
+```json
+{
+    "title": "Demo",
+    "type": "object",
+    "ui:order": [
+        "bio",
+        "firstName"
+    ],
+    "properties": {
+        "firstName": {
+            "type": "string",
+            "title": "First name",
+            "ui:placeholder": "请输入FirstName（配置在schema中）"
+        },
+        "bio": {
+            "type": "string",
+            "title": "Bio",
+            "minLength": 10,
+            "ui:options": {
+                "type": "textarea",
+                "placeholder": "请输入FirstName（配置在schema中）",
+                "attrs": {
+                    "rows": 4
+                }
+            }
+        }
+    }
+}
+```
+
+#### uiSchema配置演示：重置表单widget样式
 ::: demo
 ```html
 <template>
@@ -173,6 +214,23 @@ export default {
             schema: {
                 type: 'object',
                 properties: {
+                    firstName: {
+                        type: 'string',
+                        title: 'First name',
+                        'ui:placeholder': '请输入FirstName（配置在schema中）'
+                    },
+                    bio: {
+                        type: 'string',
+                        title: 'Bio',
+                        minLength: 10,
+                        'ui:options': {
+                            type: 'textarea',
+                            placeholder: 'placeholder（配置在schema中）',
+                            attrs: {
+                                rows: 4
+                            }
+                        }
+                    },
                     inputText: {
                         title: 'Input Text',
                         type: 'string'
@@ -283,6 +341,8 @@ uiSchema = {
 * 类型：`object`
 * 默认值：`{}`
 
+> `0.0.16` 之后版本支持配置 `errorSchema` 在 `schema` 参数中 [点击查看](#errorschema配置在schema中)
+
 用于配置表单校验错误文案信息，普通json数据，非JSON Schema规范
 
 数据配置和 `uiSchema` 保存一致，区别在于：
@@ -296,7 +356,13 @@ uiSchema = {
  > 注：errorSchema 为标准json数据，并非JSON Schema规范语法
  :::
 
-例：重置表单错误信息
+#### errorSchema配置在schema中
+
+`0.0.16` 之后版本，`errorSchema` 所有配置都支持直接配置在 `schema` 参数中。
+
+> 使用格式类似 [uiSchema配置在schema中](#uischema配置在schema中)
+
+errorSchema配置演示：重置表单错误信息
 
 ::: demo
 ```html
@@ -331,7 +397,9 @@ export default {
                     homePage: {
                         type: 'string',
                         format: 'uri',
-                        title: '个人主页'
+                        title: '个人主页',
+                        'err:required': '请输入个人主页地址（schema中配置）',
+                        'err:format': '请输入正确的Url地址（schema中配置）'
                     },
                     bio: {
                         type: 'string',

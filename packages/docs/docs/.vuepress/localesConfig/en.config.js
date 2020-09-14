@@ -28,24 +28,24 @@ module.exports = {
         },
         // 顶部导航
         nav: [
-            {
-                text: 'Guide',
-                ariaLabel: 'Guide',
-                link: '/en/guide/'
-            },
-            {
-                text: 'Type rules',
-                ariaLabel: 'Type rules',
-                items: [
-                    { text: 'string', link: '/en/rules/string.md' },
-                    { text: 'number', link: '/en/rules/number.md' },
-                    { text: 'boolean', link: '/en/rules/boolean.md' },
-                    { text: 'null', link: '/en/rules/null.md' },
-                    { text: 'object', link: '/en/rules/object.md' },
-                    { text: 'array', link: '/en/rules/array.md' },
-                    { text: 'combining', link: '/en/rules/combining.md' },
-                ]
-            },
+            // {
+            //     text: 'Guide',
+            //     ariaLabel: 'Guide',
+            //     link: '/en/guide/'
+            // },
+            // {
+            //     text: 'Type rules',
+            //     ariaLabel: 'Type rules',
+            //     items: [
+            //         { text: 'string', link: '/en/rules/string.md' },
+            //         { text: 'number', link: '/en/rules/number.md' },
+            //         { text: 'boolean', link: '/en/rules/boolean.md' },
+            //         { text: 'null', link: '/en/rules/null.md' },
+            //         { text: 'object', link: '/en/rules/object.md' },
+            //         { text: 'array', link: '/en/rules/array.md' },
+            //         { text: 'combining', link: '/en/rules/combining.md' },
+            //     ]
+            // },
             { text: 'Playground', link: 'https://form.lljj.me' },
             { text: 'Github', link: 'https://github.com/lljj-x/vue-json-schema-form' },
         ],
