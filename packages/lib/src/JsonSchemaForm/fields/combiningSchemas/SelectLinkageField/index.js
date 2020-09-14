@@ -169,7 +169,10 @@ export default {
                 uiSchema: this.uiSchema
             }), key => (key === this.combiningType ? undefined : `ui:${key}`));
 
-            const userErrOptions = filterObject(getUserErrOptions(this.errorSchema), key => (key === this.combiningType ? undefined : `err:${key}`));
+            const userErrOptions = filterObject(getUserErrOptions({
+                schema: this.schema,
+                errorSchema: this.errorSchema
+            }), key => (key === this.combiningType ? undefined : `err:${key}`));
 
             childrenVnode.push(
                 h(

@@ -177,17 +177,5 @@ export default {
         ]
     },
     errorSchema: {
-        age: {
-            'err:options': {
-                oneOf: 'oneOf (oneOf配置)',
-                multipleOf: 'multipleOf (上层options配置)',
-                required: 'multipleOf (上层options配置)',
-            },
-            oneOf: [{
-                'err:multipleOf': 'multipleOf (errorSchema配置)'
-            }, {
-                'err:required': 'required (errorSchema配置)',
-            }]
-        },
     }
 };

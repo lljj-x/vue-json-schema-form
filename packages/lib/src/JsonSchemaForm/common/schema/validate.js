@@ -175,7 +175,10 @@ export function validateFormDataAndTransformMsg({
             };
 
             // 用户设置校验信息
-            const errSchemaMsg = getUserErrOptions(errorSchema).required;
+            const errSchemaMsg = getUserErrOptions({
+                schema,
+                errorSchema
+            }).required;
             if (errSchemaMsg) {
                 requireErrObj.message = errSchemaMsg;
             } else {
@@ -207,7 +210,10 @@ export function validateFormDataAndTransformMsg({
         );
     }
 
-    const userErrOptions = getUserErrOptions(errorSchema);
+    const userErrOptions = getUserErrOptions({
+        schema,
+        errorSchema
+    });
 
     return (isOnlyFirstError && ajvErrors.length > 0 ? [ajvErrors[0]] : ajvErrors).reduce((preErrors, errorItem) => {
         // 优先获取 errorSchema 配置

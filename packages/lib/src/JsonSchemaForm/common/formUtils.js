@@ -180,17 +180,20 @@ export function getWidgetConfig({
 }
 
 // 解析用户配置的 errorSchema options
-export function getUserErrOptions(errorSchema) {
-    return Object.keys(errorSchema)
+export function getUserErrOptions({
+    schema = {},
+    errorSchema = {}
+}) {
+    return Object.assign({}, ...[schema, errorSchema].map(itemSchema => Object.keys(itemSchema)
         .filter(key => key.indexOf('err:') === 0)
         .reduce((options, key) => {
-            const value = errorSchema[key];
+            const value = itemSchema[key];
             // options 内外合并
             if (key === 'err:options' && isObject(value)) {
                 return { ...options, ...value };
             }
             return { ...options, [key.substring(4)]: value };
-        }, {});
+        }, {})));
 }
 
 // ui:order object-> properties 排序
