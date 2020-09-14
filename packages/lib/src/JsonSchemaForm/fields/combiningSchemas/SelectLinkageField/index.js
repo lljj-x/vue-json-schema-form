@@ -49,7 +49,7 @@ export default {
         getSelectBoxVnode() {
             // 下拉选项参数
             const selectWidgetConfig = getWidgetConfig({
-                schema: {}, // 所有参数直接通过 uiSchema获取
+                schema: this.schema[`${this.combiningType}Select`] || {}, // 扩展 oneOfSelect,anyOfSelect字段
                 uiSchema: this.uiSchema[`${this.combiningType}Select`] || {} // 通过 uiSchema['oneOf'] 配置ui信息
             }, () => ({
                 // 枚举参数
@@ -162,8 +162,13 @@ export default {
             curSelectSchema = Object.assign({}, this.schema, curSelectSchema);
             delete curSelectSchema[this.combiningType];
 
-            // 当前节点的ui err配置
-            const userUiOptions = filterObject(getUserUiOptions(this.uiSchema), key => (key === this.combiningType ? undefined : `ui:${key}`));
+            // 当前节点的ui err配置，用来支持所有选项的统一配置
+            // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
+            const userUiOptions = filterObject(getUserUiOptions({
+                schema: this.schema,
+                uiSchema: this.uiSchema
+            }), key => (key === this.combiningType ? undefined : `ui:${key}`));
+
             const userErrOptions = filterObject(getUserErrOptions(this.errorSchema), key => (key === this.combiningType ? undefined : `err:${key}`));
 
             childrenVnode.push(

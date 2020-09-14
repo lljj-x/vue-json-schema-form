@@ -8,32 +8,49 @@ import { isObject, getSchemaType } from './utils';
 export function getUiWidget({
     schema = {},
     uiSchema = {}
-}, fallback = () => {}) {
+}, fallback) {
     // uiSchema 配置了widget 直接使用
-    if (uiSchema['ui:widget']) {
+    const uiWidget = uiSchema['ui:widget'] || schema['ui:widget'];
+
+    if (uiWidget) {
         return {
-            widget: uiSchema['ui:widget']
+            widget: uiWidget
         };
     }
 
-    // 没配置widget 回退到具体field方案配置
-    return fallback({ schema, uiSchema });
+    if (fallback) {
+        // 没配置widget 回退到具体field方案配置
+        return fallback({ schema, uiSchema });
+    }
+
+    return {};
+}
+
+// 是否为 hidden Widget
+export function isHiddenWidget({
+    schema = {},
+    uiSchema = {}
+}) {
+    const { widget } = getUiWidget({
+        schema,
+        uiSchema,
+    });
+
+    return widget === 'HiddenWidget' || widget === 'hidden';
 }
 
 // 解析当前节点 ui field
-export function getUiField(
-    {
-        schema = {},
-        uiSchema = {},
-    }
-) {
-    const field = uiSchema['ui:field'];
+export function getUiField({
+    schema = {},
+    uiSchema = {},
+}) {
+    const field = schema['ui:field'] || uiSchema['ui:field'];
 
     // vue 组件，或者已注册的组件名
     if (typeof field === 'function' || typeof field === 'object' || typeof field === 'string') {
         return {
             field,
-            fieldProps: uiSchema['ui:fieldProps'], // 自定义field ，支持传入额外的 props
+            fieldProps: uiSchema['ui:fieldProps'] || schema['ui:fieldProps'], // 自定义field ，支持传入额外的 props
         };
     }
 
@@ -58,23 +75,28 @@ export function getUiField(
 }
 
 // 解析用户配置的 uiSchema options
-export function getUserUiOptions(uiSchema) {
-    return Object.keys(uiSchema)
+export function getUserUiOptions({
+    schema = {},
+    uiSchema = {}
+}) {
+    // 支持 uiSchema配置在 schema文件中
+    return Object.assign({}, ...[schema, uiSchema].map(itemSchema => Object.keys(itemSchema)
         .filter(key => key.indexOf('ui:') === 0)
         .reduce((options, key) => {
-            const value = uiSchema[key];
+            const value = itemSchema[key];
             // options 内外合并
             if (key === 'ui:options' && isObject(value)) {
                 return { ...options, ...value };
             }
             return { ...options, [key.substring(3)]: value };
-        }, {});
+        }, {})));
+
 }
 
 // 解析当前节点的ui options参数
 export function getUiOptions({
-    schema,
-    uiSchema
+    schema = {},
+    uiSchema = {}
 }) {
     const spec = {};
     if (undefined !== schema.multipleOf) {
@@ -104,16 +126,26 @@ export function getUiOptions({
     return {
         title: schema.title, // 默认使用 schema 的配置
         description: schema.description,
-        hidden: uiSchema['ui:widget'] === 'HiddenWidget',
+        hidden: isHiddenWidget({
+            schema,
+            uiSchema
+        }),
+
+        // 特殊处理部分
         ...spec,
-        ...getUserUiOptions(uiSchema), // 用户配置
+
+        // 用户配置最高优先级
+        ...getUserUiOptions({
+            schema,
+            uiSchema,
+        })
     };
 }
 
 // 获取当前节点的ui 配置 （options + widget）
 export function getWidgetConfig({
-    schema,
-    uiSchema
+    schema = {},
+    uiSchema = {}
 }, fallback = () => {}) {
     const widgetConfig = {
         ...getUiOptions({
@@ -265,17 +297,29 @@ export function allowAdditionalItems(schema) {
 
 // 下拉选项
 export function optionsList(schema, uiSchema) {
+    // enum
     if (schema.enum) {
-        const uiOptions = getUserUiOptions(uiSchema);
+        const uiOptions = getUserUiOptions({
+            schema,
+            uiSchema
+        });
+
+        // ui配置 enumNames 优先
+        const enumNames = uiOptions.enumNames || schema.enumNames;
         return schema.enum.map((value, i) => {
-            const label = (uiOptions.enumNames && uiOptions.enumNames[i]) || (schema.enumNames && schema.enumNames[i]) || String(value);
+            const label = (enumNames && enumNames[i]) || String(value);
             return { label, value };
         });
     }
+
+    // oneOf | anyOf
     const altSchemas = schema.oneOf || schema.anyOf;
     const altUiSchemas = uiSchema.oneOf || uiSchema.anyOf;
     return altSchemas.map((curSchema, i) => {
-        const uiOptions = (altUiSchemas && altUiSchemas[i]) ? getUserUiOptions(altUiSchemas[i]) : {};
+        const uiOptions = (altUiSchemas && altUiSchemas[i]) ? getUserUiOptions({
+            schema: curSchema,
+            uiSchema: altUiSchemas[i]
+        }) : {};
         const value = toConstant(curSchema);
         const label = uiOptions.title || curSchema.title || String(value);
         return { label, value };

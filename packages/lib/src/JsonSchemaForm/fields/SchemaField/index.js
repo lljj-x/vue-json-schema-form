@@ -3,7 +3,7 @@
  */
 
 import FIELDS_MAP from '../../config/FIELDS_MAP';
-import { getUiField, isSelect } from '../../common/formUtils';
+import { getUiField, isSelect, isHiddenWidget } from '../../common/formUtils';
 import { nodePath2ClassName } from '../../common/vueUtils';
 import { lowerCase } from '../../common/utils';
 import retrieveSchema from '../../common/schema/retriev';
@@ -38,9 +38,11 @@ export default {
             fieldProps
         } = getUiField(curProps);
 
-        // hidden 可以通过如下2种任意一种配置
-        const isHiddenWidget = props.uiSchema['ui:widget'] === 'HiddenWidget'
-            || props.uiSchema['ui:widget'] === 'hidden';
+        // hidden
+        const hiddenWidget = isHiddenWidget({
+            schema,
+            uiSchema: props.uiSchema
+        });
 
         // functional 渲染多节点
         const renderList = [];
@@ -72,7 +74,7 @@ export default {
         } else {
             renderList.push(
                 // 渲染对应子组件
-                fieldComponent && h(isHiddenWidget ? 'div' : fieldComponent, {
+                fieldComponent && h(hiddenWidget ? 'div' : fieldComponent, {
                     props: {
                         ...curProps,
                         fieldProps
@@ -80,7 +82,7 @@ export default {
                     class: {
                         ...context.data.class,
                         [lowerCase(fieldComponent.name) || fieldComponent]: true,
-                        hiddenWidget: isHiddenWidget,
+                        hiddenWidget,
                         [pathClassName]: true
                     }
                 })

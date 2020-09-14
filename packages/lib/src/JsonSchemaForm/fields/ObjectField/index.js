@@ -34,8 +34,15 @@ export default {
             errorSchema,
         } = props;
 
+        const {
+            title, description, showTitle, showDescription, order
+        } = getUiOptions({
+            schema,
+            uiSchema
+        });
+
         const properties = Object.keys(schema.properties || {});
-        const orderedProperties = orderProperties(properties, uiSchema['ui:order']);
+        const orderedProperties = orderProperties(properties, order);
 
         const propertiesVNodeList = orderedProperties.map((name) => {
             const addedByAdditionalProperties = schema.properties[name].hasOwnProperty(ADDITIONAL_PROPERTY_FLAG);
@@ -56,12 +63,6 @@ export default {
             );
         });
 
-        const {
-            title, description, showTitle, showDescription
-        } = getUiOptions({
-            schema,
-            uiSchema
-        });
         return h(
             FieldGroupWrap,
             {
@@ -95,9 +96,9 @@ export default {
                                     ) preVal[key] = value;
                                     return preVal;
                                 }, {}),
-                                errorSchema: this.errorSchema,
+                                errorSchema,
                                 curNodePath: props.curNodePath,
-                                rootFormData: this.rootFormData
+                                rootFormData: props.rootFormData
                             }
                         }) : null
                     ]
