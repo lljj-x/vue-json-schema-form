@@ -8183,7 +8183,10 @@
             }
           }; // 用户设置校验信息
 
-          var errSchemaMsg = getUserErrOptions(errorSchema).required;
+          var errSchemaMsg = getUserErrOptions({
+            schema: schema,
+            errorSchema: errorSchema
+          }).required;
 
           if (errSchemaMsg) {
             requireErrObj.message = errSchemaMsg;
@@ -8214,7 +8217,10 @@
         });
       }
 
-      var userErrOptions = getUserErrOptions(errorSchema);
+      var userErrOptions = getUserErrOptions({
+        schema: schema,
+        errorSchema: errorSchema
+      });
       return (isOnlyFirstError && ajvErrors.length > 0 ? [ajvErrors[0]] : ajvErrors).reduce(function (preErrors, errorItem) {
         // 优先获取 errorSchema 配置
         errorItem.message = userErrOptions[errorItem.name] || errorItem.message;
@@ -9084,10 +9090,13 @@
 
         var _getUiField = getUiField(curProps),
             fieldComponent = _getUiField.field,
-            fieldProps = _getUiField.fieldProps; // hidden 可以通过如下2种任意一种配置
+            fieldProps = _getUiField.fieldProps; // hidden
 
 
-        var isHiddenWidget = props.uiSchema['ui:widget'] === 'HiddenWidget' || props.uiSchema['ui:widget'] === 'hidden'; // functional 渲染多节点
+        var hiddenWidget = isHiddenWidget({
+          schema: schema,
+          uiSchema: props.uiSchema
+        }); // functional 渲染多节点
 
         var renderList = [];
         var pathClassName = nodePath2ClassName(context.props.curNodePath);
@@ -9112,11 +9121,11 @@
           var _objectSpread2$1;
 
           renderList.push( // 渲染对应子组件
-          fieldComponent && h(isHiddenWidget ? 'div' : fieldComponent, {
+          fieldComponent && h(hiddenWidget ? 'div' : fieldComponent, {
             props: _objectSpread2(_objectSpread2({}, curProps), {}, {
               fieldProps: fieldProps
             }),
-            class: _objectSpread2(_objectSpread2({}, context.data.class), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, lowerCase(fieldComponent.name) || fieldComponent, true), _defineProperty(_objectSpread2$1, "hiddenWidget", isHiddenWidget), _defineProperty(_objectSpread2$1, pathClassName, true), _objectSpread2$1))
+            class: _objectSpread2(_objectSpread2({}, context.data.class), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, lowerCase(fieldComponent.name) || fieldComponent, true), _defineProperty(_objectSpread2$1, "hiddenWidget", hiddenWidget), _defineProperty(_objectSpread2$1, pathClassName, true), _objectSpread2$1))
           }));
         }
 
@@ -9139,8 +9148,19 @@
         var schema = props.schema,
             uiSchema = props.uiSchema,
             errorSchema = props.errorSchema;
+
+        var _getUiOptions = getUiOptions({
+          schema: schema,
+          uiSchema: uiSchema
+        }),
+            title = _getUiOptions.title,
+            description = _getUiOptions.description,
+            showTitle = _getUiOptions.showTitle,
+            showDescription = _getUiOptions.showDescription,
+            order = _getUiOptions.order;
+
         var properties = Object.keys(schema.properties || {});
-        var orderedProperties = orderProperties(properties, uiSchema['ui:order']);
+        var orderedProperties = orderProperties(properties, order);
         var propertiesVNodeList = orderedProperties.map(function (name) {
           var addedByAdditionalProperties = schema.properties[name].hasOwnProperty(ADDITIONAL_PROPERTY_FLAG); // 递归参数
 
@@ -9154,16 +9174,6 @@
             })
           });
         });
-
-        var _getUiOptions = getUiOptions({
-          schema: schema,
-          uiSchema: uiSchema
-        }),
-            title = _getUiOptions.title,
-            description = _getUiOptions.description,
-            showTitle = _getUiOptions.showTitle,
-            showDescription = _getUiOptions.showDescription;
-
         return h(__vue_component__, {
           props: {
             title: title,
@@ -9188,9 +9198,9 @@
               if (self.$props.schema.additionalProperties === false || !['properties', 'id', '$id'].includes(key)) preVal[key] = value;
               return preVal;
             }, {}),
-            errorSchema: this.errorSchema,
+            errorSchema: errorSchema,
             curNodePath: props.curNodePath,
-            rootFormData: this.rootFormData
+            rootFormData: props.rootFormData
           }
         }) : null]))]);
       }
@@ -10552,8 +10562,8 @@
 
           // 下拉选项参数
           var selectWidgetConfig = getWidgetConfig({
-            schema: {},
-            // 所有参数直接通过 uiSchema获取
+            schema: this.schema["".concat(this.combiningType, "Select")] || {},
+            // 扩展 oneOfSelect,anyOfSelect字段
             uiSchema: this.uiSchema["".concat(this.combiningType, "Select")] || {} // 通过 uiSchema['oneOf'] 配置ui信息
 
           }, function () {
@@ -10660,12 +10670,19 @@
         if (curSelectSchema) {
           // 覆盖父级的属性
           curSelectSchema = Object.assign({}, this.schema, curSelectSchema);
-          delete curSelectSchema[this.combiningType]; // 当前节点的ui err配置
+          delete curSelectSchema[this.combiningType]; // 当前节点的ui err配置，用来支持所有选项的统一配置
+          // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
 
-          var userUiOptions = filterObject(getUserUiOptions(this.uiSchema), function (key) {
+          var userUiOptions = filterObject(getUserUiOptions({
+            schema: this.schema,
+            uiSchema: this.uiSchema
+          }), function (key) {
             return key === _this2.combiningType ? undefined : "ui:".concat(key);
           });
-          var userErrOptions = filterObject(getUserErrOptions(this.errorSchema), function (key) {
+          var userErrOptions = filterObject(getUserErrOptions({
+            schema: this.schema,
+            errorSchema: this.errorSchema
+          }), function (key) {
             return key === _this2.combiningType ? undefined : "err:".concat(key);
           });
           childrenVnode.push(h(SchemaField, {
@@ -10757,38 +10774,57 @@
       oneOf: OneOfField
     };
 
-    function getUiWidget(_ref) {
+    function getUiWidget(_ref, fallback) {
       var _ref$schema = _ref.schema,
           schema = _ref$schema === void 0 ? {} : _ref$schema,
           _ref$uiSchema = _ref.uiSchema,
           uiSchema = _ref$uiSchema === void 0 ? {} : _ref$uiSchema;
-      var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
-
       // uiSchema 配置了widget 直接使用
-      if (uiSchema['ui:widget']) {
+      var uiWidget = uiSchema['ui:widget'] || schema['ui:widget'];
+
+      if (uiWidget) {
         return {
-          widget: uiSchema['ui:widget']
+          widget: uiWidget
         };
-      } // 没配置widget 回退到具体field方案配置
+      }
 
+      if (fallback) {
+        // 没配置widget 回退到具体field方案配置
+        return fallback({
+          schema: schema,
+          uiSchema: uiSchema
+        });
+      }
 
-      return fallback({
-        schema: schema,
-        uiSchema: uiSchema
-      });
-    } // 解析当前节点 ui field
+      return {};
+    } // 是否为 hidden Widget
 
-    function getUiField(_ref2) {
+    function isHiddenWidget(_ref2) {
       var _ref2$schema = _ref2.schema,
           schema = _ref2$schema === void 0 ? {} : _ref2$schema,
           _ref2$uiSchema = _ref2.uiSchema,
           uiSchema = _ref2$uiSchema === void 0 ? {} : _ref2$uiSchema;
-      var field = uiSchema['ui:field']; // vue 组件，或者已注册的组件名
+
+      var _getUiWidget = getUiWidget({
+        schema: schema,
+        uiSchema: uiSchema
+      }),
+          widget = _getUiWidget.widget;
+
+      return widget === 'HiddenWidget' || widget === 'hidden';
+    } // 解析当前节点 ui field
+
+    function getUiField(_ref3) {
+      var _ref3$schema = _ref3.schema,
+          schema = _ref3$schema === void 0 ? {} : _ref3$schema,
+          _ref3$uiSchema = _ref3.uiSchema,
+          uiSchema = _ref3$uiSchema === void 0 ? {} : _ref3$uiSchema;
+      var field = schema['ui:field'] || uiSchema['ui:field']; // vue 组件，或者已注册的组件名
 
       if (typeof field === 'function' || _typeof(field) === 'object' || typeof field === 'string') {
         return {
           field: field,
-          fieldProps: uiSchema['ui:fieldProps'] // 自定义field ，支持传入额外的 props
+          fieldProps: uiSchema['ui:fieldProps'] || schema['ui:fieldProps'] // 自定义field ，支持传入额外的 props
 
         };
       } // 类型默认 field
@@ -10814,23 +10850,32 @@
       throw new Error("\u4E0D\u652F\u6301\u7684field\u7C7B\u578B ".concat(schema.type));
     } // 解析用户配置的 uiSchema options
 
-    function getUserUiOptions(uiSchema) {
-      return Object.keys(uiSchema).filter(function (key) {
-        return key.indexOf('ui:') === 0;
-      }).reduce(function (options, key) {
-        var value = uiSchema[key]; // options 内外合并
+    function getUserUiOptions(_ref4) {
+      var _ref4$schema = _ref4.schema,
+          schema = _ref4$schema === void 0 ? {} : _ref4$schema,
+          _ref4$uiSchema = _ref4.uiSchema,
+          uiSchema = _ref4$uiSchema === void 0 ? {} : _ref4$uiSchema;
+      // 支持 uiSchema配置在 schema文件中
+      return Object.assign.apply(Object, [{}].concat(_toConsumableArray([schema, uiSchema].map(function (itemSchema) {
+        return Object.keys(itemSchema).filter(function (key) {
+          return key.indexOf('ui:') === 0;
+        }).reduce(function (options, key) {
+          var value = itemSchema[key]; // options 内外合并
 
-        if (key === 'ui:options' && isObject(value)) {
-          return _objectSpread2(_objectSpread2({}, options), value);
-        }
+          if (key === 'ui:options' && isObject(value)) {
+            return _objectSpread2(_objectSpread2({}, options), value);
+          }
 
-        return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(3), value));
-      }, {});
+          return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(3), value));
+        }, {});
+      }))));
     } // 解析当前节点的ui options参数
 
-    function getUiOptions(_ref3) {
-      var schema = _ref3.schema,
-          uiSchema = _ref3.uiSchema;
+    function getUiOptions(_ref5) {
+      var _ref5$schema = _ref5.schema,
+          schema = _ref5$schema === void 0 ? {} : _ref5$schema,
+          _ref5$uiSchema = _ref5.uiSchema,
+          uiSchema = _ref5$uiSchema === void 0 ? {} : _ref5$uiSchema;
       var spec = {};
 
       if (undefined !== schema.multipleOf) {
@@ -10863,13 +10908,21 @@
         title: schema.title,
         // 默认使用 schema 的配置
         description: schema.description,
-        hidden: uiSchema['ui:widget'] === 'HiddenWidget'
-      }, spec), getUserUiOptions(uiSchema));
+        hidden: isHiddenWidget({
+          schema: schema,
+          uiSchema: uiSchema
+        })
+      }, spec), getUserUiOptions({
+        schema: schema,
+        uiSchema: uiSchema
+      }));
     } // 获取当前节点的ui 配置 （options + widget）
 
-    function getWidgetConfig(_ref4) {
-      var schema = _ref4.schema,
-          uiSchema = _ref4.uiSchema;
+    function getWidgetConfig(_ref6) {
+      var _ref6$schema = _ref6.schema,
+          schema = _ref6$schema === void 0 ? {} : _ref6$schema,
+          _ref6$uiSchema = _ref6.uiSchema,
+          uiSchema = _ref6$uiSchema === void 0 ? {} : _ref6$uiSchema;
       var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
 
       var widgetConfig = _objectSpread2(_objectSpread2({}, getUiOptions({
@@ -10899,18 +10952,24 @@
       };
     } // 解析用户配置的 errorSchema options
 
-    function getUserErrOptions(errorSchema) {
-      return Object.keys(errorSchema).filter(function (key) {
-        return key.indexOf('err:') === 0;
-      }).reduce(function (options, key) {
-        var value = errorSchema[key]; // options 内外合并
+    function getUserErrOptions(_ref7) {
+      var _ref7$schema = _ref7.schema,
+          schema = _ref7$schema === void 0 ? {} : _ref7$schema,
+          _ref7$errorSchema = _ref7.errorSchema,
+          errorSchema = _ref7$errorSchema === void 0 ? {} : _ref7$errorSchema;
+      return Object.assign.apply(Object, [{}].concat(_toConsumableArray([schema, errorSchema].map(function (itemSchema) {
+        return Object.keys(itemSchema).filter(function (key) {
+          return key.indexOf('err:') === 0;
+        }).reduce(function (options, key) {
+          var value = itemSchema[key]; // options 内外合并
 
-        if (key === 'err:options' && isObject(value)) {
-          return _objectSpread2(_objectSpread2({}, options), value);
-        }
+          if (key === 'err:options' && isObject(value)) {
+            return _objectSpread2(_objectSpread2({}, options), value);
+          }
 
-        return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(4), value));
-      }, {});
+          return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(4), value));
+        }, {});
+      }))));
     } // ui:order object-> properties 排序
 
     function orderProperties(properties, order) {
@@ -11027,21 +11086,31 @@
     } // 下拉选项
 
     function optionsList(schema, uiSchema) {
+      // enum
       if (schema.enum) {
-        var uiOptions = getUserUiOptions(uiSchema);
+        var uiOptions = getUserUiOptions({
+          schema: schema,
+          uiSchema: uiSchema
+        }); // ui配置 enumNames 优先
+
+        var enumNames = uiOptions.enumNames || schema.enumNames;
         return schema.enum.map(function (value, i) {
-          var label = uiOptions.enumNames && uiOptions.enumNames[i] || schema.enumNames && schema.enumNames[i] || String(value);
+          var label = enumNames && enumNames[i] || String(value);
           return {
             label: label,
             value: value
           };
         });
-      }
+      } // oneOf | anyOf
+
 
       var altSchemas = schema.oneOf || schema.anyOf;
       var altUiSchemas = uiSchema.oneOf || uiSchema.anyOf;
       return altSchemas.map(function (curSchema, i) {
-        var uiOptions = altUiSchemas && altUiSchemas[i] ? getUserUiOptions(altUiSchemas[i]) : {};
+        var uiOptions = altUiSchemas && altUiSchemas[i] ? getUserUiOptions({
+          schema: curSchema,
+          uiSchema: altUiSchemas[i]
+        }) : {};
         var value = toConstant(curSchema);
         var label = uiOptions.title || curSchema.title || String(value);
         return {
@@ -11054,6 +11123,7 @@
     var formUtils = /*#__PURE__*/Object.freeze({
         __proto__: null,
         getUiWidget: getUiWidget,
+        isHiddenWidget: isHiddenWidget,
         getUiField: getUiField,
         getUserUiOptions: getUserUiOptions,
         getUiOptions: getUiOptions,
@@ -11252,8 +11322,8 @@
       /* style */
       const __vue_inject_styles__$4 = function (inject) {
         if (!inject) return
-        inject("data-v-25c5ccb1_0", { source: "\n.src-JsonSchemaForm-item-1UFV {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["D:\\code\\git_my\\vue-json-schema-form\\packages\\lib\\src\\JsonSchemaForm\\FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\r\n    <el-form-item :class=\"$style.item\">\r\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\r\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\r\n    </el-form-item>\r\n</template>\r\n\r\n<script>\r\n    export default {\r\n        name: 'FormFooter',\r\n        props: {\r\n            okBtn: {\r\n                type: String,\r\n                default: '保存'\r\n            },\r\n            cancelBtn: {\r\n                type: String,\r\n                default: '取消'\r\n            },\r\n        }\r\n    };\r\n</script>\r\n\r\n<style module>\r\n    .item {\r\n        text-align: right;\r\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\r\n        padding-top: 10px;\r\n    }\r\n</style>\r\n"]}, media: undefined });
-    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-1UFV"} });
+        inject("data-v-431cede5_0", { source: "\n.src-JsonSchemaForm-item-e4q8 {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["/Users/ryuushun/liujun/git/vue-element-schema-form/packages/lib/src/JsonSchemaForm/FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\n    <el-form-item :class=\"$style.item\">\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\n    </el-form-item>\n</template>\n\n<script>\n    export default {\n        name: 'FormFooter',\n        props: {\n            okBtn: {\n                type: String,\n                default: '保存'\n            },\n            cancelBtn: {\n                type: String,\n                default: '取消'\n            },\n        }\n    };\n</script>\n\n<style module>\n    .item {\n        text-align: right;\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\n        padding-top: 10px;\n    }\n</style>\n"]}, media: undefined });
+    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-e4q8"} });
 
       };
       /* scoped */
