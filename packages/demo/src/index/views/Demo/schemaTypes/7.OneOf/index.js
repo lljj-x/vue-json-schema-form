@@ -121,47 +121,47 @@ export default {
         //     }
         // ]
     },
-    uiSchema: {
-        oneOfSelect: {
-            'ui:title': '选择anyOf 选项',
-            'ui:widget': 'RadioWidget'
-        },
-        oneOf: {
-            'ui:widget': 'RadioWidget',
-            'ui:title': '测试 OneOf object',
-            'ui:options': {
-                style: {
-                    // width: '300px',
-                }
-            }
-        },
-        age: {
-            'ui:options': {
-                // widget: 'el-slider',
-            },
-            oneOfSelect: {
-                'ui:title': '选择选项 (uiSchema -> oneOfSelect)',
-                'ui:widget': 'RadioWidget',
-                'ui:options': {
-                    style: {
-                        width: '100%'
-                    }
-                }
-            },
-            oneOf: [
-                {
-                    'ui:title': '5的倍数 (uiSchema)',
-                    'ui:widget': 'el-slider',
-                },
-                {
-                    'ui:title': '3的倍数 (uiSchema)'
-                }
-            ]
-        },
-        test: {
-            'ui:widget': 'RadioWidget',
-        }
-    },
+    // uiSchema: {
+    //     oneOfSelect: {
+    //         'ui:title': '选择anyOf 选项',
+    //         'ui:widget': 'RadioWidget'
+    //     },
+    //     oneOf: {
+    //         'ui:widget': 'RadioWidget',
+    //         'ui:title': '测试 OneOf object',
+    //         'ui:options': {
+    //             style: {
+    //                 // width: '300px',
+    //             }
+    //         }
+    //     },
+    //     age: {
+    //         'ui:options': {
+    //             // widget: 'el-slider',
+    //         },
+    //         oneOfSelect: {
+    //             'ui:title': '选择选项 (uiSchema -> oneOfSelect)',
+    //             'ui:widget': 'RadioWidget',
+    //             'ui:options': {
+    //                 style: {
+    //                     width: '100%'
+    //                 }
+    //             }
+    //         },
+    //         oneOf: [
+    //             {
+    //                 'ui:title': '5的倍数 (uiSchema)',
+    //                 'ui:widget': 'el-slider',
+    //             },
+    //             {
+    //                 'ui:title': '3的倍数 (uiSchema)'
+    //             }
+    //         ]
+    //     },
+    //     test: {
+    //         'ui:widget': 'RadioWidget',
+    //     }
+    // },
     formData: {
         age: 27,
         test: '222',
