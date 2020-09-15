@@ -160,20 +160,24 @@ export function getWidgetConfig({
 
     const {
         widget,
-        title,
+        title: label,
         labelWidth,
         description,
-        attrs,
+        attrs: widgetAttrs,
+        class: widgetClassName,
+        style: widgetStyle,
         emptyValue,
         ...uiProps
     } = widgetConfig;
 
     return {
         widget,
-        label: title,
+        label,
         labelWidth,
         description,
-        attrs,
+        widgetAttrs,
+        widgetClassName,
+        widgetStyle,
         emptyValue,
         uiProps
     };

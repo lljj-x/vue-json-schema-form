@@ -41,6 +41,17 @@ export default {
         },
         widget: {
             type: [String, Function, Object],
+            default: null
+        },
+        required: {
+            type: Boolean,
+            default: false
+        },
+        // 解决 JSON Schema和实际输入元素中空字符串 required 判定的差异性
+        // 元素输入为 '' 使用 emptyValue 的值
+        emptyValue: {
+            type: null,
+            default: undefined
         },
         // 部分场景可能需要格式化值，如vue .number 修饰符
         formatValue: {
@@ -69,18 +80,18 @@ export default {
             type: String,
             default: ''
         },
-        required: {
-            type: Boolean,
-            default: false
-        },
-        // 解决 JSON Schema和实际输入元素中空字符串 required 判定的差异性
-        // 元素输入为 '' 使用 emptyValue 的值
-        emptyValue: {
-            type: null,
-            default: undefined
-        },
         // attrs
-        attrs: {
+        widgetAttrs: {
+            type: Object,
+            default: () => ({})
+        },
+        // className
+        widgetClassName: {
+            type: Object,
+            default: () => ({})
+        },
+        // style
+        widgetStyle: {
             type: Object,
             default: () => ({})
         },
@@ -119,12 +130,6 @@ export default {
     },
     render(h) {
         const self = this;
-
-        const {
-            class: className,
-            style,
-            ...uiProps
-        } = self.uiProps;
 
         // 判断是否为根节点
         const isRootNode = isRootNodePath(this.curNodePath);
@@ -206,14 +211,14 @@ export default {
                     self.widget,
                     {
                         props: {
-                            ...uiProps,
+                            ...self.uiProps,
                             value: this.value, // v-model
                         },
-                        style,
-                        class: className,
+                        style: self.widgetStyle,
+                        class: self.widgetClassName,
                         attrs: {
-                            placeholder: uiProps.placeholder, // 兼容placeholder配置在 外层或者attr内
-                            ...self.attrs
+                            placeholder: self.uiProps.placeholder, // 兼容placeholder配置在 外层或者attr内
+                            ...self.widgetAttrs
                         },
                         on: {
                             input(event) {
