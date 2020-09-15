@@ -208,6 +208,7 @@ export default {
                         if (key !== 'items') preVal[key] = value;
                         return preVal;
                     }, {}),
+                    uiSchema,
                     errorSchema: this.errorSchema,
                     curNodePath,
                     rootFormData

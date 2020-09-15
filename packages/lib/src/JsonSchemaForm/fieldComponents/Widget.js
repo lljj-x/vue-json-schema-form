@@ -26,6 +26,10 @@ export default {
             type: Object,
             default: () => ({})
         },
+        uiSchema: {
+            type: Object,
+            default: () => ({})
+        },
         errorSchema: {
             type: Object,
             default: () => ({})
@@ -155,6 +159,7 @@ export default {
                                     const errors = validateFormDataAndTransformMsg({
                                         formData: value,
                                         schema: self.$props.schema,
+                                        uiSchema: self.$props.uiSchema,
                                         customFormats: self.$props.customFormats,
                                         errorSchema: self.errorSchema,
                                         required: self.required,

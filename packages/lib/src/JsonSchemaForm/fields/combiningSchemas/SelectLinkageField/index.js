@@ -171,6 +171,7 @@ export default {
 
             const userErrOptions = filterObject(getUserErrOptions({
                 schema: this.schema,
+                uiSchema: this.uiSchema,
                 errorSchema: this.errorSchema
             }), key => (key === this.combiningType ? undefined : `err:${key}`));
 
@@ -208,6 +209,7 @@ export default {
                 },
                 props: {
                     schema: this.schema,
+                    uiSchema: this.uiSchema,
                     errorSchema: this.errorSchema,
                     curNodePath: this.curNodePath,
                     rootFormData: this.rootFormData,

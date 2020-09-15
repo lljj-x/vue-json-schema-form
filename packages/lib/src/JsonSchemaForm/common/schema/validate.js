@@ -150,6 +150,7 @@ export function ajvValidateFormData({
 export function validateFormDataAndTransformMsg({
     formData,
     schema,
+    uiSchema,
     transformErrors,
     additionalMetaSchemas = [],
     customFormats = {},
@@ -177,6 +178,7 @@ export function validateFormDataAndTransformMsg({
             // 用户设置校验信息
             const errSchemaMsg = getUserErrOptions({
                 schema,
+                uiSchema,
                 errorSchema
             }).required;
             if (errSchemaMsg) {
@@ -212,6 +214,7 @@ export function validateFormDataAndTransformMsg({
 
     const userErrOptions = getUserErrOptions({
         schema,
+        uiSchema,
         errorSchema
     });
 

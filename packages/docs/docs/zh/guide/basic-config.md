@@ -98,7 +98,8 @@ export default {
 * 类型：`object`
 * 默认值：`{}`
 
-> `0.0.16` 之后版本支持配置 `uiSchema` 在 `schema` 参数中 [点击查看](#uischema配置在schema中)
+>* `0.0.16` 之后版本支持配置 `uiSchema` 在 `schema` 参数中 [点击查看](#uischema配置在schema中)
+>* `0.0.17` 之后版本支持配置 [errorSchema](#errorschema) 在 [uiSchema](#uischema) 中。（`uiSchema` 和 `errorSchema` 格式完全相同，且同属ui显示，一份可方便配置）
 
 用于配置表单展示样式，普通json数据，非 `JSON Schema` 规范
 
@@ -254,7 +255,8 @@ export default {
                     'ui:emptyValue': '',
                     'ui:options': {
                         attrs: {
-                            'autofocus': true
+                            autofocus: true,
+                            rows: 6,
                         },
                         style: {
                             boxShadow: '0 0 6px 2px #2b9939'
@@ -263,7 +265,6 @@ export default {
                             className_hei: true
                         },
                         type: 'textarea',
-                        rows: '6',
                         placeholder: '请输入你的内容'
                     }
                 },
@@ -284,7 +285,7 @@ export default {
 ::: warning 注意
 配置数据结构是和 `schema` 保持一致，而非 `formData` 一致
 
-比如：
+比如配置数组元素：
 ```js
 
 // schema
@@ -341,7 +342,8 @@ uiSchema = {
 * 类型：`object`
 * 默认值：`{}`
 
-> `0.0.16` 之后版本支持配置 `errorSchema` 在 `schema` 参数中 [点击查看](#errorschema配置在schema中)
+>* `0.0.16` 之后版本支持配置 `errorSchema` 在 `schema` 参数中 [点击查看](#errorschema配置在schema中)
+>* `0.0.17` 之后版本支持配置 [errorSchema](#errorschema) 在 [uiSchema](#uischema) 中。（`uiSchema` 和 `errorSchema` 格式完全相同，且同属ui显示，一份可方便配置）
 
 用于配置表单校验错误文案信息，普通json数据，非JSON Schema规范
 
@@ -370,6 +372,7 @@ errorSchema配置演示：重置表单错误信息
     <vue-form
         v-model="formData"
         :schema="schema"
+        :uiSchema="uiSchema"
         :error-schema="errorSchema"
     >
     </vue-form>
@@ -429,6 +432,13 @@ export default {
                         ]
                     }
                 }
+            },
+            uiSchema: {
+                bio: {
+                    'ui:type': 'textarea',
+                    'ui:placeholder': '请输入 ...',
+                    'err:required': '请输入（uiSchema中配置）',
+                },
             },
             errorSchema: {
                 userName: {

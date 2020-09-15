@@ -96,6 +96,7 @@ export default {
                                     ) preVal[key] = value;
                                     return preVal;
                                 }, {}),
+                                uiSchema,
                                 errorSchema,
                                 curNodePath: props.curNodePath,
                                 rootFormData: props.rootFormData

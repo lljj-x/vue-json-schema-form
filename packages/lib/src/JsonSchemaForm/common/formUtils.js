@@ -186,9 +186,10 @@ export function getWidgetConfig({
 // 解析用户配置的 errorSchema options
 export function getUserErrOptions({
     schema = {},
+    uiSchema = {},
     errorSchema = {}
 }) {
-    return Object.assign({}, ...[schema, errorSchema].map(itemSchema => Object.keys(itemSchema)
+    return Object.assign({}, ...[schema, uiSchema, errorSchema].map(itemSchema => Object.keys(itemSchema)
         .filter(key => key.indexOf('err:') === 0)
         .reduce((options, key) => {
             const value = itemSchema[key];
