@@ -372,7 +372,7 @@ errorSchema配置演示：重置表单错误信息
     <vue-form
         v-model="formData"
         :schema="schema"
-        :uiSchema="uiSchema"
+        :ui-schema="uiSchema"
         :error-schema="errorSchema"
     >
     </vue-form>
