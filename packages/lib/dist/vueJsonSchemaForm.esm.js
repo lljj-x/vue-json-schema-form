@@ -8151,6 +8151,7 @@ function validateFormDataAndTransformMsg() {
   var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       formData = _ref2.formData,
       schema = _ref2.schema,
+      uiSchema = _ref2.uiSchema,
       transformErrors = _ref2.transformErrors,
       _ref2$additionalMetaS = _ref2.additionalMetaSchemas,
       additionalMetaSchemas = _ref2$additionalMetaS === void 0 ? [] : _ref2$additionalMetaS,
@@ -8179,6 +8180,7 @@ function validateFormDataAndTransformMsg() {
 
       var errSchemaMsg = getUserErrOptions({
         schema: schema,
+        uiSchema: uiSchema,
         errorSchema: errorSchema
       }).required;
 
@@ -8213,6 +8215,7 @@ function validateFormDataAndTransformMsg() {
 
   var userErrOptions = getUserErrOptions({
     schema: schema,
+    uiSchema: uiSchema,
     errorSchema: errorSchema
   });
   return (isOnlyFirstError && ajvErrors.length > 0 ? [ajvErrors[0]] : ajvErrors).reduce(function (preErrors, errorItem) {
@@ -8862,6 +8865,12 @@ var Widget = {
         return {};
       }
     },
+    uiSchema: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
     errorSchema: {
       type: Object,
       default: function _default() {
@@ -8880,7 +8889,18 @@ var Widget = {
       default: null
     },
     widget: {
-      type: [String, Function, Object]
+      type: [String, Function, Object],
+      default: null
+    },
+    required: {
+      type: Boolean,
+      default: false
+    },
+    // 解决 JSON Schema和实际输入元素中空字符串 required 判定的差异性
+    // 元素输入为 '' 使用 emptyValue 的值
+    emptyValue: {
+      type: null,
+      default: undefined
     },
     // 部分场景可能需要格式化值，如vue .number 修饰符
     formatValue: {
@@ -8911,18 +8931,43 @@ var Widget = {
       type: String,
       default: ''
     },
-    required: {
-      type: Boolean,
-      default: false
+    // Widget attrs
+    widgetAttrs: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
     },
-    // 解决 JSON Schema和实际输入元素中空字符串 required 判定的差异性
-    // 元素输入为 '' 使用 emptyValue 的值
-    emptyValue: {
-      type: null,
-      default: undefined
+    // Widget className
+    widgetClass: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
     },
-    // attrs
-    attrs: {
+    // Widget style
+    widgetStyle: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    // Field attrs
+    fieldAttrs: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    // Field className
+    fieldClass: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    // Field style
+    fieldStyle: {
       type: Object,
       default: function _default() {
         return {};
@@ -8963,19 +9008,15 @@ var Widget = {
     }
   },
   render: function render(h) {
-    var self = this;
-
-    var _self$uiProps = self.uiProps,
-        className = _self$uiProps.class,
-        style = _self$uiProps.style,
-        uiProps = _objectWithoutProperties(_self$uiProps, ["class", "style"]); // 判断是否为根节点
-
+    var self = this; // 判断是否为根节点
 
     var isRootNode = isRootNodePath(this.curNodePath);
     return h('el-form-item', {
-      class: {
+      class: _objectSpread2(_objectSpread2({}, self.fieldClass), {}, {
         'is-required': self.required
-      },
+      }),
+      style: self.fieldStyle,
+      attrs: self.fieldAttrs,
       props: _objectSpread2({
         label: self.label,
         labelWidth: self.labelWidth
@@ -8989,6 +9030,7 @@ var Widget = {
             var errors = validateFormDataAndTransformMsg({
               formData: value,
               schema: self.$props.schema,
+              uiSchema: self.$props.uiSchema,
               customFormats: self.$props.customFormats,
               errorSchema: self.errorSchema,
               required: self.required,
@@ -9036,15 +9078,15 @@ var Widget = {
     } // self.description
     )] : []), [h( // 关键输入组件
     self.widget, {
-      props: _objectSpread2(_objectSpread2({}, uiProps), {}, {
+      props: _objectSpread2(_objectSpread2({}, self.uiProps), {}, {
         value: this.value // v-model
 
       }),
-      style: style,
-      class: className,
+      style: self.widgetStyle,
+      class: self.widgetClass,
       attrs: _objectSpread2({
-        placeholder: uiProps.placeholder
-      }, self.attrs),
+        placeholder: self.uiProps.placeholder
+      }, self.widgetAttrs),
       on: {
         input: function input(event) {
           var formatValue = self.formatValue(event); // 默认用户输入变了都是需要更新form数据保持同步，唯一特例 input number
@@ -9151,7 +9193,10 @@ var ObjectField = {
         description = _getUiOptions.description,
         showTitle = _getUiOptions.showTitle,
         showDescription = _getUiOptions.showDescription,
-        order = _getUiOptions.order;
+        order = _getUiOptions.order,
+        fieldClass = _getUiOptions.fieldClass,
+        fieldAttrs = _getUiOptions.fieldAttrs,
+        fieldStyle = _getUiOptions.fieldStyle;
 
     var properties = Object.keys(schema.properties || {});
     var orderedProperties = orderProperties(properties, order);
@@ -9174,7 +9219,10 @@ var ObjectField = {
         description: description,
         showTitle: showTitle,
         showDescription: showDescription
-      }
+      },
+      class: fieldClass,
+      attrs: fieldAttrs,
+      style: fieldStyle
     }, [h('template', {
       slot: 'default'
     }, [].concat(_toConsumableArray(propertiesVNodeList), [// 插入一个Widget，校验 object组 - minProperties. maxProperties. oneOf 等需要外层校验的数据
@@ -9192,6 +9240,7 @@ var ObjectField = {
           if (self.$props.schema.additionalProperties === false || !['properties', 'id', '$id'].includes(key)) preVal[key] = value;
           return preVal;
         }, {}),
+        uiSchema: uiSchema,
         errorSchema: errorSchema,
         curNodePath: props.curNodePath,
         rootFormData: props.rootFormData
@@ -9630,10 +9679,11 @@ var WIDGET_MAP = {
 var StringField = {
   name: 'StringField',
   props: vueProps,
-  render: function render(h) {
-    var _this$$props = this.$props,
-        schema = _this$$props.schema,
-        uiSchema = _this$$props.uiSchema; // 可能是枚举数据使用select组件，否则使用 input
+  functional: true,
+  render: function render(h, context) {
+    var _context$props = context.props,
+        schema = _context$props.schema,
+        uiSchema = _context$props.uiSchema; // 可能是枚举数据使用select组件，否则使用 input
 
     var enumOptions = isSelect(schema) && optionsList(schema, uiSchema);
     var widgetConfig = getWidgetConfig({
@@ -9650,9 +9700,9 @@ var StringField = {
       widgetConfig.uiProps.enumOptions = enumOptions;
     }
 
-    return h(Widget, {
-      props: _objectSpread2(_objectSpread2({}, this.$props), widgetConfig)
-    });
+    return h(Widget, _objectSpread2(_objectSpread2({}, context.data), {}, {
+      props: _objectSpread2(_objectSpread2({}, context.props), widgetConfig)
+    }));
   }
 };
 
@@ -9663,11 +9713,9 @@ var StringField = {
 var NumberField = {
   name: 'NumberField',
   props: vueProps,
-  render: function render(h) {
-    return h(StringField, {
-      props: this.$props,
-      on: this.$listeners
-    });
+  functional: true,
+  render: function render(h, context) {
+    return h(StringField, context.data);
   }
 };
 
@@ -9678,25 +9726,24 @@ var NumberField = {
 var IntegerField = {
   name: 'IntegerField',
   props: vueProps,
-  render: function render(h) {
-    return h(StringField, {
-      props: this.$props,
-      on: this.$listeners
-    });
+  functional: true,
+  render: function render(h, context) {
+    return h(StringField, context.data);
   }
 };
 
 var BooleanField = {
   name: 'BooleanField',
   props: vueProps,
-  render: function render(h) {
-    var _this$$props = this.$props,
-        schema = _this$$props.schema,
-        uiSchema = _this$$props.uiSchema; // Bool 会默认传入枚举类型选项 true false
+  functional: true,
+  render: function render(h, context) {
+    var _context$props = context.props,
+        schema = _context$props.schema,
+        uiSchema = _context$props.uiSchema; // Bool 会默认传入枚举类型选项 true false
 
     var enumOptions = optionsList({
       enum: schema.enum || [true, false]
-    }, this.uiSchema);
+    }, uiSchema);
     var widgetConfig = getWidgetConfig({
       schema: schema,
       uiSchema: uiSchema
@@ -9705,11 +9752,10 @@ var BooleanField = {
         widget: WIDGET_MAP.types.boolean
       };
     });
-    widgetConfig.uiProps.enumOptions = enumOptions; // debugger;
-
-    return h(Widget, {
-      props: _objectSpread2(_objectSpread2({}, this.$props), widgetConfig)
-    });
+    widgetConfig.uiProps.enumOptions = enumOptions;
+    return h(Widget, _objectSpread2(_objectSpread2({}, context.data), {}, {
+      props: _objectSpread2(_objectSpread2({}, context.props), widgetConfig)
+    }));
   }
 };
 
@@ -9969,7 +10015,6 @@ var ArrayOrderList = {
       return true;
     }
   },
-  methods: {},
   render: function render(h) {
     var _this = this;
 
@@ -10104,19 +10149,20 @@ var ArrayOrderList = {
 
 var ArrayFieldNormal = {
   name: 'ArrayFieldNormal',
+  functional: true,
   props: _objectSpread2(_objectSpread2({}, vueProps), {}, {
     itemsFormData: {
       type: Array // default: () => []
 
     }
   }),
-  render: function render(h) {
-    var _this = this;
-
-    var _this$$props = this.$props,
-        schema = _this$$props.schema,
-        uiSchema = _this$$props.uiSchema,
-        errorSchema = _this$$props.errorSchema;
+  render: function render(h, context) {
+    var _context$props = context.props,
+        schema = _context$props.schema,
+        uiSchema = _context$props.uiSchema,
+        curNodePath = _context$props.curNodePath,
+        itemsFormData = _context$props.itemsFormData,
+        errorSchema = _context$props.errorSchema;
 
     var _getUiOptions = getUiOptions({
       schema: schema,
@@ -10128,19 +10174,22 @@ var ArrayFieldNormal = {
         sortable = _getUiOptions.sortable,
         removable = _getUiOptions.removable,
         showTitle = _getUiOptions.showTitle,
-        showDescription = _getUiOptions.showDescription;
+        showDescription = _getUiOptions.showDescription,
+        fieldClass = _getUiOptions.fieldClass,
+        fieldAttrs = _getUiOptions.fieldAttrs,
+        fieldStyle = _getUiOptions.fieldStyle;
 
-    var arrayItemsVNodeList = this.itemsFormData.map(function (item, index) {
+    var arrayItemsVNodeList = itemsFormData.map(function (item, index) {
       return {
         key: item.key,
         vNode: h(SchemaField, {
           key: item.key,
-          props: _objectSpread2(_objectSpread2({}, _this.$props), {}, {
+          props: _objectSpread2(_objectSpread2({}, context.props), {}, {
             schema: schema.items,
             required: ![].concat(schema.items.type).includes('null'),
             uiSchema: uiSchema.items,
             errorSchema: errorSchema.items,
-            curNodePath: computedCurPath(_this.curNodePath, index)
+            curNodePath: computedCurPath(curNodePath, index)
           })
         })
       };
@@ -10151,7 +10200,10 @@ var ArrayFieldNormal = {
         description: description,
         showTitle: showTitle,
         showDescription: showDescription
-      }
+      },
+      class: _objectSpread2(_objectSpread2({}, context.data.class), fieldClass),
+      attrs: fieldAttrs,
+      style: fieldStyle
     }, [h(ArrayOrderList, {
       props: {
         vNodeList: arrayItemsVNodeList,
@@ -10161,28 +10213,26 @@ var ArrayFieldNormal = {
         maxItems: schema.maxItems,
         minItems: schema.minItems
       },
-      on: this.$listeners
+      on: context.listeners
     })]);
   }
 };
 
 var ArrayFieldMultiSelect = {
   name: 'ArrayFieldMultiSelect',
-  props: _objectSpread2(_objectSpread2({}, vueProps), {}, {
-    itemsFormData: {
-      type: Array,
-      default: function _default() {
-        return [];
-      }
-    }
-  }),
-  render: function render(h) {
-    // 这里需要索引当前节点，通过到schemaField组件的会统一处理
-    var itemsSchema = retrieveSchema(this.schema.items, this.rootSchema, this.itemsFormData);
-    var enumOptions = optionsList(itemsSchema, this.uiSchema);
+  functional: true,
+  props: _objectSpread2({}, vueProps),
+  render: function render(h, context) {
+    var _context$props = context.props,
+        schema = _context$props.schema,
+        rootSchema = _context$props.rootSchema,
+        uiSchema = _context$props.uiSchema; // 这里需要索引当前节点，通过到schemaField组件的会统一处理
+
+    var itemsSchema = retrieveSchema(schema.items, rootSchema);
+    var enumOptions = optionsList(itemsSchema, uiSchema);
     var widgetConfig = getWidgetConfig({
-      schema: this.schema,
-      uiSchema: this.uiSchema
+      schema: schema,
+      uiSchema: uiSchema
     }, function () {
       return {
         widget: WIDGET_MAP.common.checkboxGroup
@@ -10193,9 +10243,9 @@ var ArrayFieldMultiSelect = {
       widgetConfig.uiProps.enumOptions = enumOptions;
     }
 
-    return h(Widget, {
-      props: _objectSpread2(_objectSpread2({}, this.$props), widgetConfig)
-    });
+    return h(Widget, _objectSpread2(_objectSpread2({}, context.data), {}, {
+      props: _objectSpread2(_objectSpread2({}, context.props), widgetConfig)
+    }));
   }
 };
 
@@ -10260,7 +10310,10 @@ var ArrayFieldTuple = {
         sortable = _getUiOptions.sortable,
         removable = _getUiOptions.removable,
         showTitle = _getUiOptions.showTitle,
-        showDescription = _getUiOptions.showDescription; // 拆分为 tuple 和 additional
+        showDescription = _getUiOptions.showDescription,
+        fieldClass = _getUiOptions.fieldClass,
+        fieldAttrs = _getUiOptions.fieldAttrs,
+        fieldStyle = _getUiOptions.fieldStyle; // 拆分为 tuple 和 additional
 
 
     var cutOfArr = cutOff(this.itemsFormData, this.schema.items.length - 1);
@@ -10301,7 +10354,10 @@ var ArrayFieldTuple = {
         description: description,
         showTitle: showTitle,
         showDescription: showDescription
-      }
+      },
+      class: fieldClass,
+      attrs: fieldAttrs,
+      style: fieldStyle
     }, [].concat(_toConsumableArray(tupleVnodeArr), [// additional items
     h(ArrayOrderList, {
       props: {
@@ -10315,6 +10371,26 @@ var ArrayFieldTuple = {
       },
       on: this.$listeners
     })]));
+  }
+};
+
+var ArrayFieldDateRange = {
+  name: 'ArrayFieldDateRange',
+  props: vueProps,
+  functional: true,
+  render: function render(h, context) {
+    var _context$props = context.props,
+        schema = _context$props.schema,
+        uiSchema = _context$props.uiSchema;
+    var widgetConfig = getWidgetConfig({
+      schema: schema,
+      uiSchema: _objectSpread2({
+        'ui:widget': WIDGET_MAP.formats[schema.format]
+      }, uiSchema)
+    });
+    return h(Widget, _objectSpread2(_objectSpread2({}, context.data), {}, {
+      props: _objectSpread2(_objectSpread2({}, context.props), widgetConfig)
+    }));
   }
 };
 
@@ -10470,15 +10546,10 @@ var ArrayField = {
     } // 特殊处理date datetime format
 
 
-    if (schema.format && WIDGET_MAP.formats[schema.format]) {
-      var widgetConfig = getWidgetConfig({
-        schema: schema,
-        uiSchema: _objectSpread2({
-          'ui:widget': WIDGET_MAP.formats[schema.format]
-        }, uiSchema)
-      });
-      return h(Widget, {
-        props: _objectSpread2(_objectSpread2({}, this.$props), widgetConfig)
+    if (schema.format) {
+      return h(ArrayFieldDateRange, {
+        props: this.$props,
+        class: _defineProperty({}, lowerCase(ArrayFieldDateRange.name), true)
       });
     } // https://json-schema.org/understanding-json-schema/reference/array.html#list-validation
 
@@ -10516,6 +10587,7 @@ var ArrayField = {
           if (key !== 'items') preVal[key] = value;
           return preVal;
         }, {}),
+        uiSchema: uiSchema,
         errorSchema: this.errorSchema,
         curNodePath: curNodePath,
         rootFormData: rootFormData
@@ -10604,7 +10676,7 @@ var SelectLinkageField = {
       var curFormData = getPathVal(this.rootFormData, this.curNodePath); // 移除旧key
 
       if (guessType(curFormData) === 'object') {
-        var oldSelectSchema = retrieveSchema(this.selectList[oldVal], this.rootSchema, curFormData);
+        var oldSelectSchema = retrieveSchema(this.selectList[oldVal], this.rootSchema);
 
         if (oldSelectSchema.type === 'object' || oldSelectSchema.properties) {
           // 移除旧schema添加的属性
@@ -10675,6 +10747,7 @@ var SelectLinkageField = {
       });
       var userErrOptions = filterObject(getUserErrOptions({
         schema: this.schema,
+        uiSchema: this.uiSchema,
         errorSchema: this.errorSchema
       }), function (key) {
         return key === _this2.combiningType ? undefined : "err:".concat(key);
@@ -10701,6 +10774,7 @@ var SelectLinkageField = {
       }, "validateWidget-".concat(this.combiningType), true),
       props: {
         schema: this.schema,
+        uiSchema: this.uiSchema,
         errorSchema: this.errorSchema,
         curNodePath: this.curNodePath,
         rootFormData: this.rootFormData
@@ -10768,51 +10842,20 @@ var FIELDS_MAPS = {
   oneOf: OneOfField
 };
 
-function getUiWidget(_ref, fallback) {
+function isHiddenWidget(_ref) {
   var _ref$schema = _ref.schema,
       schema = _ref$schema === void 0 ? {} : _ref$schema,
       _ref$uiSchema = _ref.uiSchema,
       uiSchema = _ref$uiSchema === void 0 ? {} : _ref$uiSchema;
-  // uiSchema 配置了widget 直接使用
-  var uiWidget = uiSchema['ui:widget'] || schema['ui:widget'];
+  var widget = uiSchema['ui:widget'] || schema['ui:widget'];
+  return widget === 'HiddenWidget' || widget === 'hidden';
+} // 解析当前节点 ui field
 
-  if (uiWidget) {
-    return {
-      widget: uiWidget
-    };
-  }
-
-  if (fallback) {
-    // 没配置widget 回退到具体field方案配置
-    return fallback({
-      schema: schema,
-      uiSchema: uiSchema
-    });
-  }
-
-  return {};
-} // 是否为 hidden Widget
-
-function isHiddenWidget(_ref2) {
+function getUiField(_ref2) {
   var _ref2$schema = _ref2.schema,
       schema = _ref2$schema === void 0 ? {} : _ref2$schema,
       _ref2$uiSchema = _ref2.uiSchema,
       uiSchema = _ref2$uiSchema === void 0 ? {} : _ref2$uiSchema;
-
-  var _getUiWidget = getUiWidget({
-    schema: schema,
-    uiSchema: uiSchema
-  }),
-      widget = _getUiWidget.widget;
-
-  return widget === 'HiddenWidget' || widget === 'hidden';
-} // 解析当前节点 ui field
-
-function getUiField(_ref3) {
-  var _ref3$schema = _ref3.schema,
-      schema = _ref3$schema === void 0 ? {} : _ref3$schema,
-      _ref3$uiSchema = _ref3.uiSchema,
-      uiSchema = _ref3$uiSchema === void 0 ? {} : _ref3$uiSchema;
   var field = schema['ui:field'] || uiSchema['ui:field']; // vue 组件，或者已注册的组件名
 
   if (typeof field === 'function' || _typeof(field) === 'object' || typeof field === 'string') {
@@ -10844,11 +10887,11 @@ function getUiField(_ref3) {
   throw new Error("\u4E0D\u652F\u6301\u7684field\u7C7B\u578B ".concat(schema.type));
 } // 解析用户配置的 uiSchema options
 
-function getUserUiOptions(_ref4) {
-  var _ref4$schema = _ref4.schema,
-      schema = _ref4$schema === void 0 ? {} : _ref4$schema,
-      _ref4$uiSchema = _ref4.uiSchema,
-      uiSchema = _ref4$uiSchema === void 0 ? {} : _ref4$uiSchema;
+function getUserUiOptions(_ref3) {
+  var _ref3$schema = _ref3.schema,
+      schema = _ref3$schema === void 0 ? {} : _ref3$schema,
+      _ref3$uiSchema = _ref3.uiSchema,
+      uiSchema = _ref3$uiSchema === void 0 ? {} : _ref3$uiSchema;
   // 支持 uiSchema配置在 schema文件中
   return Object.assign.apply(Object, [{}].concat(_toConsumableArray([schema, uiSchema].map(function (itemSchema) {
     return Object.keys(itemSchema).filter(function (key) {
@@ -10865,11 +10908,11 @@ function getUserUiOptions(_ref4) {
   }))));
 } // 解析当前节点的ui options参数
 
-function getUiOptions(_ref5) {
-  var _ref5$schema = _ref5.schema,
-      schema = _ref5$schema === void 0 ? {} : _ref5$schema,
-      _ref5$uiSchema = _ref5.uiSchema,
-      uiSchema = _ref5$uiSchema === void 0 ? {} : _ref5$uiSchema;
+function getUiOptions(_ref4) {
+  var _ref4$schema = _ref4.schema,
+      schema = _ref4$schema === void 0 ? {} : _ref4$schema,
+      _ref4$uiSchema = _ref4.uiSchema,
+      uiSchema = _ref4$uiSchema === void 0 ? {} : _ref4$uiSchema;
   var spec = {};
 
   if (undefined !== schema.multipleOf) {
@@ -10901,57 +10944,69 @@ function getUiOptions(_ref5) {
   return _objectSpread2(_objectSpread2({
     title: schema.title,
     // 默认使用 schema 的配置
-    description: schema.description,
-    hidden: isHiddenWidget({
-      schema: schema,
-      uiSchema: uiSchema
-    })
+    description: schema.description
   }, spec), getUserUiOptions({
     schema: schema,
     uiSchema: uiSchema
   }));
 } // 获取当前节点的ui 配置 （options + widget）
+// 处理成 Widget 组件需要的格式
 
-function getWidgetConfig(_ref6) {
-  var _ref6$schema = _ref6.schema,
-      schema = _ref6$schema === void 0 ? {} : _ref6$schema,
-      _ref6$uiSchema = _ref6.uiSchema,
-      uiSchema = _ref6$uiSchema === void 0 ? {} : _ref6$uiSchema;
-  var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
-
-  var widgetConfig = _objectSpread2(_objectSpread2({}, getUiOptions({
+function getWidgetConfig(_ref5) {
+  var _ref5$schema = _ref5.schema,
+      schema = _ref5$schema === void 0 ? {} : _ref5$schema,
+      _ref5$uiSchema = _ref5.uiSchema,
+      uiSchema = _ref5$uiSchema === void 0 ? {} : _ref5$uiSchema;
+  var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var uiOptions = getUiOptions({
     schema: schema,
     uiSchema: uiSchema
-  })), getUiWidget({
-    schema: schema,
-    uiSchema: uiSchema
-  }, fallback));
+  }); // 没有配置 Widget ，各个Field组件根据类型判断
 
-  var widget = widgetConfig.widget,
-      title = widgetConfig.title,
-      labelWidth = widgetConfig.labelWidth,
-      description = widgetConfig.description,
-      attrs = widgetConfig.attrs,
-      emptyValue = widgetConfig.emptyValue,
-      uiProps = _objectWithoutProperties(widgetConfig, ["widget", "title", "labelWidth", "description", "attrs", "emptyValue"]);
+  if (!uiOptions.widget && fallback) {
+    Object.assign(uiOptions, fallback({
+      schema: schema,
+      uiSchema: uiSchema
+    }));
+  }
+
+  var widget = uiOptions.widget,
+      label = uiOptions.title,
+      labelWidth = uiOptions.labelWidth,
+      description = uiOptions.description,
+      widgetAttrs = uiOptions.attrs,
+      widgetClass = uiOptions.class,
+      widgetStyle = uiOptions.style,
+      fieldAttrs = uiOptions.fieldAttrs,
+      fieldStyle = uiOptions.fieldStyle,
+      fieldClass = uiOptions.fieldClass,
+      emptyValue = uiOptions.emptyValue,
+      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue"]);
 
   return {
     widget: widget,
-    label: title,
+    label: label,
     labelWidth: labelWidth,
     description: description,
-    attrs: attrs,
+    widgetAttrs: widgetAttrs,
+    widgetClass: widgetClass,
+    widgetStyle: widgetStyle,
+    fieldAttrs: fieldAttrs,
+    fieldStyle: fieldStyle,
+    fieldClass: fieldClass,
     emptyValue: emptyValue,
     uiProps: uiProps
   };
 } // 解析用户配置的 errorSchema options
 
-function getUserErrOptions(_ref7) {
-  var _ref7$schema = _ref7.schema,
-      schema = _ref7$schema === void 0 ? {} : _ref7$schema,
-      _ref7$errorSchema = _ref7.errorSchema,
-      errorSchema = _ref7$errorSchema === void 0 ? {} : _ref7$errorSchema;
-  return Object.assign.apply(Object, [{}].concat(_toConsumableArray([schema, errorSchema].map(function (itemSchema) {
+function getUserErrOptions(_ref6) {
+  var _ref6$schema = _ref6.schema,
+      schema = _ref6$schema === void 0 ? {} : _ref6$schema,
+      _ref6$uiSchema = _ref6.uiSchema,
+      uiSchema = _ref6$uiSchema === void 0 ? {} : _ref6$uiSchema,
+      _ref6$errorSchema = _ref6.errorSchema,
+      errorSchema = _ref6$errorSchema === void 0 ? {} : _ref6$errorSchema;
+  return Object.assign.apply(Object, [{}].concat(_toConsumableArray([schema, uiSchema, errorSchema].map(function (itemSchema) {
     return Object.keys(itemSchema).filter(function (key) {
       return key.indexOf('err:') === 0;
     }).reduce(function (options, key) {
@@ -11116,7 +11171,6 @@ function optionsList(schema, uiSchema) {
 
 var formUtils = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    getUiWidget: getUiWidget,
     isHiddenWidget: isHiddenWidget,
     getUiField: getUiField,
     getUserUiOptions: getUserUiOptions,
@@ -11316,8 +11370,8 @@ __vue_render__$4._withStripped = true;
   /* style */
   const __vue_inject_styles__$4 = function (inject) {
     if (!inject) return
-    inject("data-v-431cede5_0", { source: "\n.src-JsonSchemaForm-item-e4q8 {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["/Users/ryuushun/liujun/git/vue-element-schema-form/packages/lib/src/JsonSchemaForm/FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\n    <el-form-item :class=\"$style.item\">\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\n    </el-form-item>\n</template>\n\n<script>\n    export default {\n        name: 'FormFooter',\n        props: {\n            okBtn: {\n                type: String,\n                default: '保存'\n            },\n            cancelBtn: {\n                type: String,\n                default: '取消'\n            },\n        }\n    };\n</script>\n\n<style module>\n    .item {\n        text-align: right;\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\n        padding-top: 10px;\n    }\n</style>\n"]}, media: undefined });
-Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-e4q8"} });
+    inject("data-v-25c5ccb1_0", { source: "\n.src-JsonSchemaForm-item-1UFV {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["D:\\code\\git_my\\vue-json-schema-form\\packages\\lib\\src\\JsonSchemaForm\\FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\r\n    <el-form-item :class=\"$style.item\">\r\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\r\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\r\n    </el-form-item>\r\n</template>\r\n\r\n<script>\r\n    export default {\r\n        name: 'FormFooter',\r\n        props: {\r\n            okBtn: {\r\n                type: String,\r\n                default: '保存'\r\n            },\r\n            cancelBtn: {\r\n                type: String,\r\n                default: '取消'\r\n            },\r\n        }\r\n    };\r\n</script>\r\n\r\n<style module>\r\n    .item {\r\n        text-align: right;\r\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\r\n        padding-top: 10px;\r\n    }\r\n</style>\r\n"]}, media: undefined });
+Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-1UFV"} });
 
   };
   /* scoped */
