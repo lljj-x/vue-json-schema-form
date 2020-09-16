@@ -4,38 +4,12 @@ import retrieveSchema from './schema/retriev';
 
 import { isObject, getSchemaType } from './utils';
 
-// 解析当前节点 ui widget
-export function getUiWidget({
-    schema = {},
-    uiSchema = {}
-}, fallback) {
-    // uiSchema 配置了widget 直接使用
-    const uiWidget = uiSchema['ui:widget'] || schema['ui:widget'];
-
-    if (uiWidget) {
-        return {
-            widget: uiWidget
-        };
-    }
-
-    if (fallback) {
-        // 没配置widget 回退到具体field方案配置
-        return fallback({ schema, uiSchema });
-    }
-
-    return {};
-}
-
 // 是否为 hidden Widget
 export function isHiddenWidget({
     schema = {},
     uiSchema = {}
 }) {
-    const { widget } = getUiWidget({
-        schema,
-        uiSchema,
-    });
-
+    const widget = uiSchema['ui:widget'] || schema['ui:widget'];
     return widget === 'HiddenWidget' || widget === 'hidden';
 }
 
@@ -90,7 +64,6 @@ export function getUserUiOptions({
             }
             return { ...options, [key.substring(3)]: value };
         }, {})));
-
 }
 
 // 解析当前节点的ui options参数
@@ -126,10 +99,6 @@ export function getUiOptions({
     return {
         title: schema.title, // 默认使用 schema 的配置
         description: schema.description,
-        hidden: isHiddenWidget({
-            schema,
-            uiSchema
-        }),
 
         // 特殊处理部分
         ...spec,
@@ -147,17 +116,19 @@ export function getUiOptions({
 export function getWidgetConfig({
     schema = {},
     uiSchema = {}
-}, fallback = () => {}) {
-    const widgetConfig = {
-        ...getUiOptions({
+}, fallback = null) {
+    const uiOptions = getUiOptions({
+        schema,
+        uiSchema
+    });
+
+    // 没有配置 Widget ，各个Field组件根据类型判断
+    if (!uiOptions.widget && fallback) {
+        Object.assign(uiOptions, fallback({
             schema,
             uiSchema
-        }),
-        ...getUiWidget({
-            schema,
-            uiSchema
-        }, fallback)
-    };
+        }));
+    }
 
     const {
         widget,
@@ -172,7 +143,7 @@ export function getWidgetConfig({
         fieldClass,
         emptyValue,
         ...uiProps
-    } = widgetConfig;
+    } = uiOptions;
 
     return {
         widget,

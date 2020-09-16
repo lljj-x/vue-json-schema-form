@@ -104,7 +104,9 @@ export default {
             textarea: {
                 'ui:options': {
                     type: 'textarea',
-                    rows: 6,
+                    attrs: {
+                        rows: 6,
+                    },
                     autosize: {
                         minRows: 2,
                         maxRows: 4

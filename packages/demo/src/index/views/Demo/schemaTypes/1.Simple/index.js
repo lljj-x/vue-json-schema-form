@@ -73,7 +73,9 @@ export default {
             'ui:options': {
                 placeholder: '请输入你的签名',
                 type: 'textarea',
-                rows: 6
+                attrs: {
+                    rows: 6
+                }
             }
         }
     },

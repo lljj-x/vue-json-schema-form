@@ -139,7 +139,6 @@ uiSchema = {
 
             // 其它所有参数会通过 props 传递给 widget 组件
             type: 'textarea',
-            rows: '6',
             placeholder: '请输入你的内容'
     }
 }
@@ -196,7 +195,8 @@ export default {
                     'ui:emptyValue': '',
                     'ui:options': {
                         attrs: {
-                            'autofocus': true
+                            'autofocus': true,
+                            rows: '6'
                         },
                         style: {
                             boxShadow: '0 0 6px 2px #2b9939'
@@ -205,7 +205,6 @@ export default {
                             className_hei: true
                         },
                         type: 'textarea',
-                        rows: '6',
                         placeholder: '请输入你的内容'
                     }
                 },

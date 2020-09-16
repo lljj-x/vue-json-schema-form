@@ -14,21 +14,23 @@ import Widget from '../../../fieldComponents/Widget';
 
 export default {
     name: 'ArrayFieldMultiSelect',
+    functional: true,
     props: {
-        ...vueProps,
-        itemsFormData: {
-            type: Array,
-            default: () => []
-        }
+        ...vueProps
     },
-    render(h) {
+    render(h, context) {
+        const {
+            schema, rootSchema, uiSchema
+        } = context.props;
+
         // 这里需要索引当前节点，通过到schemaField组件的会统一处理
-        const itemsSchema = retrieveSchema(this.schema.items, this.rootSchema, this.itemsFormData);
-        const enumOptions = optionsList(itemsSchema, this.uiSchema);
+        const itemsSchema = retrieveSchema(schema.items, rootSchema);
+
+        const enumOptions = optionsList(itemsSchema, uiSchema);
 
         const widgetConfig = getWidgetConfig({
-            schema: this.schema,
-            uiSchema: this.uiSchema
+            schema,
+            uiSchema
         }, () => ({
             widget: WIDGET_MAP.common.checkboxGroup
         }));
@@ -41,8 +43,9 @@ export default {
         return h(
             Widget,
             {
+                ...context.data,
                 props: {
-                    ...this.$props,
+                    ...context.props,
                     ...widgetConfig
                 }
             }

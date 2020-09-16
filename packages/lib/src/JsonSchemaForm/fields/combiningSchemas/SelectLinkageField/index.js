@@ -103,8 +103,7 @@ export default {
             if (guessType(curFormData) === 'object') {
                 const oldSelectSchema = retrieveSchema(
                     this.selectList[oldVal],
-                    this.rootSchema,
-                    curFormData
+                    this.rootSchema
                 );
                 if (oldSelectSchema.type === 'object' || oldSelectSchema.properties) {
                     // 移除旧schema添加的属性

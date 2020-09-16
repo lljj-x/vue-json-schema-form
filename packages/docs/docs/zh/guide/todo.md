@@ -19,9 +19,9 @@
 - [x] ui:widget 支持在array级别传入
 - [x] customRule 参数 支持
 - [x] 逐步开源发布
+- [x 优化源码 不需要this的组件调整为 functional
 
 - [ ] 添加代码测试
 - [ ] Ui配置，支持函数表达式配置，hidden title description placeholder等
-- [ ] 优化源码 不需要this的组件调整为 functional
 - [ ] 对照react schema from适配更多规则支持
 - [ ] 解耦elementUi 重新开发form 和formItem组件，通过配置化实现适配elementUi iView 等常用ui组件

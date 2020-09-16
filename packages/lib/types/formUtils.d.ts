@@ -5,14 +5,11 @@ interface Options {
 
 declare namespace formUtils {
 
-    /** 解析当前节点 ui widget */
-    function getUiWidget(schemaOption: Options): object;
-
     /** 解析当前节点 ui field */
     function getUiField(schemaOption: Options): object | null;
 
     /** 解析用户配置的 uiSchema options */
-    function getUserUiOptions(uiSchema: object): object;
+    function getUserUiOptions(schemaOption: Options): object;
 
      /** 解析当前节点的ui options参数 */
     function getUiOptions(schemaOption: Options): object;
@@ -21,7 +18,7 @@ declare namespace formUtils {
     function getWidgetConfig(schemaOption: Options): object;
 
      /** 获取当前节点的ui 配置 （options + widget） */
-    function getUserErrOptions(errorSchema: object): object;
+    function getUserErrOptions(schemaOption: Options): object;
 
      /** ui:order object-> properties 排序 */
     function orderProperties(properties: object, order): object;

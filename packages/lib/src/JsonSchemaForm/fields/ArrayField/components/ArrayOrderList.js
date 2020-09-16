@@ -62,8 +62,6 @@ export default {
             return true;
         }
     },
-    methods: {
-    },
     render(h) {
         // 没有数据，且不能添加不渲染该组件
         if (this.vNodeList <= 0 && !this.addable) return null;

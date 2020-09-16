@@ -10,10 +10,9 @@ import WIDGET_MAP from '../../config/WIDGET_MAP';
 export default {
     name: 'StringField',
     props: vueProps,
-    render(h) {
-        const {
-            schema, uiSchema
-        } = this.$props;
+    functional: true,
+    render(h, context) {
+        const { schema, uiSchema } = context.props;
 
         // 可能是枚举数据使用select组件，否则使用 input
         const enumOptions = isSelect(schema) && optionsList(schema, uiSchema);
@@ -40,8 +39,9 @@ export default {
         return h(
             Widget,
             {
+                ...context.data,
                 props: {
-                    ...this.$props,
+                    ...context.props,
                     ...widgetConfig
                 }
             }

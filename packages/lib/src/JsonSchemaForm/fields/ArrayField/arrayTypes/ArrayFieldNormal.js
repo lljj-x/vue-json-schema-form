@@ -13,6 +13,7 @@ import vueProps from '../../props';
 
 export default {
     name: 'ArrayFieldNormal',
+    functional: true,
     props: {
         ...vueProps,
         itemsFormData: {
@@ -20,10 +21,10 @@ export default {
             // default: () => []
         }
     },
-    render(h) {
+    render(h, context) {
         const {
-            schema, uiSchema, errorSchema
-        } = this.$props;
+            schema, uiSchema, curNodePath, itemsFormData, errorSchema
+        } = context.props;
 
         const {
             title,
@@ -41,19 +42,19 @@ export default {
             uiSchema
         });
 
-        const arrayItemsVNodeList = this.itemsFormData.map((item, index) => ({
+        const arrayItemsVNodeList = itemsFormData.map((item, index) => ({
             key: item.key,
             vNode: h(
                 SchemaField,
                 {
                     key: item.key,
                     props: {
-                        ...this.$props,
+                        ...context.props,
                         schema: schema.items,
                         required: !([].concat(schema.items.type).includes('null')),
                         uiSchema: uiSchema.items,
                         errorSchema: errorSchema.items,
-                        curNodePath: computedCurPath(this.curNodePath, index)
+                        curNodePath: computedCurPath(curNodePath, index)
                     }
                 }
             )
@@ -68,7 +69,10 @@ export default {
                     showTitle,
                     showDescription
                 },
-                class: fieldClass,
+                class: {
+                    ...context.data.class,
+                    ...fieldClass
+                },
                 attrs: fieldAttrs,
                 style: fieldStyle,
             },
@@ -84,7 +88,7 @@ export default {
                             maxItems: schema.maxItems,
                             minItems: schema.minItems,
                         },
-                        on: this.$listeners
+                        on: context.listeners
                     }
                 )
             ]

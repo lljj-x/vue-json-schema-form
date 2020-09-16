@@ -11,15 +11,14 @@ import vueProps from '../props';
 export default {
     name: 'BooleanField',
     props: vueProps,
-    render(h) {
-        const {
-            schema, uiSchema
-        } = this.$props;
+    functional: true,
+    render(h, context) {
+        const { schema, uiSchema } = context.props;
 
         // Bool 会默认传入枚举类型选项 true false
         const enumOptions = optionsList({
             enum: schema.enum || [true, false]
-        }, this.uiSchema);
+        }, uiSchema);
 
         const widgetConfig = getWidgetConfig({
             schema,
@@ -30,12 +29,12 @@ export default {
 
         widgetConfig.uiProps.enumOptions = enumOptions;
 
-        // debugger;
         return h(
             Widget,
             {
+                ...context.data,
                 props: {
-                    ...this.$props,
+                    ...context.props,
                     ...widgetConfig
                 }
             }

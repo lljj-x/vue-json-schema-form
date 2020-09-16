@@ -253,3 +253,18 @@
 ```
 :::
 
+## 其它配置
+* 支持通过配置 `uiSchema` `ui:addable`、`ui:sortable`、`ui:removable` 配置数组是否可添加/排序/移除
+* 参见 [uiSchema 配置](https://form.lljj.me/#/demo?type=Arrays)
+
+比如：
+```js
+// 支持 * 匹配其它值
+uiSchema = {
+    'ui:options': {
+        addable: false,
+        sortable: false,
+        removable: false
+    }
+}
+```

@@ -99,7 +99,7 @@ export default {
 * 默认值：`{}`
 
 >* `0.0.16` 之后版本支持配置 `uiSchema` 在 `schema` 参数中 [点击查看](#uischema配置在schema中)
->* `0.0.17` 之后版本支持配置 [errorSchema](#errorschema) 在 [uiSchema](#uischema) 中。（`uiSchema` 和 `errorSchema` 格式完全相同，且同属ui显示，一份可方便配置）
+>* `0.1.0` 之后版本支持配置 [errorSchema](#errorschema) 在 [uiSchema](#uischema) 中。（`uiSchema` 和 `errorSchema` 格式完全相同，且同属ui显示，一份可方便配置）
 
 用于配置表单展示样式，普通json数据，非 `JSON Schema` 规范
 
@@ -114,7 +114,7 @@ export default {
 * `ui:widget` `ui:field` `ui:fieldProps` 不支持配置在 `ui:options` 中
 :::
 
-参数格式如下：
+通用参数格式如下：
 ```js
 uiSchema = {
     'ui:title': '覆盖schema title', // 覆盖schema title
@@ -128,21 +128,35 @@ uiSchema = {
             showTitle: '是否显示标题', // 只对 type为`object`、`array` 类型有效
             showDescription: '是否显示描述信息', // 只对type为 `object`、`array` 类型有效
             attrs: {
-                // 通过 vue render函数 attrs 传递给 widget 组件
+                // 通过 vue render函数 attrs 传递给 Widget 组件，只能配置在叶子节点
                 autofocus: true
             },
             style: {
-                // 通过 vue render函数 style 传递给 widget 组件
+                // 通过 vue render函数 style 传递给 Widget 组件，只能配置在叶子节点
                 boxShadow: '0 0 6px 2px #2b9939'
             },
             class: {
-                // 通过 vue render函数 class 传递给 widget 组件
+                // 0.1.0 版本添加
+                // 通过 vue render函数 class 传递给 Widget 组件，只能配置在叶子节点
                 className_hei: true
             },
+            fieldStyle: {
+                // 0.1.0 版本添加
+                // 通过 vue render函数 style 传递给 Field 组件，支持所有field节点
+                background: 'red'
+            },
+            fieldClass: {
+                // 0.1.0 版本添加
+                // 通过 vue render函数 class 传递给 Field 组件，支持所有field节点
+                fieldClass: true
+            },
+            fieldAttrs: {
+                // 通过 vue render函数 attrs 传递给 Field 组件，支持所有field节点
+                'attr-x': 'xxx'
+            },
 
-            // 其它所有参数会通过 props 传递给 widget 组件
+            // 其它所有参数会通过 props 传递给 Widget 组件
             type: 'textarea',
-            rows: '6',
             placeholder: '请输入你的内容'
     }
 }
@@ -343,7 +357,7 @@ uiSchema = {
 * 默认值：`{}`
 
 >* `0.0.16` 之后版本支持配置 `errorSchema` 在 `schema` 参数中 [点击查看](#errorschema配置在schema中)
->* `0.0.17` 之后版本支持配置 [errorSchema](#errorschema) 在 [uiSchema](#uischema) 中。（`uiSchema` 和 `errorSchema` 格式完全相同，且同属ui显示，一份可方便配置）
+>* `0.1.0` 之后版本支持配置 [errorSchema](#errorschema) 在 [uiSchema](#uischema) 中。（`uiSchema` 和 `errorSchema` 格式完全相同，且同属ui显示，一份可方便配置）
 
 用于配置表单校验错误文案信息，普通json数据，非JSON Schema规范
 

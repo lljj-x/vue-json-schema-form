@@ -24,6 +24,7 @@ export default {
         return h(
             Widget,
             {
+                ...context.data,
                 props: {
                     ...context.props,
                     ...widgetConfig

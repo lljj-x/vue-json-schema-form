@@ -9,13 +9,8 @@ import StringField from '../StringField';
 export default {
     name: 'IntegerField',
     props: vueProps,
-    render(h) {
-        return h(
-            StringField,
-            {
-                props: this.$props,
-                on: this.$listeners
-            }
-        );
+    functional: true,
+    render(h, context) {
+        return h(StringField, context.data);
     }
 };
