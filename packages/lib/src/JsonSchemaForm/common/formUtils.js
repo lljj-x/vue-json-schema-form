@@ -143,6 +143,7 @@ export function getUiOptions({
 }
 
 // 获取当前节点的ui 配置 （options + widget）
+// 处理成 Widget 组件需要的格式
 export function getWidgetConfig({
     schema = {},
     uiSchema = {}
@@ -164,8 +165,11 @@ export function getWidgetConfig({
         labelWidth,
         description,
         attrs: widgetAttrs,
-        class: widgetClassName,
+        class: widgetClass,
         style: widgetStyle,
+        fieldAttrs,
+        fieldStyle,
+        fieldClass,
         emptyValue,
         ...uiProps
     } = widgetConfig;
@@ -176,8 +180,11 @@ export function getWidgetConfig({
         labelWidth,
         description,
         widgetAttrs,
-        widgetClassName,
+        widgetClass,
         widgetStyle,
+        fieldAttrs,
+        fieldStyle,
+        fieldClass,
         emptyValue,
         uiProps
     };

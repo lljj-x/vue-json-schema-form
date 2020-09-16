@@ -61,7 +61,16 @@ export default {
         } = this.$props;
 
         const {
-            title, description, addable, sortable, removable, showTitle, showDescription
+            title,
+            description,
+            addable,
+            sortable,
+            removable,
+            showTitle,
+            showDescription,
+            fieldClass,
+            fieldAttrs,
+            fieldStyle,
         } = getUiOptions({
             schema,
             uiSchema
@@ -116,7 +125,10 @@ export default {
                     description,
                     showTitle,
                     showDescription
-                }
+                },
+                class: fieldClass,
+                attrs: fieldAttrs,
+                style: fieldStyle,
             },
             [
                 // 先显示Tuple固定项

@@ -35,7 +35,7 @@ export default {
         } = props;
 
         const {
-            title, description, showTitle, showDescription, order
+            title, description, showTitle, showDescription, order, fieldClass, fieldAttrs, fieldStyle
         } = getUiOptions({
             schema,
             uiSchema
@@ -72,6 +72,9 @@ export default {
                     showTitle,
                     showDescription
                 },
+                class: fieldClass,
+                attrs: fieldAttrs,
+                style: fieldStyle
             },
             [
                 h(

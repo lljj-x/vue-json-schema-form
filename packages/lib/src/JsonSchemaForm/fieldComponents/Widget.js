@@ -84,18 +84,33 @@ export default {
             type: String,
             default: ''
         },
-        // attrs
+        // Widget attrs
         widgetAttrs: {
             type: Object,
             default: () => ({})
         },
-        // className
-        widgetClassName: {
+        // Widget className
+        widgetClass: {
             type: Object,
             default: () => ({})
         },
-        // style
+        // Widget style
         widgetStyle: {
+            type: Object,
+            default: () => ({})
+        },
+        // Field attrs
+        fieldAttrs: {
+            type: Object,
+            default: () => ({})
+        },
+        // Field className
+        fieldClass: {
+            type: Object,
+            default: () => ({})
+        },
+        // Field style
+        fieldStyle: {
             type: Object,
             default: () => ({})
         },
@@ -142,8 +157,11 @@ export default {
             'el-form-item',
             {
                 class: {
+                    ...self.fieldClass,
                     'is-required': self.required
                 },
+                style: self.fieldStyle,
+                attrs: self.fieldAttrs,
                 props: {
                     label: self.label,
                     labelWidth: self.labelWidth,
@@ -220,7 +238,7 @@ export default {
                             value: this.value, // v-model
                         },
                         style: self.widgetStyle,
-                        class: self.widgetClassName,
+                        class: self.widgetClass,
                         attrs: {
                             placeholder: self.uiProps.placeholder, // 兼容placeholder配置在 外层或者attr内
                             ...self.widgetAttrs
