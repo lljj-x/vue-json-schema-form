@@ -1,6 +1,6 @@
 {
     "name": "demo",
-    "version": "0.0.16",
+    "version": "0.1.0",
     "private": true,
     "license": "Apache-2.0",
     "scripts": {
@@ -10,7 +10,7 @@
     },
     "dependencies": {
         "@lljj/polyfill": "^0.1.0",
-        "@lljj/vue-json-schema-form": "0.0.16",
+        "@lljj/vue-json-schema-form": "0.1.0",
         "ajv-i18n": "^3.5.0",
         "vue": "^2.6.10",
         "vuedraggable": "2.23.2"
