@@ -7,7 +7,7 @@ import vueProps from '../props';
 import getDefaultFormState from '../../common/schema/getDefaultFormState';
 
 import {
-    allowAdditionalItems, getWidgetConfig, isFixedItems, isMultiSelect
+    allowAdditionalItems, isFixedItems, isMultiSelect
 } from '../../common/formUtils';
 import { getPathVal, setPathVal } from '../../common/vueUtils';
 import { genId, lowerCase } from '../../common/utils';
@@ -19,7 +19,7 @@ import * as arrayMethods from '../../common/arrayUtils';
 import ArrayFieldNormal from './arrayTypes/ArrayFieldNormal';
 import ArrayFieldMultiSelect from './arrayTypes/ArrayFieldMultiSelect';
 import ArrayFieldTuple from './arrayTypes/ArrayFieldTuple';
-import WIDGET_MAP from '../../config/WIDGET_MAP';
+import ArrayFieldDateRange from './arrayTypes/ArrayFieldDateRange';
 
 export default {
     name: 'ArrayField',
@@ -151,24 +151,13 @@ export default {
         }
 
         // 特殊处理date datetime format
-        if (schema.format && WIDGET_MAP.formats[schema.format]) {
-            const widgetConfig = getWidgetConfig({
-                schema,
-                uiSchema: {
-                    'ui:widget': WIDGET_MAP.formats[schema.format],
-                    ...uiSchema
+        if (schema.format) {
+            return h(ArrayFieldDateRange, {
+                props: this.$props,
+                class: {
+                    [lowerCase(ArrayFieldDateRange.name)]: true
                 }
             });
-
-            return h(
-                Widget,
-                {
-                    props: {
-                        ...this.$props,
-                        ...widgetConfig
-                    }
-                }
-            );
         }
 
         // https://json-schema.org/understanding-json-schema/reference/array.html#list-validation
