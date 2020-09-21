@@ -6,6 +6,8 @@ import componentWithDialog from './injectVue/component-with-dialog';
 import JsonPerttyPrint from './injectVue/JsonPerttyPrint.vue';
 
 const LinkImgField = () => import('./injectVue/field/LinkImgField.vue');
+const DistpickerField = () => import('./injectVue/field/DistpickerField.vue');
+
 
 function showJson({ componentProps }) {
     const instance = componentWithDialog({
@@ -24,6 +26,7 @@ export default ({
   Vue.use(ElementUI);
   Vue.component('VueForm', VueForm);
   Vue.component('LinkImgField', LinkImgField);
+  Vue.component('DistpickerField', DistpickerField);
 
   Vue.prototype.$componentWithDialog = componentWithDialog;
   Vue.prototype.$showJson = showJson;

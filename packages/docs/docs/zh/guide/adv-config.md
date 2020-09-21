@@ -1,13 +1,19 @@
+---
+sidebarDepth: 2
+---
+
 # 高级配置
 
 ## 数据联动
-* 数据联动的实现需要遵循 `JSON Schema` [anyOf](https://form.lljj.me/#/demo?type=AnyOf) [oneOf](https://form.lljj.me/#/demo?type=OneOf) 格式来实现
+* 数据联动的实现需要 `JSON Schema` [anyOf](https://form.lljj.me/#/demo?type=AnyOf) [oneOf](https://form.lljj.me/#/demo?type=OneOf) 格式来实现
 * 详细 AnyOf、oneOf 配置请 [点击查看](/zh/rules/combining.html)
 
-如下演示：
 :::tip
-点击 `保存` 按钮查看 `formData` 数据
+如果觉得 anyOf 配置麻烦也可以使用 [ui:field 使用已有联级组件](/zh/guide/adv-config.html#自定义field-联级选择)，或者配置 [uiSchema fieldStyle](/zh/guide/basic-config.html#uischema) 通过样式隐藏来实现。
 :::
+
+anyOf联动如下演示：（点击 `保存` 按钮查看 `formData` 数据）
+
 ::: demo
 ```html
 <template>
@@ -245,13 +251,13 @@ export default {
 
 
 ## 空数据默认值
-默认在用户输入时如果清空了表单的数据为空时，即空字符串 `''`，会默认设置值为 `undefined`，这样是为了保证和JSON Schema 规范保持一致。
+默认在用户输入时如果清空了表单的数据，即空字符串 `''`，会默认设置值为 `undefined`，这样是为了保证和JSON Schema 规范保持一致。
 
 可以通过配置 `uiSchema` `ui:emptyValue` 的值来重置空数据默认值。
 
 如下： 试试清空 `firstName` `lastName` 输入框的值
 
->* 提示：`JSON.stringify` 转字符串时默认会丢弃 `undefined` 的值，所以清空时没有`firstName`
+>* 提示：`JSON.stringify` 转字符串时会丢弃 `undefined` 的值，所以如下 Demo 清空时没有`firstName`
 
 :::demo ui:emptyValue 设置和不设置的区别
 ```html
@@ -300,7 +306,7 @@ export default {
 ```
 :::
 
-* 参考
+* 关联
 1. [JSON Schema object required](/zh/guide/faq.html#json-schema-object-required)
 1. [uiSchema 配置](/zh/guide/basic-config.html#uischema)
 
@@ -308,14 +314,19 @@ export default {
 ## 自定义样式
 
 ### 重置form表单默认样式
-针对整个form默认样式，审查元素通过css覆盖即可，根css类名 `genFromComponent`
+针对整个form默认样式，审查元素查看class名，通过css覆盖即可，根css类名 `genFromComponent`
 
 ### 重置表单widget组件样式
-如果是对 widget 组件的样式设置，可以通过 `uiSchema` 配置 `style`、`class` 来重置你的样式
+如果是对 widget 组件的样式设置，可以通过 `uiSchema` 配置 `style`、`class`、`attrs` 来重置你的样式
 
-查看详细 [uiSchema重置表单widget样式](/zh/guide/basic-config.html#如：重置表单widget样式)
+查看详细 [uiSchema重置表单widget样式](/zh/guide/basic-config.html#uischema配置演示-重置表单widget样式)
 
-### 根据当前表单渲染的节点类名重置样式
+### 重置表单field组件样式
+如果是对 field 组件的样式设置，可以通过 `uiSchema` 配置 `fieldStyle`、`fieldClass`、`fieldAttrs` 来重置每个节点
+
+> 使用形式如上...
+
+### 节点类名重置样式
 在渲染form表单时会根据schema的数据结构对每个 `field` 渲染节点生成唯一的 `path` 路径，并标记在class属性中，可通过该class选择器来重置某个局部样式。
 
 如：
@@ -328,14 +339,11 @@ export default {
 ## 自定义Widget
 自定义Widget通过配置 `uiSchema` `ui:widget`字段
 
-* 类型：`String` | `Object` | `Function`
-
-可直接传入Vue组件，或者已注的组件名，或者resolve 了Vue组件的 async 函数，参加 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0)，通过调用 `$createElement` 创建 `Vnode` 。
-
+* 类型：`String` | `Object` | `Function`  (参见 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0) 第一个参数)
 * 使用场景：需要自定义输入组件，比如结合业务的`图片上传` `商品选择` 等等
 
-:::tip
-* 自定义的 `Widget` 组件必须接受一个双向绑定的值
+::: warning
+* 自定义的 `Widget` 组件必须接受一个双向绑定 `v-model` 的值
 :::
 
 :::demo async function 重置，在实际项目中，实际只需要 `() => import('./xxx.vue')`;
@@ -410,20 +418,24 @@ export default {
 
 
 ## 自定义Field
-自定义Field通过配置 `uiSchema` `ui:field` 字段
+自定义field通过配置 `uiSchema` `ui:field` 字段，可以配置在任意需要自定义field的schema节点，参数格式和 [自定义Widget](#自定义widget) 一致
 
-* 类型：String | Object | Function
+支持配置 [ui:fieldProps](/zh/guide/basic-config.html#uischema)，传给自定义field组件，需要在field组件props配置申明该参数
 
-可直接传入Vue组件，或者已注的组件名，或者resolve 了Vue组件的 async 函数，参加 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0)，通过调用 `$createElement` 创建 `Vnode` 。
-> 参数格式和 [自定义Widget](#自定义widget) 一致
+* 类型：`String` | `Object` | `Function` (参见 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0) 第一个参数)
+* 使用场景：schema配置无法满足，或者想嵌入现用的组件
 
-* 使用场景：需要完全自定义某个节点的场景，相对比较复杂
+> 自定义Field 会直接接管后续节点的渲染，意味着自定义节点后渲染逻辑都可以根据使用者需要的场景自行处理，field组件内部一般会包含 `FormItem`，`校验规则`，`输入组件`
 
-1. 自定义Filed会直接接管后续节点的渲染，意味着自定义节点后渲染逻辑都需要使用者自行处理，推荐在渲染子节点中继续调用 `Vjsf`的`SchemaField`组件，再交给`Vjsf`去继续渲染。
-1. 组件内部一般会包含 `FormItem`，`校验规则`，`Widget` 输入组件
+::: warning
+使用者需要自行将值同步回 `formData`
 
-`Field组件` 会接受以下参数：
-:::demo showCode:点击显示代码查看Props所有参数
+可以直接修改 `rootFormData` 的属性值或者通过 `vueUtils` 提供的方法设置，可以参见后面自定义演示
+:::
+
+`Field组件` 会接受以下 `props`：
+
+:::demo showCode: Props（点击下拉展开）
  ```js
 {
     // 当前节点schema
@@ -477,14 +489,20 @@ export default {
 ```
 :::
 
-可以直接通过 `vjsf` 导入props配置，已经包含了上面的参数
+可以直接通过 `@lljj/vue-json-schema-form` 导入props配置，已经包含了上面的参数
 ```js
 import { fieldProps } from  '@lljj/vue-json-schema-form';
 ```
 
-* 演示：对图片和链接配置需要定义自己的ui效果
+### 自定义Field - 图片链接配置
 
-:::demo ui:emptyValue 设置和不设置的区别
+* `ui:field` 组件内继续使用schema的配置来做 `视图的展示` 和 `数据校验`，并且使用内置方法同步 `formData` 的值
+* [查看field组件源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/docs/docs/.vuepress/injectVue/field/LinkImgField.vue)
+
+>* 这里的图片选择只是随机选择，实际的项目场景中可能是基于相册的选择或上传等...
+>* 如下Demo省去了导入组件并注册的代码
+
+:::demo
 ```html
 <template>
     <vue-form
@@ -538,7 +556,9 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
                 uiSchema: {
                     imgItem1: {
                         'ui:title': '图片1（配置ui:field）',
-                        'ui:field': 'LinkImgField',
+
+                        // LinkImgField 源码 https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/docs/docs/.vuepress/injectVue/field/LinkImgField.vue
+                        'ui:field': 'LinkImgField'
                     },
                     imgItem2: {
                         'ui:title': '图片2（不配置ui:field）',
@@ -550,191 +570,105 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
 </script>
 :::
 
->* 当前的演示demo不支持import语法，所以这里不能直接演示，详细的代码可以 [点击这里查看](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/demo/src/vue-editor/views/editor/fieldComponents/linkImgField)
->* 更多使用 `ui:field` 的demo可以 [查看这里](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/demo/src/vue-editor/views/editor/fieldComponents)
+### 自定义Field - 联级选择
 
-`LinkImgField` 代码如下：
+* `ui:field` 使用现有组件嵌入，不使用schema配置和方法
+* [查看field组件源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/docs/docs/.vuepress/injectVue/field/DistpickerField.vue)
 
+>* 使用省市区联动组件
+>* 配置了 `ui:fieldProps` 透传参数给组件 placeholders 参数
+>* 如下Demo省去了导入组件并注册的代码
+
+:::demo
 ```html
 <template>
-    <div :class="$style.box">
-        <el-form-item
-            :label="selectProps.title"
-            :prop="curNodePath"
-            :class="$style.elFormItem"
-            :rules="[
-                {
-                    validator(rule, value, callback) {
-                        const validProperties = ['imgUrl', 'imgLink'];
-
-                        // 针对叶子节点做校验
-                        let errors = [];
-                        const isValidate = validProperties.every(item => {
-                            errors = schemaValidate.validateFormDataAndTransformMsg({
-                                formData: value[item],
-                                schema: $props.schema.properties[item],
-                                customFormats: $props.customFormats,
-                                errorSchema: $props.errorSchema[item],
-                                required: $props.schema.required.includes(item),
-                                propPath: $props.curNodePath
-                            });
-                            return errors.length <= 0;
-                        });
-
-                        if (isValidate) return callback();
-
-                        return callback(errors[0].message);
-                    },
-                }
-            ]"
-            :required="elItemRequired"
-        >
-            <div v-if="selectProps.description" :class="$style.description" v-html="selectProps.description"></div>
-            <div :class="$style.formItem">
-                <div :class="$style.uploadBox" @click="selectImg">
-                    <img v-if="imgUrl" :src="imgUrl" alt="" style="max-width: 100%;max-height: 100%;">
-                    <i v-else class="el-icon-plus"></i>
-                </div>
-                <el-input
-                    v-model="imgLink"
-                    :class="$style.input"
-                    :placeholder="placeholder"
-                    size="medium"
-                ></el-input>
-            </div>
-        </el-form-item>
-    </div>
+    <vue-form
+        v-model="formData"
+        :schema="schema"
+        :ui-schema="uiSchema"
+    >
+        <div slot-scope="{ formData, formRefFn }">
+            <pre style="background-color: #eee;">{{ JSON.stringify(formData, null, 4) }}</pre>
+        </div>
+    </vue-form>
 </template>
-
 <script>
-    // 覆盖默认field 做个性商品选择和链接输入
-    import {
-        fieldProps,
-        vueUtils,
-        formUtils,
-        schemaValidate
-    } from '@lljj/vue-json-schema-form';
-
-    export default {
-        name: 'LinkImgField',
-        props: fieldProps,
+   export default {
         data() {
             return {
-                schemaValidate,
-                vueUtils
-            };
-        },
-        computed: {
-            elItemRequired() {
-                // 配置了 required 的属性提示小红点
-                return this.schema.required.length > 0;
-            },
-            placeholder() {
-                const imgLinkOptions = formUtils.getUiOptions({
-                    schema: this.schema.properties.imgLink,
-                    uiSchema: this.uiSchema.imgLink || {}
-                });
-                return imgLinkOptions.placeholder || '请输入合法的链接';
-            },
-            selectProps() {
-                return formUtils.getUiOptions({
-                    schema: this.schema,
-                    uiSchema: this.uiSchema
-                });
-            },
-            curValue() {
-                return vueUtils.getPathVal(this.rootFormData, this.curNodePath);
-            },
-            imgUrl: {
-                get() {
-                    return this.curValue.imgUrl;
+                formData: {},
+                schema: {
+                    id: 'DistpickerTest',
+                    title: '地址填写',
+                    type: 'object',
+                    definitions: {
+                        item: {
+                            title: '名称/编码',
+                            type: 'string'
+                        },
+                        address: {
+                            default: {
+                                province: 440000,
+                                city: "广州市",
+                                area: "海珠区"
+                            },
+                            type: 'object',
+                            properties: {
+                                province: {
+                                    title: '省份',
+                                    $ref: '#/definitions/item'
+                                },
+                                city: {
+                                    title: '城市',
+                                    $ref: '#/definitions/item'
+                                },
+                                area: {
+                                    title: '区县',
+                                    $ref: '#/definitions/item'
+                                }
+                            }
+                        }
+                    },
+                    required: ['name'],
+                    properties: {
+                        name: {
+                            title: '收件人',
+                            type: 'string',
+                            default: 'HH'
+                        },
+                        address1: {
+                            $ref: '#/definitions/address'
+                        },
+                        address3: {
+                            $ref: '#/definitions/address'
+                        }
+                    }
                 },
-                set(value) {
-                    vueUtils.setPathVal(this.rootFormData, vueUtils.computedCurPath(this.curNodePath, 'imgUrl'), value);
-                }
-            },
-            imgLink: {
-                get() {
-                    return this.curValue.imgLink;
-                },
-                set(value) {
-                    vueUtils.setPathVal(this.rootFormData, vueUtils.computedCurPath(this.curNodePath, 'imgLink'), value);
-                }
-            }
-        },
-        methods: {
-            selectImg() {
-                const imgs = [
-                    'https://gw.alicdn.com/tfs/TB1DKP9zCtYBeNjSspkXXbU8VXa-1920-450.jpg_Q90.jpg',
-                    'https://aecpm.alicdn.com/simba/img/TB1W4nPJFXXXXbSXpXXSutbFXXX.jpg',
-                    'https://aecpm.alicdn.com/simba/img/TB1_JXrLVXXXXbZXVXXSutbFXXX.jpg',
-                    'https://img.alicdn.com/tfs/TB1FrlZPAzoK1RjSZFlXXai4VXa-1000-320.jpg',
-                    'https://img.alicdn.com/tfs/TB1n5sCMYvpK1RjSZPiXXbmwXXa-900-320.jpg',
-                    'https://img.alicdn.com/tps/i4/TB1ecCsOCzqK1RjSZPxSuw4tVXa.jpg',
-                    'https://img.alicdn.com/tps/i4/TB1tVhuNhnaK1RjSZFBSuwW7VXa.jpg',
-                    'https://img.alicdn.com/tfs/TB1IyonQVXXXXXCXXXXXXXXXXXX-750-200.jpg',
-                    'https://gw.alicdn.com/tfs/TB1hJ2KX6ihSKJjy0FlXXadEXXa-254-318.png',
-                    'https://gw.alicdn.com/tfs/TB1UE5RaCWD3KVjSZSgXXcCxVXa-720-400.jpg',
-                    'https://gw.alicdn.com/tfs/TB11iC2uAzoK1RjSZFlXXai4VXa-254-318.jpg',
-                    'https://gw.alicdn.com/tfs/TB1xo26qeH2gK0jSZFEXXcqMpXa-330-316.jpg',
-                    'https://img.alicdn.com/bao/uploaded/i3/2781891994/O1CN01usHqqQ1QbILCMqrJm_!!2781891994.jpg',
-                    'https://img.alicdn.com/bao/uploaded/i1/TB1M31ANFXXXXaOXpXXwu0bFXXX.png',
-                    'https://img.alicdn.com/imgextra/i2/143584903/O1CN01qdnUD81m5cPPJlXog_!!143584903.jpg'
-                ];
-                this.$message.success('选择图片成功，随机一个图片');
-                this.imgUrl = imgs[Math.floor(Math.random() * imgs.length)];
-            }
-        }
-    };
-</script>
-
-<style module lang="stylus">
-    .box {
-        :global {
-            .el-form-item__label {
-                font-weight: bold;
-            }
-            .el-form-item.is-error {
-                :local {
-                    .uploadBox {
-                        color: #F56C6C;
+                uiSchema: {
+                    name: {
+                        'ui:options': {
+                            placeholder: '请输入收件人'
+                        },
+                        'err:options': {
+                            required: '请输入收件人'
+                        }
+                    },
+                    address1: {
+                        'ui:field': 'DistpickerField',
+                        'ui:fieldProps': {
+                            placeholders: {
+                                  province: '------- 省 --------',
+                                  city: '--- 市 ---',
+                                  area: '--- 区 ---',
+                              }
+                        },
+                    },
+                    address3: {
+                        'ui:title': '不使用ui:field',
                     }
                 }
             }
         }
-    }
-    :global {
-        .arrayOrderList_item {
-            :local {
-                .elFormItem {
-                    margin-bottom: 0;
-                }
-            }
-        }
-    }
-    .formItem {
-        align-items: center;
-        display: flex;
-    }
-    .input {
-        flex: 1;
-        margin-left: 5px;
-    }
-    .description {
-        font-size: 12px;
-        line-height: 20px;
-        margin-bottom: 10px;
-        color: #999;
-    }
-    .uploadBox {
-        cursor: pointer;
-        width: 60px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #F2F2F2;
-    }
-</style>
-
-```
+   }
+</script>
+:::

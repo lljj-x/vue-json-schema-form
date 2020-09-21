@@ -171,7 +171,7 @@ uiSchema = {
 `0.0.16` 之后版本，`uiSchema` 所有配置都支持直接配置在 `schema` 参数中
 
 * `uiSchema` 单独配置优先级大于 `schema` 中配置
-* 好处可以一份配置，不过会使 `schema` 不再是一份纯粹的 `JsonSchema` 文件，结合实际场景选择方案。
+* 好处可以一份配置，不过会使 `schema` 不再是一份纯粹的 `Json Schema` 文件，结合实际场景选择方案。
 
 如下格式：
 ```json

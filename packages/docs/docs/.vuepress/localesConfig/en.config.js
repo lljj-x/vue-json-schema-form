@@ -8,7 +8,7 @@ module.exports = {
         // 作为特例，默认语言可以使用 '/' 作为其路径。
         lang: 'en-US',
         title: 'Vue JSON Schema Form',
-        description: 'Quickly build a form with complete verification based on Vue and JsonSchema'
+        description: 'Quickly build a form with complete verification based on Vue and Json Schema'
     },
     themeConfig: {
         // 多语言下拉菜单的标题

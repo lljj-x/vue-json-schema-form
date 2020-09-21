@@ -10,7 +10,8 @@
     },
     "dependencies": {
         "@lljj/vue-json-schema-form": "0.1.0",
-        "element-ui": "^2.13.2"
+        "element-ui": "^2.13.2",
+        "v-distpicker": "^1.2.7"
     },
     "devDependencies": {
         "@vuepress/plugin-medium-zoom": "^1.5.2",

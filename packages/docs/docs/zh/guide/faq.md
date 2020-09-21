@@ -82,7 +82,7 @@ module.exports = {
 
 ## 怎么兼容ie9
 
-`Vjsf` 依赖 `vue` `elementUi` `ajv` ，也都可以兼容到 `ie9`
+`@lljj/vue-json-schema-form` 依赖 `vue` `elementUi` `ajv` ，也都可以兼容到 `ie9`
 
 * 兼容ie9需要处理两部分
 1. css部分
@@ -92,7 +92,7 @@ module.exports = {
 
 2. js 部分
 
-要么通过垫片 polyfill，要么让 `vjsf` 通过 `bable-loader` 处理即可
+要么通过垫片 polyfill，要么让 `@lljj/vue-json-schema-form` 通过 `bable-loader` 处理即可
 参见：[兼容性解决](/zh/guide/polyfill.html#css兼容)
 
 ## 单字符串节点如何处理

@@ -11,7 +11,7 @@
 :::
 
 ## schema 校验
-这里是完全基于遵循 `JSONSchema` 规范的校验规则，使用 [errorSchema](/zh/guide/basic-config.html#errorschema) 配置校验错误提示。
+这里是完全基于遵循 `Json Schema` 规范的校验规则，使用 [errorSchema](/zh/guide/basic-config.html#errorschema) 配置校验错误提示。
 
 > 建议在 `schema` 校验无法满足的时候选择下面两种方式
 

@@ -133,9 +133,6 @@
 <style module lang="stylus">
     .box {
         :global {
-            .el-form-item__label {
-                font-weight: bold;
-            }
             .el-form-item.is-error {
                 :local {
                     .uploadBox {
