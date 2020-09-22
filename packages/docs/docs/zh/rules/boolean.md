@@ -6,7 +6,7 @@
 ## 数据校验
 * `boolean` 类型 `true` 和 `false`
 
-如下演示：`schema` `uiSchema` `errorSchema` 相关配置
+如下演示：`schema` `ui-schema` `error-schema` 相关配置
 
 :::demo
 ```html

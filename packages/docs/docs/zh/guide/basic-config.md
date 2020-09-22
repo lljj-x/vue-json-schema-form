@@ -7,7 +7,7 @@ sidebarDepth: 2
 ## 参数 Props
 
 ### schema
-* required：true
+* required：`true`
 * 类型：`object`
 * 默认值：`undefined`
 
@@ -21,11 +21,11 @@ description: '渲染为描述信息' // 支持html代码
 
 这里如果是 `object` 或者`array` 内的 `title` `description` 会被渲染为包裹容器`FieldGroupWrap` 标题和描述。
 
-内部的 `title` `description` 会被 `widget` 组件渲染为 formItem 的标题和描述
+内部的 `title` `description` 会被 `widget` 组件渲染为 `formItem` 的标题和描述
 
 :::tip 如何隐藏
 * 不配置 `title` `description` 属性不会显示
-* 特例：对于`object` `array` 类型可以通过 [uiSchema showTitle](#uischema) 参数控制是否显示
+* 特例：对于`object` `array` 类型可以通过 [ui-schema showTitle](#ui-schema) 参数控制是否显示
 :::
 
 
@@ -94,20 +94,20 @@ export default {
 ```
 :::
 
-### uiSchema
+### ui-schema
 * 类型：`object`
 * 默认值：`{}`
 
->* `0.0.16` 之后版本支持配置 `uiSchema` 在 `schema` 参数中 [点击查看](#uischema配置在schema中)
->* `0.1.0` 之后版本支持配置 [errorSchema](#errorschema) 在 [uiSchema](#uischema) 中。（`uiSchema` 和 `errorSchema` 格式完全相同，且同属ui显示，一份可方便配置）
+>* `0.0.16` 之后版本支持配置 `ui-schema` 在 `schema` 参数中 [点击查看](#ui-schema配置在schema中)
+>* `0.1.0` 之后版本支持配置 [error-schema](#error-schema) 在 [ui-schema](#ui-schema) 中。（`ui-schema` 和 `error-schema` 格式完全相同，且同属ui显示，一份可方便配置）
 
 用于配置表单展示样式，普通json数据，非 `JSON Schema` 规范
 
 :::tip
 * 配置数据结构和 `schema` 保持一致，所有的ui配置属性 `ui:` 开头
-* 也可以在 `ui:options` 内的配置所有的属性，不需要 `ui:` 开头
+* 也可以在 `ui:options` 内配置所有的属性，不需要 `ui:` 开头
 * 如果配置了`ui:xx` 和 `ui:options` 内配置了`xx`属性，`ui:options`内的优先级更高，实际上你可以把所有的参数都配置在 `ui:options` 内；这里可以按照个人习惯，推荐使用如下参数格式
-> 注：uiSchema 为普通json数据，并非 JSON Schema 规范语法
+> 注：ui-schema 为普通json数据，并非 JSON Schema 规范语法
 :::
 
 :::warning 注意
@@ -166,12 +166,12 @@ uiSchema = {
 >1. `ui:widget` 自定义widget组件参见这里  [自定义 widget](/zh/guide/adv-config.html#自定义-widget)
 
 
-#### uiSchema配置在schema中
+#### ui-schema配置在schema中
 
-`0.0.16` 之后版本，`uiSchema` 所有配置都支持直接配置在 `schema` 参数中
+`0.0.16` 之后版本，`ui-schema` 所有配置都支持直接配置在 `schema` 参数中
 
-* `uiSchema` 单独配置优先级大于 `schema` 中配置
-* 好处可以一份配置，不过会使 `schema` 不再是一份纯粹的 `Json Schema` 文件，结合实际场景选择方案。
+* `ui-schema` 单独配置优先级大于 `schema` 中配置
+* 好处可以一份配置，不过会使 `schema` 不再是一份纯粹的 `JSON Schema` 文件，结合实际场景选择方案。
 
 如下格式：
 ```json
@@ -204,7 +204,7 @@ uiSchema = {
 }
 ```
 
-#### uiSchema配置演示：重置表单widget样式
+#### ui-schema配置演示：重置表单widget样式
 ::: demo
 ```html
 <template>
@@ -352,33 +352,33 @@ uiSchema = {
 
 :::
 
-### errorSchema
+### error-schema
 * 类型：`object`
 * 默认值：`{}`
 
->* `0.0.16` 之后版本支持配置 `errorSchema` 在 `schema` 参数中 [点击查看](#errorschema配置在schema中)
->* `0.1.0` 之后版本支持配置 [errorSchema](#errorschema) 在 [uiSchema](#uischema) 中。（`uiSchema` 和 `errorSchema` 格式完全相同，且同属ui显示，一份可方便配置）
+>* `0.0.16` 之后版本支持配置 `error-schema` 在 `schema` 参数中 [点击查看](#error-schema配置在schema中)
+>* `0.1.0` 之后版本支持配置 [error-schema](#error-schema) 在 [ui-schema](#ui-schema) 中。（`ui-schema` 和 `error-schema` 格式完全相同，且同属ui显示，一份可方便配置）
 
-用于配置表单校验错误文案信息，普通json数据，非JSON Schema规范
+用于配置表单校验错误文案信息，普通json数据，非 JSON Schema 规范
 
-数据配置和 `uiSchema` 保存一致，区别在于：
+数据配置和 `ui-schema` 保存一致，区别在于：
 1. 使用 `err:` 做前缀
 1. 使用配置的 schema 错误类型的 `err:${name}` 做key，比如 `err:format` 、`err:required` 、`err:type`
 
 ::: tip
  * 配置数据结构和schema保持一致，所有的 `error` 配置属性 `err:` 开头
- * 也可以在 `err:options` 内的配置所有的属性，不需要 `err:` 开头
+ * 也可以在 `err:options` 内配置所有的属性，不需要 `err:` 开头
  * 如果配置了`err:xx` 和 `err:options` 内配置了`xx`属性，`err:options`内优先级更高，实际上你可以把所有的参数都配置在 `err:options` 内；这里可以按照个人习惯
- > 注：errorSchema 为标准json数据，并非JSON Schema规范语法
+ > 注：error-schema 为标准json数据，并非JSON Schema规范语法
  :::
 
-#### errorSchema配置在schema中
+#### error-schema配置在schema中
 
-`0.0.16` 之后版本，`errorSchema` 所有配置都支持直接配置在 `schema` 参数中。
+`0.0.16` 之后版本，`error-schema` 所有配置都支持直接配置在 `schema` 参数中。
 
-> 使用格式类似 [uiSchema配置在schema中](#uischema配置在schema中)
+> 使用格式类似 [ui-schema配置在schema中](#ui-schema配置在schema中)
 
-errorSchema配置演示：重置表单错误信息
+error-schema配置演示：重置表单错误信息
 
 ::: demo
 ```html
@@ -451,7 +451,7 @@ export default {
                 bio: {
                     'ui:type': 'textarea',
                     'ui:placeholder': '请输入 ...',
-                    'err:required': '请输入（uiSchema中配置）',
+                    'err:required': '请输入（ui-schema中配置）',
                 },
             },
             errorSchema: {
@@ -486,10 +486,9 @@ export default {
 ```
 :::
 
-### customFormats
+### custom-formats
 * 类型：`object`
 * 默认值：`{}`
-* todo 文档
 
 自定义校验规则，调用 `avj.addFormat` 方法添加新的format，[查看](https://github.com/ajv-validator/ajv#addformatstring-name-stringregexpfunctionobject-format---ajv)
 
@@ -547,17 +546,17 @@ export default {
 ```
 :::
 
-### customRule
+### custom-rule
 * 类型：`function`
 * 默认值：`-`
 
-* 自定义校验规则，实现类似elementUi form rules validator 的方式校验表单数据
-* 详细查看这里
+* 自定义校验规则，实现类似 el-form rules validator 的方式校验表单数据
+* [详细查看这里](/zh/guide/validate.html#custom-rule-自定义校验)
 
 
-### formFooter
+### form-footer
 * 类型：`object`
-* 默认值：
+
 ```js
 // 默认值
 formFooter = {
@@ -573,15 +572,16 @@ formFooter = {
 
 表单绑定值，`对于不需要双向绑定的值，可以使用 value props`
 
-### formProps
+### form-props
 * 类型：`object`
-* 默认值：
+
+使用elementUi `el-form` [https://element.eleme.cn/2.13/#/zh-CN/component/form#form-attributes](https://element.eleme.cn/2.13/#/zh-CN/component/form#form-attributes)
+
 ```js
 // 默认值
-// 目前使用elementUi el-form - https://element.eleme.cn/2.13/#/zh-CN/component/form#form-attributes
 formProps = {
-    labelPosition: 'top', // 是否显示
-    labelSuffix: '：', // 表单域标签的位置，如果值为 left 或者 right 时，则需要设置 label-width
+    labelPosition: 'top', // 表单域标签的位置
+    labelSuffix: '：', //
     inline: false, // 行内表单模式
     labelWidth: 'auto', // 表单域标签的宽度，例如 '50px'
 }
@@ -651,13 +651,13 @@ export default {
 
 点击提交按钮，且表单通过校验
 
-> 事件只有在配置了显示默认底部才会触发，[props formFooter](#formfooter)
+> 事件只有在配置了显示默认底部才会触发，[props form-footer](#form-footer)
 
 ### on-cancel
 * 参数(无)
 
 点击取消按钮
-> 事件只有在配置了显示默认底部才会触发，[props formFooter](#formfooter)
+> 事件只有在配置了显示默认底部才会触发，[props form-footer](#form-footer)
 
 ### on-change
 * 参数(newVal, oldVal)
@@ -669,13 +669,13 @@ export default {
 -- 无
 
 ## 插槽 Scope-Slot
-* name `default`，自定义form 包含内容，配置后会覆盖默认 `formFooter`
+* name `default`，自定义form 包含内容，配置后会覆盖默认 `form-footer`
 
 参数为: { formData, formRefFn }
 
 ::: tip 参数说明
 * `formData` 当前表单元素的值，响应式
-* formRefFn`function`，调用返回 `el-form` 组件ref
+* `formRefFn` 为 `function`，调用返回 `el-form` 组件ref实例
 :::
 如：
 ::: demo

@@ -23,7 +23,7 @@
 ### `uniqueItems`
 是否每一项唯一，默认 `false`
 
-如下演示：`schema` `uiSchema` `errorSchema` 相关配置
+如下演示：`schema` `ui-schema` `error-schema` 相关配置
 
 > 或者点击这里查看 [array demo页面](https://form.lljj.me/#/demo?type=Arrays)
 :::demo
@@ -254,12 +254,11 @@
 :::
 
 ## 其它配置
-* 支持通过配置 `uiSchema` `ui:addable`、`ui:sortable`、`ui:removable` 配置数组是否可添加/排序/移除
-* 参见 [uiSchema 配置](https://form.lljj.me/#/demo?type=Arrays)
+* 支持通过配置 `ui-schema` 中的 `ui:addable`、`ui:sortable`、`ui:removable` 配置数组是否可添加/排序/移除
+* 参见 [ui-schema 配置](https://form.lljj.me/#/demo?type=Arrays)
 
-比如：
+如：
 ```js
-// 支持 * 匹配其它值
 uiSchema = {
     'ui:options': {
         addable: false,

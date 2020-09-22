@@ -1,6 +1,6 @@
 {
     "private": true,
-    "description": "基于 Vue 、Json Schema快速构建一个带完整校验的form表单",
+    "description": "基于 Vue 、JSON Schema 快速构建一个带完整校验的form表单",
     "repository": "https://github.com/lljj-x/vue-json-schema-form",
     "homepage": "https://github.com/lljj-x/vue-json-schema-form",
     "author": "Liu.Jun",

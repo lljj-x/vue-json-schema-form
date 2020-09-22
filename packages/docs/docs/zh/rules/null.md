@@ -7,7 +7,7 @@
 ## 数据校验
 * `null` 类型 固定值为 null，null field 不渲染，`formData` 值为 `null`
 
-如下演示：`schema` `uiSchema` `errorSchema` 相关配置
+如下演示：`schema` `ui-schema` `error-schema` 相关配置
 
 :::demo
 ```html

@@ -2,7 +2,7 @@
 * 详细配置demo参见这里：[在线演示 dateTime](https://form.lljj.me/#/demo?type=Date-DateTime)
 
 :::warning
-对type为 `number` `array` 类型配置 `format` 这里打破了 `Json Schema` 规范
+对type为 `number` `array` 类型配置 `format` 这里打破了 `JSON Schema` 规范
 :::
 
 支持配置如下三种 `format` 配置时间和日期

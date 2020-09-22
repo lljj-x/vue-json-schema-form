@@ -55,7 +55,7 @@ import "@babel/polyfill";
 ```
 
 ::: tip
-如果依旧提示存在不支持的api方法，那可能是导入的polyfill不够全，可以在手动导入缺失的方法。
+如果依旧提示存在不支持的api方法，那可能是导入的polyfill不够全，可以手动导入缺失的方法。
 
 使用 `core-js` 手动按需导入
 

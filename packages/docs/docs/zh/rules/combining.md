@@ -30,7 +30,7 @@ sidebarDepth: 2
 > }
 > ```
 
-如下演示：`schema` `uiSchema` `errorSchema` 相关配置
+如下演示：`schema` `ui-schema` `error-schema` 相关配置
 
 :::demo
 ```html
@@ -114,21 +114,25 @@ sidebarDepth: 2
 :::
 
 ## anyOf
+
 ### 描述
 * 对任何一个 `schema` 有效即可，推荐在 `oneOf`  `anyOf` 都可以时使用 `anyOf`
 * 官方文档 - [JSON Schema anyOf](https://json-schema.org/understanding-json-schema/reference/combining.html#anyof)
 * 使用了`oneOfSelect` `anyOfSelect` 配置下拉选项组件
+
 ### 数据校验
-* 其它对schema的校验可查看这里：
+* 参考下面的使用案例
+
 >* [Demo](https://form.lljj.me/#/demo?type=AnyOf)
 >* [数据联动](/zh/guide/adv-config.html#数据联动)
 
 
-## 特殊字段
-### const
+### 特殊字段
+
+#### const
 * `const` 如果被包含在 `anyOf` 内，会默认被渲染为单选框，`const` 为单选框 value，`title` 为单选框 label。
 
-如下演示：`schema` `uiSchema` `errorSchema` 相关配置
+如下演示：`schema` `ui-schema` `error-schema` 相关配置
 
 :::demo 1、使用 anyOfSelect 配置下拉选项组件 <br> 2、anyOf同级的配置会作为公共配置传给当前选中的子schema
 ```html
@@ -249,12 +253,12 @@ sidebarDepth: 2
                         anyOf: [
                             {
                                 firstName: {
-                                    'ui:title': 'uiSchema - title 名'
+                                    'ui:title': 'ui-schema - title 名'
                                 }
                             },
                             {
                                 idCode: {
-                                    'ui:title': 'uiSchema - title ID'
+                                    'ui:title': 'ui-schema - title ID'
                                 }
                             }
                         ]
@@ -279,9 +283,9 @@ sidebarDepth: 2
 :::
 
 ::: tip
-* `anyOf` `oneOf` 使用了 `oneOfSelect` `anyOfSelect` 配置下拉选项，`schema` 配置了同名key会导致 `errorSchema`，`uiSchema` 无法正常工作
+* `anyOf` `oneOf` 使用了 `oneOfSelect` `anyOfSelect` 配置下拉选项，`schema` 配置了同名key会导致 `error-schema`，`ui-schema` 无法正常工作
 * 当前 `anyOf` 选中的 `schema` 会和原有 `schema` 做浅合并， `Object.assign({}, this.schema, curSelectSchema)`
-* `uiSchema`、`errorSchema` 在anyOf同级的配置会作为公共配置传给当前选中的子`schema`
+* `ui-schema`、`error-schema` 在anyOf同级的配置会作为公共配置传给当前选中的子`schema`
 :::
 
 ## oneOf

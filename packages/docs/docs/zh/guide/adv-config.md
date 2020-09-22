@@ -9,7 +9,7 @@ sidebarDepth: 2
 * 详细 AnyOf、oneOf 配置请 [点击查看](/zh/rules/combining.html)
 
 :::tip
-如果觉得 anyOf 配置麻烦也可以使用 [ui:field 使用已有联级组件](/zh/guide/adv-config.html#自定义field-联级选择)，或者配置 [uiSchema fieldStyle](/zh/guide/basic-config.html#uischema) 通过样式隐藏来实现。
+如果觉得 anyOf 配置麻烦也可以使用 [ui:field 使用已有联级组件](/zh/guide/adv-config.html#demo-联级选择)，或者配置 [ui-schema fieldStyle](/zh/guide/basic-config.html#ui-schema) 通过样式隐藏来实现。
 :::
 
 anyOf联动如下演示：（点击 `保存` 按钮查看 `formData` 数据）
@@ -146,7 +146,7 @@ export default {
                     },
                     anyOf: [
                         {
-                            'ui:title': '使用用户名设置（uiSchema）', // 这里会覆盖schema 配置
+                            'ui:title': '使用用户名设置（ui-schema）', // 这里会覆盖schema 配置
                         },
                     ]
                 },
@@ -174,7 +174,6 @@ export default {
 
 
 >* 推荐使用 `anyOf`，`oneOf` 只能有一个符合的结果
->* 后续版本会考虑通过 `uiSchema` 配置函数表达式来实现类似交互效果
 
 ## 树形结构
 * 树形结构需要使用 `$ref` 来递归调用自己
@@ -182,7 +181,7 @@ export default {
 
 :::warning
 * $ref 不支持跨文件调用
-* `uiSchema` `errorSchema` 暂不支持递归配置，需要逐级配置 Orz...
+* `ui-schema` `error-schema` 暂不支持递归配置，需要逐级配置，或者配置一个存在循环引用的对象 Orz...
 :::
 
 如下demo：
@@ -230,7 +229,7 @@ export default {
                 uiSchema: {
                     tree: {
                         name: {
-                            'ui:description': 'uiSchema配置描述信息，不支持递归'
+                            'ui:description': 'ui-schema配置描述信息，不支持递归'
                         }
                     }
 
@@ -253,7 +252,7 @@ export default {
 ## 空数据默认值
 默认在用户输入时如果清空了表单的数据，即空字符串 `''`，会默认设置值为 `undefined`，这样是为了保证和JSON Schema 规范保持一致。
 
-可以通过配置 `uiSchema` `ui:emptyValue` 的值来重置空数据默认值。
+可以通过配置 `ui-schema` `ui:emptyValue` 的值来重置空数据默认值。
 
 如下： 试试清空 `firstName` `lastName` 输入框的值
 
@@ -308,7 +307,7 @@ export default {
 
 * 关联
 1. [JSON Schema object required](/zh/guide/faq.html#json-schema-object-required)
-1. [uiSchema 配置](/zh/guide/basic-config.html#uischema)
+1. [ui-schema 配置](/zh/guide/basic-config.html#ui-schema)
 
 
 ## 自定义样式
@@ -317,12 +316,12 @@ export default {
 针对整个form默认样式，审查元素查看class名，通过css覆盖即可，根css类名 `genFromComponent`
 
 ### 重置表单widget组件样式
-如果是对 widget 组件的样式设置，可以通过 `uiSchema` 配置 `style`、`class`、`attrs` 来重置你的样式
+如果是对 widget 组件的样式设置，可以通过 `ui-schema` 配置 `style`、`class`、`attrs` 来重置你的样式
 
-查看详细 [uiSchema重置表单widget样式](/zh/guide/basic-config.html#uischema配置演示-重置表单widget样式)
+查看详细 [ui-schema重置表单widget样式](/zh/guide/basic-config.html#ui-schema配置演示-重置表单widget样式)
 
 ### 重置表单field组件样式
-如果是对 field 组件的样式设置，可以通过 `uiSchema` 配置 `fieldStyle`、`fieldClass`、`fieldAttrs` 来重置每个节点
+如果是对 field 组件的样式设置，可以通过 `ui-schema` 配置 `fieldStyle`、`fieldClass`、`fieldAttrs` 来重置每个节点
 
 > 使用形式如上...
 
@@ -337,7 +336,7 @@ export default {
 :::
 
 ## 自定义Widget
-自定义Widget通过配置 `uiSchema` `ui:widget`字段
+自定义Widget通过配置 `ui-schema` `ui:widget`字段
 
 * 类型：`String` | `Object` | `Function`  (参见 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0) 第一个参数)
 * 使用场景：需要自定义输入组件，比如结合业务的`图片上传` `商品选择` 等等
@@ -418,9 +417,9 @@ export default {
 
 
 ## 自定义Field
-自定义field通过配置 `uiSchema` `ui:field` 字段，可以配置在任意需要自定义field的schema节点，参数格式和 [自定义Widget](#自定义widget) 一致
+自定义field通过配置 `ui-schema` `ui:field` 字段，可以配置在任意需要自定义field的schema节点，参数格式和 [自定义Widget](#自定义widget) 一致
 
-支持配置 [ui:fieldProps](/zh/guide/basic-config.html#uischema)，传给自定义field组件，需要在field组件props配置申明该参数
+支持配置 [ui:fieldProps](/zh/guide/basic-config.html#ui-schema)，传给自定义field组件，需要在field组件props配置申明该参数
 
 * 类型：`String` | `Object` | `Function` (参见 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0) 第一个参数)
 * 使用场景：schema配置无法满足，或者想嵌入现用的组件
@@ -494,9 +493,9 @@ export default {
 import { fieldProps } from  '@lljj/vue-json-schema-form';
 ```
 
-### 自定义Field - 图片链接配置
+### Demo - 图片链接配置
 
-* `ui:field` 组件内继续使用schema的配置来做 `视图的展示` 和 `数据校验`，并且使用内置方法同步 `formData` 的值
+* Demo中 `ui:field` 组件内继续使用schema的配置来做 `视图的展示` 和 `数据校验`，并且使用内置方法同步 `formData` 的值
 * [查看field组件源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/docs/docs/.vuepress/injectVue/field/LinkImgField.vue)
 
 >* 这里的图片选择只是随机选择，实际的项目场景中可能是基于相册的选择或上传等...
@@ -570,9 +569,9 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
 </script>
 :::
 
-### 自定义Field - 联级选择
+### Demo - 联级选择
 
-* `ui:field` 使用现有组件嵌入，不使用schema配置和方法
+* Demo中 `ui:field` 使用现有组件嵌入，不使用schema配置和方法
 * [查看field组件源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/docs/docs/.vuepress/injectVue/field/DistpickerField.vue)
 
 >* 使用省市区联动组件

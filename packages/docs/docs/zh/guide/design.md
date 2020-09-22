@@ -5,9 +5,9 @@
 ![Vjsf](/vjsf.jpg)
 
 :::tip 递归说明
-* `schema` `uiSchema` `errorSchema` 是基于递归逐个节点拆解渲染，这部分数据基本不会变化。
-* `formData`在用户输入是需要高频变化的数据，为了避免每次输入导致整棵树的渲染。
-这里通过当前节点path `curNodePath` 和根节点formData `rootFormData` 解析当前值。
+* `schema` `ui-schema` `error-schema` 是基于递归逐个节点拆解渲染，这部分数据基本不会变化。
+* `formData` 用户输入时会高频变化的数据，为了避免每次输入导致整棵树的渲染。
+这里通过当前节点path字符串 `curNodePath` 和根节点formData `rootFormData` 解析当前值。
 > 比如：`curNodePath` 为 `userInfo.userName`，可以很轻松的获取或者设置当前节点的值
 >> 这里提供公共方法
 >> ```js
@@ -21,8 +21,8 @@
 >> ```
 :::
 
-## 数据校验
-数据校验使用 [ajv](https://github.com/epoberezkin/ajv) 校验schema，搭配 [errorSchema](/zh/guide/basic-config.html#errorschema) 自定义校验错误提示
+## 如何校验数据
+校验使用 [ajv](https://github.com/epoberezkin/ajv) 校验schema，搭配 [error-schema](/zh/guide/basic-config.html#error-schema) 自定义校验错误提示
 
 #### 数据是通过逐级拆分校验的
 举个例子：
@@ -96,10 +96,10 @@ function render(h) {
 :::
 
 #### 其它补充
-`errorSchema` 和 `uischema` 配置数据结构都是和 `schema` 保持一致，如果和formData保持一致，
+`error-schema` 和 `ui-schema` 配置数据结构都是和 `schema` 保持一致，如果和formData保持一致，
 会导致一些场景无法配置到，比如 `anyOf`，所以选择如此。
 
-> 后续会考虑 `uiSchema`、`errorSchema` 可以支持配置 `schema` 文件中来减少这份配置工作量。
+> 后续会考虑 `ui-schema`、`error-schema` 可以支持配置 `schema` 文件中来减少这份配置工作量。
 
 ## 设计思想
 

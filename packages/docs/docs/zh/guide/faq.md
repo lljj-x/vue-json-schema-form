@@ -1,14 +1,15 @@
 # 常见问题
 
 ## JSON Schema object required
-背景：
-* JSON Schema object required 包含的属性值只有为 `undefined` 校验才会会返回 `false`
-* javascript 里面 `undefined` `0` `空字符串` `null` 等转成 `boolean` 类型都为 `false`
+
+> **背景：**
+>* JSON Schema 规范 object `required` 包含的属性值只有值为 `undefined` 时校验才不通过
+>* `javascript` 里 `undefined` `0` `空字符串` `null` 等转成 `boolean` 类型都为 `false`
 
 为了抹平以上的差异性，在表单元素输入值时，当你的输入值变为空字符串 `''` ，会自动处理为 `undefined` 这样来和 `JSON Schema` 规范保持一致。
 
 :::tip
-* 如果你不想做此转换，可通过配置 `uiSchema` 重置 `emptyValue` 的值
+* 如果你不想做此转换，可通过配置 `ui-schema` 重置 `emptyValue` 的值
 
 如：
 ```js
@@ -17,7 +18,7 @@
 // 或者
 { 'ui:emptyValue': '你喜欢的值' }
 ```
-点击查看 [uiSchema参数配置](/zh/guide/basic-config.html#uischema)
+点击查看 [ui-schema参数配置](/zh/guide/basic-config.html#ui-schema)
 :::
 
 
@@ -93,7 +94,7 @@ module.exports = {
 2. js 部分
 
 要么通过垫片 polyfill，要么让 `@lljj/vue-json-schema-form` 通过 `bable-loader` 处理即可
-参见：[兼容性解决](/zh/guide/polyfill.html#css兼容)
+参见：[兼容性解决](/zh/guide/polyfill.html#script-兼容)
 
 ## 单字符串节点如何处理
-根节点必须是 object ，其它暂不支持
+根节点必须是 object ，其它不支持

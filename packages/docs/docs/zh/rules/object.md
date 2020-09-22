@@ -6,7 +6,7 @@
 
 ## 数据校验
 ### `additionalProperties`
-是否可以有其它属性。默认允许，只支持配置配置 `false` 不允许，object 不支持
+是否可以有其它属性。只支持配置配置 `false` ，其它不支持
 
 ### `required`
 数组类型，包含需要必须的属性key
@@ -19,13 +19,13 @@
 
 ::: warning
 * `Dependencies` 依赖相关的属性依赖，schema 依赖都不支持
-* `additionalProperties` 不支持配置 `object`
+* `additionalProperties` 只支持配置 `false`
 * `Pattern Properties` 不支持
 :::
 
 如下演示：
 
-`schema` `uiSchema` `errorSchema` 相关配置
+`schema` `ui-schema` `error-schema` 相关配置
 
 :::demo
 ```html
@@ -106,8 +106,8 @@
 :::
 
 ## 其它配置
-* 支持通过配置 `uiSchema` `ui:order` 对属性渲染顺序进行排序。
-* 参见 [uiSchema order 配置](https://form.lljj.me/#/demo?type=Simple)
+* 支持通过配置 `ui-schema` `ui:order` 对属性渲染顺序进行排序。
+* 参见 [ui-schema order 配置](https://form.lljj.me/#/demo?type=Simple)
 
 比如：
 ```js

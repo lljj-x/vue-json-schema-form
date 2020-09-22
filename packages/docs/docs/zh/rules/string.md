@@ -16,7 +16,7 @@
 正则表达式
 
 ### `format`
-常用类型校，如 `uri` `email`，参见 `Json Schema` 官方文档
+常用类型校验，如 `uri` `email`，参见 `JSON Schema` 官方文档
 
 ## 特殊字段
 
@@ -26,7 +26,7 @@
 
 如下演示：
 
-`schema` `uiSchema` `errorSchema` 相关配置
+`schema` `ui-schema` `error-schema` 相关配置
 
 :::demo
 ```html

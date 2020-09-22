@@ -8,7 +8,7 @@ module.exports = {
         // 作为特例，默认语言可以使用 '/' 作为其路径。
         lang: 'en-US',
         title: 'Vue JSON Schema Form',
-        description: 'Quickly build a form with complete verification based on Vue and Json Schema'
+        description: 'Quickly build a form with complete verification based on Vue and JSON Schema'
     },
     themeConfig: {
         // 多语言下拉菜单的标题
@@ -53,14 +53,14 @@ module.exports = {
         // 侧边栏
         // 省略 .md 拓展名，同时以 / 结尾的路径将会被视为 */README.md
         sidebar: {
-            '/en/guide/': require('./genConfig').getGuideSidebar([
-                'Guide',
-                'Configuration',
-                'Principle',
-                'Update plan'
-            ]),
-            '/en/config/': require('./genConfig').getConfigSidebar(),
-            '/en/rules/': require('./genConfig').getRulesSidebar(),
+            // '/en/guide/': require('./genConfig').getGuideSidebar([
+            //     'Guide',
+            //     'Configuration',
+            //     'Principle',
+            //     'Update plan'
+            // ]),
+            // '/en/config/': require('./genConfig').getConfigSidebar(),
+            // '/en/rules/': require('./genConfig').getRulesSidebar(),
         }
     }
 }

@@ -48,7 +48,7 @@
 
 如下演示：
 
-`schema` `uiSchema` `errorSchema` 相关配置
+`schema` `ui-schema` `error-schema` 相关配置
 
 :::demo
 ```html

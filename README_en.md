@@ -1,5 +1,5 @@
 # vue-json-schema-form
-Quickly building HTML form based on `Vue`, `Json Schema` and `ElementUi`.
+Quickly building HTML form based on `Vue`, `JSON Schema` and `ElementUi`.
 
 ## Experience quickly
 * [Live playground](https://form.lljj.me/ "Vue JSON Schema Form Demo")
@@ -80,7 +80,7 @@ yarn run demo:dev --dir=vue-editor
 ```
 
 ### Description
-* Follow the JSON Schema specification, only need to give the `Json Schema`, you can generate the corresponding form
+* Follow the JSON Schema specification, only need to give the `JSON Schema`, you can generate the corresponding form
 * Quickly configure personalized UI views and check error messages, which can be adapted to commonly used UI libraries. The default view of the current version depends on `ElementUi`.
 * Uses the [ajv validator](https://github.com/epoberezkin/ajv)
 * Design ideas and reference to the schema analysis index [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)
@@ -91,7 +91,7 @@ yarn run demo:dev --dir=vue-editor
 [Element Ui](https://element.eleme.io/)
 
 ### Why
-Originated from shop decoration scenes, it can also be called front-end visual editing. In order to solve the universality of the component data configuration form, the form is generated through `Json Schema`.
+Originated from shop decoration scenes, it can also be called front-end visual editing. In order to solve the universality of the component data configuration form, the form is generated through `JSON Schema`.
 
 The advantage of this is to solve the repetitive work of each configuration form, and the server can also maintain the same verification rules as the front-end based on the same schema.
 
