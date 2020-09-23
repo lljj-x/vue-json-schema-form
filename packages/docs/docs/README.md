@@ -40,6 +40,9 @@ import VueForm from '@lljj/vue-json-schema-form';
 
 export default {
     name: 'Demo',
+    components: {
+        VueForm
+    },
     data() {
         return {
             formData: {},

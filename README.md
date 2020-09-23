@@ -2,66 +2,17 @@
 基于 `Vue`、`ElementUi`、`JSON Schema` 快速构建一个带完整校验的form表单.
 
 ## 快速体验
-* [演示demo](https://form.lljj.me/ "Vue JSON Schema Form Demo")
-* [使用场景 - 可视化活动编辑器](https://form.lljj.me/vue-editor.html)，点击这里查看 [如何启动Demo页](#如何启动demo页)
 * [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JSON Schema Docs")
+* [演示Demo](https://form.lljj.me/ "Vue JSON Schema Form Demo")
+* [使用场景 - 可视化活动编辑器](https://form.lljj.me/vue-editor.html)，点击这里查看 [如何启动活动编辑器](#如何启动活动编辑器)
 * [不支持部分和更新计划](https://vue-json-schema-form.lljj.me/zh/guide/todo.html)
 
 ![](https://7.luochongfei.top/vue-json-schema-form.gif?1)
 
-``` bash
-# 安装
-npm install --save @lljj/vue-json-schema-form
+## 如何启动活动编辑器
 
-# 或者：
-yarn add @lljj/vue-json-schema-form
-```
+![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vue-editor.jpg)
 
-```vue
-<template>
-    <VueForm
-        v-model="formData"
-        :schema="schema"
-    >
-    </VueForm>
-</template>
-
-<script >
-    //  使用
-    import VueForm from '@lljj/vue-json-schema-form';
-
-    export default {
-        name: 'Demo',
-        components: {
-            VueForm
-        },
-        data() {
-            return {
-                formData: {},
-                schema: {
-                    type: 'object',
-                    required: [
-                        'firstName'
-                    ],
-                    properties: {
-                        firstName: {
-                            type: 'string',
-                            title: 'First name',
-                            default: 'Jun'
-                        },
-                        lastName: {
-                            type: 'string',
-                            title: 'Last name'
-                        },
-                    }
-                }
-            };
-        }
-    };
-</script>
-```
-
-## 如何启动Demo页
 ```ssh
 # 安装依赖
 yarn install
