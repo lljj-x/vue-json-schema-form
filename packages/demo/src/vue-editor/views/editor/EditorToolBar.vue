@@ -1,6 +1,6 @@
 <template>
     <div :class="$style.box">
-        <div v-for="(group, index) in tools"
+        <div v-for="(group, index) in configTools"
              :key="index"
              :class="$style.group"
         >
@@ -46,7 +46,6 @@
 
 <script>
     import Draggable from 'vuedraggable';
-    import configTools from './config/tools';
 
     import { generateEditorItem } from './common/editorData';
 
@@ -56,6 +55,10 @@
             Draggable,
         },
         props: {
+            configTools: {
+                type: Array,
+                default: () => []
+            },
             currentUseComponentNum: {
                 default: () => ({}),
                 type: Object
@@ -64,11 +67,6 @@
                 default: '',
                 type: String
             }
-        },
-        data() {
-            return {
-                tools: configTools
-            };
         },
         watch: {
             currentUseComponentNum(newVal) {

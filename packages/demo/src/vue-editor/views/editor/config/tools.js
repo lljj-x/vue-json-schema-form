@@ -3,34 +3,34 @@
  */
 
 // 轮播图
-import * as componentPackCarouselImg from '../viewComponents/CarouselImg';
+import componentPackCarouselImg from '../viewComponents/CarouselImg';
 
 // 秒杀商品
-import * as componentPackFlashSaleGoodsList from '../viewComponents/FlashSaleGoodsList';
+import componentPackFlashSaleGoodsList from '../viewComponents/FlashSaleGoodsList';
 
 // 纯文本
-import * as componentPackText from '../viewComponents/Text';
+import componentPackText from '../viewComponents/Text';
 
 // 多图模块一排5个
-import * as componentPackMultipleImg5 from '../viewComponents/MultipleImg5';
+import componentPackMultipleImg5 from '../viewComponents/MultipleImg5';
 
 // 多图模块 2-3
-import * as componentPackMultipleImg23 from '../viewComponents/MultipleImg2_3';
+import componentPackMultipleImg23 from '../viewComponents/MultipleImg2_3';
 
 // 多图模块 1-2
-import * as componentPackMultipleImg13 from '../viewComponents/MultipleImg1_3';
+import componentPackMultipleImg13 from '../viewComponents/MultipleImg1_3';
 
 // 分类管区
-import * as componentPackCategoryGoods from '../viewComponents/CategoryGoods';
+import componentPackCategoryGoods from '../viewComponents/CategoryGoods';
 
 // 推荐
-import * as componentPackRecommendedGoodsList from '../viewComponents/RecommendedGoodsList';
+import componentPackRecommendedGoodsList from '../viewComponents/RecommendedGoodsList';
 
 // 所有商品
-import * as componentPackAllGoodsList from '../viewComponents/AllGoodsList';
+import componentPackAllGoodsList from '../viewComponents/AllGoodsList';
 
 // 优惠券
-import * as componentPackCoupon from '../viewComponents/Coupon';
+import componentPackCoupon from '../viewComponents/Coupon';
 
 
 /**

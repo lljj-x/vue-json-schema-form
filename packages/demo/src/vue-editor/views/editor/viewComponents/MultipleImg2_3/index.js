@@ -8,11 +8,7 @@ import errorSchema from './errorSchema.js';
 
 const View = () => import('./View.vue');
 
-const NAME = propsSchema.id;
-const componentViewName = `${NAME}View`;
-
-export {
-    componentViewName,
+export default {
     View,
     propsSchema,
     uiSchema,

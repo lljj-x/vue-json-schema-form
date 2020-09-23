@@ -4,6 +4,10 @@
             <h1>Vue Editor</h1>
         </div>
         <div :class="$style.btns">
+            <el-select v-model="platform" placeholder="请选择" :class="$style.selectPlatform">
+                <el-option label="PC" value="editor"></el-option>
+                <el-option label="M" value="editorM"></el-option>
+            </el-select>
             <el-button icon="el-icon-minus"
                        :disabled="disabledMinus"
                        :class="$style.scaleBtn"
@@ -45,6 +49,16 @@
             }
         },
         computed: {
+            platform: {
+                get() {
+                    return this.$route.name;
+                },
+                set(routerName) {
+                    this.$router.replace({
+                        name: routerName
+                    });
+                }
+            },
             disabledMinus() {
                 return this.value <= this.minScale;
             },
@@ -79,6 +93,8 @@
         background: var(--color-white);
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2);
     }
     .logo {
         display: flex;
@@ -90,9 +106,8 @@
             text-transform: uppercase;
         }
     }
-    .scaleBtn {
-        &.disabled {
-
-        }
+    .selectPlatform {
+        width: 100px;
+        margin-right: 20px;
     }
 </style>

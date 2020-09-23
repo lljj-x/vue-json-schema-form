@@ -1,0 +1,52 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "id": "CategoryList",
+    "type": "object",
+    "title": "配置分类条",
+    "description": "分别配置每个分类的名称以及图片链接，最多配置10组，最少配置3组",
+    "properties": {
+        "imgList": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 5,
+            "items": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                    "name": {
+                        "title": "配置类别名称",
+                        "type": "string",
+                        "default": "京东",
+                        "ui:options": {
+                            "placeholder": "请输入类别名称"
+                        }
+                    },
+                    "img": {
+                        "type": "object",
+                        "title": "配置图片和连接",
+                        "required": [
+                            "imgUrl",
+                            "imgLink"
+                        ],
+                        "ui:field": "LinkImgField",
+                        "properties": {
+                            "imgUrl": {
+                                "type": "string",
+                                "format": "uri",
+                                "default": "https://gw.alicdn.com/tfs/TB1ISdWSFXXXXbFXXXXXXXXXXXX-146-147.png_110x10000.jpg_.webp",
+                                "err:format": "请输入正确的的图片地址"
+                            },
+                            "imgLink": {
+                                "type": "string",
+                                "format": "uri",
+                                "default": "https://www.tmall.com",
+                                "err:format": "请输入正确的的链接地址"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "additionalProperties": false
+}
