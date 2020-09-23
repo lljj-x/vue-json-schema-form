@@ -3,9 +3,8 @@
 
 ## 快速体验
 * [演示demo](https://form.lljj.me/ "Vue JSON Schema Form Demo")
+* [使用场景 - 可视化活动编辑器](https://form.lljj.me/vue-editor.html)，点击这里查看 [如何启动Demo页](#如何启动demo页)
 * [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JSON Schema Docs")
-* [源代码](https://github.com/lljj-x/vue-json-schema-form "Vue JSON Schema github")
-* [使用场景 - 可视化活动编辑器（H5活动编辑器）](https://form.lljj.me/vue-editor.html)
 * [不支持部分和更新计划](https://vue-json-schema-form.lljj.me/zh/guide/todo.html)
 
 ![](https://7.luochongfei.top/vue-json-schema-form.gif?1)
@@ -62,7 +61,7 @@ yarn add @lljj/vue-json-schema-form
 </script>
 ```
 
-## 运行Demo
+## 如何启动Demo页
 ```ssh
 # 安装依赖
 yarn install
