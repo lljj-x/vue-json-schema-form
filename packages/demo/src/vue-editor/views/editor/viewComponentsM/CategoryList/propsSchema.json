@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "id": "CategoryList",
+    "id": "MCategoryList",
     "type": "object",
     "title": "配置分类条",
     "description": "分别配置每个分类的名称以及图片链接，最多配置10组，最少配置3组",

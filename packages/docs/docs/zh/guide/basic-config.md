@@ -129,6 +129,7 @@ uiSchema = {
             showDescription: '是否显示描述信息', // 只对type为 `object`、`array` 类型有效
             attrs: {
                 // 通过 vue render函数 attrs 传递给 Widget 组件，只能配置在叶子节点
+                // 你也配置在外层，程序会合并 attrs 和 其它外层属性 通过 attrs 传递给子组件
                 autofocus: true
             },
             style: {
@@ -195,9 +196,7 @@ uiSchema = {
             "ui:options": {
                 "type": "textarea",
                 "placeholder": "请输入FirstName（配置在schema中）",
-                "attrs": {
-                    "rows": 4
-                }
+                "rows": 4
             }
         }
     }
@@ -241,9 +240,7 @@ export default {
                         'ui:options': {
                             type: 'textarea',
                             placeholder: 'placeholder（配置在schema中）',
-                            attrs: {
-                                rows: 4
-                            }
+                            rows: 4
                         }
                     },
                     inputText: {
@@ -268,10 +265,6 @@ export default {
                     'ui:description': '这里重置了描述信息',
                     'ui:emptyValue': '',
                     'ui:options': {
-                        attrs: {
-                            autofocus: true,
-                            rows: 6,
-                        },
                         style: {
                             boxShadow: '0 0 6px 2px #2b9939'
                         },
@@ -279,6 +272,8 @@ export default {
                             className_hei: true
                         },
                         type: 'textarea',
+                        autofocus: true,
+                        rows: 6,
                         placeholder: '请输入你的内容'
                     }
                 },

@@ -45,7 +45,7 @@ export default {
     watch: {
         curFormData(newVal, oldVal) {
             // 引用类型，当值不相等，说明是被重新赋值
-            if (newVal !== oldVal) {
+            if (newVal !== oldVal && Array.isArray(newVal)) {
                 this.formKeys = newVal.map(() => genId());
             }
         }
@@ -54,7 +54,13 @@ export default {
         // 获取当前的值
         getCuFormData() {
             const { rootFormData, curNodePath } = this.$props;
-            return getPathVal(rootFormData, curNodePath);
+            const value = getPathVal(rootFormData, curNodePath);
+
+            if (Array.isArray(value)) return value;
+
+            console.error('error: type array，值必须为 array 类型');
+
+            return [];
         },
         // 获取一个新item
         getNewFormDataRow() {

@@ -4,7 +4,7 @@
 
 export default [
     {
-        name: 'CarouselImg',
+        name: 'MCarouselImg',
         value: {
             imgList: [
                 {
@@ -27,7 +27,7 @@ export default [
         }
     },
     {
-        name: 'CategoryList',
+        name: 'MCategoryList',
         value: {
             imgList: [
                 {
@@ -69,14 +69,14 @@ export default [
         }
     },
     {
-        name: 'Text',
+        name: 'MText',
         value: {
             txt: '推荐商品',
             txtColor: '#e46028'
         }
     },
     {
-        name: 'RecommendGoods',
+        name: 'MRecommendGoods',
         value: {
             title: '推荐商品',
             imgList: [
@@ -100,14 +100,14 @@ export default [
         }
     },
     {
-        name: 'Text',
+        name: 'MText',
         value: {
             txt: '抢购商品',
             txtColor: '#0A96ED'
         }
     },
     {
-        name: 'RecommendGoods',
+        name: 'MRecommendGoods',
         value: {
             title: '抢购商品',
             imgList: [

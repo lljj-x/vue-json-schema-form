@@ -233,15 +233,12 @@ export default {
                 h( // 关键输入组件
                     self.widget,
                     {
-                        props: {
-                            ...self.uiProps,
-                            value: this.value, // v-model
-                        },
                         style: self.widgetStyle,
                         class: self.widgetClass,
                         attrs: {
-                            placeholder: self.uiProps.placeholder, // 兼容placeholder配置在 外层或者attr内
-                            ...self.widgetAttrs
+                            ...self.widgetAttrs,
+                            ...self.uiProps,
+                            value: this.value, // v-model
                         },
                         on: {
                             input(event) {

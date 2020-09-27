@@ -1,5 +1,5 @@
 <template>
-    <el-radio-group v-model="checkList">
+    <el-radio-group v-model="checkList" v-bind="$attrs">
         <el-radio v-for="(item, index) in enumOptions" :key="index" :label="item.value">{{ item.label }}</el-radio>
     </el-radio-group>
 </template>

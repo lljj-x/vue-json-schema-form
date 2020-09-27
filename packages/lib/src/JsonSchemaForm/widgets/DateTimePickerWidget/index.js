@@ -6,9 +6,9 @@ export default {
     name: 'DateTimePickerWidget',
     functional: true,
     render(h, context) {
-        const { isNumberValue, isRange, ...otherProps } = context.data.props;
+        const { isNumberValue, isRange, ...otherProps } = context.data.attrs || {};
 
-        context.data.props = {
+        context.data.attrs = {
             type: isRange ? 'datetimerange' : 'datetime',
             ...otherProps
         };

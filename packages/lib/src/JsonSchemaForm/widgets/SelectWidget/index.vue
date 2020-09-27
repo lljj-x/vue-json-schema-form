@@ -11,8 +11,8 @@
         name: 'SelectWidget',
         props: {
             value: {
-                default: () => '',
-                type: [String, Number, Boolean]
+                default: null,
+                type: null
             },
             enumOptions: {
                 default: () => [],

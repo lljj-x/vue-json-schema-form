@@ -6,9 +6,9 @@ export default {
     name: 'TimePickerWidget',
     functional: true,
     render(h, context) {
-        context.data.props = {
+        context.data.attrs = {
             'value-format': 'HH:mm:ss',
-            ...context.data.props
+            ...context.data.attrs || {}
         };
 
         const oldInputCall = context.data.on.input;
