@@ -186,8 +186,40 @@
             handleCancel() {
                 console.log('Cancel');
             },
+            clipboard(value) {
+                if (document.execCommand) {
+                    const input = document.createElement('input');
+                    document.body.appendChild(input);
+                    input.setAttribute('value', value);
+                    input.select();
+
+                    document.execCommand('copy');
+                    document.body.removeChild(input);
+
+                    return true;
+                }
+
+                this.$message.info(value);
+                return false;
+            },
             handleSubmit() {
                 console.log('Submit');
+                if (this.$route.query.type === 'Test') {
+                    const genRoute = this.$router.resolve({
+                        query: {
+                            type: 'Test',
+                            schema: this.curSchemaCode,
+                            formData: this.curFormDataCode,
+                            uiSchema: this.curUiSchemaCode,
+                            errSchema: this.curErrorSchemaCode,
+                        }
+                    });
+                    const url = `${window.location.origin}${window.location.pathname}${genRoute.href}`;
+
+                    if (this.clipboard(url)) {
+                        this.$message.success('复制预览地址成功');
+                    }
+                }
             }
         }
     };
