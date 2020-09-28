@@ -70,6 +70,7 @@
                         :ui-schema="uiSchema"
                         :error-schema="errorSchema"
                         :custom-formats="customFormats"
+                        :form-footer="formFooter"
                         @on-change="handleDataChange"
                         @on-cancel="handleCancel"
                         @on-submit="handleSubmit"
@@ -107,10 +108,19 @@
             };
         },
         computed: {
+            formFooter() {
+                return {
+                    show: true,
+                    okBtn: '保存',
+                    cancelBtn: this.isTestPage ? '生成预览链接' : '取消'
+                };
+            },
             curType() {
                 return this.$route.query.type;
             },
-
+            isTestPage() {
+                return this.curType === 'Test';
+            },
             curSchemaCode: {
                 get() {
                     return this.genCodeStrComputedGetter('schema');
@@ -177,14 +187,26 @@
                 }
             },
             initData() {
-                const curPack = schemaTypes[this.curType];
-                Object.assign(this, this.getDefaultSchemaMap(), curPack);
+                // eslint-disable-next-line no-unused-vars
+                const { type, ...queryParams } = this.$route.query;
+
+                let queryParamsObj = {};
+                try {
+                    queryParamsObj = Object.entries(queryParams).reduce((preVal, [key, value]) => {
+                        preVal[key] = JSON.parse(decodeURIComponent(String(value)));
+                        return preVal;
+                    }, {});
+                } catch (e) {
+                    // nothing ...
+                }
+
+                Object.assign(this, this.getDefaultSchemaMap(), Object.assign(schemaTypes[this.curType], queryParamsObj));
             },
             handleDataChange() {
                 console.log('Data change');
             },
-            handleCancel() {
-                console.log('Cancel');
+            handleSubmit() {
+                console.log('Submit');
             },
             clipboard(value) {
                 if (document.execCommand) {
@@ -202,16 +224,15 @@
                 this.$message.info(value);
                 return false;
             },
-            handleSubmit() {
-                console.log('Submit');
-                if (this.$route.query.type === 'Test') {
+            handleCancel() {
+                if (this.isTestPage) {
                     const genRoute = this.$router.resolve({
                         query: {
                             type: 'Test',
-                            schema: this.curSchemaCode,
-                            formData: this.curFormDataCode,
-                            uiSchema: this.curUiSchemaCode,
-                            errSchema: this.curErrorSchemaCode,
+                            schema: encodeURIComponent(this.curSchemaCode),
+                            formData: encodeURIComponent(this.curFormDataCode),
+                            uiSchema: encodeURIComponent(this.curUiSchemaCode),
+                            errorSchema: encodeURIComponent(this.curErrorSchemaCode),
                         }
                     });
                     const url = `${window.location.origin}${window.location.pathname}${genRoute.href}`;
