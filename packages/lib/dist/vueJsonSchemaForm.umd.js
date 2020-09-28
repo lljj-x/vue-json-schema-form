@@ -9084,15 +9084,12 @@
         } // self.description
         )] : []), [h( // 关键输入组件
         self.widget, {
-          props: _objectSpread2(_objectSpread2({}, self.uiProps), {}, {
+          style: self.widgetStyle,
+          class: self.widgetClass,
+          attrs: _objectSpread2(_objectSpread2(_objectSpread2({}, self.widgetAttrs), self.uiProps), {}, {
             value: this.value // v-model
 
           }),
-          style: self.widgetStyle,
-          class: self.widgetClass,
-          attrs: _objectSpread2({
-            placeholder: self.uiProps.placeholder
-          }, self.widgetAttrs),
           on: {
             input: function input(event) {
               var formatValue = self.formatValue(event); // 默认用户输入变了都是需要更新form数据保持同步，唯一特例 input number
@@ -9148,7 +9145,7 @@
 
           // anyOf
           renderList.push(h(FIELDS_MAPS.anyOf, {
-            class: (_class = {}, _defineProperty(_class, "".concat(pathClassName, "-anyOf"), true), _defineProperty(_class, "AnyOfField", true), _class),
+            class: (_class = {}, _defineProperty(_class, "".concat(pathClassName, "-anyOf"), true), _defineProperty(_class, "fieldItem", true), _defineProperty(_class, "anyOfField", true), _class),
             props: curProps
           }));
         } else if (schema.oneOf && schema.oneOf.length > 0 && !isSelect(schema)) {
@@ -9156,7 +9153,7 @@
 
           // oneOf
           renderList.push(h(FIELDS_MAPS.oneOf, {
-            class: (_class2 = {}, _defineProperty(_class2, "".concat(pathClassName, "-oneOf"), true), _defineProperty(_class2, "OneOfField", true), _class2),
+            class: (_class2 = {}, _defineProperty(_class2, "".concat(pathClassName, "-oneOf"), true), _defineProperty(_class2, "fieldItem", true), _defineProperty(_class2, "oneOfField", true), _class2),
             props: curProps
           }));
         } else {
@@ -9167,7 +9164,7 @@
             props: _objectSpread2(_objectSpread2({}, curProps), {}, {
               fieldProps: fieldProps
             }),
-            class: _objectSpread2(_objectSpread2({}, context.data.class), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, lowerCase(fieldComponent.name) || fieldComponent, true), _defineProperty(_objectSpread2$1, "hiddenWidget", hiddenWidget), _defineProperty(_objectSpread2$1, pathClassName, true), _objectSpread2$1))
+            class: _objectSpread2(_objectSpread2({}, context.data.class), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, lowerCase(fieldComponent.name) || fieldComponent, true), _defineProperty(_objectSpread2$1, "hiddenWidget", hiddenWidget), _defineProperty(_objectSpread2$1, "fieldItem", true), _defineProperty(_objectSpread2$1, pathClassName, true), _objectSpread2$1))
           }));
         }
 
@@ -9392,15 +9389,20 @@
       var _c = _vm._self._c || _h;
       return _c(
         "el-radio-group",
-        {
-          model: {
-            value: _vm.checkList,
-            callback: function($$v) {
-              _vm.checkList = $$v;
-            },
-            expression: "checkList"
-          }
-        },
+        _vm._b(
+          {
+            model: {
+              value: _vm.checkList,
+              callback: function($$v) {
+                _vm.checkList = $$v;
+              },
+              expression: "checkList"
+            }
+          },
+          "el-radio-group",
+          _vm.$attrs,
+          false
+        ),
         _vm._l(_vm.enumOptions, function(item, index) {
           return _c("el-radio", { key: index, attrs: { label: item.value } }, [
             _vm._v(_vm._s(item.label))
@@ -9453,10 +9455,8 @@
       name: 'SelectWidget',
       props: {
         value: {
-          default: function _default() {
-            return '';
-          },
-          type: [String, Number, Boolean]
+          default: null,
+          type: null
         },
         enumOptions: {
           default: function _default() {
@@ -9549,12 +9549,12 @@
       name: 'DatePickerWidget',
       functional: true,
       render: function render(h, context) {
-        var _context$data$props = context.data.props,
-            isNumberValue = _context$data$props.isNumberValue,
-            isRange = _context$data$props.isRange,
-            otherProps = _objectWithoutProperties(_context$data$props, ["isNumberValue", "isRange"]);
+        var _ref = context.data.attrs || {},
+            isNumberValue = _ref.isNumberValue,
+            isRange = _ref.isRange,
+            otherProps = _objectWithoutProperties(_ref, ["isNumberValue", "isRange"]);
 
-        context.data.props = _objectSpread2({
+        context.data.attrs = _objectSpread2({
           type: isRange ? 'daterange' : 'date',
           'value-format': isNumberValue ? 'timestamp' : 'yyyy-MM-dd'
         }, otherProps);
@@ -9576,12 +9576,12 @@
       name: 'DateTimePickerWidget',
       functional: true,
       render: function render(h, context) {
-        var _context$data$props = context.data.props,
-            isNumberValue = _context$data$props.isNumberValue,
-            isRange = _context$data$props.isRange,
-            otherProps = _objectWithoutProperties(_context$data$props, ["isNumberValue", "isRange"]);
+        var _ref = context.data.attrs || {},
+            isNumberValue = _ref.isNumberValue,
+            isRange = _ref.isRange,
+            otherProps = _objectWithoutProperties(_ref, ["isNumberValue", "isRange"]);
 
-        context.data.props = _objectSpread2({
+        context.data.attrs = _objectSpread2({
           type: isRange ? 'datetimerange' : 'datetime'
         }, otherProps); // 字符串为 0 时区ISO标准时间
 
@@ -9612,9 +9612,9 @@
       name: 'TimePickerWidget',
       functional: true,
       render: function render(h, context) {
-        context.data.props = _objectSpread2({
+        context.data.attrs = _objectSpread2({
           'value-format': 'HH:mm:ss'
-        }, context.data.props);
+        }, context.data.attrs || {});
         var oldInputCall = context.data.on.input;
         context.data.on = _objectSpread2(_objectSpread2({}, context.data.on), {}, {
           input: function input(val) {
@@ -10245,6 +10245,8 @@
           };
         }); // 存在枚举数据列表 传入 enumOptions
 
+        widgetConfig.uiProps.multiple = true;
+
         if (enumOptions) {
           widgetConfig.uiProps.enumOptions = enumOptions;
         }
@@ -10428,7 +10430,7 @@
       watch: {
         curFormData: function curFormData(newVal, oldVal) {
           // 引用类型，当值不相等，说明是被重新赋值
-          if (newVal !== oldVal) {
+          if (newVal !== oldVal && Array.isArray(newVal)) {
             this.formKeys = newVal.map(function () {
               return genId();
             });
@@ -10441,7 +10443,10 @@
           var _this$$props = this.$props,
               rootFormData = _this$$props.rootFormData,
               curNodePath = _this$$props.curNodePath;
-          return getPathVal(rootFormData, curNodePath);
+          var value = getPathVal(rootFormData, curNodePath);
+          if (Array.isArray(value)) return value;
+          console.error('error: type array，值必须为 array 类型');
+          return [];
         },
         // 获取一个新item
         getNewFormDataRow: function getNewFormDataRow() {
@@ -11276,59 +11281,6 @@
       }
     };
 
-    const isOldIE = typeof navigator !== 'undefined' &&
-        /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
-    function createInjector(context) {
-        return (id, style) => addStyle(id, style);
-    }
-    let HEAD;
-    const styles = {};
-    function addStyle(id, css) {
-        const group = isOldIE ? css.media || 'default' : id;
-        const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
-        if (!style.ids.has(id)) {
-            style.ids.add(id);
-            let code = css.source;
-            if (css.map) {
-                // https://developer.chrome.com/devtools/docs/javascript-debugging
-                // this makes source maps inside style tags work properly in Chrome
-                code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
-                // http://stackoverflow.com/a/26603875
-                code +=
-                    '\n/*# sourceMappingURL=data:application/json;base64,' +
-                        btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
-                        ' */';
-            }
-            if (!style.element) {
-                style.element = document.createElement('style');
-                style.element.type = 'text/css';
-                if (css.media)
-                    style.element.setAttribute('media', css.media);
-                if (HEAD === undefined) {
-                    HEAD = document.head || document.getElementsByTagName('head')[0];
-                }
-                HEAD.appendChild(style.element);
-            }
-            if ('styleSheet' in style.element) {
-                style.styles.push(code);
-                style.element.styleSheet.cssText = style.styles
-                    .filter(Boolean)
-                    .join('\n');
-            }
-            else {
-                const index = style.ids.size - 1;
-                const textNode = document.createTextNode(code);
-                const nodes = style.element.childNodes;
-                if (nodes[index])
-                    style.element.removeChild(nodes[index]);
-                if (nodes.length)
-                    style.element.insertBefore(textNode, nodes[index]);
-                else
-                    style.element.appendChild(textNode);
-            }
-        }
-    }
-
     /* script */
     const __vue_script__$4 = script$4;
 
@@ -11339,12 +11291,11 @@
       var _c = _vm._self._c || _h;
       return _c(
         "el-form-item",
-        { class: _vm.$style.item },
+        { staticClass: "formFooter_item" },
         [
           _c(
             "el-button",
             {
-              attrs: { size: "small" },
               on: {
                 click: function($event) {
                   return _vm.$emit("onCancel")
@@ -11357,7 +11308,7 @@
           _c(
             "el-button",
             {
-              attrs: { size: "small", type: "primary" },
+              attrs: { type: "primary" },
               on: {
                 click: function($event) {
                   return _vm.$emit("onSubmit")
@@ -11374,18 +11325,15 @@
     __vue_render__$4._withStripped = true;
 
       /* style */
-      const __vue_inject_styles__$4 = function (inject) {
-        if (!inject) return
-        inject("data-v-25c5ccb1_0", { source: "\n.src-JsonSchemaForm-item-1UFV {\n    text-align: right;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    padding-top: 10px;\n}\n", map: {"version":3,"sources":["D:\\code\\git_my\\vue-json-schema-form\\packages\\lib\\src\\JsonSchemaForm\\FormFooter.vue"],"names":[],"mappings":";AAwBA;IACA,iBAAA;IACA,yCAAA;IACA,iBAAA;AACA","file":"FormFooter.vue","sourcesContent":["<template>\r\n    <el-form-item :class=\"$style.item\">\r\n        <el-button size=\"small\" @click=\"$emit('onCancel')\">{{ cancelBtn }}</el-button>\r\n        <el-button size=\"small\" type=\"primary\" @click=\"$emit('onSubmit')\">{{ okBtn }}</el-button>\r\n    </el-form-item>\r\n</template>\r\n\r\n<script>\r\n    export default {\r\n        name: 'FormFooter',\r\n        props: {\r\n            okBtn: {\r\n                type: String,\r\n                default: '保存'\r\n            },\r\n            cancelBtn: {\r\n                type: String,\r\n                default: '取消'\r\n            },\r\n        }\r\n    };\r\n</script>\r\n\r\n<style module>\r\n    .item {\r\n        text-align: right;\r\n        border-top: 1px solid rgba(0, 0, 0, 0.08);\r\n        padding-top: 10px;\r\n    }\r\n</style>\r\n"]}, media: undefined });
-    Object.defineProperty(this, "$style", { value: {"item":"src-JsonSchemaForm-item-1UFV"} });
-
-      };
+      const __vue_inject_styles__$4 = undefined;
       /* scoped */
       const __vue_scope_id__$4 = undefined;
       /* module identifier */
       const __vue_module_identifier__$4 = undefined;
       /* functional template */
       const __vue_is_functional_template__$4 = false;
+      /* style inject */
+      
       /* style inject SSR */
       
       /* style inject shadow dom */
@@ -11400,7 +11348,7 @@
         __vue_is_functional_template__$4,
         __vue_module_identifier__$4,
         false,
-        createInjector,
+        undefined,
         undefined,
         undefined
       );
@@ -11432,7 +11380,7 @@
       }
     }
 
-    var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .el-color-picker{vertical-align:top}.genFromComponent .fieldGroupWrap+.fieldGroupWrap{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .formItemErrorBox{color:#ff5757;padding-top:4px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:14px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 20px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px;width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}";
+    var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .el-color-picker{vertical-align:top}.genFromComponent .fieldGroupWrap+.fieldGroupWrap{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .formItemErrorBox{color:#ff5757;padding-top:4px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:14px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 20px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px;width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}.genFromComponent .formFooter_item{text-align:right;border-top:1px solid rgba(0,0,0,.08);padding-top:10px}.genFromComponent.el-form--inline .appendCombining_box,.genFromComponent.el-form--inline .fieldGroupWrap,.genFromComponent.el-form--inline .fieldItem{display:inline-block;vertical-align:top}.genFromComponent.el-form--inline .fieldGroupWrap{margin-right:10px;vertical-align:top}.genFromComponent.el-form--inline .validateWidget{margin-right:0}.genFromComponent.el-form--inline .formFooter_item{border-top:none;padding-top:0}";
     styleInject(css_248z);
 
     var JsonSchemaForm = {
