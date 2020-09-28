@@ -55,7 +55,8 @@ export default {
                 h(FIELDS_MAP.anyOf, {
                     class: {
                         [`${pathClassName}-anyOf`]: true,
-                        AnyOfField: true
+                        fieldItem: true,
+                        anyOfField: true
                     },
                     props: curProps
                 })
@@ -66,7 +67,8 @@ export default {
                 h(FIELDS_MAP.oneOf, {
                     class: {
                         [`${pathClassName}-oneOf`]: true,
-                        OneOfField: true
+                        fieldItem: true,
+                        oneOfField: true
                     },
                     props: curProps
                 })
@@ -83,6 +85,7 @@ export default {
                         ...context.data.class,
                         [lowerCase(fieldComponent.name) || fieldComponent]: true,
                         hiddenWidget,
+                        fieldItem: true,
                         [pathClassName]: true
                     }
                 })

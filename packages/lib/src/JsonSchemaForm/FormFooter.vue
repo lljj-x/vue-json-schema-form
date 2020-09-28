@@ -1,7 +1,7 @@
 <template>
-    <el-form-item :class="$style.item">
-        <el-button size="small" @click="$emit('onCancel')">{{ cancelBtn }}</el-button>
-        <el-button size="small" type="primary" @click="$emit('onSubmit')">{{ okBtn }}</el-button>
+    <el-form-item class="formFooter_item">
+        <el-button @click="$emit('onCancel')">{{ cancelBtn }}</el-button>
+        <el-button type="primary" @click="$emit('onSubmit')">{{ okBtn }}</el-button>
     </el-form-item>
 </template>
 
@@ -20,11 +20,3 @@
         }
     };
 </script>
-
-<style module>
-    .item {
-        text-align: right;
-        border-top: 1px solid rgba(0, 0, 0, 0.08);
-        padding-top: 10px;
-    }
-</style>

@@ -208,4 +208,27 @@
     .arrayListItem_btn-delete {
         background-color: #fef0f0;
     }
+
+    .formFooter_item {
+        text-align: right;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        padding-top: 10px;
+    }
+    &.el-form--inline {
+        .appendCombining_box,.fieldGroupWrap, .fieldItem{
+            display: inline-block;
+            vertical-align: top;
+        }
+        .fieldGroupWrap {
+            margin-right: 10px;
+            vertical-align: top;
+        }
+        .validateWidget {
+            margin-right: 0;
+        }
+        .formFooter_item {
+            border-top: none;
+            padding-top: 0;
+        }
+    }
 }
