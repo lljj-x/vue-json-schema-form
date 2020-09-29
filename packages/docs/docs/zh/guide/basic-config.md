@@ -578,6 +578,7 @@ formProps = {
     labelPosition: 'top', // 表单域标签的位置
     labelSuffix: '：', //
     inline: false, // 行内表单模式
+    inlineFooter: false, // 如果想要保存按钮和表单元素一行显示，需要配置 true
     labelWidth: 'auto', // 表单域标签的宽度，例如 '50px'
 }
 ```

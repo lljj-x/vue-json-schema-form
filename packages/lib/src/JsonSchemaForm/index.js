@@ -126,6 +126,7 @@ export default {
             {
                 class: {
                     genFromComponent: true,
+                    'form-inlineFooter': self.formProps.inlineFooter,
                     [`genFromComponent_${this.schema.id}Form`]: !!this.schema.id
                 },
                 ref: 'genEditForm',
