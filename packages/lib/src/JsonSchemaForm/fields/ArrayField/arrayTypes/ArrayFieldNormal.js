@@ -30,6 +30,7 @@ export default {
             title,
             description,
             addable,
+            showIndexNumber,
             sortable,
             removable,
             showTitle,
@@ -82,6 +83,7 @@ export default {
                     {
                         props: {
                             vNodeList: arrayItemsVNodeList,
+                            showIndexNumber,
                             addable,
                             sortable,
                             removable,

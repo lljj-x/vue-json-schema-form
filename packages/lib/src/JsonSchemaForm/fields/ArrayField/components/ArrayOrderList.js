@@ -21,6 +21,11 @@ export default {
             type: Boolean,
             default: true
         },
+        showIndexNumber: {
+            // 是否显示当前序号
+            type: Boolean,
+            default: false
+        },
         sortable: {
             // 是否可排序
             type: Boolean,
@@ -76,6 +81,7 @@ export default {
             },
             this.vNodeList.map(({ key, vNode: VnodeItem }, index) => {
                 const trueIndex = this.tupleItemsLength + index;
+                const indexNumber = index + 1;
                 return h(
                     'div',
                     {
@@ -85,6 +91,11 @@ export default {
                         }
                     },
                     [
+                        this.showIndexNumber ? h('div', {
+                            class: {
+                                arrayListItem_index: true
+                            }
+                        }, indexNumber) : null,
                         h(
                             'div',
                             {

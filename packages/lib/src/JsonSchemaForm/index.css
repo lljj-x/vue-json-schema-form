@@ -165,9 +165,21 @@
             font-size: 14px;
         }
     }
-    .arrayListItem_operateTool {
+    .arrayListItem_index, .arrayListItem_operateTool{
         position: absolute;
         height: 25px;
+    }
+    .arrayListItem_index {
+        top: 6px;
+        line-height: 18px;
+        height: 18px;
+        padding: 0 6px;
+        background-color: rgba(0,0,0,.28);
+        color: #fff;
+        font-size: 12px;
+        border-radius: 2px;
+    }
+    .arrayListItem_operateTool {
         width: 75px;
         right: 9px;
         top: -2px;

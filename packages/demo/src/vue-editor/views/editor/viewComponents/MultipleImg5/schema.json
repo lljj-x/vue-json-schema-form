@@ -30,6 +30,9 @@
             "type": "array",
             "minItems": 1,
             "maxItems": 5,
+            "ui:options": {
+                "showIndexNumber": true
+            },
             "items": {
                 "$ref": "#/definitions/ImgItem"
             }

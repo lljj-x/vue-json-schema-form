@@ -9,6 +9,7 @@ export default {
                 type: 'object',
                 properties: {
                     name: {
+                        title: 'Thing',
                         type: 'string',
                         default: 'Default name',
                     },
@@ -20,7 +21,11 @@ export default {
             listOfStrings: {
                 type: 'array',
                 title: 'A list of strings',
+                'ui:options': {
+                    showIndexNumber: true
+                },
                 items: {
+                    title: 'Input string',
                     type: 'string',
                     default: 'bazinga',
                 },
@@ -75,6 +80,7 @@ export default {
                 minItems: 5,
                 default: ['carp', 'trout', 'bream'],
                 items: {
+                    title: 'Default unidentified',
                     type: 'string',
                     default: 'unidentified',
                 },
@@ -86,6 +92,7 @@ export default {
                     type: 'array',
                     title: 'Inner list',
                     items: {
+                        title: 'Inner Item',
                         type: 'string',
                         default: 'lorem ipsum',
                     },
@@ -95,6 +102,7 @@ export default {
                 title: 'Unorderable items',
                 type: 'array',
                 items: {
+                    title: 'Unorderable',
                     type: 'string',
                     default: 'lorem ipsum',
                 },
@@ -103,6 +111,7 @@ export default {
                 title: 'Unremovable items',
                 type: 'array',
                 items: {
+                    title: 'Unremovable',
                     type: 'string',
                     default: 'lorem ipsum',
                 },
@@ -111,6 +120,7 @@ export default {
                 title: 'No add, remove and order buttons',
                 type: 'array',
                 items: {
+                    title: 'No ...',
                     type: 'string',
                     default: 'lorem ipsum',
                 },
@@ -196,6 +206,7 @@ export default {
                 addable: false,
                 sortable: false,
                 removable: false,
+                showIndexNumber: true
             },
         },
     },

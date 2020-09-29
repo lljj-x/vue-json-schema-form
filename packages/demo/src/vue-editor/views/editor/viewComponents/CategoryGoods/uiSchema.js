@@ -23,6 +23,7 @@ export default {
         }
     },
     goodsList: {
+        'ui:showIndexNumber': true,
         items: {
             ...genImgItem()
         }
