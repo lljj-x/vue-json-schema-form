@@ -1,6 +1,5 @@
 <template>
     <div v-loading="loading" :class="{
-        [$style.box]: true,
         [$style.previewBox]: isPreview
     }"
     >
@@ -201,7 +200,8 @@
         mounted() {
             // todo: 通过计算获取
             window.document.body.classList.add('page-decorate-design');
-            this.$refs.domScrollWrap.scrollLeft = 480;
+            const scrollDom = this.$refs.domScrollWrap;
+            this.$refs.domScrollWrap.scrollLeft = (scrollDom.scrollWidth - scrollDom.clientWidth) / 2;
         },
         destroyed() {
             window.document.body.classList.remove('page-decorate-design');

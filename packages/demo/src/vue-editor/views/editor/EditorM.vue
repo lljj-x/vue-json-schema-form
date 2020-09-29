@@ -1,6 +1,5 @@
 <template>
     <div v-loading="loading" :class="{
-        [$style.box]: true,
         [$style.previewBox]: isPreview
     }"
     >
@@ -17,7 +16,7 @@
                 v-else
                 type="primary"
                 style="position: fixed;right: 20px;top: 20px;z-index: 5;"
-                @click="(scale = 70) && (isPreview = false)"
+                @click="isPreview = false"
             >
                 结束预览
             </el-button>
@@ -309,7 +308,6 @@
 
             // 用户操作数据
             handleDataChange() {
-                // todo: ie 会导致输入框丢失光标
                 this.fixComponentFormPosition();
             },
 
