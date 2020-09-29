@@ -40,6 +40,9 @@ export default {
         },
     },
     uiSchema: {
+        title: {
+            'err:required': '请输入title'
+        },
         tasks: {
             items: {
                 details: {

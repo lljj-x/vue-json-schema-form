@@ -4,6 +4,12 @@ export default {
         description: 'A simple form example.',
         type: 'object',
         required: ['firstName', 'lastName'],
+        'ui:order': [
+            'lastName',
+            'firstName',
+            '*',
+            'password',
+        ],
         properties: {
             firstName: {
                 type: 'string',
@@ -13,6 +19,10 @@ export default {
             lastName: {
                 type: 'string',
                 title: 'Last name',
+                'ui:options': {
+                    description: '请输入你的姓'
+                },
+                'err:required': '必须输入Last Name'
             },
             price: {
                 type: 'string',
@@ -52,12 +62,6 @@ export default {
     },
     uiSchema: {
         'ui:description': '简单表单例子（这里通过UiSchema覆盖了默认description描述配置）',
-        'ui:order': [
-            'lastName',
-            'firstName',
-            '*',
-            'password',
-        ],
         firstName: {
             'ui:title': '名字',
             'ui:description': '比如：李白姓李、孙尚香姓孙、马可波罗姓马可波',
@@ -78,11 +82,6 @@ export default {
         }
     },
     errorSchema: {
-        lastName: {
-            'err:options': {
-                required: '请输入lastName'
-            }
-        },
         bio: {
             'err:minLength': '签名最小长度10个字符串'
         }

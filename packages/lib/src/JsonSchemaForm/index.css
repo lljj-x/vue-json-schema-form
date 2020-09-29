@@ -81,12 +81,12 @@
     }
     .formItemErrorBox {
         color: #ff5757;
-        padding-top: 4px;
+        padding-top: 2px;
         position: absolute;
         top: 100%;
         left: 0;
         display: -webkit-box !important;
-        line-height: 14px;
+        line-height: 16px;
         text-overflow: ellipsis;
         overflow: hidden;
         -webkit-box-orient: vertical;

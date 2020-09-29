@@ -6,7 +6,7 @@ export default {
     schema: {
         title: '测试专用页',
         type: 'object',
-        description: '请输入你的Schema',
+        description: '输入你的Schema，生成链接即可快速生成预览',
         properties: {
         }
     }
