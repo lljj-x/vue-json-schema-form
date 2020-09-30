@@ -5,7 +5,6 @@
 import vueProps from '../props';
 
 import { orderProperties, getUiOptions } from '../../common/formUtils';
-import { ADDITIONAL_PROPERTY_FLAG } from '../../common/schema/retriev';
 import { computedCurPath } from '../../common/vueUtils';
 
 import FieldGroupWrap from '../../fieldComponents/FieldGroupWrap';
@@ -44,24 +43,20 @@ export default {
         const properties = Object.keys(schema.properties || {});
         const orderedProperties = orderProperties(properties, order);
 
-        const propertiesVNodeList = orderedProperties.map((name) => {
-            const addedByAdditionalProperties = schema.properties[name].hasOwnProperty(ADDITIONAL_PROPERTY_FLAG);
-
-            // 递归参数
-            return h(
-                SchemaField,
-                {
-                    props: {
-                        ...props,
-                        schema: schema.properties[name],
-                        uiSchema: addedByAdditionalProperties ? uiSchema.additionalProperties : uiSchema[name],
-                        errorSchema: errorSchema[name],
-                        required: self.isRequired(name),
-                        curNodePath: computedCurPath(props.curNodePath, name)
-                    }
+        // 递归参数
+        const propertiesVNodeList = orderedProperties.map(name => h(
+            SchemaField,
+            {
+                props: {
+                    ...props,
+                    schema: schema.properties[name],
+                    uiSchema: uiSchema[name],
+                    errorSchema: errorSchema[name],
+                    required: self.isRequired(name),
+                    curNodePath: computedCurPath(props.curNodePath, name)
                 }
-            );
-        });
+            }
+        ));
 
         return h(
             FieldGroupWrap,

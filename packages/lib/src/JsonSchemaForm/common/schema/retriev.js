@@ -14,20 +14,18 @@ import findSchemaDefinition from './findSchemaDefinition';
 import { intersection } from '../arrayUtils';
 
 import {
-    isObject,
-    guessType,
-    mergeSchemas,
-    scm
+    /* guessType,  mergeSchemas, */ isObject, scm
 } from '../utils';
 
-import { isValid, getMatchingOption } from './validate';
+// import { getMatchingOption, isValid } from './validate';
 
 // 自动添加分割线
 
-export const ADDITIONAL_PROPERTY_FLAG = '__additional_property';
+// export const ADDITIONAL_PROPERTY_FLAG = '__additional_property';
 
 // resolve Schema - dependencies
 // https://json-schema.org/understanding-json-schema/reference/object.html#dependencies
+/*
 export function resolveDependencies(schema, rootSchema, formData) {
     // 从源模式中删除依赖项。
     const { dependencies = {} } = schema;
@@ -48,9 +46,12 @@ export function resolveDependencies(schema, rootSchema, formData) {
         formData
     );
 }
+*/
 
 // 处理依赖关系 dependencies
 // https://json-schema.org/understanding-json-schema/reference/object.html#dependencies
+/*
+
 function processDependencies(
     dependencies,
     resolvedSchema,
@@ -96,9 +97,12 @@ function processDependencies(
     }
     return resolvedSchema;
 }
+*/
 
 // 属性依赖
 // https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies
+
+/*
 function withDependentProperties(schema, additionallyRequired) {
     if (!additionallyRequired) {
         return schema;
@@ -108,9 +112,11 @@ function withDependentProperties(schema, additionallyRequired) {
         : additionallyRequired;
     return { ...schema, required };
 }
+*/
 
 // schema 依赖
 // https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies
+/*
 function withDependentSchema(
     schema,
     rootSchema,
@@ -185,6 +191,7 @@ function withExactlyOneSubschema(
         retrieveSchema(dependentSchema, rootSchema, formData)
     );
 }
+*/
 
 // resolve Schema - $ref
 // https://json-schema.org/understanding-json-schema/structuring.html#using-id-with-ref
@@ -332,27 +339,43 @@ export function resolveAllOf(schema, rootSchema, formData) {
 // resolve Schema
 function resolveSchema(schema, rootSchema = {}, formData = {}) {
     // allOf 、$ref、dependencies 可能被同时配置
-    // 按优先级处理
+
+    // allOf
     if (schema.hasOwnProperty('allOf')) {
-        // 配置了 allOf属性合并数据
         schema = resolveAllOf(schema, rootSchema, formData);
     }
 
+    // $ref
     if (schema.hasOwnProperty('$ref')) {
         schema = resolveReference(schema, rootSchema, formData);
     }
 
+    // dependencies
+    /*
     if (schema.hasOwnProperty('dependencies')) {
         const resolvedSchema = resolveDependencies(schema, rootSchema, formData);
         schema = retrieveSchema(resolvedSchema, rootSchema, formData);
     }
+    */
+
+    // additionalProperties
+    /*
+    const hasAdditionalProperties = schema.hasOwnProperty('additionalProperties') && schema.additionalProperties !== false;
+    if (hasAdditionalProperties) {
+        return stubExistingAdditionalProperties(
+            schema,
+            rootSchema,
+            formData
+        );
+    }
+    */
 
     return schema;
 }
 
 // 这个函数将为formData中的每个键创建新的“属性”项
 // 查找到附加属性统一到properties[key]格式 并且打上标准
-function stubExistingAdditionalProperties(
+/* function stubExistingAdditionalProperties(
     schema,
     rootSchema = {},
     formData = {}
@@ -390,7 +413,7 @@ function stubExistingAdditionalProperties(
     });
 
     return schema;
-}
+} */
 
 // 索引当前节点
 export default function retrieveSchema(schema, rootSchema = {}, formData = {}) {
@@ -398,17 +421,5 @@ export default function retrieveSchema(schema, rootSchema = {}, formData = {}) {
         return {};
     }
 
-    const resolvedSchema = resolveSchema(schema, rootSchema, formData);
-
-    // 配置了 additionalProperties 属性
-    const hasAdditionalProperties = resolvedSchema.hasOwnProperty('additionalProperties') && resolvedSchema.additionalProperties !== false;
-    if (hasAdditionalProperties) {
-        return stubExistingAdditionalProperties(
-            resolvedSchema,
-            rootSchema,
-            formData
-        );
-    }
-
-    return resolvedSchema;
+    return resolveSchema(schema, rootSchema, formData);
 }

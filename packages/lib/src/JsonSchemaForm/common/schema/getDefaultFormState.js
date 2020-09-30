@@ -9,7 +9,7 @@ import findSchemaDefinition from './findSchemaDefinition';
 import { getMatchingOption } from './validate';
 import { fillObj } from '../arrayUtils';
 import { isFixedItems, isMultiSelect } from '../formUtils';
-import retrieveSchema, { resolveDependencies, resolveAllOf } from './retriev';
+import retrieveSchema, { /* resolveDependencies, */ resolveAllOf } from './retriev';
 
 /**
  * When merging defaults and form data, we want to merge in this specific way:
@@ -78,7 +78,7 @@ function computeDefaults(
             formData,
             includeUndefinedValues
         );
-    } else if ('dependencies' in schema) {
+    } else if /* ('dependencies' in schema) {
         const resolvedSchema = resolveDependencies(schema, rootSchema, formData);
         return computeDefaults(
             resolvedSchema,
@@ -87,7 +87,7 @@ function computeDefaults(
             formData,
             includeUndefinedValues
         );
-    } else if (isFixedItems(schema)) {
+    } else if */ (isFixedItems(schema)) {
         defaults = schema.items.map((itemSchema, idx) => computeDefaults(
             itemSchema,
             Array.isArray(parentDefaults) ? parentDefaults[idx] : undefined,

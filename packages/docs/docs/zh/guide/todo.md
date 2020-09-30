@@ -20,10 +20,11 @@
 - [x] custom-rule 参数 支持
 - [x] 逐步开源发布
 - [x] 优化源码 不需要this的组件调整为 functional
+- [x] 数组支持配置是否显示序号
+- [x] 数组渲染样式微调优化（控制条下间距等）
+- [ ] 支持属性依赖 [属性依赖](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies)
+- [ ] 支持Schema依赖 [Schema依赖](https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies)
 
-- [ ] 数组 title 和 description支持配置 $index 通配符 渲染时替换为 1 2 3
-- [ ] 数组渲染样式微调优化（控制条下间距，）
 - [ ] 添加代码测试
-- [ ] Ui配置，支持函数表达式配置，hidden title description placeholder等
 - [ ] 对照react schema from适配更多规则支持
 - [ ] 解耦elementUi 重新开发form 和formItem组件，通过配置化实现适配elementUi iView 等常用ui组件
