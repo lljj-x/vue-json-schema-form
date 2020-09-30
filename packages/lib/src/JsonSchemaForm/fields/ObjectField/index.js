@@ -3,10 +3,9 @@
  */
 
 import vueProps from '../props';
-
 import { orderProperties, getUiOptions } from '../../common/formUtils';
-import { computedCurPath } from '../../common/vueUtils';
-
+import { computedCurPath, getPathVal } from '../../common/vueUtils';
+import { isObject } from '../../common/utils';
 import FieldGroupWrap from '../../fieldComponents/FieldGroupWrap';
 import Widget from '../../fieldComponents/Widget';
 
@@ -15,26 +14,50 @@ import SchemaField from '../SchemaField';
 
 export default {
     name: 'ObjectField',
-    props: {
-        ...vueProps
-    },
-    methods: {
-        isRequired(name) {
-            const schema = this.schema;
-            return Array.isArray(schema.required) && !!~schema.required.indexOf(name);
-        }
-    },
-    render(h) {
-        const self = this;
-        const props = this.$props;
+    functional: true,
+    props: vueProps,
+    render(h, context) {
         const {
             schema,
             uiSchema,
             errorSchema,
-        } = props;
+            needValidFieldGroup,
+            curNodePath,
+            rootFormData
+        } = context.props;
+
+        // required
+        const isRequired = name => Array.isArray(schema.required) && !!~schema.required.indexOf(name);
+
+        // 存在 dependencies 配置，需要当前属性是否存在依赖关系 和当前属性是否正在被依赖
+        // tip: 判断依赖关系需要使用了 formData 的值来做判断，所以当用户输入的时候会触发整个对象树重新渲染
+        // TODO: 每个属性都需要单独来遍历 dependencies 属性可以优化一点点点点点（可通过 key value 反转值加个缓存来计算）
+        const isDependOn = (name) => {
+            let isDependency = false; // 是否是一个被依赖项
+            let curDependent = false; // 当前是否触发依赖
+
+            if (isObject(schema.dependencies)) {
+                curDependent = Object.entries(schema.dependencies).some(([key, value]) => {
+
+                    // 是否和当前属性存在依赖关系
+                    const tempDependency = !!(Array.isArray(value) && ~value.indexOf(name));
+
+                    // 是否是一个被依赖项
+                    isDependency = isDependency || tempDependency;
+
+                    // 当前需要依赖
+                    return tempDependency && getPathVal(rootFormData, curNodePath)[key] !== undefined;
+                });
+            }
+
+            return {
+                isDependency,
+                curDependent
+            };
+        };
 
         const {
-            title, description, showTitle, showDescription, order, fieldClass, fieldAttrs, fieldStyle
+            title, description, showTitle, showDescription, order, fieldClass, fieldAttrs, fieldStyle, onlyShowIfDependent
         } = getUiOptions({
             schema,
             uiSchema
@@ -44,19 +67,26 @@ export default {
         const orderedProperties = orderProperties(properties, order);
 
         // 递归参数
-        const propertiesVNodeList = orderedProperties.map(name => h(
-            SchemaField,
-            {
-                props: {
-                    ...props,
-                    schema: schema.properties[name],
-                    uiSchema: uiSchema[name],
-                    errorSchema: errorSchema[name],
-                    required: self.isRequired(name),
-                    curNodePath: computedCurPath(props.curNodePath, name)
+        const propertiesVNodeList = orderedProperties.map((name) => {
+            const required = isRequired(name);
+            const { isDependency, curDependent } = isDependOn(name);
+
+            return h(
+                // onlyShowWhenDependent 只渲染被依赖的属性
+                (isDependency && onlyShowIfDependent && !curDependent) ? null : SchemaField,
+                {
+                    key: name,
+                    props: {
+                        ...context.props,
+                        schema: schema.properties[name],
+                        uiSchema: uiSchema[name],
+                        errorSchema: errorSchema[name],
+                        required: required || curDependent,
+                        curNodePath: computedCurPath(curNodePath, name)
+                    }
                 }
-            }
-        ));
+            );
+        });
 
         return h(
             FieldGroupWrap,
@@ -67,7 +97,7 @@ export default {
                     showTitle,
                     showDescription
                 },
-                class: fieldClass,
+                class: { ...context.data.class, ...fieldClass },
                 attrs: fieldAttrs,
                 style: fieldStyle
             },
@@ -81,23 +111,23 @@ export default {
                         ...propertiesVNodeList,
 
                         // 插入一个Widget，校验 object组 - minProperties. maxProperties. oneOf 等需要外层校验的数据
-                        this.needValidFieldGroup ? h(Widget, {
+                        needValidFieldGroup ? h(Widget, {
                             class: {
                                 validateWidget: true,
                                 'validateWidget-object': true
                             },
                             props: {
-                                schema: Object.entries(self.$props.schema).reduce((preVal, [key, value]) => {
+                                schema: Object.entries(schema).reduce((preVal, [key, value]) => {
                                     if (
-                                        self.$props.schema.additionalProperties === false
+                                        schema.additionalProperties === false
                                         || !['properties', 'id', '$id'].includes(key)
                                     ) preVal[key] = value;
                                     return preVal;
                                 }, {}),
                                 uiSchema,
                                 errorSchema,
-                                curNodePath: props.curNodePath,
-                                rootFormData: props.rootFormData
+                                curNodePath,
+                                rootFormData
                             }
                         }) : null
                     ]

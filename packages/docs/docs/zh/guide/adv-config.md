@@ -5,12 +5,18 @@ sidebarDepth: 2
 # 高级配置
 
 ## 数据联动
-* 数据联动的实现需要 `JSON Schema` [anyOf](https://form.lljj.me/#/demo?type=AnyOf) [oneOf](https://form.lljj.me/#/demo?type=OneOf) 格式来实现
-* 详细 AnyOf、oneOf 配置请 [点击查看](/zh/rules/combining.html)
 
-:::tip
-如果觉得 anyOf 配置麻烦也可以使用 [ui:field 使用已有联级组件](/zh/guide/adv-config.html#demo-联级选择)，或者配置 [ui-schema fieldStyle](/zh/guide/basic-config.html#ui-schema) 通过样式隐藏来实现。
-:::
+要实现数据联动可以有多种方法来实现
+
+* 通过 [anyOf](https://form.lljj.me/#/demo?type=AnyOf) 配置
+> 详细 AnyOf、oneOf 配置请 [点击查看](/zh/rules/combining.html)
+
+* 通过 object dependencies 实现联动
+* 通过 if else 实现联动 Todo
+* 自定义组件配置 [ui:field 使用已有联级组件](/zh/guide/adv-config.html#demo-联级选择)
+* 通过 [ui-schema fieldStyle](/zh/guide/basic-config.html#ui-schema) 动态配置 style样式隐藏显示
+
+### anyOf 实现数据联动
 
 anyOf联动如下演示：（点击 `保存` 按钮查看 `formData` 数据）
 
@@ -174,6 +180,20 @@ export default {
 
 
 >* 推荐使用 `anyOf`，`oneOf` 只能有一个符合的结果
+
+### object dependencies 实现数据联动
+
+object dependencies 目前只支持属性联动，schema联动不支持暂时的计划也不打算支持。
+
+### 通过 if else 实现联动
+目前来看 if else 比较容易解决数据联动的场景，且可以根据值来判断但依旧不支持逻辑表达式
+
+### 通过 ui:field 调用自己的联级组件
+打破 JSON Schema 规范
+
+### ui-schema fieldStyle 实现联动
+打破 JSON Schema 规范
+因为 ui-schema和formData 本身都是响应式数据，所以完全可以动态动态 ui-schema的值，并且像有些类似框架直接提供了 使用函数表达式的能力
 
 ## 树形结构
 * 树形结构需要使用 `$ref` 来递归调用自己
