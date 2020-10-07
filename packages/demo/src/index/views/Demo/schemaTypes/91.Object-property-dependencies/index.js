@@ -4,12 +4,12 @@
 
 export default {
     schema: {
-        title: '单向依赖',
-        description: '最基本的属性单向依赖，ui-schema 配置 onlyShowIfDependent 只在被依赖时才显示',
+        title: 'Object property dependencies',
         type: 'object',
         properties: {
             unidirectional: {
-                title: 'Unidirectional',
+                title: '单向依赖',
+                description: '最基本的属性单向依赖，ui-schema 配置 onlyShowIfDependent 只在被依赖时才显示',
                 type: 'object',
                 'ui:options': {
                     onlyShowIfDependent: true

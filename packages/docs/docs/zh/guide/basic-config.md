@@ -163,9 +163,9 @@ uiSchema = {
 }
 ```
 
->1. `ui:field` 自定义field组件参见这里  [自定义 field](/zh/guide/adv-config.html#自定义-field)
->1. `ui:widget` 自定义widget组件参见这里  [自定义 widget](/zh/guide/adv-config.html#自定义-widget)
-
+>1. `ui:field` 自定义field组件参见这里  [自定义 field](/zh/guide/adv-config.html#自定义field)
+>1. `ui:widget` 自定义widget组件参见这里  [自定义 widget](/zh/guide/adv-config.html#自定义widget)
+>1. `ui:widget` 配置 `HiddenWidget` 或者 `hidden` 既可隐藏当前元素
 
 #### ui-schema配置在schema中
 

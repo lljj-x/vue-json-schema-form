@@ -6,19 +6,22 @@ sidebarDepth: 2
 
 ## 数据联动
 
-要实现数据联动可以有多种方法来实现
+> 要实现数据联动可以有多种方法来实现，支持一些打破 `JSON Schema` 规范的配置，可以结合实际场景选择方案。
 
-* 通过 [anyOf](https://form.lljj.me/#/demo?type=AnyOf) 配置
-> 详细 AnyOf、oneOf 配置请 [点击查看](/zh/rules/combining.html)
+遵循 `JSON Schema` 规范包含如下几种方式：
+* [通过 JSON Schema anyOf 配置](#anyof-实现数据联动)
+* [通过 object dependencies 实现联动](#object-dependencies-实现数据联动)
+* [Todo: 通过 if else 实现联动](#通过-if-else-实现联动)
 
-* 通过 object dependencies 实现联动
-* 通过 if else 实现联动 Todo
-* 自定义组件配置 [ui:field 使用已有联级组件](/zh/guide/adv-config.html#demo-联级选择)
-* 通过 [ui-schema fieldStyle](/zh/guide/basic-config.html#ui-schema) 动态配置 style样式隐藏显示
+打破 `JSON Schema` 规范包含如下几种方式：
+
+* [通过自定义组件配置 ui:field 使用已有联级组件](#通过-ui-field-调用自己的联级组件)
+* [通过 ui-schema fieldStyle 动态样式](#ui-schema-fieldstyle-实现联动)
 
 ### anyOf 实现数据联动
+基于 [JSON Schema anyOf](https://json-schema.org/understanding-json-schema/reference/combining.html#anyof) 规范，[详细anyOf配置可参考这里](/zh/rules/combining.html#anyof)，**适用于根据类型选择然后使用不同的数据结构或ui样式**。
 
-anyOf联动如下演示：（点击 `保存` 按钮查看 `formData` 数据）
+比如：设置个人资料可以通过 `firstName` + `lastName` 或者 通过 `userId` 两种方式来设置。如下演示：（点击 `保存` 按钮查看 `formData` 数据），也可以查看 [其它anyOf在线演示](https://form.lljj.me/#/demo?type=AnyOf)
 
 ::: demo
 ```html
@@ -56,6 +59,12 @@ export default {
                                 title: '通过用户名设置',
                                 required: ['firstName'],
                                 properties: {
+                                    type: {
+                                        'ui:widget': 'HiddenWidget',
+                                        title: '类型',
+                                        type: 'string',
+                                        default: 'userInfo'
+                                    },
                                     firstName: {
                                         type: 'string',
                                         title: '名字',
@@ -71,6 +80,12 @@ export default {
                             {
                                 title: '通过用户id设置',
                                 properties: {
+                                    type: {
+                                        'ui:widget': 'HiddenWidget',
+                                        title: '类型',
+                                        type: 'string',
+                                        default: 'userId'
+                                    },
                                     idCode: {
                                         type: 'string',
                                         title: 'ID',
@@ -178,22 +193,121 @@ export default {
 ```
 :::
 
-
 >* 推荐使用 `anyOf`，`oneOf` 只能有一个符合的结果
 
 ### object dependencies 实现数据联动
 
-object dependencies 目前只支持属性联动，schema联动不支持暂时的计划也不打算支持。
+基于 [JSON Schema Object dependencies](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies) 规范，**适用于根据需要根据值是否为空（undefined）来做联动设置**，*目前只支持 property dependencies*。
 
-### 通过 if else 实现联动
-目前来看 if else 比较容易解决数据联动的场景，且可以根据值来判断但依旧不支持逻辑表达式
+比如：填写了 `信用卡号` 就必须填写 `账单地址`。如下演示，也可以查看 [Object-property-dependencies在线演示](https://form.lljj.me/#/demo?type=Object-property-dependencies)
 
-### 通过 ui:field 调用自己的联级组件
-打破 JSON Schema 规范
+::: demo
+```html
+<template>
+    <vue-form
+        v-model="formData"
+        :schema="schema"
+    >
+    </vue-form>
+</template>
 
-### ui-schema fieldStyle 实现联动
-打破 JSON Schema 规范
-因为 ui-schema和formData 本身都是响应式数据，所以完全可以动态动态 ui-schema的值，并且像有些类似框架直接提供了 使用函数表达式的能力
+<script>
+export default {
+    name: 'Demo',
+    data() {
+        return {
+            formData: {},
+            schema: {
+                title: 'Object property dependencies',
+                type: 'object',
+                properties: {
+                    unidirectional: {
+                        title: '单向依赖',
+                        description: '最基本的属性单向依赖，ui-schema 配置 onlyShowIfDependent 只在被依赖时才显示',
+                        type: 'object',
+                        'ui:options': {
+                            onlyShowIfDependent: true
+                        },
+                        properties: {
+                            name: {
+                                title: 'Name',
+                                type: 'string'
+                            },
+                            credit_card: {
+                                title: 'Credit card',
+                                type: 'string'
+                            },
+                            billing_address: {
+                                title: 'Billing address',
+                                type: 'string'
+                            }
+                        },
+                        required: [
+                            'name'
+                        ],
+                        dependencies: {
+                            credit_card: [
+                                'billing_address'
+                            ]
+                        }
+                    },
+                    bidirectional: {
+                        title: '双向依赖',
+                        description: '显式地定义双向依赖，如果配置 onlyShowIfDependent 会导致初始化没有值时都无法渲染，这里需要使用者执行考虑',
+                        type: 'object',
+                        properties: {
+                            name: {
+                                title: 'Name',
+                                type: 'string'
+                            },
+                            credit_card: {
+                                title: 'Credit card',
+                                type: 'string'
+                            },
+                            billing_address: {
+                                title: 'Billing address',
+                                type: 'string'
+                            }
+                        },
+                        required: [
+                            'name'
+                        ],
+                        dependencies: {
+                            credit_card: [
+                                'billing_address'
+                            ],
+                            billing_address: [
+                                'credit_card'
+                            ]
+                        }
+                    }
+                }
+            },
+        }
+    }
+}
+</script>
+```
+:::
+
+> `ui-schema` 配置 `onlyShowIfDependent: true` 可以隐藏没触发依赖的项
+
+### if else 实现联动
+> *暂不支持*
+
+基于 [JSON Schema if then else](https://json-schema.org/understanding-json-schema/reference/conditionals.html)，**适用于根据值等于一个常量时来做联动**，*目前版本不支持该特性*。
+
+就目前来看 if else 比较容易解决数据联动的场景，可以根据值来做判断，但依旧不能解决对值支持逻辑判断，比如`大于`、`小于`，后续版本会考虑支持该特性。
+
+### ui:field 调用自己的联级组件
+可能打破 `JSON Schema` 规范，**适用于通过配置一个已有的自定义组件来渲染一些复杂的联动场景**
+
+比如： [ui:field 使用已有省市区联级组件](/zh/guide/adv-config.html#demo-联级选择)
+
+### ui-schema 响应式实现联动
+可能打破 `JSON Schema` 规范。`ui-schema` 和 `formData` 本身都是响应式数据，所以完全可以通过计算属性返回 ui-schema，配置 `ui:widget:HiddenWidget` 、`ui:field: null` 、 `ui:fieldStyle` 等都可以实现样式联动。
+
+这个方法可以说是目前的下下策，会使得 `ui-schema` 配置存在大量的条件判断。
 
 ## 树形结构
 * 树形结构需要使用 `$ref` 来递归调用自己
@@ -266,8 +380,6 @@ object dependencies 目前只支持属性联动，schema联动不支持暂时的
 </script>
 ```
 :::
-
-
 
 ## 空数据默认值
 默认在用户输入时如果清空了表单的数据，即空字符串 `''`，会默认设置值为 `undefined`，这样是为了保证和JSON Schema 规范保持一致。
@@ -591,7 +703,7 @@ import { fieldProps } from  '@lljj/vue-json-schema-form';
 
 ### Demo - 联级选择
 
-* Demo中 `ui:field` 使用现有组件嵌入，不使用schema配置和方法
+* Demo中 `ui:field` 使用现有省市区联级组件嵌入，不使用schema配置和方法
 * [查看field组件源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/docs/docs/.vuepress/injectVue/field/DistpickerField.vue)
 
 >* 使用省市区联动组件

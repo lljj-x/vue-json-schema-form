@@ -539,115 +539,12 @@
       throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
     }
 
-    function _toPrimitive(input, hint) {
-      if (typeof input !== "object" || input === null) return input;
-      var prim = input[Symbol.toPrimitive];
-
-      if (prim !== undefined) {
-        var res = prim.call(input, hint || "default");
-        if (typeof res !== "object") return res;
-        throw new TypeError("@@toPrimitive must return a primitive value.");
-      }
-
-      return (hint === "string" ? String : Number)(input);
-    }
-
-    function _toPropertyKey(arg) {
-      var key = _toPrimitive(arg, "string");
-
-      return typeof key === "symbol" ? key : String(key);
-    }
-
-    // $ref 引用
-    function getPathVal$1(obj, pathStr) {
-      var pathArr = pathStr.split('/');
-
-      for (var i = 0; i < pathArr.length; i += 1) {
-        if (obj === undefined) return undefined;
-        obj = pathArr[i] === '' ? obj : obj[pathArr[i]];
-      }
-
-      return obj;
-    } // 找到ref引用的schema
-
-
-    function findSchemaDefinition($ref) {
-      var rootSchema = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var origRef = $ref;
-
-      if ($ref.startsWith('#')) {
-        // Decode URI fragment representation.
-        $ref = decodeURIComponent($ref.substring(1));
-      } else {
-        throw new Error("Could not find a definition for ".concat(origRef, "."));
-      }
-
-      var current = getPathVal$1(rootSchema, $ref);
-
-      if (current === undefined) {
-        throw new Error("Could not find a definition for ".concat(origRef, "."));
-      }
-
-      if (current.hasOwnProperty('$ref')) {
-        return findSchemaDefinition(current.$ref, rootSchema);
-      }
-
-      return current;
-    }
-
-    /**
-     * Created by Liu.Jun on 2020/4/25 10:53.
-     */
-    // 通过 index 上移
-    function moveUpAt(target, index) {
-      if (index === 0) return false;
-      var item = target[index];
-      var newItems = [item, target[index - 1]];
-      return target.splice.apply(target, [index - 1, 2].concat(newItems));
-    } // 通过 index 下移动
-
-    function moveDownAt(target, index) {
-      if (index === target.length - 1) return false;
-      var item = target[index];
-      var newItems = [target[index + 1], item];
-      return target.splice.apply(target, [index, 2].concat(newItems));
-    } // 移除
-
-    function removeAt(target, index) {
-      // 移除数组中指定位置的元素，返回布尔表示成功与否
-      return !!target.splice(index, 1).length;
-    } // 数组填充对象
-
-    function fillObj(target, data) {
-      // 简单复制 异常直接抛错
-      return target.fill(null).map(function () {
-        return JSON.parse(JSON.stringify(data));
-      });
-    } // 切割分为多个数组
-
-    function cutOff(target, cutOffPointIndex) {
-      return target.reduce(function (preVal, curVal, curIndex) {
-        preVal[curIndex > cutOffPointIndex ? 1 : 0].push(curVal);
-        return preVal;
-      }, [[], []]);
-    } // 数组交集
-
-    function intersection(arr1, arr2) {
-      return arr1.filter(function (item) {
-        return arr2.includes(item);
-      });
-    }
-
     /**
      * Created by Liu.Jun on 2020/4/17 17:05.
      */
     // is object
-    function isObject(thing) {
-      if (typeof File !== 'undefined' && thing instanceof File) {
-        return false;
-      }
-
-      return _typeof(thing) === 'object' && thing !== null && !Array.isArray(thing);
+    function isObject(object) {
+      return Object.prototype.toString.call(object) === '[object Object]';
     } // is arguments
 
     function isArguments(object) {
@@ -683,35 +580,6 @@
 
       return 'string';
     };
-    function union(arr1, arr2) {
-      return _toConsumableArray(new Set([].concat(_toConsumableArray(arr1), _toConsumableArray(arr2))));
-    } // Recursively merge deeply nested schemas.
-    // The difference between mergeSchemas and mergeObjects
-    // is that mergeSchemas only concats arrays for
-    // values under the "required" keyword, and when it does,
-    // it doesn't include duplicate values.
-
-    function mergeSchemas(obj1, obj2) {
-      var acc = Object.assign({}, obj1); // Prevent mutation of source object.
-      // eslint-disable-next-line no-shadow
-
-      return Object.keys(obj2).reduce(function (acc, key) {
-        var left = obj1 ? obj1[key] : {};
-        var right = obj2[key];
-
-        if (obj1 && obj1.hasOwnProperty(key) && isObject(right)) {
-          acc[key] = mergeSchemas(left, right);
-        } else if (obj1 && obj2 && (getSchemaType(obj1) === 'object' || getSchemaType(obj2) === 'object') && key === 'required' && Array.isArray(left) && Array.isArray(right)) {
-          // Don't include duplicate values when merging
-          // "required" fields.
-          acc[key] = union(left, right);
-        } else {
-          acc[key] = right;
-        }
-
-        return acc;
-      }, acc);
-    } // 合并对象数据
 
     function mergeObjects(obj1, obj2) {
       var concatArrays = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
@@ -910,6 +778,189 @@
     function scm(a, b) {
       return a * b / gcd(a, b);
     }
+
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    var script = {
+      name: 'FieldGroupWrap',
+      props: {
+        showTitle: {
+          type: Boolean,
+          default: true
+        },
+        showDescription: {
+          type: Boolean,
+          default: true
+        },
+        title: {
+          type: String,
+          default: ''
+        },
+        description: {
+          type: String,
+          default: ''
+        }
+      }
+    };
+
+    function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+        if (typeof shadowMode !== 'boolean') {
+            createInjectorSSR = createInjector;
+            createInjector = shadowMode;
+            shadowMode = false;
+        }
+        // Vue.extend constructor export interop.
+        const options = typeof script === 'function' ? script.options : script;
+        // render functions
+        if (template && template.render) {
+            options.render = template.render;
+            options.staticRenderFns = template.staticRenderFns;
+            options._compiled = true;
+            // functional template
+            if (isFunctionalTemplate) {
+                options.functional = true;
+            }
+        }
+        // scopedId
+        if (scopeId) {
+            options._scopeId = scopeId;
+        }
+        let hook;
+        if (moduleIdentifier) {
+            // server build
+            hook = function (context) {
+                // 2.3 injection
+                context =
+                    context || // cached call
+                        (this.$vnode && this.$vnode.ssrContext) || // stateful
+                        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
+                // 2.2 with runInNewContext: true
+                if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+                    context = __VUE_SSR_CONTEXT__;
+                }
+                // inject component styles
+                if (style) {
+                    style.call(this, createInjectorSSR(context));
+                }
+                // register component module identifier for async chunk inference
+                if (context && context._registeredComponents) {
+                    context._registeredComponents.add(moduleIdentifier);
+                }
+            };
+            // used by ssr in case component is cached and beforeCreate
+            // never gets called
+            options._ssrRegister = hook;
+        }
+        else if (style) {
+            hook = shadowMode
+                ? function (context) {
+                    style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
+                }
+                : function (context) {
+                    style.call(this, createInjector(context));
+                };
+        }
+        if (hook) {
+            if (options.functional) {
+                // register for functional component in vue file
+                const originalRender = options.render;
+                options.render = function renderWithStyleInjection(h, context) {
+                    hook.call(context);
+                    return originalRender(h, context);
+                };
+            }
+            else {
+                // inject component registration as beforeCreate hook
+                const existing = options.beforeCreate;
+                options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+            }
+        }
+        return script;
+    }
+
+    /* script */
+    const __vue_script__ = script;
+
+    /* template */
+    var __vue_render__ = function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c(
+        "div",
+        { staticClass: "fieldGroupWrap" },
+        [
+          [
+            _vm.showTitle && _vm.title
+              ? _c("h3", { staticClass: "fieldGroupWrap_title" }, [
+                  _vm._v("\n            " + _vm._s(_vm.title) + "\n        ")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.showDescription && _vm.description
+              ? _c("p", {
+                  staticClass: "fieldGroupWrap_des",
+                  domProps: { innerHTML: _vm._s(_vm.description) }
+                })
+              : _vm._e()
+          ],
+          _vm._v(" "),
+          _c("div", { staticClass: "fieldGroupWrap_box" }, [_vm._t("default")], 2)
+        ],
+        2
+      )
+    };
+    var __vue_staticRenderFns__ = [];
+    __vue_render__._withStripped = true;
+
+      /* style */
+      const __vue_inject_styles__ = undefined;
+      /* scoped */
+      const __vue_scope_id__ = undefined;
+      /* module identifier */
+      const __vue_module_identifier__ = undefined;
+      /* functional template */
+      const __vue_is_functional_template__ = false;
+      /* style inject */
+      
+      /* style inject SSR */
+      
+      /* style inject shadow dom */
+      
+
+      
+      const __vue_component__ = /*#__PURE__*/normalizeComponent(
+        { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
+        __vue_inject_styles__,
+        __vue_script__,
+        __vue_scope_id__,
+        __vue_is_functional_template__,
+        __vue_module_identifier__,
+        false,
+        undefined,
+        undefined,
+        undefined
+      );
 
     var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -8309,548 +8360,6 @@
         getMatchingOption: getMatchingOption
     });
 
-    var ADDITIONAL_PROPERTY_FLAG = '__additional_property'; // resolve Schema - dependencies
-    // https://json-schema.org/understanding-json-schema/reference/object.html#dependencies
-
-    function resolveDependencies(schema, rootSchema, formData) {
-      // 从源模式中删除依赖项。
-      var _schema$dependencies = schema.dependencies,
-          dependencies = _schema$dependencies === void 0 ? {} : _schema$dependencies;
-
-      var resolvedSchema = _extends({}, schema);
-
-      if ('oneOf' in resolvedSchema) {
-        resolvedSchema = resolvedSchema.oneOf[getMatchingOption(formData, resolvedSchema.oneOf)];
-      } else if ('anyOf' in resolvedSchema) {
-        resolvedSchema = resolvedSchema.anyOf[getMatchingOption(formData, resolvedSchema.anyOf)];
-      }
-
-      return processDependencies(dependencies, resolvedSchema, rootSchema, formData);
-    } // 处理依赖关系 dependencies
-    // https://json-schema.org/understanding-json-schema/reference/object.html#dependencies
-
-    function processDependencies(dependencies, resolvedSchema, rootSchema, formData) {
-      // Process dependencies updating the local schema properties as appropriate.
-      for (var dependencyKey in dependencies) {
-        // Skip this dependency if its trigger property is not present.
-        if (formData[dependencyKey] === undefined) {
-          // eslint-disable-next-line no-continue
-          continue;
-        } // Skip this dependency if it is not included in the schema (such as when dependencyKey is itself a hidden dependency.)
-
-
-        if (resolvedSchema.properties && !(dependencyKey in resolvedSchema.properties)) {
-          // eslint-disable-next-line no-continue
-          continue;
-        }
-
-        var dependencyValue = dependencies[dependencyKey],
-            remainingDependencies = _objectWithoutProperties(dependencies, [dependencyKey].map(_toPropertyKey));
-
-        if (Array.isArray(dependencyValue)) {
-          resolvedSchema = withDependentProperties(resolvedSchema, dependencyValue);
-        } else if (isObject(dependencyValue)) {
-          resolvedSchema = withDependentSchema(resolvedSchema, rootSchema, formData, dependencyKey, dependencyValue);
-        }
-
-        return processDependencies(remainingDependencies, resolvedSchema, rootSchema, formData);
-      }
-
-      return resolvedSchema;
-    } // 属性依赖
-    // https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies
-
-
-    function withDependentProperties(schema, additionallyRequired) {
-      if (!additionallyRequired) {
-        return schema;
-      }
-
-      var required = Array.isArray(schema.required) ? Array.from(new Set([].concat(_toConsumableArray(schema.required), _toConsumableArray(additionallyRequired)))) : additionallyRequired;
-      return _objectSpread2(_objectSpread2({}, schema), {}, {
-        required: required
-      });
-    } // schema 依赖
-    // https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies
-
-
-    function withDependentSchema(schema, rootSchema, formData, dependencyKey, dependencyValue) {
-      var _retrieveSchema = retrieveSchema(dependencyValue, rootSchema, formData),
-          oneOf = _retrieveSchema.oneOf,
-          dependentSchema = _objectWithoutProperties(_retrieveSchema, ["oneOf"]);
-
-      schema = mergeSchemas(schema, dependentSchema); // Since it does not contain oneOf, we return the original schema.
-
-      if (oneOf === undefined) {
-        return schema;
-      }
-
-      if (!Array.isArray(oneOf)) {
-        throw new Error("invalid: it is some ".concat(_typeof(oneOf), " instead of an array"));
-      } // Resolve $refs inside oneOf.
-
-
-      var resolvedOneOf = oneOf.map(function (subschema) {
-        return subschema.hasOwnProperty('$ref') ? resolveReference(subschema, rootSchema, formData) : subschema;
-      });
-      return withExactlyOneSubschema(schema, rootSchema, formData, dependencyKey, resolvedOneOf);
-    }
-
-    function withExactlyOneSubschema(schema, rootSchema, formData, dependencyKey, oneOf) {
-      // eslint-disable-next-line array-callback-return,consistent-return
-      var validSubschemas = oneOf.filter(function (subschema) {
-        if (!subschema.properties) {
-          return false;
-        }
-
-        var conditionPropertySchema = subschema.properties[dependencyKey];
-
-        if (conditionPropertySchema) {
-          var conditionSchema = {
-            type: 'object',
-            properties: _defineProperty({}, dependencyKey, conditionPropertySchema)
-          };
-          return isValid(conditionSchema, formData);
-        }
-      });
-
-      if (validSubschemas.length !== 1) {
-        console.warn("ignoring oneOf in dependencies because there isn't exactly one subschema that is valid");
-        return schema;
-      }
-
-      var subschema = validSubschemas[0];
-
-      var _subschema$properties = subschema.properties,
-          conditionPropertySchema = _subschema$properties[dependencyKey],
-          dependentSubschema = _objectWithoutProperties(_subschema$properties, [dependencyKey].map(_toPropertyKey));
-
-      var dependentSchema = _objectSpread2(_objectSpread2({}, subschema), {}, {
-        properties: dependentSubschema
-      });
-
-      return mergeSchemas(schema, retrieveSchema(dependentSchema, rootSchema, formData));
-    } // resolve Schema - $ref
-    // https://json-schema.org/understanding-json-schema/structuring.html#using-id-with-ref
-
-
-    function resolveReference(schema, rootSchema, formData) {
-      // Retrieve the referenced schema definition.
-      var $refSchema = findSchemaDefinition(schema.$ref, rootSchema); // Drop the $ref property of the source schema.
-      // eslint-disable-next-line no-unused-vars
-
-      var $ref = schema.$ref,
-          localSchema = _objectWithoutProperties(schema, ["$ref"]); // Update referenced schema definition with local schema properties.
-
-
-      return retrieveSchema(_objectSpread2(_objectSpread2({}, $refSchema), localSchema), rootSchema, formData);
-    } // 深度递归合并 合并allOf的每2项
-
-
-    function mergeSchemaAllOf() {
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      if (args.length < 2) return args[0];
-      var preVal = {};
-      var copyArgs = [].concat(args);
-
-      var _loop = function _loop() {
-        var obj1 = isObject(copyArgs[0]) ? copyArgs[0] : {};
-        var obj2 = isObject(copyArgs[1]) ? copyArgs[1] : {};
-        preVal = Object.assign({}, obj1);
-        Object.keys(obj2).reduce(function (acc, key) {
-          var left = obj1[key];
-          var right = obj2[key]; // 左右一边为object
-
-          if (isObject(left) || isObject(right)) {
-            // 两边同时为object
-            if (isObject(left) && isObject(right)) {
-              acc[key] = mergeSchemaAllOf(left, right);
-            } else {
-              // 其中一边为 object
-              var _ref = isObject(left) ? [left, right] : [right, left],
-                  _ref2 = _slicedToArray(_ref, 2),
-                  objTypeData = _ref2[0],
-                  baseTypeData = _ref2[1];
-
-              if (key === 'additionalProperties') {
-                // 适配类型： 一边配置了对象一边没配置或者true false
-                // {
-                //     additionalProperties: {
-                //         type: 'string',
-                //     },
-                //     additionalProperties: false
-                // }
-                acc[key] = baseTypeData === true ? objTypeData : false; // default false
-              } else {
-                acc[key] = objTypeData;
-              }
-            } // 一边为array
-
-          } else if (Array.isArray(left) || Array.isArray(right)) {
-            // 同为数组取交集
-            if (Array.isArray(left) && Array.isArray(right)) {
-              // 数组里面嵌套对象不支持 因为我不知道该怎么合并
-              if (isObject(left[0]) || isObject(right[0])) {
-                throw new Error('暂不支持如上数组对象元素合并');
-              } // 交集
-
-
-              var intersectionArray = intersection([].concat(left), [].concat(right)); // 没有交集
-
-              if (intersectionArray.length <= 0) {
-                throw new Error('无法合并如上数据');
-              }
-
-              if (intersectionArray.length === 0 && key === 'type') {
-                // 自己取出值
-                acc[key] = intersectionArray[0];
-              } else {
-                acc[key] = intersectionArray;
-              }
-            } else {
-              // 其中一边为 Array
-              // 查找包含关系
-              var _ref3 = Array.isArray(left) ? [left, right] : [right, left],
-                  _ref4 = _slicedToArray(_ref3, 2),
-                  arrayTypeData = _ref4[0],
-                  _baseTypeData = _ref4[1]; // 空值直接合并另一边
-
-
-              if (_baseTypeData === undefined) {
-                acc[key] = arrayTypeData;
-              } else {
-                if (!arrayTypeData.includes(_baseTypeData)) {
-                  throw new Error('无法合并如下数据');
-                }
-
-                acc[key] = _baseTypeData;
-              }
-            }
-          } else if (left !== undefined && right !== undefined) {
-            // 两边都不是 undefined - 基础数据类型 string number boolean...
-            if (key === 'maxLength' || key === 'maximum' || key === 'maxItems' || key === 'exclusiveMaximum' || key === 'maxProperties') {
-              acc[key] = Math.min(left, right);
-            } else if (key === 'minLength' || key === 'minimum' || key === 'minItems' || key === 'exclusiveMinimum' || key === 'minProperties') {
-              acc[key] = Math.max(left, right);
-            } else if (key === 'multipleOf') {
-              // 获取最小公倍数
-              acc[key] = scm(left, right);
-            } else {
-              if (left !== right) {
-                throw new Error('无法合并如下数据');
-              }
-
-              acc[key] = left;
-            }
-          } else {
-            // 一边为undefined
-            acc[key] = left === undefined ? right : left;
-          }
-
-          return acc;
-        }, preVal); // 先进先出
-
-        copyArgs.splice(0, 2, preVal);
-      };
-
-      while (copyArgs.length >= 2) {
-        _loop();
-      }
-
-      return preVal;
-    } // resolve Schema - allOf
-
-
-    function resolveAllOf(schema, rootSchema, formData) {
-      // allOf item中可能存在 $ref
-      var resolvedAllOfRefSchema = _objectSpread2(_objectSpread2({}, schema), {}, {
-        allOf: schema.allOf.map(function (allOfItem) {
-          return retrieveSchema(allOfItem, rootSchema, formData);
-        })
-      });
-
-      try {
-        var allOf = resolvedAllOfRefSchema.allOf,
-            originProperties = _objectWithoutProperties(resolvedAllOfRefSchema, ["allOf"]);
-
-        return mergeSchemaAllOf.apply(void 0, [originProperties].concat(_toConsumableArray(allOf)));
-      } catch (e) {
-        console.warn("\u65E0\u6CD5\u5408\u5E76allOf\uFF0C\u4E22\u5F03allOf\u914D\u7F6E\u7EE7\u7EED\u6E32\u67D3: \n".concat(e)); // eslint-disable-next-line no-unused-vars
-
-        var errAllOf = resolvedAllOfRefSchema.allOf,
-            resolvedSchemaWithoutAllOf = _objectWithoutProperties(resolvedAllOfRefSchema, ["allOf"]);
-
-        return resolvedSchemaWithoutAllOf;
-      }
-    } // resolve Schema
-
-    function resolveSchema$1(schema) {
-      var rootSchema = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var formData = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-      // allOf 、$ref、dependencies 可能被同时配置
-      // 按优先级处理
-      if (schema.hasOwnProperty('allOf')) {
-        // 配置了 allOf属性合并数据
-        schema = resolveAllOf(schema, rootSchema, formData);
-      }
-
-      if (schema.hasOwnProperty('$ref')) {
-        schema = resolveReference(schema, rootSchema, formData);
-      }
-
-      if (schema.hasOwnProperty('dependencies')) {
-        var resolvedSchema = resolveDependencies(schema, rootSchema, formData);
-        schema = retrieveSchema(resolvedSchema, rootSchema, formData);
-      }
-
-      return schema;
-    } // 这个函数将为formData中的每个键创建新的“属性”项
-    // 查找到附加属性统一到properties[key]格式 并且打上标准
-
-
-    function stubExistingAdditionalProperties(schema) {
-      var rootSchema = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var formData = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      // clone the schema so we don't ruin the consumer's original
-      schema = _objectSpread2(_objectSpread2({}, schema), {}, {
-        properties: _objectSpread2({}, schema.properties)
-      });
-      Object.keys(formData).forEach(function (key) {
-        if (schema.properties.hasOwnProperty(key)) {
-          // No need to stub, our schema already has the property
-          return;
-        }
-
-        var additionalProperties;
-
-        if (schema.additionalProperties.hasOwnProperty('$ref')) {
-          additionalProperties = retrieveSchema({
-            $ref: schema.additionalProperties.$ref
-          }, rootSchema, formData);
-        } else if (schema.additionalProperties.hasOwnProperty('type')) {
-          additionalProperties = _objectSpread2({}, schema.additionalProperties);
-        } else {
-          additionalProperties = {
-            type: guessType(formData[key])
-          };
-        } // The type of our new key should match the additionalProperties value;
-        // 把追加进去的属性设置为标准 schema格式，同时打上标志
-
-
-        schema.properties[key] = additionalProperties; // Set our additional property flag so we know it was dynamically added
-
-        schema.properties[key][ADDITIONAL_PROPERTY_FLAG] = true;
-      });
-      return schema;
-    } // 索引当前节点
-
-
-    function retrieveSchema(schema) {
-      var rootSchema = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var formData = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-      if (!isObject(schema)) {
-        return {};
-      }
-
-      var resolvedSchema = resolveSchema$1(schema, rootSchema, formData); // 配置了 additionalProperties 属性
-
-      var hasAdditionalProperties = resolvedSchema.hasOwnProperty('additionalProperties') && resolvedSchema.additionalProperties !== false;
-
-      if (hasAdditionalProperties) {
-        return stubExistingAdditionalProperties(resolvedSchema, rootSchema, formData);
-      }
-
-      return resolvedSchema;
-    }
-
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    var script = {
-      name: 'FieldGroupWrap',
-      props: {
-        showTitle: {
-          type: Boolean,
-          default: true
-        },
-        showDescription: {
-          type: Boolean,
-          default: true
-        },
-        title: {
-          type: String,
-          default: ''
-        },
-        description: {
-          type: String,
-          default: ''
-        }
-      }
-    };
-
-    function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
-        if (typeof shadowMode !== 'boolean') {
-            createInjectorSSR = createInjector;
-            createInjector = shadowMode;
-            shadowMode = false;
-        }
-        // Vue.extend constructor export interop.
-        const options = typeof script === 'function' ? script.options : script;
-        // render functions
-        if (template && template.render) {
-            options.render = template.render;
-            options.staticRenderFns = template.staticRenderFns;
-            options._compiled = true;
-            // functional template
-            if (isFunctionalTemplate) {
-                options.functional = true;
-            }
-        }
-        // scopedId
-        if (scopeId) {
-            options._scopeId = scopeId;
-        }
-        let hook;
-        if (moduleIdentifier) {
-            // server build
-            hook = function (context) {
-                // 2.3 injection
-                context =
-                    context || // cached call
-                        (this.$vnode && this.$vnode.ssrContext) || // stateful
-                        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
-                // 2.2 with runInNewContext: true
-                if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-                    context = __VUE_SSR_CONTEXT__;
-                }
-                // inject component styles
-                if (style) {
-                    style.call(this, createInjectorSSR(context));
-                }
-                // register component module identifier for async chunk inference
-                if (context && context._registeredComponents) {
-                    context._registeredComponents.add(moduleIdentifier);
-                }
-            };
-            // used by ssr in case component is cached and beforeCreate
-            // never gets called
-            options._ssrRegister = hook;
-        }
-        else if (style) {
-            hook = shadowMode
-                ? function (context) {
-                    style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
-                }
-                : function (context) {
-                    style.call(this, createInjector(context));
-                };
-        }
-        if (hook) {
-            if (options.functional) {
-                // register for functional component in vue file
-                const originalRender = options.render;
-                options.render = function renderWithStyleInjection(h, context) {
-                    hook.call(context);
-                    return originalRender(h, context);
-                };
-            }
-            else {
-                // inject component registration as beforeCreate hook
-                const existing = options.beforeCreate;
-                options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
-            }
-        }
-        return script;
-    }
-
-    /* script */
-    const __vue_script__ = script;
-
-    /* template */
-    var __vue_render__ = function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c(
-        "div",
-        { staticClass: "fieldGroupWrap" },
-        [
-          [
-            _vm.showTitle && _vm.title
-              ? _c("h3", { staticClass: "fieldGroupWrap_title" }, [
-                  _vm._v("\n            " + _vm._s(_vm.title) + "\n        ")
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.showDescription && _vm.description
-              ? _c("p", {
-                  staticClass: "fieldGroupWrap_des",
-                  domProps: { innerHTML: _vm._s(_vm.description) }
-                })
-              : _vm._e()
-          ],
-          _vm._v(" "),
-          _c("div", { staticClass: "fieldGroupWrap_box" }, [_vm._t("default")], 2)
-        ],
-        2
-      )
-    };
-    var __vue_staticRenderFns__ = [];
-    __vue_render__._withStripped = true;
-
-      /* style */
-      const __vue_inject_styles__ = undefined;
-      /* scoped */
-      const __vue_scope_id__ = undefined;
-      /* module identifier */
-      const __vue_module_identifier__ = undefined;
-      /* functional template */
-      const __vue_is_functional_template__ = false;
-      /* style inject */
-      
-      /* style inject SSR */
-      
-      /* style inject shadow dom */
-      
-
-      
-      const __vue_component__ = /*#__PURE__*/normalizeComponent(
-        { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
-        __vue_inject_styles__,
-        __vue_script__,
-        __vue_scope_id__,
-        __vue_is_functional_template__,
-        __vue_module_identifier__,
-        false,
-        undefined,
-        undefined,
-        undefined
-      );
-
     var Widget = {
       name: 'Widget',
       props: {
@@ -9106,6 +8615,505 @@
       }
     };
 
+    // $ref 引用
+    function getPathVal$1(obj, pathStr) {
+      var pathArr = pathStr.split('/');
+
+      for (var i = 0; i < pathArr.length; i += 1) {
+        if (obj === undefined) return undefined;
+        obj = pathArr[i] === '' ? obj : obj[pathArr[i]];
+      }
+
+      return obj;
+    } // 找到ref引用的schema
+
+
+    function findSchemaDefinition($ref) {
+      var rootSchema = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var origRef = $ref;
+
+      if ($ref.startsWith('#')) {
+        // Decode URI fragment representation.
+        $ref = decodeURIComponent($ref.substring(1));
+      } else {
+        throw new Error("Could not find a definition for ".concat(origRef, "."));
+      }
+
+      var current = getPathVal$1(rootSchema, $ref);
+
+      if (current === undefined) {
+        throw new Error("Could not find a definition for ".concat(origRef, "."));
+      }
+
+      if (current.hasOwnProperty('$ref')) {
+        return findSchemaDefinition(current.$ref, rootSchema);
+      }
+
+      return current;
+    }
+
+    /**
+     * Created by Liu.Jun on 2020/4/25 10:53.
+     */
+    // 通过 index 上移
+    function moveUpAt(target, index) {
+      if (index === 0) return false;
+      var item = target[index];
+      var newItems = [item, target[index - 1]];
+      return target.splice.apply(target, [index - 1, 2].concat(newItems));
+    } // 通过 index 下移动
+
+    function moveDownAt(target, index) {
+      if (index === target.length - 1) return false;
+      var item = target[index];
+      var newItems = [target[index + 1], item];
+      return target.splice.apply(target, [index, 2].concat(newItems));
+    } // 移除
+
+    function removeAt(target, index) {
+      // 移除数组中指定位置的元素，返回布尔表示成功与否
+      return !!target.splice(index, 1).length;
+    } // 数组填充对象
+
+    function fillObj(target, data) {
+      // 简单复制 异常直接抛错
+      return target.fill(null).map(function () {
+        return JSON.parse(JSON.stringify(data));
+      });
+    } // 切割分为多个数组
+
+    function cutOff(target, cutOffPointIndex) {
+      return target.reduce(function (preVal, curVal, curIndex) {
+        preVal[curIndex > cutOffPointIndex ? 1 : 0].push(curVal);
+        return preVal;
+      }, [[], []]);
+    } // 数组交集
+
+    function intersection(arr1, arr2) {
+      return arr1.filter(function (item) {
+        return arr2.includes(item);
+      });
+    }
+
+    // 自动添加分割线
+    // export const ADDITIONAL_PROPERTY_FLAG = '__additional_property';
+    // resolve Schema - dependencies
+    // https://json-schema.org/understanding-json-schema/reference/object.html#dependencies
+
+    /*
+    export function resolveDependencies(schema, rootSchema, formData) {
+        // 从源模式中删除依赖项。
+        const { dependencies = {} } = schema;
+        let { ...resolvedSchema } = schema;
+        if ('oneOf' in resolvedSchema) {
+            resolvedSchema = resolvedSchema.oneOf[
+                getMatchingOption(formData, resolvedSchema.oneOf, rootSchema)
+            ];
+        } else if ('anyOf' in resolvedSchema) {
+            resolvedSchema = resolvedSchema.anyOf[
+                getMatchingOption(formData, resolvedSchema.anyOf, rootSchema)
+            ];
+        }
+        return processDependencies(
+            dependencies,
+            resolvedSchema,
+            rootSchema,
+            formData
+        );
+    }
+    */
+    // 处理依赖关系 dependencies
+    // https://json-schema.org/understanding-json-schema/reference/object.html#dependencies
+
+    /*
+
+    function processDependencies(
+        dependencies,
+        resolvedSchema,
+        rootSchema,
+        formData
+    ) {
+        // Process dependencies updating the local schema properties as appropriate.
+        for (const dependencyKey in dependencies) {
+            // Skip this dependency if its trigger property is not present.
+            if (formData[dependencyKey] === undefined) {
+                // eslint-disable-next-line no-continue
+                continue;
+            }
+            // Skip this dependency if it is not included in the schema (such as when dependencyKey is itself a hidden dependency.)
+            if (
+                resolvedSchema.properties
+                && !(dependencyKey in resolvedSchema.properties)
+            ) {
+                // eslint-disable-next-line no-continue
+                continue;
+            }
+            const {
+                [dependencyKey]: dependencyValue,
+                ...remainingDependencies
+            } = dependencies;
+            if (Array.isArray(dependencyValue)) {
+                resolvedSchema = withDependentProperties(resolvedSchema, dependencyValue);
+            } else if (isObject(dependencyValue)) {
+                resolvedSchema = withDependentSchema(
+                    resolvedSchema,
+                    rootSchema,
+                    formData,
+                    dependencyKey,
+                    dependencyValue
+                );
+            }
+            return processDependencies(
+                remainingDependencies,
+                resolvedSchema,
+                rootSchema,
+                formData
+            );
+        }
+        return resolvedSchema;
+    }
+    */
+    // 属性依赖
+    // https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies
+
+    /*
+    function withDependentProperties(schema, additionallyRequired) {
+        if (!additionallyRequired) {
+            return schema;
+        }
+        const required = Array.isArray(schema.required)
+            ? Array.from(new Set([...schema.required, ...additionallyRequired]))
+            : additionallyRequired;
+        return { ...schema, required };
+    }
+    */
+    // schema 依赖
+    // https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies
+
+    /*
+    function withDependentSchema(
+        schema,
+        rootSchema,
+        formData,
+        dependencyKey,
+        dependencyValue
+    ) {
+        const { oneOf, ...dependentSchema } = retrieveSchema(
+            dependencyValue,
+            rootSchema,
+            formData
+        );
+        schema = mergeSchemas(schema, dependentSchema);
+        // Since it does not contain oneOf, we return the original schema.
+        if (oneOf === undefined) {
+            return schema;
+        } if (!Array.isArray(oneOf)) {
+            throw new Error(`invalid: it is some ${typeof oneOf} instead of an array`);
+        }
+        // Resolve $refs inside oneOf.
+        const resolvedOneOf = oneOf.map(subschema => (subschema.hasOwnProperty('$ref')
+            ? resolveReference(subschema, rootSchema, formData)
+            : subschema));
+        return withExactlyOneSubschema(
+            schema,
+            rootSchema,
+            formData,
+            dependencyKey,
+            resolvedOneOf
+        );
+    }
+
+    function withExactlyOneSubschema(
+        schema,
+        rootSchema,
+        formData,
+        dependencyKey,
+        oneOf
+    ) {
+        // eslint-disable-next-line array-callback-return,consistent-return
+        const validSubschemas = oneOf.filter((subschema) => {
+            if (!subschema.properties) {
+                return false;
+            }
+            const { [dependencyKey]: conditionPropertySchema } = subschema.properties;
+            if (conditionPropertySchema) {
+                const conditionSchema = {
+                    type: 'object',
+                    properties: {
+                        [dependencyKey]: conditionPropertySchema,
+                    },
+                };
+
+                return isValid(conditionSchema, formData);
+            }
+        });
+        if (validSubschemas.length !== 1) {
+            console.warn(
+                "ignoring oneOf in dependencies because there isn't exactly one subschema that is valid"
+            );
+            return schema;
+        }
+        const subschema = validSubschemas[0];
+        const {
+            // eslint-disable-next-line no-unused-vars
+            [dependencyKey]: conditionPropertySchema,
+            ...dependentSubschema
+        } = subschema.properties;
+        const dependentSchema = { ...subschema, properties: dependentSubschema };
+        return mergeSchemas(
+            schema,
+            retrieveSchema(dependentSchema, rootSchema, formData)
+        );
+    }
+    */
+    // resolve Schema - $ref
+    // https://json-schema.org/understanding-json-schema/structuring.html#using-id-with-ref
+
+    function resolveReference(schema, rootSchema, formData) {
+      // Retrieve the referenced schema definition.
+      var $refSchema = findSchemaDefinition(schema.$ref, rootSchema); // Drop the $ref property of the source schema.
+      // eslint-disable-next-line no-unused-vars
+
+      var $ref = schema.$ref,
+          localSchema = _objectWithoutProperties(schema, ["$ref"]); // Update referenced schema definition with local schema properties.
+
+
+      return retrieveSchema(_objectSpread2(_objectSpread2({}, $refSchema), localSchema), rootSchema, formData);
+    } // 深度递归合并 合并allOf的每2项
+
+
+    function mergeSchemaAllOf() {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      if (args.length < 2) return args[0];
+      var preVal = {};
+      var copyArgs = [].concat(args);
+
+      var _loop = function _loop() {
+        var obj1 = isObject(copyArgs[0]) ? copyArgs[0] : {};
+        var obj2 = isObject(copyArgs[1]) ? copyArgs[1] : {};
+        preVal = Object.assign({}, obj1);
+        Object.keys(obj2).reduce(function (acc, key) {
+          var left = obj1[key];
+          var right = obj2[key]; // 左右一边为object
+
+          if (isObject(left) || isObject(right)) {
+            // 两边同时为object
+            if (isObject(left) && isObject(right)) {
+              acc[key] = mergeSchemaAllOf(left, right);
+            } else {
+              // 其中一边为 object
+              var _ref = isObject(left) ? [left, right] : [right, left],
+                  _ref2 = _slicedToArray(_ref, 2),
+                  objTypeData = _ref2[0],
+                  baseTypeData = _ref2[1];
+
+              if (key === 'additionalProperties') {
+                // 适配类型： 一边配置了对象一边没配置或者true false
+                // {
+                //     additionalProperties: {
+                //         type: 'string',
+                //     },
+                //     additionalProperties: false
+                // }
+                acc[key] = baseTypeData === true ? objTypeData : false; // default false
+              } else {
+                acc[key] = objTypeData;
+              }
+            } // 一边为array
+
+          } else if (Array.isArray(left) || Array.isArray(right)) {
+            // 同为数组取交集
+            if (Array.isArray(left) && Array.isArray(right)) {
+              // 数组里面嵌套对象不支持 因为我不知道该怎么合并
+              if (isObject(left[0]) || isObject(right[0])) {
+                throw new Error('暂不支持如上数组对象元素合并');
+              } // 交集
+
+
+              var intersectionArray = intersection([].concat(left), [].concat(right)); // 没有交集
+
+              if (intersectionArray.length <= 0) {
+                throw new Error('无法合并如上数据');
+              }
+
+              if (intersectionArray.length === 0 && key === 'type') {
+                // 自己取出值
+                acc[key] = intersectionArray[0];
+              } else {
+                acc[key] = intersectionArray;
+              }
+            } else {
+              // 其中一边为 Array
+              // 查找包含关系
+              var _ref3 = Array.isArray(left) ? [left, right] : [right, left],
+                  _ref4 = _slicedToArray(_ref3, 2),
+                  arrayTypeData = _ref4[0],
+                  _baseTypeData = _ref4[1]; // 空值直接合并另一边
+
+
+              if (_baseTypeData === undefined) {
+                acc[key] = arrayTypeData;
+              } else {
+                if (!arrayTypeData.includes(_baseTypeData)) {
+                  throw new Error('无法合并如下数据');
+                }
+
+                acc[key] = _baseTypeData;
+              }
+            }
+          } else if (left !== undefined && right !== undefined) {
+            // 两边都不是 undefined - 基础数据类型 string number boolean...
+            if (key === 'maxLength' || key === 'maximum' || key === 'maxItems' || key === 'exclusiveMaximum' || key === 'maxProperties') {
+              acc[key] = Math.min(left, right);
+            } else if (key === 'minLength' || key === 'minimum' || key === 'minItems' || key === 'exclusiveMinimum' || key === 'minProperties') {
+              acc[key] = Math.max(left, right);
+            } else if (key === 'multipleOf') {
+              // 获取最小公倍数
+              acc[key] = scm(left, right);
+            } else {
+              if (left !== right) {
+                throw new Error('无法合并如下数据');
+              }
+
+              acc[key] = left;
+            }
+          } else {
+            // 一边为undefined
+            acc[key] = left === undefined ? right : left;
+          }
+
+          return acc;
+        }, preVal); // 先进先出
+
+        copyArgs.splice(0, 2, preVal);
+      };
+
+      while (copyArgs.length >= 2) {
+        _loop();
+      }
+
+      return preVal;
+    } // resolve Schema - allOf
+
+
+    function resolveAllOf(schema, rootSchema, formData) {
+      // allOf item中可能存在 $ref
+      var resolvedAllOfRefSchema = _objectSpread2(_objectSpread2({}, schema), {}, {
+        allOf: schema.allOf.map(function (allOfItem) {
+          return retrieveSchema(allOfItem, rootSchema, formData);
+        })
+      });
+
+      try {
+        var allOf = resolvedAllOfRefSchema.allOf,
+            originProperties = _objectWithoutProperties(resolvedAllOfRefSchema, ["allOf"]);
+
+        return mergeSchemaAllOf.apply(void 0, [originProperties].concat(_toConsumableArray(allOf)));
+      } catch (e) {
+        console.warn("\u65E0\u6CD5\u5408\u5E76allOf\uFF0C\u4E22\u5F03allOf\u914D\u7F6E\u7EE7\u7EED\u6E32\u67D3: \n".concat(e)); // eslint-disable-next-line no-unused-vars
+
+        var errAllOf = resolvedAllOfRefSchema.allOf,
+            resolvedSchemaWithoutAllOf = _objectWithoutProperties(resolvedAllOfRefSchema, ["allOf"]);
+
+        return resolvedSchemaWithoutAllOf;
+      }
+    } // resolve Schema
+
+    function resolveSchema$1(schema) {
+      var rootSchema = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var formData = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      // allOf 、$ref、dependencies 可能被同时配置
+      // allOf
+      if (schema.hasOwnProperty('allOf')) {
+        schema = resolveAllOf(schema, rootSchema, formData);
+      } // $ref
+
+
+      if (schema.hasOwnProperty('$ref')) {
+        schema = resolveReference(schema, rootSchema, formData);
+      } // dependencies
+
+      /*
+      if (schema.hasOwnProperty('dependencies')) {
+          const resolvedSchema = resolveDependencies(schema, rootSchema, formData);
+          schema = retrieveSchema(resolvedSchema, rootSchema, formData);
+      }
+      */
+      // additionalProperties
+
+      /*
+      const hasAdditionalProperties = schema.hasOwnProperty('additionalProperties') && schema.additionalProperties !== false;
+      if (hasAdditionalProperties) {
+          return stubExistingAdditionalProperties(
+              schema,
+              rootSchema,
+              formData
+          );
+      }
+      */
+
+
+      return schema;
+    } // 这个函数将为formData中的每个键创建新的“属性”项
+    // 查找到附加属性统一到properties[key]格式 并且打上标准
+
+    /* function stubExistingAdditionalProperties(
+        schema,
+        rootSchema = {},
+        formData = {}
+    ) {
+        // clone the schema so we don't ruin the consumer's original
+        schema = {
+            ...schema,
+            properties: { ...schema.properties },
+        };
+
+        Object.keys(formData).forEach((key) => {
+            if (schema.properties.hasOwnProperty(key)) {
+                // No need to stub, our schema already has the property
+                return;
+            }
+
+            let additionalProperties;
+            if (schema.additionalProperties.hasOwnProperty('$ref')) {
+                additionalProperties = retrieveSchema(
+                    { $ref: schema.additionalProperties.$ref },
+                    rootSchema,
+                    formData
+                );
+            } else if (schema.additionalProperties.hasOwnProperty('type')) {
+                additionalProperties = { ...schema.additionalProperties };
+            } else {
+                additionalProperties = { type: guessType(formData[key]) };
+            }
+
+            // The type of our new key should match the additionalProperties value;
+            // 把追加进去的属性设置为标准 schema格式，同时打上标志
+            schema.properties[key] = additionalProperties;
+            // Set our additional property flag so we know it was dynamically added
+            schema.properties[key][ADDITIONAL_PROPERTY_FLAG] = true;
+        });
+
+        return schema;
+    } */
+    // 索引当前节点
+
+
+    function retrieveSchema(schema) {
+      var rootSchema = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var formData = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      if (!isObject(schema)) {
+        return {};
+      }
+
+      return resolveSchema$1(schema, rootSchema, formData);
+    }
+
     var SchemaField = {
       name: 'SchemaField',
       props: vueProps,
@@ -9174,19 +9182,49 @@
 
     var ObjectField = {
       name: 'ObjectField',
-      props: _objectSpread2({}, vueProps),
-      methods: {
-        isRequired: function isRequired(name) {
-          var schema = this.schema;
+      functional: true,
+      props: vueProps,
+      render: function render(h, context) {
+        var _context$props = context.props,
+            schema = _context$props.schema,
+            uiSchema = _context$props.uiSchema,
+            errorSchema = _context$props.errorSchema,
+            needValidFieldGroup = _context$props.needValidFieldGroup,
+            curNodePath = _context$props.curNodePath,
+            rootFormData = _context$props.rootFormData; // required
+
+        var isRequired = function isRequired(name) {
           return Array.isArray(schema.required) && !!~schema.required.indexOf(name);
-        }
-      },
-      render: function render(h) {
-        var self = this;
-        var props = this.$props;
-        var schema = props.schema,
-            uiSchema = props.uiSchema,
-            errorSchema = props.errorSchema;
+        }; // 存在 dependencies 配置，需要当前属性是否存在依赖关系 和当前属性是否正在被依赖
+        // tip: 判断依赖关系需要使用了 formData 的值来做判断，所以当用户输入的时候会触发整个对象树重新渲染
+        // TODO: 每个属性都需要单独来遍历 dependencies 属性可以优化一点点点点点（可通过 key value 反转值加个缓存来计算）
+
+
+        var isDependOn = function isDependOn(name) {
+          var isDependency = false; // 是否是一个被依赖项
+
+          var curDependent = false; // 当前是否触发依赖
+
+          if (isObject(schema.dependencies)) {
+            curDependent = Object.entries(schema.dependencies).some(function (_ref) {
+              var _ref2 = _slicedToArray(_ref, 2),
+                  key = _ref2[0],
+                  value = _ref2[1];
+
+              // 是否和当前属性存在依赖关系
+              var tempDependency = !!(Array.isArray(value) && ~value.indexOf(name)); // 是否是一个被依赖项
+
+              isDependency = isDependency || tempDependency; // 当前需要依赖
+
+              return tempDependency && getPathVal(rootFormData, curNodePath)[key] !== undefined;
+            });
+          }
+
+          return {
+            isDependency: isDependency,
+            curDependent: curDependent
+          };
+        };
 
         var _getUiOptions = getUiOptions({
           schema: schema,
@@ -9199,20 +9237,28 @@
             order = _getUiOptions.order,
             fieldClass = _getUiOptions.fieldClass,
             fieldAttrs = _getUiOptions.fieldAttrs,
-            fieldStyle = _getUiOptions.fieldStyle;
+            fieldStyle = _getUiOptions.fieldStyle,
+            onlyShowIfDependent = _getUiOptions.onlyShowIfDependent;
 
         var properties = Object.keys(schema.properties || {});
-        var orderedProperties = orderProperties(properties, order);
-        var propertiesVNodeList = orderedProperties.map(function (name) {
-          var addedByAdditionalProperties = schema.properties[name].hasOwnProperty(ADDITIONAL_PROPERTY_FLAG); // 递归参数
+        var orderedProperties = orderProperties(properties, order); // 递归参数
 
-          return h(SchemaField, {
-            props: _objectSpread2(_objectSpread2({}, props), {}, {
+        var propertiesVNodeList = orderedProperties.map(function (name) {
+          var required = isRequired(name);
+
+          var _isDependOn = isDependOn(name),
+              isDependency = _isDependOn.isDependency,
+              curDependent = _isDependOn.curDependent;
+
+          return h( // onlyShowWhenDependent 只渲染被依赖的属性
+          isDependency && onlyShowIfDependent && !curDependent ? null : SchemaField, {
+            key: name,
+            props: _objectSpread2(_objectSpread2({}, context.props), {}, {
               schema: schema.properties[name],
-              uiSchema: addedByAdditionalProperties ? uiSchema.additionalProperties : uiSchema[name],
+              uiSchema: uiSchema[name],
               errorSchema: errorSchema[name],
-              required: self.isRequired(name),
-              curNodePath: computedCurPath(props.curNodePath, name)
+              required: required || curDependent,
+              curNodePath: computedCurPath(curNodePath, name)
             })
           });
         });
@@ -9223,30 +9269,30 @@
             showTitle: showTitle,
             showDescription: showDescription
           },
-          class: fieldClass,
+          class: _objectSpread2(_objectSpread2({}, context.data.class), fieldClass),
           attrs: fieldAttrs,
           style: fieldStyle
         }, [h('template', {
           slot: 'default'
         }, [].concat(_toConsumableArray(propertiesVNodeList), [// 插入一个Widget，校验 object组 - minProperties. maxProperties. oneOf 等需要外层校验的数据
-        this.needValidFieldGroup ? h(Widget, {
+        needValidFieldGroup ? h(Widget, {
           class: {
             validateWidget: true,
             'validateWidget-object': true
           },
           props: {
-            schema: Object.entries(self.$props.schema).reduce(function (preVal, _ref) {
-              var _ref2 = _slicedToArray(_ref, 2),
-                  key = _ref2[0],
-                  value = _ref2[1];
+            schema: Object.entries(schema).reduce(function (preVal, _ref3) {
+              var _ref4 = _slicedToArray(_ref3, 2),
+                  key = _ref4[0],
+                  value = _ref4[1];
 
-              if (self.$props.schema.additionalProperties === false || !['properties', 'id', '$id'].includes(key)) preVal[key] = value;
+              if (schema.additionalProperties === false || !['properties', 'id', '$id'].includes(key)) preVal[key] = value;
               return preVal;
             }, {}),
             uiSchema: uiSchema,
             errorSchema: errorSchema,
-            curNodePath: props.curNodePath,
-            rootFormData: props.rootFormData
+            curNodePath: curNodePath,
+            rootFormData: rootFormData
           }
         }) : null]))]);
       }
@@ -9831,10 +9877,18 @@
         // Use referenced schema defaults for this node.
         var refSchema = findSchemaDefinition(schema.$ref, rootSchema);
         return computeDefaults(refSchema, defaults, rootSchema, formData, includeUndefinedValues);
-      } else if ('dependencies' in schema) {
-        var resolvedSchema = resolveDependencies(schema, rootSchema, formData);
-        return computeDefaults(resolvedSchema, defaults, rootSchema, formData, includeUndefinedValues);
-      } else if (isFixedItems(schema)) {
+      } else if (
+      /* ('dependencies' in schema) {
+      const resolvedSchema = resolveDependencies(schema, rootSchema, formData);
+      return computeDefaults(
+      resolvedSchema,
+      defaults,
+      rootSchema,
+      formData,
+      includeUndefinedValues
+      );
+      } else if */
+      isFixedItems(schema)) {
         defaults = schema.items.map(function (itemSchema, idx) {
           return computeDefaults(itemSchema, Array.isArray(parentDefaults) ? parentDefaults[idx] : undefined, rootSchema, formData, includeUndefinedValues);
         });
@@ -9976,6 +10030,11 @@
           type: Boolean,
           default: true
         },
+        showIndexNumber: {
+          // 是否显示当前序号
+          type: Boolean,
+          default: false
+        },
         sortable: {
           // 是否可排序
           type: Boolean,
@@ -10035,12 +10094,17 @@
           var key = _ref.key,
               VnodeItem = _ref.vNode;
           var trueIndex = _this.tupleItemsLength + index;
+          var indexNumber = index + 1;
           return h('div', {
             key: key,
             class: {
               arrayOrderList_item: true
             }
-          }, [h('div', {
+          }, [_this.showIndexNumber ? h('div', {
+            class: {
+              arrayListItem_index: true
+            }
+          }, indexNumber) : null, h('div', {
             class: {
               arrayListItem_operateTool: true
             }
@@ -10177,6 +10241,7 @@
             title = _getUiOptions.title,
             description = _getUiOptions.description,
             addable = _getUiOptions.addable,
+            showIndexNumber = _getUiOptions.showIndexNumber,
             sortable = _getUiOptions.sortable,
             removable = _getUiOptions.removable,
             showTitle = _getUiOptions.showTitle,
@@ -10213,6 +10278,7 @@
         }, [h(ArrayOrderList, {
           props: {
             vNodeList: arrayItemsVNodeList,
+            showIndexNumber: showIndexNumber,
             addable: addable,
             sortable: sortable,
             removable: removable,
@@ -10315,6 +10381,7 @@
             title = _getUiOptions.title,
             description = _getUiOptions.description,
             addable = _getUiOptions.addable,
+            showIndexNumber = _getUiOptions.showIndexNumber,
             sortable = _getUiOptions.sortable,
             removable = _getUiOptions.removable,
             showTitle = _getUiOptions.showTitle,
@@ -10372,6 +10439,7 @@
             vNodeList: additionalVnodeArr,
             tupleItemsLength: schema.items.length,
             addable: trueAddable,
+            showIndexNumber: showIndexNumber,
             sortable: sortable,
             removable: removable,
             maxItems: schema.maxItems,
@@ -11380,7 +11448,7 @@
       }
     }
 
-    var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .el-color-picker{vertical-align:top}.genFromComponent .fieldGroupWrap+.fieldGroupWrap{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .formItemErrorBox{color:#ff5757;padding-top:4px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:14px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 20px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px;width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}.genFromComponent .formFooter_item{text-align:right;border-top:1px solid rgba(0,0,0,.08);padding-top:10px}.genFromComponent.el-form--inline .appendCombining_box,.genFromComponent.el-form--inline .fieldGroupWrap,.genFromComponent.el-form--inline .fieldItem{display:inline-block;vertical-align:top}.genFromComponent.el-form--inline .fieldGroupWrap{margin-right:10px;vertical-align:top}.genFromComponent.el-form--inline .validateWidget{margin-right:0}.genFromComponent.el-form--inline .formFooter_item{border-top:none;padding-top:0}";
+    var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .el-color-picker{vertical-align:top}.genFromComponent .fieldGroupWrap+.fieldGroupWrap{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .formItemErrorBox{color:#ff5757;padding-top:2px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:16px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 20px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{padding-top:6px;-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .arrayListItem_index,.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px}.genFromComponent .arrayListItem_index{top:6px;line-height:18px;height:18px;padding:0 6px;background-color:rgba(0,0,0,.28);color:#fff;font-size:12px;border-radius:2px}.genFromComponent .arrayListItem_operateTool{width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}.genFromComponent .formFooter_item{text-align:right;border-top:1px solid rgba(0,0,0,.08);padding-top:10px}.genFromComponent.form-inlineFooter>.fieldGroupWrap{display:inline-block;margin-right:10px}.genFromComponent.el-form--inline .validateWidget{margin-right:0}.genFromComponent.el-form--inline .formFooter_item{border-top:none;padding-top:0}";
     styleInject(css_248z);
 
     var JsonSchemaForm = {
@@ -11486,7 +11554,8 @@
         };
         return h('el-form', {
           class: _defineProperty({
-            genFromComponent: true
+            genFromComponent: true,
+            'form-inlineFooter': self.formProps.inlineFooter
           }, "genFromComponent_".concat(this.schema.id, "Form"), !!this.schema.id),
           ref: 'genEditForm',
           props: _objectSpread2({
