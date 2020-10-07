@@ -39,7 +39,7 @@ export default {
             },
             bidirectional: {
                 title: '双向依赖',
-                description: '显式地定义双向依赖，如果配置 onlyShowIfDependent 会导致初始化没有值时都无法渲染，这里需要使用者执行考虑',
+                description: '显式地定义双向依赖，如果配置 onlyShowIfDependent 会导致初始化没有值时都无法渲染，这里需要使用者自行考虑',
                 type: 'object',
                 properties: {
                     name: {

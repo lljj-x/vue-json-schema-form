@@ -17,8 +17,11 @@
 ### `maxProperties`
 最大对象的属性数量
 
+### `dependencies`
+支持配置属性依赖
+
 ::: warning
-* `Dependencies` 依赖相关的属性依赖，schema 依赖都不支持
+* `Dependencies` schema 依赖不支持
 * `additionalProperties` 只支持配置 `false`
 * `Pattern Properties` 不支持
 :::
@@ -106,6 +109,8 @@
 :::
 
 ## 其它配置
+
+### ui:order
 * 支持通过配置 `ui-schema` `ui:order` 对属性渲染顺序进行排序。
 * 参见 [ui-schema order 配置](https://form.lljj.me/#/demo?type=Simple)
 
@@ -118,3 +123,6 @@ uiSchema = {
 }
 ```
 
+### ui:onlyShowIfDependent
+
+`ui-schema` 配置 `onlyShowIfDependent: true` 可以隐藏没触发依赖的项，[参见这里](/zh/guide/adv-config.html#object-dependencies-实现数据联动)

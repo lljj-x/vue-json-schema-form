@@ -199,6 +199,8 @@ export default {
 
 基于 [JSON Schema Object dependencies](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies) 规范，**适用于根据需要根据值是否为空（undefined）来做联动设置**，*目前只支持 property dependencies*。
 
+支持 `ui-schema` 配置 `onlyShowIfDependent: true` 隐藏没触发依赖的项
+
 比如：填写了 `信用卡号` 就必须填写 `账单地址`。如下演示，也可以查看 [Object-property-dependencies在线演示](https://form.lljj.me/#/demo?type=Object-property-dependencies)
 
 ::: demo
@@ -253,7 +255,7 @@ export default {
                     },
                     bidirectional: {
                         title: '双向依赖',
-                        description: '显式地定义双向依赖，如果配置 onlyShowIfDependent 会导致初始化没有值时都无法渲染，这里需要使用者执行考虑',
+                        description: '显式地定义双向依赖，如果配置 onlyShowIfDependent 会导致初始化没有值时都无法渲染，这里需要使用者自行考虑',
                         type: 'object',
                         properties: {
                             name: {
@@ -289,8 +291,6 @@ export default {
 </script>
 ```
 :::
-
-> `ui-schema` 配置 `onlyShowIfDependent: true` 可以隐藏没触发依赖的项
 
 ### if else 实现联动
 > *暂不支持*
