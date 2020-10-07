@@ -5,7 +5,9 @@
 import {
     getPathVal, setPathVal, deletePathVal, nodePath2ClassName
 } from '../../../common/vueUtils';
-import { isEmptyObject, filterObject, guessType } from '../../../common/utils';
+import {
+    isEmptyObject, filterObject, guessType, isObject
+} from '../../../common/utils';
 
 import { getWidgetConfig, getUserUiOptions, getUserErrOptions } from '../../../common/formUtils';
 
@@ -100,7 +102,7 @@ export default {
             const curFormData = getPathVal(this.rootFormData, this.curNodePath);
 
             // 移除旧key
-            if (guessType(curFormData) === 'object') {
+            if (isObject(curFormData)) {
                 const oldSelectSchema = retrieveSchema(
                     this.selectList[oldVal],
                     this.rootSchema

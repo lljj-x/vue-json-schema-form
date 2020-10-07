@@ -44,10 +44,10 @@ export function setPathVal(obj, path, value) {
 }
 
 // 获取当前path值
-export function getPathVal(obj, path) {
+export function getPathVal(obj, path, leftDeviation = 0) {
     const pathArr = path.split(pathSeparator);
 
-    for (let i = 0; i < pathArr.length; i += 1) {
+    for (let i = 0; i < pathArr.length - leftDeviation; i += 1) {
         // 错误路径或者undefined中断查找
         if (obj === undefined) return undefined;
         obj = pathArr[i] === '' ? obj : obj[pathArr[i]];

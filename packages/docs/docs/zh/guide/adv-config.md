@@ -14,7 +14,7 @@ sidebarDepth: 2
 * [Todo: 通过 if else 实现联动](#通过-if-else-实现联动)
 
 打破 `JSON Schema` 规范包含如下几种方式：
-
+* 通过ui-schema配置表达式
 * [通过自定义组件配置 ui:field 使用已有联级组件](#通过-ui-field-调用自己的联级组件)
 * [通过 ui-schema fieldStyle 动态样式](#ui-schema-fieldstyle-实现联动)
 
@@ -298,6 +298,10 @@ export default {
 基于 [JSON Schema if then else](https://json-schema.org/understanding-json-schema/reference/conditionals.html)，**适用于根据值等于一个常量时来做联动**，*目前版本不支持该特性*。
 
 就目前来看 if else 比较容易解决数据联动的场景，可以根据值来做判断，但依旧不能解决对值支持逻辑判断，比如`大于`、`小于`，后续版本会考虑支持该特性。
+
+### 通过ui-schema配置表达式
+可能打破 `JSON Schema` 规范，配置思想来源 [ali form-render](https://github.com/alibaba/form-render)。
+
 
 ### ui:field 调用自己的联级组件
 可能打破 `JSON Schema` 规范，**适用于通过配置一个已有的自定义组件来渲染一些复杂的联动场景**

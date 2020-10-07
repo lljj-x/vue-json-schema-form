@@ -41,57 +41,46 @@ export default {
         // hidden
         const hiddenWidget = isHiddenWidget({
             schema,
-            uiSchema: props.uiSchema
+            uiSchema: props.uiSchema,
+            curNodePath: props.curNodePath,
+            rootFormData: props.rootFormData
         });
 
-        // functional 渲染多节点
-        const renderList = [];
-
-        const pathClassName = nodePath2ClassName(context.props.curNodePath);
+        const pathClassName = nodePath2ClassName(props.curNodePath);
 
         if (schema.anyOf && schema.anyOf.length > 0 && !isSelect(schema)) {
             // anyOf
-            renderList.push(
-                h(FIELDS_MAP.anyOf, {
-                    class: {
-                        [`${pathClassName}-anyOf`]: true,
-                        fieldItem: true,
-                        anyOfField: true
-                    },
-                    props: curProps
-                })
-            );
-        } else if (schema.oneOf && schema.oneOf.length > 0 && !isSelect(schema)) {
+            return h(FIELDS_MAP.anyOf, {
+                class: {
+                    [`${pathClassName}-anyOf`]: true,
+                    fieldItem: true,
+                    anyOfField: true
+                },
+                props: curProps
+            });
+        } if (schema.oneOf && schema.oneOf.length > 0 && !isSelect(schema)) {
             // oneOf
-            renderList.push(
-                h(FIELDS_MAP.oneOf, {
-                    class: {
-                        [`${pathClassName}-oneOf`]: true,
-                        fieldItem: true,
-                        oneOfField: true
-                    },
-                    props: curProps
-                })
-            );
-        } else {
-            renderList.push(
-                // 渲染对应子组件
-                fieldComponent && h(hiddenWidget ? 'div' : fieldComponent, {
-                    props: {
-                        ...curProps,
-                        fieldProps
-                    },
-                    class: {
-                        ...context.data.class,
-                        [lowerCase(fieldComponent.name) || fieldComponent]: true,
-                        hiddenWidget,
-                        fieldItem: true,
-                        [pathClassName]: true
-                    }
-                })
-            );
+            return h(FIELDS_MAP.oneOf, {
+                class: {
+                    [`${pathClassName}-oneOf`]: true,
+                    fieldItem: true,
+                    oneOfField: true
+                },
+                props: curProps
+            });
         }
-
-        return renderList;
+        return (fieldComponent && !hiddenWidget) ? h(fieldComponent, {
+            props: {
+                ...curProps,
+                fieldProps
+            },
+            class: {
+                ...context.data.class,
+                [lowerCase(fieldComponent.name) || fieldComponent]: true,
+                hiddenWidget,
+                fieldItem: true,
+                [pathClassName]: true
+            }
+        }) : null;
     }
 };

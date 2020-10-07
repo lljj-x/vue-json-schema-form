@@ -1,16 +1,52 @@
 // eslint-disable-next-line import/no-cycle
 import FIELDS_MAP from '../config/FIELDS_MAP';
 import retrieveSchema from './schema/retriev';
+import { getPathVal } from './vueUtils';
 
 import { isObject, getSchemaType } from './utils';
+
+// 配置表达式，或者常量，或者传入函数
+// 这里打破 JSON Schema 规范
+const regExpression = /{{(.*)}}/;
+function handleExpression(rootFormData, curNodePath, expression) {
+    // 未配置
+    if (undefined === expression) {
+        return undefined;
+    }
+
+    // 配置了 mustache 表达式
+    const matchExpression = regExpression.exec(expression);
+    regExpression.lastIndex = 0; // 重置索引
+    if (matchExpression) {
+        const code = matchExpression[1].trim();
+
+        // eslint-disable-next-line no-new-func
+        const fn = new Function('parentFormData', 'rootFormData', `return ${code}`);
+
+        return fn(getPathVal(rootFormData, curNodePath, 1), rootFormData);
+    }
+
+    // 配置了函数 function
+    if (typeof expression === 'function') {
+        return expression(getPathVal(rootFormData, curNodePath, 1), rootFormData);
+    }
+
+    // 配置了常量 ？？
+    return expression;
+}
 
 // 是否为 hidden Widget
 export function isHiddenWidget({
     schema = {},
-    uiSchema = {}
+    uiSchema = {},
+    curNodePath = '',
+    rootFormData = {}
 }) {
     const widget = uiSchema['ui:widget'] || schema['ui:widget'];
-    return widget === 'HiddenWidget' || widget === 'hidden';
+    const hiddenExpression = uiSchema['ui:hidden'] || schema['ui:hidden'];
+
+    // 支持配置 ui:hidden 表达式
+    return widget === 'HiddenWidget' || widget === 'hidden' || !!handleExpression(rootFormData, curNodePath, hiddenExpression);
 }
 
 // 解析当前节点 ui field
