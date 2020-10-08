@@ -119,7 +119,7 @@ export default {
             },
         },
         secret: {
-            'ui:widget': 'hidden',
+            'ui:widget': 'HiddenWidget',
         },
         disabled: {
             'ui:disabled': true,

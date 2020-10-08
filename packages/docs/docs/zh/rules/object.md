@@ -125,4 +125,4 @@ uiSchema = {
 
 ### ui:onlyShowIfDependent
 
-`ui-schema` 配置 `onlyShowIfDependent: true` 可以隐藏没触发依赖的项，[参见这里](/zh/guide/adv-config.html#object-dependencies-实现数据联动)
+`ui-schema` 配置 `onlyShowIfDependent: true` 可以隐藏没触发依赖的项，[参见这里](/zh/guide/data-linkage.html#object-dependencies-实现数据联动)

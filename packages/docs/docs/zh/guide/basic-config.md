@@ -111,7 +111,7 @@ export default {
 :::
 
 :::warning 注意
-* `ui:widget` `ui:field` `ui:fieldProps` 不支持配置在 `ui:options` 中
+* `ui:hidden` `ui:widget` `ui:field` `ui:fieldProps` 不支持配置在 `ui:options` 中
 :::
 
 通用参数格式如下：
@@ -121,6 +121,7 @@ uiSchema = {
     'ui:description': '覆盖schema description描述信息',  // 覆盖schema description
     'ui:emptyValue': undefined,   // 表单元素输入为空时的值，默认 undefined
     'ui:field': 'componentName', // 自定义field，不支持配置在options中
+    'ui:hidden': false, // 是否隐藏当前节点，支持配置表达式
     'ui:fieldProps': undefined, // 传给field的参数，自定义field可以使用，props: { fieldProps }
     'ui:widget': 'el-slider', // 配置input组件，支持字符串或者传入一个vue组件，不支持配置在options中
     'ui:labelWidth': '50px', // form item label宽度
@@ -166,6 +167,7 @@ uiSchema = {
 >1. `ui:field` 自定义field组件参见这里  [自定义 field](/zh/guide/adv-config.html#自定义field)
 >1. `ui:widget` 自定义widget组件参见这里  [自定义 widget](/zh/guide/adv-config.html#自定义widget)
 >1. `ui:widget` 配置 `HiddenWidget` 或者 `hidden` 既可隐藏当前元素
+>1. `ui:hidden` 支持配置表达式，详细参见这里 [ui-schema ui:hidden配置表达式](/zh/guide/data-linkage.html#ui-schema配置表达式)
 
 #### ui-schema配置在schema中
 

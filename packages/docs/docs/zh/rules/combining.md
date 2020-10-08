@@ -123,7 +123,7 @@ sidebarDepth: 2
 ### 数据校验
 * 参考下面的使用案例
 
->* [Demo](https://form.lljj.me/#/demo?type=AnyOf)
+>* [Demo](https://form.lljj.me/#/demo?type=AnyOf%28联动%29)
 >* [数据联动](/zh/guide/adv-config.html#数据联动)
 
 

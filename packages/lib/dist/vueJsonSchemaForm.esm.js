@@ -316,9 +316,10 @@ function setPathVal(obj, path, value) {
 } // 获取当前path值
 
 function getPathVal(obj, path) {
+  var leftDeviation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
   var pathArr = path.split(pathSeparator);
 
-  for (var i = 0; i < pathArr.length; i += 1) {
+  for (var i = 0; i < pathArr.length - leftDeviation; i += 1) {
     // 错误路径或者undefined中断查找
     if (obj === undefined) return undefined;
     obj = pathArr[i] === '' ? obj : obj[pathArr[i]];
@@ -9113,6 +9114,8 @@ var SchemaField = {
   props: vueProps,
   functional: true,
   render: function render(h, context) {
+    var _objectSpread2$1;
+
     var props = context.props;
     var rootSchema = props.rootSchema; // 目前不支持schema依赖和additionalProperties 展示不需要传递formData
     // const schema = retrieveSchema(props.schema, rootSchema, formData);
@@ -9136,41 +9139,38 @@ var SchemaField = {
 
     var hiddenWidget = isHiddenWidget({
       schema: schema,
-      uiSchema: props.uiSchema
-    }); // functional 渲染多节点
-
-    var renderList = [];
-    var pathClassName = nodePath2ClassName(context.props.curNodePath);
+      uiSchema: props.uiSchema,
+      curNodePath: props.curNodePath,
+      rootFormData: props.rootFormData
+    });
+    var pathClassName = nodePath2ClassName(props.curNodePath);
 
     if (schema.anyOf && schema.anyOf.length > 0 && !isSelect(schema)) {
       var _class;
 
       // anyOf
-      renderList.push(h(FIELDS_MAPS.anyOf, {
+      return h(FIELDS_MAPS.anyOf, {
         class: (_class = {}, _defineProperty(_class, "".concat(pathClassName, "-anyOf"), true), _defineProperty(_class, "fieldItem", true), _defineProperty(_class, "anyOfField", true), _class),
         props: curProps
-      }));
-    } else if (schema.oneOf && schema.oneOf.length > 0 && !isSelect(schema)) {
+      });
+    }
+
+    if (schema.oneOf && schema.oneOf.length > 0 && !isSelect(schema)) {
       var _class2;
 
       // oneOf
-      renderList.push(h(FIELDS_MAPS.oneOf, {
+      return h(FIELDS_MAPS.oneOf, {
         class: (_class2 = {}, _defineProperty(_class2, "".concat(pathClassName, "-oneOf"), true), _defineProperty(_class2, "fieldItem", true), _defineProperty(_class2, "oneOfField", true), _class2),
         props: curProps
-      }));
-    } else {
-      var _objectSpread2$1;
-
-      renderList.push( // 渲染对应子组件
-      fieldComponent && h(hiddenWidget ? 'div' : fieldComponent, {
-        props: _objectSpread2(_objectSpread2({}, curProps), {}, {
-          fieldProps: fieldProps
-        }),
-        class: _objectSpread2(_objectSpread2({}, context.data.class), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, lowerCase(fieldComponent.name) || fieldComponent, true), _defineProperty(_objectSpread2$1, "hiddenWidget", hiddenWidget), _defineProperty(_objectSpread2$1, "fieldItem", true), _defineProperty(_objectSpread2$1, pathClassName, true), _objectSpread2$1))
-      }));
+      });
     }
 
-    return renderList;
+    return fieldComponent && !hiddenWidget ? h(fieldComponent, {
+      props: _objectSpread2(_objectSpread2({}, curProps), {}, {
+        fieldProps: fieldProps
+      }),
+      class: _objectSpread2(_objectSpread2({}, context.data.class), {}, (_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, lowerCase(fieldComponent.name) || fieldComponent, true), _defineProperty(_objectSpread2$1, "hiddenWidget", hiddenWidget), _defineProperty(_objectSpread2$1, "fieldItem", true), _defineProperty(_objectSpread2$1, pathClassName, true), _objectSpread2$1))
+    }) : null;
   }
 };
 
@@ -10748,7 +10748,7 @@ var SelectLinkageField = {
     curSelectIndex: function curSelectIndex(newVal, oldVal) {
       var curFormData = getPathVal(this.rootFormData, this.curNodePath); // 移除旧key
 
-      if (guessType(curFormData) === 'object') {
+      if (isObject(curFormData)) {
         var oldSelectSchema = retrieveSchema(this.selectList[oldVal], this.rootSchema);
 
         if (oldSelectSchema.type === 'object' || oldSelectSchema.properties) {
@@ -10915,13 +10915,50 @@ var FIELDS_MAPS = {
   oneOf: OneOfField
 };
 
+// 这里打破 JSON Schema 规范
+
+var regExpression = /{{(.*)}}/;
+
+function handleExpression(rootFormData, curNodePath, expression) {
+  // 未配置
+  if (undefined === expression) {
+    return undefined;
+  } // 配置了 mustache 表达式
+
+
+  var matchExpression = regExpression.exec(expression);
+  regExpression.lastIndex = 0; // 重置索引
+
+  if (matchExpression) {
+    var code = matchExpression[1].trim(); // eslint-disable-next-line no-new-func
+
+    var fn = new Function('parentFormData', 'rootFormData', "return ".concat(code));
+    return fn(getPathVal(rootFormData, curNodePath, 1), rootFormData);
+  } // 配置了函数 function
+
+
+  if (typeof expression === 'function') {
+    return expression(getPathVal(rootFormData, curNodePath, 1), rootFormData);
+  } // 配置了常量 ？？
+
+
+  return expression;
+} // 是否为 hidden Widget
+
+
 function isHiddenWidget(_ref) {
   var _ref$schema = _ref.schema,
       schema = _ref$schema === void 0 ? {} : _ref$schema,
       _ref$uiSchema = _ref.uiSchema,
-      uiSchema = _ref$uiSchema === void 0 ? {} : _ref$uiSchema;
+      uiSchema = _ref$uiSchema === void 0 ? {} : _ref$uiSchema,
+      _ref$curNodePath = _ref.curNodePath,
+      curNodePath = _ref$curNodePath === void 0 ? '' : _ref$curNodePath,
+      _ref$rootFormData = _ref.rootFormData,
+      rootFormData = _ref$rootFormData === void 0 ? {} : _ref$rootFormData;
   var widget = uiSchema['ui:widget'] || schema['ui:widget'];
-  return widget === 'HiddenWidget' || widget === 'hidden';
+  var hiddenExpression = uiSchema['ui:hidden'] || schema['ui:hidden']; // 支持配置 ui:hidden 表达式
+
+  return widget === 'HiddenWidget' || widget === 'hidden' || !!handleExpression(rootFormData, curNodePath, hiddenExpression);
 } // 解析当前节点 ui field
 
 function getUiField(_ref2) {
