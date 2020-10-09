@@ -1861,7 +1861,7 @@
     "@babel/plugin-syntax-dynamic-import" "^7.0.0"
     "@babel/preset-env" "^7.1.0"
 
-"@lljj/eslint-config@0.0.1", "@lljj/eslint-config@^0.0.1":
+"@lljj/eslint-config@0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@lljj/eslint-config/-/eslint-config-0.0.1.tgz#2fde51d09bfaca3bc4c61aec541dbd6953940e9d"
   integrity sha512-6SK8Puxw61vBhu0BAOFnOu8dwtCVmaIKLYkCFJ6u9Kx1aM0P3gOJVkJb5lukbB5lSTEKKqJsGF3Mf7oukf2cHA==

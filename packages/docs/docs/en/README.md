@@ -74,7 +74,7 @@ export default {
                     'ui:options': {
                         placeholder: 'Please enter your bio.',
                         type: 'textarea',
-                        row: 1
+                        rows: 1
                     }
                 }
             }
@@ -131,7 +131,7 @@ export default {
                     'ui:options': {
                         placeholder: 'Please enter your bio.',
                         type: 'textarea',
-                        row: 1
+                        rows: 1
                     }
                 }
             }

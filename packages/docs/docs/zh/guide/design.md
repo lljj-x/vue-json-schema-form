@@ -99,8 +99,6 @@ function render(h) {
 `error-schema` 和 `ui-schema` 配置数据结构都是和 `schema` 保持一致，如果和formData保持一致，
 会导致一些场景无法配置到，比如 `anyOf`，所以选择如此。
 
-> 后续会考虑 `ui-schema`、`error-schema` 可以支持配置 `schema` 文件中来减少这份配置工作量。
-
 ## 设计思想
 
 * 设计思想借鉴[react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)，

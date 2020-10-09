@@ -24,7 +24,6 @@
 - [x] 数组渲染样式微调优化（控制条下间距等）
 - [x] 支持属性依赖 [属性依赖](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies)
 - [x] 支持 ui:hidden 使用 mustache 表达式
-- [ ] review 是否存在无key的数组子节点
 - [ ] 支持 所有ui和err配置使用 mustache 表达式
 - [ ] 支持Schema依赖 [Schema依赖](https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies)
 - [ ] 添加代码测试

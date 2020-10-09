@@ -254,9 +254,9 @@
         padding: 10px 0;
     }
     .linkItem {
-        &+.linkItem {
-            margin-left: 8px;
-        }
+        margin-right: 8px;
+        margin-top: 8px;
+        margin-left: auto !important;
     }
     .middleBox {
         :global {

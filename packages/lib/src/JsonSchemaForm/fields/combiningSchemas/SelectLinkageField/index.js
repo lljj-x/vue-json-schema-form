@@ -77,6 +77,7 @@ export default {
             return this.$createElement(
                 Widget,
                 {
+                    key: `fieldSelect_${this.combiningType}`,
                     class: {
                         [`fieldSelect_${this.combiningType}`]: true
                     },
@@ -141,6 +142,7 @@ export default {
             delete origSchema[this.combiningType];
 
             originVnode = h(SchemaField, {
+                key: `origin_${this.combiningType}`,
                 class: {
                     [`${this.combiningType}_originBox`]: true,
                     [`${pathClassName}-originBox`]: true
@@ -154,7 +156,7 @@ export default {
         }
 
         // 选择附加的节点
-        const childrenVnode = [this.getSelectBoxVnode()];
+        const childrenVnodeList = [this.getSelectBoxVnode()];
 
         // 当前选中的 oneOf 附加的节点
         let curSelectSchema = this.selectList[this.curSelectIndex];
@@ -176,10 +178,11 @@ export default {
                 errorSchema: this.errorSchema
             }), key => (key === this.combiningType ? undefined : `err:${key}`));
 
-            childrenVnode.push(
+            childrenVnodeList.push(
                 h(
                     SchemaField,
                     {
+                        key: `appendSchema_${this.combiningType}`,
                         props: {
                             ...this.$props,
                             schema: curSelectSchema,
@@ -202,7 +205,7 @@ export default {
         }
 
         // oneOf 校验 vnode
-        childrenVnode.push(
+        childrenVnodeList.push(
             h(Widget, {
                 class: {
                     validateWidget: true,
@@ -221,12 +224,13 @@ export default {
         return h('div', [
             originVnode,
             h('div', {
+                key: `appendBox_${this.combiningType}`,
                 class: {
                     appendCombining_box: true,
                     [`${this.combiningType}_appendBox`]: true,
                     [`${pathClassName}-appendBox`]: true
                 }
-            }, [childrenVnode])
+            }, childrenVnodeList)
         ]);
     }
 };
