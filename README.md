@@ -7,7 +7,7 @@
 * [使用场景 - 可视化活动编辑器](https://form.lljj.me/vue-editor.html)，点击这里查看 [如何启动活动编辑器](#如何启动活动编辑器)
 * [不支持部分和更新计划](https://vue-json-schema-form.lljj.me/zh/guide/todo.html)
 
-![](https://7.luochongfei.top/vue-json-schema-form.gif?1)
+![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vue-json-schema-form.gif)
 
 ## 如何启动活动编辑器
 
