@@ -330,7 +330,7 @@ uiSchema = {
 }
 ```
 
-比如：需要根据某个值做逻辑判断来显示隐藏，也可以查看 [uiSchema ui:hidden(联动)在线演示](https://form.lljj.me/#/demo?type=uiSchema-ui%3Ahidden%28联动%29)
+比如：需要根据某个值做逻辑判断来显示隐藏，也可以查看 [uiSchema ui:hidden(联动)在线演示](https://form.lljj.me/#/demo?type=uiSchema-ui-hidden%28联动%29)
 ::: demo
 ```html
 <template>
