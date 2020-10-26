@@ -12,6 +12,7 @@ import * as schemaValidate from './JsonSchemaForm/common/schema/validate';
 import getDefaultFormState from './JsonSchemaForm/common/schema/getDefaultFormState';
 
 import JsonSchemaForm from './JsonSchemaForm';
+import SchemaField from './JsonSchemaForm/fields/SchemaField';
 
 // 存在Vue 全局变量默认注册 VueForm 组件
 if (typeof window !== 'undefined' && window.Vue) {
@@ -21,6 +22,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default JsonSchemaForm;
 
 export {
+    SchemaField,
     getDefaultFormState,
     fieldProps,
     vueUtils,
