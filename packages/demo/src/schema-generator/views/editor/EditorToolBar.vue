@@ -18,25 +18,14 @@
                            @start="$emit('onDragStart')"
                            @end="$emit('onDragEnd')"
                 >
-                    <div v-for="item in group.componentList"
-                         :key="item.title"
+                    <div v-for="(item, cIndex) in group.componentList"
+                         :key="cIndex"
                          :class="{
                              [$style.listItem]: true,
-                             draggableToolItem: true,
-                             [$style.disabled]: (currentUseComponentNum[item.componentPack.componentViewName] || 0) >= item.maxNum
+                             draggableToolItem: true
                          }"
                     >
-                        <div>
-                            <p :class="[$style.line, $style.lineIcon]">
-                                <i :class="item.icon"></i>
-                            </p>
-                            <p :class="[$style.line, $style.lineTitle]">
-                                {{ item.title }}
-                            </p>
-                            <p :class="[$style.line, $style.lineUseNum]">
-                                {{ currentUseComponentNum[item.componentPack.componentViewName] || 0 }} / {{ item.maxNum }}
-                            </p>
-                        </div>
+                        {{ item.title }}
                     </div>
                 </draggable>
             </template>
@@ -59,18 +48,9 @@
                 type: Array,
                 default: () => []
             },
-            currentUseComponentNum: {
-                default: () => ({}),
-                type: Object
-            },
             dragGroup: {
                 default: '',
                 type: String
-            }
-        },
-        watch: {
-            currentUseComponentNum(newVal) {
-                // console.log(newVal);
             }
         },
         methods: {
@@ -85,7 +65,7 @@
 <style module>
     @import "variable.css";
     .box{
-        padding: 20px;
+        padding: 10px;
     }
     .group {
         margin-top: 20px;
@@ -94,20 +74,24 @@
         }
     }
     .groupName {
-        font-size: 12px;
+        font-size: 15px;
+        font-weight: bold;
         line-height: 18px;
     }
     .groupList {
+        margin-top: -10px;
         display: flex;
         flex-wrap: wrap;
-        padding: 0 10px;
+        padding: 10px 0;
         justify-content: space-between;
     }
     .listItem {
         position: relative;
-        width: 50%;
+        margin-top: 10px;
+        width: 47%;
         max-width: 120px;  /* 避免拖动ghost样式异常 */
-        height: 80px;
+        height: 36px;
+        line-height: 36px;
         cursor: move;
         flex-shrink: 0;
         transition: box-shadow 0.3s ease;
@@ -115,8 +99,12 @@
         text-align: center;
         align-items: center;
         justify-content: center;
+        background-color: var(--background-color-selected);
+        border: 1px dashed transparent;
+        font-size: 12px;
         &:hover {
-            background-color: var(--background-color-selected);
+            color: #409eff;
+            border: 1px dashed #409eff;
             box-shadow: 0 0 8px 1px rgba(0,0,0,.2);
         }
     }

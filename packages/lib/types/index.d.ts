@@ -16,3 +16,5 @@ export {
     schemaValidate,
     i18n
 };
+
+export class SchemaField {}

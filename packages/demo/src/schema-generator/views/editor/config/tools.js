@@ -2,7 +2,7 @@
  * Created by Liu.Jun on 2019/9/29 18:58.
  */
 
-import componentPackText from '../viewComponents/Text';
+import componentPackText from '../viewComponents/Input';
 
 /**
  * hidden 隐藏，不显示在工具栏
@@ -14,11 +14,9 @@ import componentPackText from '../viewComponents/Text';
  */
 const tools = [
     {
-        groupName: '图文类',
+        groupName: '基础组件',
         componentList: [{
-            title: '纯文本',
-            maxNum: 20,
-            icon: 'el-icon-notebook-1',
+            title: '输入框',
             componentPack: componentPackText
         }]
     },

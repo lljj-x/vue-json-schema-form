@@ -1,34 +1,31 @@
 <template>
     <div v-loading="loading">
-        <transition name="el-zoom-in-top">
-            <EditorHeader
-                @onSave="handleSave"
-            ></EditorHeader>
-        </transition>
+        <EditorHeader
+            @onSave="handleSave"
+        ></EditorHeader>
 
-        <div :class="[$style.container, showToolBar ? $style.hasTools : '']">
-            <span :class="$style.leftCaret" @click="showToolBar = !showToolBar">
-                <i class="el-icon-caret-right"></i>
-            </span>
-            <div v-show="showToolBar" :class="$style.toolsBar">
-                <EditorToolBar
-                    :current-use-component-num="currentUseComponentNum"
-                    :drag-group="dragOptions.group"
-                    :config-tools="configTools"
-                    @onFilter="$message.error('该组件添加数目已达上限！')"
-                >
-                </EditorToolBar>
-            </div>
-
-            <div ref="domScrollWrap" :class="$style.contentWrap">
+        <div :class="[$style.container]">
+            <div :class="$style.contentWrap">
+                <div :class="$style.toolsBar">
+                    <EditorToolBar
+                        :current-use-component-num="currentUseComponentNum"
+                        :drag-group="dragOptions.group"
+                        :config-tools="configTools"
+                        @onFilter="$message.error('该组件添加数目已达上限！')"
+                    >
+                    </EditorToolBar>
+                </div>
                 <div :class="[$style.contentBox]">
-                    <div :class="$style.dragAreaWrap">
+                    <el-form
+                        style="height: 100%"
+                        :model="formData"
+                        label-width="80px"
+                    >
                         <draggable ref="draggable"
                                    v-model="editComponentList"
                                    v-bind="dragOptions"
                                    :class="[$style.dragArea]"
                                    @change="handleDragChange"
-                                   @start="handlerStart"
                         >
                             <div v-for="item in trueComponentList"
                                  :key="item.id"
@@ -40,47 +37,20 @@
                                  }"
                             >
                                 <ViewComponentWrap
+                                    :formData="formData"
                                     :editor-item="item"
                                     @onOperate="handleItemOperate"
-                                >
-                                    <!-- 传入form使用传入的form组件 -->
-                                    <component
-                                        :is="item.componentFormName"
-                                        v-if="item.componentFormName"
-                                        slot="componentForm"
-                                        :value="item.componentValue"
-                                        @on-change="handleDataChange"
-                                        @on-cancel="item.isEdit = false"
-                                        @on-submit="handleSaveForm($event, item)"
-                                    >
-                                    </component>
-
-                                    <!-- schema生成form -->
-                                    <VueElementForm
-                                        v-else
-                                        slot="componentForm"
-                                        :schema="item.componentPack.propsSchema"
-                                        :ui-schema="item.componentPack.uiSchema"
-                                        :error-schema="item.componentPack.errorSchema"
-                                        :custom-rule="item.componentPack.customRule"
-                                        :value="item.componentValue"
-                                        @on-change="handleDataChange"
-                                        @on-cancel="item.isEdit = false"
-                                        @on-submit="handleSaveForm($event, item)"
-                                    >
-                                    </VueElementForm>
-                                    <component
-                                        :is="item.componentViewName"
-                                        slot="componentView"
-                                        :form-data="item.componentValue"
-                                    >
-                                    </component>
-                                </ViewComponentWrap>
+                                ></ViewComponentWrap>
                             </div>
                         </draggable>
-                        <div v-if="trueComponentList.length === 0" :class="$style.tipBox">
-                            <p>拖拽左侧栏的组件进行添加</p>
-                        </div>
+                    </el-form>
+                    <div v-if="trueComponentList.length === 0" :class="$style.tipBox">
+                        <p>拖拽左侧栏的组件进行添加</p>
+                    </div>
+                </div>
+                <div :class="$style.rightForm">
+                    <div :class="$style.configForm">
+                        <h3>表单配置</h3>
                     </div>
                 </div>
             </div>
@@ -90,8 +60,6 @@
 
 <script>
     import Draggable from 'vuedraggable';
-    import VueElementForm, { schemaValidate } from '@lljj/vue-json-schema-form';
-
     import * as arrayMethods from '@/_common/utils/array';
     import componentWithDialog from '@/_common/components/component-with-dialog';
 
@@ -101,22 +69,19 @@
     import ViewComponentWrap from './components/ViewComponentWrap.vue';
 
     import { vm2Api, api2VmToolItem } from './data';
+    // import { deepFreeze } from './common/utils';
 
     import configTools from './config/tools';
 
-    import { getComponentsAndInitToolsConfig } from './common/utils';
-
     import { generateEditorItem } from './common/editorData';
+
     import './common/registerExtraElementComponent';
 
-    // 工具栏配置的组件
-    const components = getComponentsAndInitToolsConfig(configTools);
+    Object.freeze(configTools);
 
     export default {
         name: 'Editor',
         components: {
-            ...components,
-            VueElementForm,
             Draggable,
             EditorToolBar,
             EditorHeader,
@@ -129,7 +94,7 @@
                 editComponentList: [],
                 editHeaderComponentList: [], // 兼容header slot ，插件内部实现导致必须分割多分数据
                 editFooterComponentList: [], // 兼容footer slot ，插件内部实现导致必须分割多分数据
-                showToolBar: true,
+                formData: {}
             };
         },
 
@@ -171,16 +136,11 @@
         watch: {
             trueComponentList() {
                 this.computedComponentToolBarStatus();
-
-                // 修复form弹窗位置
-                this.fixComponentFormPosition();
             }
         },
         mounted() {
             // todo: 通过计算获取
             window.document.body.classList.add('page-decorate-design');
-            const scrollDom = this.$refs.domScrollWrap;
-            this.$refs.domScrollWrap.scrollLeft = (scrollDom.scrollWidth - scrollDom.clientWidth) / 2;
         },
         destroyed() {
             window.document.body.classList.remove('page-decorate-design');
@@ -189,31 +149,6 @@
             this.initEditorData();
         },
         methods: {
-            validateDataList(validateData = false) {
-                if (this.trueComponentList.length <= 0) {
-                    this.$message.warning('请先拖入需要配置的组件');
-                    return false;
-                }
-
-                // 是否检测数据格式
-                if (!validateData) return true;
-
-                // 完整校验整个数据格式是否正确
-                for (let i = 0; i < this.trueComponentList.length; i += 1) {
-                    const item = this.trueComponentList[i];
-                    if (!schemaValidate.isValid(item.componentPack.propsSchema, item.componentValue)) {
-                        debugger;
-                        // 验证失败
-                        // item.isEdit = true; // 打开编辑窗口
-
-                        // 通过触发事件打开弹窗，保持和点击行为一致
-                        document.querySelectorAll('.js_viewComponentBox')[i].click();
-                        this.$message.error('数据配置校验不通过，请检查!');
-                        return false;
-                    }
-                }
-                return true;
-            },
             async initEditorData() {
                 // 使用默认值
                 const dataList = api2VmToolItem(configTools, []);
@@ -235,8 +170,6 @@
                 });
             },
             handleSave(validData) {
-                if (!this.validateDataList(validData)) return;
-
                 componentWithDialog({
                     VueComponent: JsonPerttyPrint,
                     dialogProps: {
@@ -273,25 +206,9 @@
                 return [];
             },
 
-            // 修复form 弹窗位置
-            fixComponentFormPosition() {
-                // Popper 通过、父滚动容器 scroll 和window resize 来触发重新计算位置
-                // https://github.com/ElemeFE/element/blob/dev/src/utils/popper.js#L464
-                setTimeout(() => {
-                    const evt = window.document.createEvent('UIEvents');
-                    evt.initUIEvent('scroll', true, false, window, 0);
-                    this.$refs.domScrollWrap.dispatchEvent(evt);
-
-                    // const curLeft = this.$refs.domScrollWrap.scrollLeft;
-                    // this.$refs.domScrollWrap.scrollLeft = curLeft - 1;
-                    // this.$refs.domScrollWrap.scrollLeft = curLeft;
-                });
-            },
-
             // 用户操作数据
             handleDataChange() {
-                // todo: ie 会导致输入框丢失光标
-                this.fixComponentFormPosition();
+                //
             },
 
             // 操作单个组件
@@ -369,11 +286,6 @@
                     }
                 });
             },
-
-            handlerStart(evt) {
-                // 无法重置拖动效果图 ？？
-                // evt.originalEvent.dataTransfer.setDragImage(document.querySelector('H1'), 50, 50);
-            },
             // 处理DragChange - 新加元素需要做特殊处理
             handleDragChange(evt) {
                 if (evt.added && evt.added.element.additional) {
@@ -401,40 +313,13 @@
     :root {
         --site-top-height: 80px;
         --tool-bar-width: 260px;
-        --drag-area-width: 1920px;
+        --right-form-width: 380px;
+        --drag-area-width: auto;
     }
     /*预览模式 同步样式重置*/
-    .previewBox {
-        .toolsBar,.leftCaret {
-            display: none;
-        }
-        .container {
-            height: 100vh;
-            padding-left: 0;
-        }
-        .contentWrap, .dragAreaWrap{
-            overflow-x: hidden;
-        }
-        .contentBox, .dragAreaWrap{
-            width: auto;
-        }
-        :global {
-            .vueEditor_viewComponentBox {
-                margin-left: 50%;
-                transform: translate(-50%, 0);
-                cursor: auto;
-                box-shadow: none;
-                &:after {
-                    display: none;
-                    content: none;
-                }
-            }
-        }
-    }
     .container {
         position: relative;
         box-sizing: border-box;
-        padding-left: 0;
         padding-top: 10px;
         height: calc(100vh - var(--site-top-height));
         transition: 0.2s ease;
@@ -446,39 +331,32 @@
         }
     }
     /*tools*/
-    .leftCaret {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
+    .toolsBar, .rightForm{
         position: absolute;
-        width: 18px;
-        height: 50px;
-        background: var(--color-white);
-        top: 50%;
-        margin-top: -25px;
-        box-shadow: 0 0 4px 0 color(var(--color-black) a(0.1));
-        transition: all ease 0.3s;
-        border-radius: 0 10px 10px 0;
-        z-index: 9;
-        &:hover {
-            box-shadow: 0 0 4px 0 color(var(--color-black) a(0.2));
-            opacity: 1;
-        }
-    }
-    .toolsBar {
-        position: absolute;
-        left: 0;
-        top: 10px;
+        top: 0;
         bottom: 0;
         background: var(--color-white);
-        width: var(--tool-bar-width);
         overflow: auto;
-        box-shadow: 0 0 4px 0 color(var(--color-black) a(0.2));
+        box-shadow: 0 0 4px 0 color(var(--color-black) a(0.2)),  0 0 2px 0 color(var(--color-black) a(0.4));
         z-index: 2;
         &::-webkit-scrollbar {
             width: 0;
             height: 0;
+        }
+    }
+    .toolsBar {
+        left: 0;
+        width: var(--tool-bar-width);
+    }
+    .rightForm {
+        right: 0;
+        width: var(--right-form-width);
+    }
+    .configForm {
+        padding: 10px;
+        &>h3 {
+            font-size: 15px;
+            font-weight: bold;
         }
     }
 
@@ -487,6 +365,8 @@
         position: relative;
         overflow: auto;
         height: 100%;
+        padding-left: var(--tool-bar-width);
+        padding-right: var(--right-form-width);
         &::-webkit-scrollbar {
             width: 6px;
             height: 10px;
@@ -501,14 +381,8 @@
     }
     .contentBox {
         position: relative;
-        width: 2000px;
-        min-height: 100%;
-    }
-    .dragAreaWrap {
-        transform-origin: top center;
-        position: relative;
-        width: var(--drag-area-width);
-        margin: 0 auto;
+        padding: 0 10px;
+        height: 100%;
     }
     .tipBox{
         pointer-events: none;
@@ -524,10 +398,11 @@
         }
     }
     .dragArea {
-        /* min-height: calc(100vh - var(--site-top-height) - 50px); */
-        min-height: calc(100vh + 100px);
         background-color: #f5f5f5;
-        padding: 10px 0;
+        border: 1px dashed #bbb;
+        height: calc(100% - 44px);
+        padding: 15px;
+        overflow: auto;
         :global {
             .draggableToolItem {
                 width: 100%;
@@ -535,9 +410,9 @@
                 &:local {
                     &.ghost {
                         background-color: color(var(--color-primary) a(0.4)) !important;
-                        box-shadow: 0 3px 14px 3px color(var(--color-primary) a(0.6)), 0 10px 10px 1px color(var(--color-primary) a(0.5));
-                        height: 120px !important;
-                        padding: 20px;
+                        height: 20px;
+                        padding: 10px 0;
+                        margin-bottom: 15px;
                         &>div {
                             width: 100%;
                             height: 100%;

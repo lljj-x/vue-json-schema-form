@@ -17,6 +17,7 @@ function isEmptyObject(obj) {
 // 生成一个新的editor item
 export function generateEditorItem(toolItem) {
     const currentComponentPack = toolItem.componentPack;
+    const id = genId();
     return {
         ...toolItem,
         isEdit: false,
@@ -31,9 +32,7 @@ export function generateEditorItem(toolItem) {
             {}, // 初始值为空
             currentComponentPack.propsSchema
         ) : toolItem.componentValue,
-        componentViewName: currentComponentPack.componentViewName,
-        componentFormName: currentComponentPack.componentFormName,
-        // id: `${currentComponentPack.componentViewName}_${+new Date()}`,
-        id: genId(),
+        id,
+        property: id
     };
 }
