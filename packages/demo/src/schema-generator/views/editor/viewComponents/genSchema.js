@@ -2,16 +2,12 @@
  * Created by Liu.Jun on 2020/10/26 18:24.
  */
 
-const baseSchema = {
+const baseValue = {
     title: '基础Form label配置',
     type: 'object',
     properties: {
-        property: {
-            title: '属性名',
-            type: 'string'
-        },
         title: {
-            title: '选择文字颜色',
+            title: '标题',
             type: 'string'
         },
         description: {
@@ -28,7 +24,8 @@ const baseSchema = {
         },
         disabled: {
             title: '禁用',
-            type: 'boolean'
+            type: 'boolean',
+            default: false
         }
     }
 };
@@ -37,7 +34,11 @@ export default schema => ({
     type: 'object',
     required: [],
     properties: {
-        baseSchema,
+        property: {
+            title: '属性名',
+            type: 'string'
+        },
+        baseValue,
         ...schema
     }
 });

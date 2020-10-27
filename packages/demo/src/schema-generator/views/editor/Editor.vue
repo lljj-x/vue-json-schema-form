@@ -18,8 +18,11 @@
                 <div :class="[$style.contentBox]">
                     <el-form
                         style="height: 100%"
+                        label-position="top"
+                        label-suffix="："
                         :model="formData"
                         label-width="80px"
+                        class="genFromComponent"
                     >
                         <draggable ref="draggable"
                                    v-model="editComponentList"
@@ -37,9 +40,11 @@
                                  }"
                             >
                                 <ViewComponentWrap
-                                    :formData="formData"
+                                    :form-data="formData"
                                     :editor-item="item"
                                     @onOperate="handleItemOperate"
+                                    @showEditor="handleShowEditor"
+                                    @hideEditor="handleHideEditor"
                                 ></ViewComponentWrap>
                             </div>
                         </draggable>
@@ -49,8 +54,21 @@
                     </div>
                 </div>
                 <div :class="$style.rightForm">
-                    <div :class="$style.configForm">
+                    <div v-if="curEditorItem" :class="$style.configForm">
                         <h3>表单配置</h3>
+                        <div style="padding: 20px 0;">
+                            <VueJsonFrom
+                                v-model="editorValue"
+                                :schema="curEditorItem.componentPack.propsSchema"
+                                :form-footer="{
+                                    show: false
+                                }"
+                            >
+                            </VueJsonFrom>
+                        </div>
+                    </div>
+                    <div v-else>
+                        请先点击你要编辑的formItem
                     </div>
                 </div>
             </div>
@@ -59,6 +77,7 @@
 </template>
 
 <script>
+    import VueJsonFrom from '@lljj/vue-json-schema-form';
     import Draggable from 'vuedraggable';
     import * as arrayMethods from '@/_common/utils/array';
     import componentWithDialog from '@/_common/components/component-with-dialog';
@@ -69,7 +88,7 @@
     import ViewComponentWrap from './components/ViewComponentWrap.vue';
 
     import { vm2Api, api2VmToolItem } from './data';
-    // import { deepFreeze } from './common/utils';
+    import { deepFreeze } from './common/utils';
 
     import configTools from './config/tools';
 
@@ -77,15 +96,16 @@
 
     import './common/registerExtraElementComponent';
 
-    Object.freeze(configTools);
+    deepFreeze(configTools);
 
     export default {
         name: 'Editor',
         components: {
+            VueJsonFrom,
             Draggable,
             EditorToolBar,
             EditorHeader,
-            ViewComponentWrap
+            ViewComponentWrap,
         },
         data() {
             return {
@@ -94,11 +114,24 @@
                 editComponentList: [],
                 editHeaderComponentList: [], // 兼容header slot ，插件内部实现导致必须分割多分数据
                 editFooterComponentList: [], // 兼容footer slot ，插件内部实现导致必须分割多分数据
-                formData: {}
+                formData: {},
+                curEditorItem: null, // 选中的formItem
             };
         },
 
         computed: {
+            editorValue: {
+                get() {
+                    if (this.curEditorItem) {
+                        // 获取默认值
+                        return this.curEditorItem.componentValue;
+                    }
+                    return {};
+                },
+                set(value) {
+                    this.curEditorItem.componentValue = value;
+                }
+            },
             dragOptions() {
                 return {
                     animation: 300,
@@ -139,7 +172,6 @@
             }
         },
         mounted() {
-            // todo: 通过计算获取
             window.document.body.classList.add('page-decorate-design');
         },
         destroyed() {
@@ -149,6 +181,12 @@
             this.initEditorData();
         },
         methods: {
+            handleShowEditor(editorItem) {
+                this.curEditorItem = editorItem;
+            },
+            handleHideEditor() {
+                this.curEditorItem = null;
+            },
             async initEditorData() {
                 // 使用默认值
                 const dataList = api2VmToolItem(configTools, []);
@@ -206,11 +244,6 @@
                 return [];
             },
 
-            // 用户操作数据
-            handleDataChange() {
-                //
-            },
-
             // 操作单个组件
             handleItemOperate({ item, command }) {
                 const strategyMap = {
@@ -239,14 +272,6 @@
                 } else {
                     this.$message.error(`系统错误 - 未知的操作：[${command}]`);
                 }
-            },
-
-            // 提交表单
-            handleSaveForm(data, item) {
-                Object.assign(item, {
-                    componentValue: data,
-                    isEdit: false
-                });
             },
 
             /**
@@ -349,6 +374,8 @@
         width: var(--tool-bar-width);
     }
     .rightForm {
+        box-sizing: border-box;
+        padding: 10px;
         right: 0;
         width: var(--right-form-width);
     }

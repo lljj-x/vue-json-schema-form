@@ -18,6 +18,7 @@ function isEmptyObject(obj) {
 export function generateEditorItem(toolItem) {
     const currentComponentPack = toolItem.componentPack;
     const id = genId();
+
     return {
         ...toolItem,
         isEdit: false,
@@ -27,12 +28,14 @@ export function generateEditorItem(toolItem) {
             copyDisabled: false,
             removeDisabled: false,
         },
-        componentValue: !toolItem.componentValue || isEmptyObject(toolItem.componentValue) ? getDefaultFormState(
-            currentComponentPack.propsSchema,
-            {}, // 初始值为空
-            currentComponentPack.propsSchema
-        ) : toolItem.componentValue,
-        id,
-        property: id
+        componentValue: {
+            ...!toolItem.componentValue || isEmptyObject(toolItem.componentValue) ? getDefaultFormState(
+                currentComponentPack.propsSchema,
+                {}, // 初始值为空
+                currentComponentPack.propsSchema
+            ) : toolItem.componentValue,
+            property: id
+        },
+        id
     };
 }

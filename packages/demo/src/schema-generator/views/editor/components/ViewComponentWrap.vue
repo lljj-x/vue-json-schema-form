@@ -6,6 +6,7 @@
          }"
          @click="handelClickView"
     >
+        <span :class="$style.formProperty"> {{ attrs.curNodePath }}</span>
         <div v-if="editorItem.isEdit" :class="$style.editBar">
             <button
                 :disabled="editorItem.toolBar.moveUpDisabled"
@@ -37,10 +38,7 @@
             ></button>
         </div>
         <SchemaField
-            :root-schema="editorItem.componentPack.viewSchema"
-            :schema="editorItem.componentPack.viewSchema"
-            :root-form-data="formData"
-            :cur-node-path="editorItem.property"
+            v-bind="attrs"
         ></SchemaField>
     </div>
 </template>
@@ -63,6 +61,36 @@
                 default: () => ({})
             }
         },
+        computed: {
+            attrs() {
+                const baseValue = this.editorItem.componentValue.baseValue;
+                const { default: defaultValue, uiOptions } = Object.keys(this.editorItem.componentValue.baseValue).reduce((preVal, curVal) => {
+                    if (curVal === 'default') {
+                        preVal.default = baseValue[curVal];
+                    } else if (baseValue[curVal]) {
+                        preVal.uiOptions = preVal.uiOptions || {};
+                        preVal.uiOptions[curVal] = baseValue[curVal];
+                    }
+
+                    return preVal;
+                }, {});
+
+                const schema = {
+                    ...this.editorItem.componentPack.viewSchema,
+                    default: defaultValue,
+                };
+
+                return {
+                    rootSchema: schema,
+                    schema,
+                    rootFormData: this.formData,
+                    curNodePath: this.editorItem.componentValue.property || '',
+                    uiSchema: {
+                        'ui:options': uiOptions,
+                    }
+                };
+            }
+        },
         beforeDestroy() {
             this.hideEditForm();
         },
@@ -80,17 +108,21 @@
                 // 打开时才注册一个关闭事件，关闭弹窗时移除事件
                 this.closeHandle = (event) => {
                     // 点击的自己兄弟view关闭自己
-                    if (!this.$el.contains(event.target)) {
+                    if (!this.$el.contains(event.target) && event.target.closest('.js_viewComponentWrap')) {
                         this.hideEditForm();
                     }
                 };
 
                 // 点击其它弹窗关闭这里
                 document.addEventListener('click', this.closeHandle, false);
+                setTimeout(() => {
+                    this.$emit('showEditor', this.editorItem);
+                });
             },
             hideEditForm() {
                 this.editorItem.isEdit = false;
                 document.removeEventListener('click', this.closeHandle);
+                this.$emit('hideEditor', this.editorItem);
             }
         }
     };
@@ -131,6 +163,13 @@
                 box-shadow: 0 0 1px 2px var(--color-primary) inset;
             }
         }
+    }
+    .formProperty {
+        position: absolute;
+        padding: 10px;
+        top: 0;
+        right: 0;
+        font-size: 13px;
     }
 
     .editBar {
