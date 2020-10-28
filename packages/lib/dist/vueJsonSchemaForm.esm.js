@@ -10728,6 +10728,7 @@ var SelectLinkageField = {
       // 选择框 vnode
 
       return this.$createElement(Widget, {
+        key: "fieldSelect_".concat(this.combiningType),
         class: _defineProperty({}, "fieldSelect_".concat(this.combiningType), true),
         props: _objectSpread2({
           isFormData: false,
@@ -10793,6 +10794,7 @@ var SelectLinkageField = {
       var origSchema = Object.assign({}, this.schema);
       delete origSchema[this.combiningType];
       originVnode = h(SchemaField, {
+        key: "origin_".concat(this.combiningType),
         class: (_class2 = {}, _defineProperty(_class2, "".concat(this.combiningType, "_originBox"), true), _defineProperty(_class2, "".concat(pathClassName, "-originBox"), true), _class2),
         props: _objectSpread2(_objectSpread2({}, this.$props), {}, {
           schema: origSchema // needValidFieldGroup: false // 单独校验，这里无需处理
@@ -10802,7 +10804,7 @@ var SelectLinkageField = {
     } // 选择附加的节点
 
 
-    var childrenVnode = [this.getSelectBoxVnode()]; // 当前选中的 oneOf 附加的节点
+    var childrenVnodeList = [this.getSelectBoxVnode()]; // 当前选中的 oneOf 附加的节点
 
     var curSelectSchema = this.selectList[this.curSelectIndex];
 
@@ -10825,7 +10827,8 @@ var SelectLinkageField = {
       }), function (key) {
         return key === _this2.combiningType ? undefined : "err:".concat(key);
       });
-      childrenVnode.push(h(SchemaField, {
+      childrenVnodeList.push(h(SchemaField, {
+        key: "appendSchema_".concat(this.combiningType),
         props: _objectSpread2(_objectSpread2({}, this.$props), {}, {
           schema: curSelectSchema,
           required: this.required,
@@ -10841,7 +10844,7 @@ var SelectLinkageField = {
     } // oneOf 校验 vnode
 
 
-    childrenVnode.push(h(Widget, {
+    childrenVnodeList.push(h(Widget, {
       class: _defineProperty({
         validateWidget: true
       }, "validateWidget-".concat(this.combiningType), true),
@@ -10854,10 +10857,11 @@ var SelectLinkageField = {
       }
     }));
     return h('div', [originVnode, h('div', {
+      key: "appendBox_".concat(this.combiningType),
       class: (_class4 = {
         appendCombining_box: true
       }, _defineProperty(_class4, "".concat(this.combiningType, "_appendBox"), true), _defineProperty(_class4, "".concat(pathClassName, "-appendBox"), true), _class4)
-    }, [childrenVnode])]);
+    }, childrenVnodeList)]);
   }
 };
 
