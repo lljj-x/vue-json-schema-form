@@ -4,7 +4,7 @@
              [$style.active]: editorItem.isEdit,
              js_viewComponentWrap: true
          }"
-         @click="handelClickView"
+         @click="handleClickView"
     >
         <span :class="$style.formProperty"> {{ attrs.curNodePath }}</span>
         <div v-if="editorItem.isEdit" :class="$style.editBar">
@@ -45,6 +45,7 @@
 
 <script>
     import { SchemaField } from '@lljj/vue-json-schema-form';
+    import { editorItem2SchemaFieldProps } from '../common/editorData';
 
     export default {
         name: 'ViewComponentWrap',
@@ -63,32 +64,7 @@
         },
         computed: {
             attrs() {
-                const baseValue = this.editorItem.componentValue.baseValue;
-                const { default: defaultValue, uiOptions } = Object.keys(this.editorItem.componentValue.baseValue).reduce((preVal, curVal) => {
-                    if (curVal === 'default') {
-                        preVal.default = baseValue[curVal];
-                    } else if (baseValue[curVal]) {
-                        preVal.uiOptions = preVal.uiOptions || {};
-                        preVal.uiOptions[curVal] = baseValue[curVal];
-                    }
-
-                    return preVal;
-                }, {});
-
-                const schema = {
-                    ...this.editorItem.componentPack.viewSchema,
-                    default: defaultValue,
-                };
-
-                return {
-                    rootSchema: schema,
-                    schema,
-                    rootFormData: this.formData,
-                    curNodePath: this.editorItem.componentValue.property || '',
-                    uiSchema: {
-                        'ui:options': uiOptions,
-                    }
-                };
+                return editorItem2SchemaFieldProps(this.editorItem, this.formData);
             }
         },
         beforeDestroy() {
@@ -96,7 +72,7 @@
         },
         methods: {
             // 点击只能打开，并且打开状态下只能执行一次
-            handelClickView(e) {
+            handleClickView(e) {
                 // 阻止浏览器默认事件
                 e.preventDefault();
                 if (!this.editorItem.isEdit) this.showEditForm();

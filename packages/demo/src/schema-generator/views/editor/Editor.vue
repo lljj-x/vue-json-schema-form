@@ -55,11 +55,14 @@
                 </div>
                 <div :class="$style.rightForm">
                     <div v-if="curEditorItem" :class="$style.configForm">
-                        <h3>表单配置</h3>
                         <div style="padding: 20px 0;">
                             <VueJsonFrom
                                 v-model="editorValue"
                                 :schema="curEditorItem.componentPack.propsSchema"
+                                :form-props="{
+                                    labelPosition: 'right',
+                                    labelWidth: '110px'
+                                }"
                                 :form-footer="{
                                     show: false
                                 }"

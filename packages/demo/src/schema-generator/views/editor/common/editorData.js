@@ -39,3 +39,60 @@ export function generateEditorItem(toolItem) {
         id
     };
 }
+
+// editor item 转出为 SchemaField 的数据结构
+
+export function formatFormConfig(key, value) {
+    switch (key) {
+
+    case 'labelWidth':
+        return `${value * 4}px`;
+
+    default: {
+        return value;
+    }
+
+    }
+}
+
+export function editorItem2SchemaFieldProps(editorItem, formData) {
+    const baseValue = editorItem.componentValue.baseValue;
+
+    // baseValue
+    const { default: defaultValue, uiOptions } = Object.keys(editorItem.componentValue.baseValue).reduce((preVal, curVal) => {
+        if (curVal === 'default') {
+            preVal.default = baseValue[curVal];
+        } else if (baseValue[curVal]) {
+            preVal.uiOptions = preVal.uiOptions || {};
+            console.log(formatFormConfig(curVal, baseValue[curVal]));
+            preVal.uiOptions[curVal] = formatFormConfig(curVal, baseValue[curVal]);
+        }
+
+        return preVal;
+    }, {});
+
+    // options
+
+
+    // rules
+
+    const schema = {
+        ...editorItem.componentPack.viewSchema,
+        default: defaultValue,
+    };
+
+    return {
+        rootSchema: schema,
+        schema,
+        rootFormData: formData,
+        curNodePath: editorItem.componentValue.property || '',
+        uiSchema: {
+            'ui:options': {
+                ...uiOptions,
+                ...editorItem.componentValue.options,
+                ...editorItem.componentValue.rules
+            },
+        }
+    };
+
+}
