@@ -90,7 +90,7 @@
     import EditorHeader from './EditorHeader.vue';
     import ViewComponentWrap from './components/ViewComponentWrap.vue';
 
-    import { vm2Api, api2VmToolItem } from './data';
+    import { vm2Api/* , api2VmToolItem */ } from './data';
     import { deepFreeze } from './common/utils';
 
     import configTools from './config/tools';
@@ -192,23 +192,25 @@
             },
             async initEditorData() {
                 // 使用默认值
-                const dataList = api2VmToolItem(configTools, []);
+                return false;
 
-                // 重新插入数据
-                dataList.forEach((toolItemData) => {
-                    if (!toolItemData.componentPack) {
-                        console.warn('存在一条异常数据，请检查：');
-                        console.log(dataList);
-                        return;
-                    }
-                    const editorData = generateEditorItem(toolItemData);
-                    // 模拟拖入组件插入数据
-                    this.editComponentList.push(editorData);
-                    if (editorData.additional) {
-                        // 新加的元素处理特殊配置信息
-                        this.additionalStrategy(editorData.additional, editorData);
-                    }
-                });
+                // const dataList = api2VmToolItem(configTools, []);
+                //
+                // // 重新插入数据
+                // dataList.forEach((toolItemData) => {
+                //     if (!toolItemData.componentPack) {
+                //         console.warn('存在一条异常数据，请检查：');
+                //         console.log(dataList);
+                //         return;
+                //     }
+                //     const editorData = generateEditorItem(toolItemData);
+                //     // 模拟拖入组件插入数据
+                //     this.editComponentList.push(editorData);
+                //     if (editorData.additional) {
+                //         // 新加的元素处理特殊配置信息
+                //         this.additionalStrategy(editorData.additional, editorData);
+                //     }
+                // });
             },
             handleSave(validData) {
                 componentWithDialog({

@@ -64,7 +64,6 @@ export function editorItem2SchemaFieldProps(editorItem, formData) {
             preVal.default = baseValue[curVal];
         } else if (baseValue[curVal]) {
             preVal.uiOptions = preVal.uiOptions || {};
-            console.log(formatFormConfig(curVal, baseValue[curVal]));
             preVal.uiOptions[curVal] = formatFormConfig(curVal, baseValue[curVal]);
         }
 
