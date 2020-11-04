@@ -2,6 +2,13 @@
     <div :class="$style.box">
         <div :class="$style.logo">
             <h1>Schema 生成器</h1>
+            <el-alert
+                :closable="false"
+                style="width: 200px;margin-left: 20px;"
+                title="开发中..."
+                type="warning"
+            >
+            </el-alert>
         </div>
         <div :class="$style.btns">
             <el-button @click="$emit('onPreview')">预览</el-button>
