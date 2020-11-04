@@ -17,7 +17,7 @@ function isEmptyObject(obj) {
 // 生成一个新的editor item
 export function generateEditorItem(toolItem) {
     const currentComponentPack = toolItem.componentPack;
-    const id = genId();
+    const id = `${currentComponentPack.viewSchema.type || ''}_${genId()}`;
 
     return {
         ...toolItem,
@@ -36,12 +36,14 @@ export function generateEditorItem(toolItem) {
             ) : toolItem.componentValue,
             property: id
         },
-        id
+        id,
+        ...(['array', 'object'].includes(currentComponentPack.viewSchema.type) ? {
+            childList: []
+        } : {})
     };
 }
 
 // editor item 转出为 SchemaField 的数据结构
-
 export function formatFormConfig(key, value) {
     switch (key) {
 
@@ -53,6 +55,16 @@ export function formatFormConfig(key, value) {
     }
 
     }
+}
+
+function filterNoFalseValue(obj) {
+    const result = {};
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key) && obj[key]) {
+            result[key] = obj[key];
+        }
+    }
+    return result;
 }
 
 export function editorItem2SchemaFieldProps(editorItem, formData) {
@@ -74,9 +86,8 @@ export function editorItem2SchemaFieldProps(editorItem, formData) {
 
 
     // rules
-
     const schema = {
-        ...editorItem.componentPack.viewSchema,
+        ...JSON.parse(JSON.stringify(editorItem.componentPack.viewSchema)),
         default: defaultValue,
     };
 
@@ -86,12 +97,55 @@ export function editorItem2SchemaFieldProps(editorItem, formData) {
         rootFormData: formData,
         curNodePath: editorItem.componentValue.property || '',
         uiSchema: {
-            'ui:options': {
+            'ui:options': filterNoFalseValue({
                 ...uiOptions,
                 ...editorItem.componentValue.options,
                 ...editorItem.componentValue.rules
-            },
+            }),
         }
     };
+}
 
+function genBaseObj() {
+    return {
+        type: 'object',
+        required: [],
+        properties: {}
+    };
+}
+
+export function componentList2JsonSchema(componentList) {
+    const baseObj = genBaseObj();
+
+    let parentObj = baseObj;
+    let stack = [{ $$parentFlag: parentObj }, ...componentList];
+
+    const hasChild = data => Array.isArray(data.childList) && data.childList.length > 0;
+
+    // 广度，同时标记父节点
+    while (stack.length) {
+        const item = stack.shift();
+
+        if (item.$$parentFlag) {
+            parentObj = item.$$parentFlag;
+        } else {
+            const { schema, uiSchema } = editorItem2SchemaFieldProps(item, {});
+            const curSchema = {
+                ...schema,
+                ...isEmptyObject(uiSchema['ui:options']) ? {} : {
+                    'ui:options': uiSchema['ui:options']
+                }
+            };
+
+            if (hasChild(item)) {
+                stack = [...stack, { $$parentFlag: curSchema }, ...item.childList];
+            }
+
+            (parentObj.properties || parentObj.items.properties)[item.componentValue.property] = curSchema;
+        }
+    }
+
+    console.log(baseObj);
+
+    return baseObj;
 }

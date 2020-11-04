@@ -99,6 +99,11 @@ export function getSchemaType(schema) {
         return 'string';
     }
 
+    // items 推断为 array 类型
+    if (!type && (schema.items)) {
+        return 'array';
+    }
+
     // anyOf oneOf 不申明 type 字段
     if (!type && (schema.properties || schema.additionalProperties)) {
         return 'object';

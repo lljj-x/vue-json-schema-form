@@ -11,8 +11,8 @@
             </el-alert>
         </div>
         <div :class="$style.btns">
-            <el-button @click="$emit('onPreview')">预览</el-button>
-            <el-button type="primary" @click="$emit('onPublish')">发布</el-button>
+            <el-button @click="$emit('toDemo')">在 Demo 页验证</el-button>
+            <el-button type="primary" @click="$emit('onExport')">导出Schema</el-button>
         </div>
     </div>
 </template>

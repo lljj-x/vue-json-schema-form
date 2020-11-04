@@ -12,6 +12,8 @@ import componentPackTime from '../viewComponents/Time';
 import componentPackDate from '../viewComponents/Date';
 import componentPackDateTime from '../viewComponents/DateTime';
 
+import componentPackObject from '../viewComponents/Object';
+import componentPackArray from '../viewComponents/Array';
 
 /**
  * hidden 隐藏，不显示在工具栏
@@ -48,6 +50,17 @@ const tools = [
             componentPack: componentPackDateTime
         }]
     },
+    {
+        groupName: '布局组件',
+        componentList: [{
+            title: 'Object',
+            componentPack: componentPackObject
+        }, {
+            title: 'Array',
+            componentPack: componentPackArray
+        }]
+    },
+
 ];
 
 export default tools;

@@ -39,21 +39,38 @@
         </div>
         <SchemaField
             v-bind="attrs"
-        ></SchemaField>
+        >
+        </SchemaField>
+
+        <NestedEditor
+            v-if="editorItem.childList"
+            :child-component-list="editorItem.childList"
+            :drag-options="dragOptions"
+            :form-data="formData"
+        >
+        </NestedEditor>
     </div>
 </template>
 
 <script>
     import { SchemaField } from '@lljj/vue-json-schema-form';
+    import emitter from '@/schema-generator/mixins/emitter.js';
+    import NestedEditor from './NestedEditor';
     import { editorItem2SchemaFieldProps } from '../common/editorData';
 
     export default {
         name: 'ViewComponentWrap',
         components: {
-            SchemaField
+            SchemaField,
+            NestedEditor
         },
+        mixins: [emitter],
         props: {
             editorItem: {
+                type: Object,
+                default: () => ({})
+            },
+            dragOptions: {
                 type: Object,
                 default: () => ({})
             },
@@ -75,6 +92,7 @@
             handleClickView(e) {
                 // 阻止浏览器默认事件
                 e.preventDefault();
+                e.stopPropagation();
                 if (!this.editorItem.isEdit) this.showEditForm();
             },
 
@@ -84,22 +102,31 @@
                 // 打开时才注册一个关闭事件，关闭弹窗时移除事件
                 this.closeHandle = (event) => {
                     // 点击的自己兄弟view关闭自己
-                    if (!this.$el.contains(event.target) && event.target.closest('.js_viewComponentWrap')) {
+                    const isChildEle = this.$el.contains(event.target);
+                    const parentWrapEle = event.target.closest('.js_viewComponentWrap');
+
+                    // 点击非自身的item 关闭自己，或者点击了自己的子item 关闭自己
+                    if ((!isChildEle && parentWrapEle) || (isChildEle && this.$el.contains(parentWrapEle))) {
                         this.hideEditForm();
                     }
                 };
 
                 // 点击其它弹窗关闭这里
-                document.addEventListener('click', this.closeHandle, false);
-                setTimeout(() => {
-                    this.$emit('showEditor', this.editorItem);
-                });
+                document.addEventListener('click', this.closeHandle, true);
+
+                this.setCurEditorItem(this.editorItem);
             },
             hideEditForm() {
                 this.editorItem.isEdit = false;
-                document.removeEventListener('click', this.closeHandle);
-                this.$emit('hideEditor', this.editorItem);
-            }
+                document.removeEventListener('click', this.closeHandle, true);
+                this.setCurEditorItem(null);
+            },
+
+            setCurEditorItem(editorItem) {
+                this.dispatch('Editor', 'onSetCurEditorItem', {
+                    editorItem
+                });
+            },
         }
     };
 </script>
@@ -112,6 +139,7 @@
         padding: 30px 10px 10px;
         cursor: move;
         outline: none;
+        border: 1px dashed #bbb;
         overflow: hidden;
         background-color: #ffffff;
         @nest :global .draggableSlot :local & {
@@ -128,13 +156,9 @@
             transition: box-shadow 0.3s ease;
             z-index: 2;
         }
-        &:hover {
-            &:after {
-                box-shadow: 0 0 2px 1px color(var(--color-primary) a(0.6)) inset, 0 1px 2px 1px color(var(--color-primary) a(0.7)) inset;
-            }
-        }
 
         &.active {
+            border: 1px dashed transparent;
             &:after {
                 box-shadow: 0 0 1px 2px var(--color-primary) inset;
             }

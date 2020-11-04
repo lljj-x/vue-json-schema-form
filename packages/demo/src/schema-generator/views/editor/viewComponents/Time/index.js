@@ -18,22 +18,10 @@ export default {
             title: '选项',
             required: [],
             properties: {
-            }
-        },
-        rules: {
-            type: 'object',
-            title: '数据校验',
-            required: [],
-            properties: {
-                minTime: {
-                    title: '最小时间',
+                placeholder: {
                     type: 'string',
-                    format: 'time'
-                },
-                maxTime: {
-                    title: '最大时间',
-                    type: 'string',
-                    format: 'time'
+                    title: '输入占位文本',
+                    default: '请选择时间'
                 }
             }
         }

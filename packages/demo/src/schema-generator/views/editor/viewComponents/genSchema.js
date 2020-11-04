@@ -24,26 +24,28 @@ function genBaseVal(type = 'string') {
                     rows: 3,
                 }
             },
-            labelWidth: {
-                title: '标签宽度',
-                type: 'number',
-                'ui:widget': 'ElSlider',
-                'ui:options': {
-                    formatTooltip(val) {
-                        return formatFormConfig('labelWidth', val);
+            ...!['array', 'object'].includes(type) ? {
+                labelWidth: {
+                    title: '标签宽度',
+                    type: 'number',
+                    'ui:widget': 'ElSlider',
+                    'ui:options': {
+                        formatTooltip(val) {
+                            return formatFormConfig('labelWidth', val);
+                        }
                     }
+                },
+                default: {
+                    title: '默认值',
+                    type,
+                    'ui:placeholder': '输入默认值'
+                },
+                disabled: {
+                    title: '禁用',
+                    type: 'boolean',
+                    default: false
                 }
-            },
-            default: {
-                title: '默认值',
-                type,
-                'ui:placeholder': '输入默认值'
-            },
-            disabled: {
-                title: '禁用',
-                type: 'boolean',
-                default: false
-            }
+            } : {}
         }
     };
 }
