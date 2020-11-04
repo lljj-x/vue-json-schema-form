@@ -14,6 +14,9 @@ import CategoryList from '../viewComponentsM/CategoryList';
 // 分类条
 import RecommendGoods from '../viewComponentsM/RecommendGoods';
 
+// 分类条
+import Test from '../viewComponentsM/Test';
+
 
 /**
  * hidden 隐藏，不显示在工具栏
@@ -50,6 +53,12 @@ const tools = [
             viewWidth: '100%',
             icon: 'el-icon-notebook-1',
             componentPack: RecommendGoods
+        }, {
+            title: '测试自定义form',
+            maxNum: 5,
+            viewWidth: '100%',
+            icon: 'el-icon-notebook-1',
+            componentPack: Test
         }]
     }
 ];

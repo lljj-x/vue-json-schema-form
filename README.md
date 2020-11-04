@@ -9,6 +9,12 @@
 
 ![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vue-json-schema-form.gif)
 
+## 讨论群
+
+QQ群：`146845780` ，欢迎入群讨论
+
+![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vjsf11.jpg)
+
 ## 如何启动活动编辑器
 
 ![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vue-editor.jpg)

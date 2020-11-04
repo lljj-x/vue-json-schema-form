@@ -38,9 +38,9 @@ export function getComponentsAndInitToolsConfig(configTools) {
 
         // 需要生成viewName 或者 formName
         if (needViewName || needFormName) {
-            const id = (componentPack.propsSchema.id || componentPack.propsSchema.$id || genId());
-            if (needViewName) componentPack.componentViewName = `${id}View`;
-            if (needFormName) componentPack.componentFormName = `${id}Form`;
+            const id = ((componentPack.propsSchema && (componentPack.propsSchema.id || componentPack.propsSchema.$id)) || genId());
+            if (needViewName) componentPack.componentViewName = `View${id}`;
+            if (needFormName) componentPack.componentFormName = `Form${id}`;
         }
 
         if (componentPack.componentFormName) {

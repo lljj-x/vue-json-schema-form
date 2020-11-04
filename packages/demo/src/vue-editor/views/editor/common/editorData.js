@@ -17,6 +17,18 @@ function isEmptyObject(obj) {
 // 生成一个新的editor item
 export function generateEditorItem(toolItem) {
     const currentComponentPack = toolItem.componentPack;
+
+    const componentValue = (
+        currentComponentPack.propsSchema
+        && (!toolItem.componentValue || isEmptyObject(toolItem.componentValue))
+    )
+        ? getDefaultFormState(
+            currentComponentPack.propsSchema,
+            {}, // 初始值为空
+            currentComponentPack.propsSchema
+        )
+        : toolItem.componentValue || {};
+
     return {
         ...toolItem,
         isEdit: false,
@@ -26,11 +38,7 @@ export function generateEditorItem(toolItem) {
             copyDisabled: false,
             removeDisabled: false,
         },
-        componentValue: !toolItem.componentValue || isEmptyObject(toolItem.componentValue) ? getDefaultFormState(
-            currentComponentPack.propsSchema,
-            {}, // 初始值为空
-            currentComponentPack.propsSchema
-        ) : toolItem.componentValue,
+        componentValue,
         componentViewName: currentComponentPack.componentViewName,
         componentFormName: currentComponentPack.componentFormName,
         // id: `${currentComponentPack.componentViewName}_${+new Date()}`,

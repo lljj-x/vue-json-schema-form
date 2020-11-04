@@ -4,6 +4,12 @@
 
 export default [
     {
+        name: 'MTestModule',
+        value: {
+            txt: '自定义Form表单测试'
+        }
+    },
+    {
         name: 'MCarouselImg',
         value: {
             imgList: [

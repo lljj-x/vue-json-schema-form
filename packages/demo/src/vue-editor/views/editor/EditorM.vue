@@ -219,11 +219,20 @@
                 // 完整校验整个数据格式是否正确
                 for (let i = 0; i < this.trueComponentList.length; i += 1) {
                     const item = this.trueComponentList[i];
-                    if (!schemaValidate.isValid(item.componentPack.propsSchema, item.componentValue)) {
-                        debugger;
-                        // 验证失败
-                        // item.isEdit = true; // 打开编辑窗口
 
+                    let hasError = false;
+
+                    // schema 直接校验数据
+                    if (item.componentPack.propsSchema) {
+                        // 验证失败
+                        hasError = !schemaValidate.isValid(item.componentPack.propsSchema, item.componentValue);
+                    } else {
+                        // 这里需要执行校验，也可以统一配置在每个pack中 需要使用者自行处理
+                        // 推荐使用schema
+                        this.$message.warning('使用非schema生成表单 需要自行校验数据!');
+                    }
+
+                    if (hasError) {
                         // 通过触发事件打开弹窗，保持和点击行为一致
                         document.querySelectorAll('.js_viewComponentBox')[i].click();
                         this.$message.error('数据配置校验不通过，请检查!');
@@ -545,8 +554,8 @@
         }
     }
     .dragArea {
-        /* min-height: calc(100vh - var(--site-top-height) - 50px); */
-        background-color: #f5f5f5;
+        height: 100%;
+        background-color: #ffffff;
         :global {
             .draggableToolItem {
                 width: 100%;

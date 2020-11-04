@@ -4,7 +4,7 @@
 
 export function vm2Api(vmData) {
     return vmData.map(item => ({
-        name: item.componentPack.propsSchema.id,
+        name: item.componentPack.id || item.componentPack.propsSchema.id,
         value: item.componentValue,
     }));
 }
@@ -17,7 +17,7 @@ export function getComponentMap(configTools) {
 
     // 注册组件结构
     return componentList.reduce((preVal, componentItem) => {
-        preVal[componentItem.componentPack.propsSchema.id] = componentItem;
+        preVal[componentItem.componentPack.id || componentItem.componentPack.propsSchema.id] = componentItem;
         return preVal;
     }, {});
 }
