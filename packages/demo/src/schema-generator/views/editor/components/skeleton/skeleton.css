@@ -1,0 +1,95 @@
+@import "variable.css";
+
+:root {
+    --color-skeleton-bg: var(--background-color-base);
+    --color-animate-bg: #e6e6e6;
+    --color-skeleton-item-border: #e8e8e8;
+}
+
+.skeleton {
+    box-sizing: border-box;
+    padding: 20px;
+    background: var(--color-white);
+    display: table;
+    width: 100%;
+    &+.skeleton {
+        margin-top: 20px;
+    }
+}
+.skeleton-type-img {
+    position: relative;
+    padding-bottom: 80%;
+    &:before {
+        content: ' ';
+        position: absolute;
+        width: calc(100% - 40px);
+        height: calc(100% - 40px);
+        top: 20px;
+        left: 20px;
+        background: var(--color-skeleton-bg);
+    }
+}
+.skeleton-title {
+    width: 100%;
+    height: 16px;
+    margin-top: 16px;
+    background: var(--color-skeleton-bg);
+}
+.skeleton-content {
+    display: table-cell;
+    width: 100%;
+    vertical-align: top;
+}
+.skeleton-item {
+    padding: 20px 0;
+    &+.skeleton-item {
+        border-top: 1px solid var(--color-skeleton-item-border);
+    }
+}
+
+.skeleton-title+.skeleton-paragraph {
+    margin-top: 24px;
+}
+.skeleton-paragraph {
+    padding: 0;
+    &>li {
+        width: 100%;
+        height: 16px;
+        list-style: none;
+        background: var(--color-skeleton-bg);
+        &:last-child:not(:first-child):not(:nth-child(2)) {
+            width: 61%;
+        }
+        &+li {
+            margin-top: 16px;
+        }
+    }
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 100% 50%
+    }
+
+    100% {
+        background-position: 0 50%
+    }
+}
+.skeleton-goods-img {
+    position: relative;
+    padding: 50%;
+    background: var(--color-skeleton-bg);
+    .skeleton-goods-img-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+.skeleton-title, .skeleton-paragraph>li{
+    @nest .skeleton-active & {
+        background: linear-gradient(90deg, var(--color-skeleton-bg) 25%, var(--color-animate-bg) 37%, var(--color-skeleton-bg) 63%);
+        background-size: 400% 100%;
+        animation: skeleton-loading 1.4s ease infinite
+    }
+}

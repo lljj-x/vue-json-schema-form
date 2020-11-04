@@ -15,7 +15,7 @@ import SchemaField from './fields/SchemaField';
 import './index.css';
 
 export default {
-    name: 'ElementFrom',
+    name: 'ElementForm',
     props: vueProps,
     data() {
         const formData = this.getStateFromData(this.$props.schema, this.$props.value);
