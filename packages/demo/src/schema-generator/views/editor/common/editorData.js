@@ -57,10 +57,10 @@ export function formatFormConfig(key, value) {
     }
 }
 
-function filterNoFalseValue(obj) {
+function filterUndefined(obj) {
     const result = {};
     for (const key in obj) {
-        if (obj.hasOwnProperty(key) && obj[key]) {
+        if (obj.hasOwnProperty(key) && obj[key] !== undefined) {
             result[key] = obj[key];
         }
     }
@@ -97,7 +97,7 @@ export function editorItem2SchemaFieldProps(editorItem, formData) {
         rootFormData: formData,
         curNodePath: editorItem.componentValue.property || '',
         uiSchema: {
-            'ui:options': filterNoFalseValue({
+            'ui:options': filterUndefined({
                 ...uiOptions,
                 ...editorItem.componentValue.options,
                 ...editorItem.componentValue.rules
