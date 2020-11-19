@@ -119,6 +119,7 @@ sidebarDepth: 2
 * 对任何一个 `schema` 有效即可，推荐在 `oneOf`  `anyOf` 都可以时使用 `anyOf`
 * 官方文档 - [JSON Schema anyOf](https://json-schema.org/understanding-json-schema/reference/combining.html#anyof)
 * 使用了`oneOfSelect` `anyOfSelect` 配置下拉选项组件
+* anyOf 内渲染object、array默认不显示 `title` 和 `description`，如果需要可以使用 `ui:showTitle: true`，`ui:description: true` 配置显示
 
 ### 数据校验
 * 参考下面的使用案例
@@ -126,6 +127,89 @@ sidebarDepth: 2
 >* [Demo](https://form.lljj.me/#/demo?type=AnyOf%28联动%29)
 >* [数据联动](/zh/guide/adv-config.html#数据联动)
 
+### anyOfSelect、oneOfSelect
+`anyOfSelect` 、`oneOfSelect` 用来配置 anyOf 或者 oneOf的下拉选项组件。
+
+下拉选项名会使用对应anyOf选项内的title字段，但如果你设置了 `ui:enumOptions` 会直接使用该选项。
+
+如下：
+
+```js
+const schema = {
+    anyOfSelect: {
+        'ui:widget': 'RadioWidget',
+        'ui:title': '选择选项',
+        'ui:options': {},
+        'ui:enumOptions': [{
+            label: '选项一',
+            value: 0
+        }, {
+            label: '选项二',
+            value: 1
+        }]
+    }
+}
+```
+
+### anyOf 数据回填
+在编辑页面时anyOf 当前选项是根据当前的formData来对每个anyOf的选项做校验，如果校验成功就返回匹配。
+
+**如果使用相同的数据结构，为了保证正确匹配，可以使用 `const` 关键字来标记每个选项的值保证正确匹配当前结果**
+
+如下：
+```js
+const schema = {
+    type: 'object',
+    title: '选项',
+    required: [],
+    anyOfSelect: {
+        'ui:title': '渲染组件'
+    },
+    anyOf: [{
+        title: 'el-switch',
+        type: 'object',
+        properties: {
+            schemaOptions: {
+                type: 'object',
+                properties: {
+                    'ui:widget': {
+                        title: '使用组件',
+                        type: 'string',
+                        default: 'el-switch',
+                        const: 'el-switch',
+                        'ui:hidden': true
+                    },
+                    other: {
+                        title: '其它',
+                        type: 'string'
+                    }
+                }
+            }
+        }
+    }, {
+        title: 'el-checkbox组件',
+        type: 'object',
+        properties: {
+            schemaOptions: {
+                type: 'object',
+                properties: {
+                    'ui:widget': {
+                        title: '使用组件',
+                        type: 'string',
+                        default: 'el-checkbox',
+                        const: 'el-checkbox',
+                        'ui:hidden': true
+                    },
+                    other: {
+                        title: '其它',
+                        type: 'string'
+                    }
+                }
+            }
+        }
+    }]
+}
+```
 
 ### 特殊字段
 

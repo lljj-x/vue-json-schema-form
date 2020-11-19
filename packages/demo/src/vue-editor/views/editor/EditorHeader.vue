@@ -1,7 +1,8 @@
 <template>
     <div :class="$style.box">
-        <div :class="$style.logo">
+        <div :class="$style.headerMenu">
             <h1>Vue Editor</h1>
+            <Menu default-active="3"></Menu>
         </div>
         <div :class="$style.btns">
             <el-select v-model="platform" placeholder="请选择" :class="$style.selectPlatform">
@@ -32,8 +33,13 @@
 </template>
 
 <script>
+    import Menu from '@/_common/components/Menu';
+
     export default {
         name: 'EditorHeader',
+        components: {
+            Menu
+        },
         props: {
             value: {
                 type: Number,
@@ -88,22 +94,24 @@
 <style module>
     @import "variable.css";
     .box {
-        padding: 20px 80px;
+        padding: 10px 2%;
         height: auto;
         background: var(--color-white);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 0 8px 1px rgba(0,0,0,.3);
     }
-    .logo {
+    .headerMenu {
         display: flex;
         align-items: center;
         justify-content: center;
-        text-shadow: 0 0 40px #409EFF;
         h1 {
-            font-size: 30px;
+            display: none;
+            text-shadow: 0 0 40px #409EFF;
+            font-size: 26px;
             text-transform: uppercase;
+            z-index: 10;
         }
     }
     .selectPlatform {

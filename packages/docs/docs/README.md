@@ -10,10 +10,8 @@ actionLink: /zh/guide/
 ---
 
 ## 快速体验
-* [演示demo](https://form.lljj.me/ "Vue JSON Schema Form Demo")
-* [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JSON Schema Docs")
-* [源代码](https://github.com/lljj-x/vue-json-schema-form "Vue JSON Schema github")
-* [使用场景 - 可视化活动编辑器（H5活动编辑器）](https://form.lljj.me/vue-editor.html)
+* [Playground 演示](https://form.lljj.me/ "Vue JSON Schema Form Playground")
+* [源代码](https://github.com/lljj-x/vue-json-schema-form "Vue JSON Schema github") / [可视化表单Schema生成器](https://form.lljj.me/schema-generator.html "Vue JSON Schema Form 可视化表单Schema生成器") / [Vue可视化活动编辑器](https://form.lljj.me/vue-editor.html)
 * [不支持部分和更新计划](/zh/guide/todo.html)
 
 ``` bash

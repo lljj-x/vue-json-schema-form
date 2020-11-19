@@ -1,7 +1,7 @@
 # vue-json-schema-form
 Quickly building HTML form based on `Vue`, `JSON Schema` and `ElementUi`.
 
-* [中文文档（推荐）](https://github.com/lljj-x/vue-json-schema-form/blob/master/README_zh-cn.md)
+* [中文文档（推荐）](https://github.com/lljj-x/vue-json-schema-form)
 
 ## Experience quickly
 * [Live playground](https://form.lljj.me/ "Vue JSON Schema Form Demo")

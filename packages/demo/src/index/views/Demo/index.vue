@@ -249,8 +249,11 @@
 </script>
 
 <style module>
+    .box {
+        padding: 0 15px;
+    }
     .typeList {
-        padding: 10px 0;
+        padding: 0 0 15px;
     }
     .linkItem {
         margin-right: 8px;

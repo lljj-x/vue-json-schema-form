@@ -2,6 +2,7 @@
  * Created by Liu.Jun on 2020/5/13 15:52.
  */
 
+import '@/_common/bootstrap.js';
 import Vue from 'vue';
 import VueRouter from 'VueRouter';
 import elementUI from 'ELEMENT';

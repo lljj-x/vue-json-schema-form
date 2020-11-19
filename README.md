@@ -1,44 +1,56 @@
 # vue-json-schema-form
-基于 `Vue`、`ElementUi`、`JSON Schema` 快速构建一个带完整校验的form表单.
+* 基于 `Vue`、`ElementUi`、`JSON Schema` 动态生成一个带完整校验的Form表单
+* 支持通过 [可视化Schema编辑器](https://form.lljj.me/schema-generator.html "Vue JSON Schema Form 可视化编辑器") 快速生成表单对应Schema
+* :star2: :star2: :star2: 你的 `star` 就是最大的支持
 
 ## 快速体验
 * [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JSON Schema Docs")
-* [演示Demo](https://form.lljj.me/ "Vue JSON Schema Form Demo")
-* [使用场景 - 可视化活动编辑器](https://form.lljj.me/vue-editor.html)，点击这里查看 [如何启动活动编辑器](#如何启动活动编辑器)
-* [不支持部分和更新计划](https://vue-json-schema-form.lljj.me/zh/guide/todo.html)
+* [Playground 演示](https://form.lljj.me/ "Vue JSON Schema Form Demo") / [可视化表单Schema编辑器](https://form.lljj.me/schema-generator.html "Vue JSON Schema Form 可视化编辑器") / [可视化活动编辑器](https://form.lljj.me/vue-editor.html)
+* [标准 JSON Schema 不支持部分和更新计划](https://vue-json-schema-form.lljj.me/zh/guide/todo.html)
+
+> 查看如何启动 [Playground/表单Schema生成器/活动编辑器](#如何启动相关编辑器页面)
 
 ![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vue-json-schema-form.gif)
 
-## 讨论群
+## 交流群
 
 QQ群：`146845780` ，欢迎入群讨论
 
 ![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vjsf11.jpg)
 
-## 如何启动活动编辑器
+## 如何启动相关编辑器页面
 
 ![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vue-editor.jpg)
 
+安装依赖
 ```ssh
-# 安装依赖
 yarn install
+```
 
-# 运行demo页 （同时运行表单编辑器和活动编辑器）
-# （formEditr）表单编辑器 http://127.0.0.1:8800/
+同时运行 `Playground/表单Schema生成器/活动编辑器`
+```ssh
+# Playground http://127.0.0.1:8800/
+# 可视化表单Schema编辑器 http://127.0.0.1:8800/schema-generator.html
 # （H5）活动编辑器 http://127.0.0.1:8800/vue-editor.html
-yarn run demo:dev
 
-# 只运行（formEditr）表单编辑器
+yarn run demo:dev
+```
+
+单个运行（指定entry编译更快）
+```ssh
+# 只运行 Playground
 yarn run demo:dev --dir=index
+
+# 只运行 表单Schema生成器
+yarn run demo:dev --dir=schema-generator
 
 # 只运行（H5）活动编辑器
 yarn run demo:dev --dir=vue-editor
-
 ```
 
 ### 说明
 * 遵循 `JSON Schema` 规范，只需要给定 `JSON Schema`，即可生成对应的form表单
-* 快速配置个性化ui视图和校验错误信息，可适配常用的ui库，目前的版本默认视图依赖 `elementUi`，后续版本会解耦开来，可通过配置适配ElementUi，iView 或者你自己开发的组件库等
+* 快速配置个性化ui视图和校验错误信息，可适配常用的ui库，目前的版本默认视图依赖 `elementUi`
 * 表单schema校验使用  [ajv](https://github.com/epoberezkin/ajv)
 * 设计思想和对schema解析索引参考 [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)
 
@@ -54,3 +66,7 @@ yarn run demo:dev --dir=vue-editor
 
 ## License
 Apache-2.0
+
+## 问题或建议
+有任何使用问题或者建议都可以通过 [Github issue](https://github.com/lljj-x/vue-json-schema-form/issues) 提交给我
+
