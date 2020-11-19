@@ -17,7 +17,7 @@ jobs:
       with:
         node-version: "12.x"
 
-    - name: Build Blog
+    - name: Build
       run: |
         yarn install
         yarn run docs:build
@@ -25,7 +25,7 @@ jobs:
 
     - name: Setup aliyun oss
       # 设置阿里云OSS配置
-      uses: manyuanrong/setup-ossutil@v1.0
+      uses: manyuanrong/setup-ossutil@v2.0
       with:
         endpoint: "oss-cn-hongkong.aliyuncs.com"
         access-key-id: ${{ secrets.OSS_ACCESSKEYID }}
