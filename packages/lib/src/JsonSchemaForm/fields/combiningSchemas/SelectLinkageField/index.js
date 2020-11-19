@@ -60,17 +60,23 @@ export default {
 
             // title description 回退到 schema 配置，但这里不使用 uiSchema配置
             // select ui配置需要使用 (oneOf|anyOf)Select
-            Object.assign(selectWidgetConfig, {
-                label: selectWidgetConfig.label || this.schema.title,
-                description: selectWidgetConfig.description || this.schema.description,
-            });
+            selectWidgetConfig.label = selectWidgetConfig.label || this.schema.title;
+            selectWidgetConfig.description = selectWidgetConfig.description || this.schema.description;
 
             // 下拉列表枚举值
-            const uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
-            selectWidgetConfig.uiProps.enumOptions = this.selectList.map((option, index) => ({
-                label: (uiSchemaSelectList[index] && uiSchemaSelectList[index]['ui:title']) || option.title || `选项 ${index + 1}`,
-                value: index,
-            }));
+            if (!selectWidgetConfig.uiProps.enumOptions) {
+                const uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
+                selectWidgetConfig.uiProps.enumOptions = this.selectList.map((option, index) => {
+                    const curUiOptions = getUserUiOptions({
+                        schema: option,
+                        uiSchema: uiSchemaSelectList[index]
+                    });
+                    return {
+                        label: curUiOptions.title || option.title || `选项 ${index + 1}`,
+                        value: index,
+                    };
+                });
+            }
 
             // oneOf option 渲染
             // 选择框 vnode
@@ -162,8 +168,17 @@ export default {
         let curSelectSchema = this.selectList[this.curSelectIndex];
         if (curSelectSchema) {
             // 覆盖父级的属性
-            curSelectSchema = Object.assign({}, this.schema, curSelectSchema);
-            delete curSelectSchema[this.combiningType];
+            const {
+                // eslint-disable-next-line no-unused-vars
+                properties,
+                // eslint-disable-next-line no-unused-vars
+                [this.combiningType]: combiningType,
+                // eslint-disable-next-line no-unused-vars
+                [`${this.combiningType}Select`]: combiningTypeSelect,
+                ...parentSchema
+            } = this.schema;
+
+            curSelectSchema = Object.assign({}, parentSchema, curSelectSchema);
 
             // 当前节点的ui err配置，用来支持所有选项的统一配置
             // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
@@ -185,11 +200,13 @@ export default {
                         key: `appendSchema_${this.combiningType}`,
                         props: {
                             ...this.$props,
-                            schema: curSelectSchema,
-                            required: this.required,
-                            uiSchema: {
+                            schema: {
                                 'ui:showTitle': false, // 默认不显示title
                                 'ui:showDescription': false, // 默认不显示描述
+                                ...curSelectSchema,
+                            },
+                            required: this.required,
+                            uiSchema: {
                                 ...userUiOptions, // 合并oneOf 级的配置
                                 ...((this.uiSchema[this.combiningType] || [])[this.curSelectIndex])
                             },

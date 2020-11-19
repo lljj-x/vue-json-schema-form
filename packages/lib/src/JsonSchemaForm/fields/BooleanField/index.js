@@ -17,6 +17,7 @@ export default {
 
         // Bool 会默认传入枚举类型选项 true false
         const enumOptions = optionsList({
+            enumNames: schema.enumNames || [true, false],
             enum: schema.enum || [true, false]
         }, uiSchema);
 

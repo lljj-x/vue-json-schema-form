@@ -27,7 +27,16 @@ export function removeAt(target, index) {
 // 数组填充对象
 export function fillObj(target, data) {
     // 简单复制 异常直接抛错
-    return target.fill(null).map(() => JSON.parse(JSON.stringify(data)));
+    try {
+        if (typeof data === 'object') {
+            return target.fill(null).map(() => JSON.parse(JSON.stringify(data)));
+        }
+    } catch (e) {
+        // nothing ...
+    }
+
+    // 默认返回一个 undefined
+    return undefined;
 }
 
 // 切割分为多个数组

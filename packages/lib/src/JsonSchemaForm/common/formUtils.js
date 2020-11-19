@@ -119,6 +119,13 @@ export function getUiOptions({
         spec.max = schema.maximum;
     }
 
+    if (schema.minLength || schema.minLength === 0) {
+        spec.minlength = schema.minLength;
+    }
+    if (schema.maxLength || schema.maxLength === 0) {
+        spec.maxlength = schema.maxLength;
+    }
+
     if (schema.format === 'date-time' || schema.format === 'date') {
         // 数组类型 时间区间
         // 打破了schema的规范，type array 配置了 format

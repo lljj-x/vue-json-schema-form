@@ -52,15 +52,12 @@
     .el-color-picker {
         vertical-align: top;
     }
-
-    .fieldGroupWrap+.fieldGroupWrap {
-        margin-top: 20px;
-    }
     .fieldGroupWrap_title {
         position: relative;
         display: block;
         width: 100%;
         line-height: 26px;
+        margin-top: 20px;
         margin-bottom: 8px;
         font-size: 15px;
         font-weight: bold;
