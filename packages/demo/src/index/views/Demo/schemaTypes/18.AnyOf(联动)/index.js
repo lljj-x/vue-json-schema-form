@@ -22,7 +22,13 @@ export default {
                         type: 'integer',
                         multipleOf: 3
                     }
-                ]
+                ],
+                anyOfSelect: {
+                    'ui:widget': 'RadioWidget',
+                    'ui:title': '选择选项',
+                    'ui:options': {
+                    }
+                }
             },
             test: {
                 title: '测试 const anyOf',
@@ -33,6 +39,7 @@ export default {
                         const: '111'
                     },
                     {
+                        'ui:title': 'ui-option2',
                         const: '222'
                     }
                 ]
@@ -61,8 +68,18 @@ export default {
                 }
             }
         },
+        anyOfSelect: {
+            'ui:widget': 'RadioWidget',
+            'ui:title': '测试 anyOf object',
+            'ui:options': {
+                style: {
+                    // width: '300px',
+                }
+            }
+        },
         anyOf: [
             {
+                'ui:showTitle': true,
                 title: 'First method of identification',
                 properties: {
                     firstName: {
@@ -77,6 +94,7 @@ export default {
                 }
             },
             {
+                'ui:showTitle': true,
                 title: 'Second method of identification',
                 properties: {
                     idCode: {
@@ -89,38 +107,7 @@ export default {
         ]
     },
     uiSchema: {
-        anyOfSelect: {
-            'ui:widget': 'RadioWidget',
-            'ui:title': '测试 anyOf object',
-            'ui:options': {
-                style: {
-                    // width: '300px',
-                }
-            }
-        },
-        age: {
-            anyOfSelect: {
-                'ui:widget': 'RadioWidget',
-                'ui:title': '选择选项',
-                'ui:options': {
-                }
-            }
-        },
-        test: {
-            // 'ui:widget': 'RadioWidget',
-            anyOf: [
-                {},
-                {
-                    'ui:title': 'ui-option2'
-                }
-            ]
-        }
     },
     formData: {
-        // age: 11111,
-        // test: '222',
-        // idCode: '111',
-        // firstName: '11',
-        // lastName: '11'
     }
 };

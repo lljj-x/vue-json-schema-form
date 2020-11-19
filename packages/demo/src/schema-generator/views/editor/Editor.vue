@@ -136,6 +136,11 @@
                     },
                     componentProps: {
                         componentList: this.componentList
+                    },
+                    componentListeners: {
+                        toDemo: () => {
+                            this.handleToDemo();
+                        }
                     }
                 });
             },

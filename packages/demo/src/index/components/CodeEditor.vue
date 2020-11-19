@@ -42,7 +42,7 @@
             },
             height: {
                 type: String,
-                default: '420px'
+                default: '520px'
             },
             language: {
                 type: String,

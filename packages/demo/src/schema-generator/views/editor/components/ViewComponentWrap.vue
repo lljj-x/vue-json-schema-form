@@ -43,7 +43,7 @@
         </SchemaField>
 
         <NestedEditor
-            v-if="editorItem.childList"
+            v-if="showNestedEditor"
             :child-component-list="editorItem.childList"
             :drag-options="dragOptions"
             :form-data="formData"
@@ -82,6 +82,9 @@
         computed: {
             attrs() {
                 return editorItem2SchemaFieldProps(this.editorItem, this.formData);
+            },
+            showNestedEditor() {
+                return this.editorItem.childList && !this.editorItem.componentPack.viewSchema.format;
             }
         },
         beforeDestroy() {
@@ -91,7 +94,6 @@
             // 点击只能打开，并且打开状态下只能执行一次
             handleClickView(e) {
                 // 阻止浏览器默认事件
-                e.preventDefault();
                 e.stopPropagation();
                 if (!this.editorItem.isEdit) this.showEditForm();
             },
@@ -102,11 +104,12 @@
                 // 打开时才注册一个关闭事件，关闭弹窗时移除事件
                 this.closeHandle = (event) => {
                     // 点击的自己兄弟view关闭自己
+                    const $el = this.$el;
                     const isChildEle = this.$el.contains(event.target);
                     const parentWrapEle = event.target.closest('.js_viewComponentWrap');
 
                     // 点击非自身的item 关闭自己，或者点击了自己的子item 关闭自己
-                    if ((!isChildEle && parentWrapEle) || (isChildEle && this.$el.contains(parentWrapEle))) {
+                    if ((!isChildEle && parentWrapEle) || (isChildEle && $el !== parentWrapEle && $el.contains(parentWrapEle))) {
                         this.hideEditForm();
                     }
                 };

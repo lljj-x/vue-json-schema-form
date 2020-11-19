@@ -18,36 +18,46 @@ export default {
             title: '选项',
             required: [],
             properties: {
-                step: {
-                    title: '步长',
-                    type: 'number',
-                    default: 1
+                schemaOptions: {
+                    type: 'object',
+                    properties: {
+                        multipleOf: {
+                            title: '步长',
+                            type: 'number',
+                            default: 1
+                        },
+                    }
                 },
-                showInput: {
-                    title: '显示输入框',
-                    type: 'boolean',
-                    default: true
+                uiOptions: {
+                    type: 'object',
+                    properties: {
+                        showInput: {
+                            title: '显示输入框',
+                            type: 'boolean',
+                            default: false
+                        },
+                        showInputControls: {
+                            title: '控制按钮',
+                            type: 'boolean',
+                            default: true
+                        },
+                        showStops: {
+                            title: '显示间断点',
+                            type: 'boolean',
+                            default: false
+                        },
+                        showTooltip: {
+                            title: '显示Tooltip',
+                            type: 'boolean',
+                            default: true
+                        },
+                        debounce: {
+                            title: '去抖延迟ms',
+                            type: 'number',
+                            default: 300
+                        }
+                    }
                 },
-                showInputControls: {
-                    title: '控制按钮',
-                    type: 'boolean',
-                    default: false
-                },
-                showStops: {
-                    title: '显示间断点',
-                    type: 'boolean',
-                    default: false
-                },
-                showTooltip: {
-                    title: '显示Tooltip',
-                    type: 'boolean',
-                    default: false
-                },
-                debounce: {
-                    title: '去抖延迟ms',
-                    type: 'number',
-                    default: 300
-                }
             }
         },
         rules: {
@@ -55,13 +65,28 @@ export default {
             title: '数据校验',
             required: [],
             properties: {
-                min: {
-                    title: '最小值',
-                    type: 'number'
+                schemaOptions: {
+                    type: 'object',
+                    properties: {
+                        minimum: {
+                            title: '最小值',
+                            type: 'number'
+                        },
+                        maximum: {
+                            title: '最大值',
+                            type: 'number'
+                        },
+                    }
                 },
-                max: {
-                    title: '最大值',
-                    type: 'number'
+                uiOptions: {
+                    type: 'object',
+                    properties: {
+                        required: {
+                            title: '必填',
+                            type: 'boolean',
+                            default: false
+                        }
+                    }
                 }
             }
         }

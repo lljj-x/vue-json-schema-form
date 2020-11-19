@@ -17,7 +17,9 @@ function isEmptyObject(obj) {
 // 生成一个新的editor item
 export function generateEditorItem(toolItem) {
     const currentComponentPack = toolItem.componentPack;
-    const id = `${currentComponentPack.viewSchema.type || ''}_${genId()}`;
+
+    const ids = [currentComponentPack.viewSchema.format, currentComponentPack.viewSchema.type, genId()];
+    const id = ids.filter(item => !!item).join('_');
 
     return {
         ...toolItem,
@@ -37,72 +39,140 @@ export function generateEditorItem(toolItem) {
             property: id
         },
         id,
-        ...(['array', 'object'].includes(currentComponentPack.viewSchema.type) ? {
-            childList: []
-        } : {})
+        ...(currentComponentPack.viewSchema.properties || (currentComponentPack.viewSchema.items && currentComponentPack.viewSchema.items.properties))
+            ? { childList: [] }
+            : {}
     };
 }
 
-// editor item 转出为 SchemaField 的数据结构
-export function formatFormConfig(key, value) {
-    switch (key) {
-
-    case 'labelWidth':
-        return `${value * 4}px`;
-
-    default: {
-        return value;
-    }
-
-    }
+// formLabel格式化
+export function formatFormLabelWidth(value) {
+    return value ? `${value * 4}px` : undefined;
 }
 
-function filterUndefined(obj) {
+function filterObj(obj, filter = (key, value) => value !== undefined && !isEmptyObject(value)) {
     const result = {};
+    if (Object.prototype.toString.call(obj) !== '[object Object]') return result;
+
     for (const key in obj) {
-        if (obj.hasOwnProperty(key) && obj[key] !== undefined) {
-            result[key] = obj[key];
+        if (obj.hasOwnProperty(key)) {
+            const filterVal = filter(key, obj[key]);
+            // 返回值Bool
+            const isBoolOrUndefined = filterVal === undefined || Boolean(filterVal) === filterVal;
+
+            // 如果是 Boolean 类型，使用原值
+            if (isBoolOrUndefined && filterVal) {
+                result[key] = obj[key];
+            }
+
+            // 非Boolean类型 使用返回后的值
+            if (!isBoolOrUndefined) {
+                result[key] = filterVal;
+            }
         }
     }
+
     return result;
 }
 
 export function editorItem2SchemaFieldProps(editorItem, formData) {
-    const baseValue = editorItem.componentValue.baseValue;
-
     // baseValue
-    const { default: defaultValue, uiOptions } = Object.keys(editorItem.componentValue.baseValue).reduce((preVal, curVal) => {
-        if (curVal === 'default') {
-            preVal.default = baseValue[curVal];
-        } else if (baseValue[curVal]) {
-            preVal.uiOptions = preVal.uiOptions || {};
-            preVal.uiOptions[curVal] = formatFormConfig(curVal, baseValue[curVal]);
-        }
-
-        return preVal;
-    }, {});
+    const {
+        schemaOptions: baseSchemaOptions,
+        uiOptions: baseUiOptions
+    } = editorItem.componentValue.baseValue;
 
     // options
-
+    const {
+        schemaOptions,
+        uiOptions
+    } = editorItem.componentValue.options || {};
 
     // rules
+    const {
+        schemaOptions: ruleSchemaOptions,
+        uiOptions: {
+            required = false,
+            ruleUiOptions
+        } = {}
+    } = editorItem.componentValue.rules || {};
+
+    // schema
     const schema = {
         ...JSON.parse(JSON.stringify(editorItem.componentPack.viewSchema)),
-        default: defaultValue,
+        ...filterObj({
+            ...baseSchemaOptions,
+            ...schemaOptions,
+            ...ruleSchemaOptions
+        })
     };
+
+    // false 时可省略的属性值
+    // todo: 这里需要优化自动对比default的值
+    const ignoreAttrs = {
+        // slider
+        showInput: false,
+        showStops: false,
+        showInputControls: true,
+        showTooltip: true,
+        debounce: 300,
+
+        // input number
+        controlsPosition: 'default',
+        stepStrictly: false,
+
+        // input
+        clearable: false,
+        disabled: false,
+        showPassword: false,
+        showWordLimit: false,
+        type: 'text'
+    };
+
+    // uiSchema
+    const {
+        hidden, widget, field, fieldProps, ...mergeUiOptions
+    } = filterObj({
+        ...baseUiOptions,
+        ...uiOptions,
+        ...ruleUiOptions
+    }, (key, value) => {
+        // 省略掉默认值
+        if (ignoreAttrs[key] === value) return false;
+
+        if (key === 'labelWidth') {
+            return formatFormLabelWidth(value);
+        }
+
+        // 过滤undefined
+        return value !== undefined;
+    });
+
+    const uiSchema = {
+        ...Object.entries({
+            hidden, widget, field, fieldProps
+        }).reduce((preVal, [key, value]) => {
+            if (value !== undefined) {
+                preVal[`ui:${key}`] = value;
+            }
+            return preVal;
+        }, {}),
+        ...isEmptyObject(mergeUiOptions) ? {} : {
+            'ui:options': mergeUiOptions
+        }
+    };
+
+    console.log(schema);
+    console.log(uiSchema);
+    console.log('\n');
 
     return {
         rootSchema: schema,
         schema,
+        required,
         rootFormData: formData,
         curNodePath: editorItem.componentValue.property || '',
-        uiSchema: {
-            'ui:options': filterUndefined({
-                ...uiOptions,
-                ...editorItem.componentValue.options,
-                ...editorItem.componentValue.rules
-            }),
-        }
+        uiSchema
     };
 }
 
@@ -124,28 +194,33 @@ export function componentList2JsonSchema(componentList) {
 
     // 广度，同时标记父节点
     while (stack.length) {
+        // 出栈
         const item = stack.shift();
 
+        // 标记节点 切换parent
         if (item.$$parentFlag) {
             parentObj = item.$$parentFlag;
         } else {
-            const { schema, uiSchema } = editorItem2SchemaFieldProps(item, {});
+            const { schema, required, uiSchema } = editorItem2SchemaFieldProps(item, {});
             const curSchema = {
                 ...schema,
-                ...isEmptyObject(uiSchema['ui:options']) ? {} : {
-                    'ui:options': uiSchema['ui:options']
-                }
+                ...uiSchema
             };
 
+            // 入栈
             if (hasChild(item)) {
                 stack = [...stack, { $$parentFlag: curSchema }, ...item.childList];
             }
 
+            // 连接数据
             (parentObj.properties || parentObj.items.properties)[item.componentValue.property] = curSchema;
+
+            // 设置 required
+            if (required) {
+                (parentObj.required || parentObj.items.required).push(item.componentValue.property);
+            }
         }
     }
-
-    console.log(baseObj);
 
     return baseObj;
 }

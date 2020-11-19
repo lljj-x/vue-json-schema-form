@@ -17,33 +17,44 @@ export default {
             title: '选项',
             required: [],
             properties: {
-                step: {
-                    title: '步长',
-                    type: 'number',
-                    default: 1
+                schemaOptions: {
+                    type: 'object',
+                    properties: {
+                        multipleOf: {
+                            title: '步长',
+                            type: 'number',
+                            default: 1
+                        },
+                    }
                 },
-                stepStrictly: {
-                    title: '严格步长',
-                    type: 'boolean',
-                    default: false
-                },
-                precision: {
-                    title: '精度',
-                    type: 'number',
-                    minimum: 0
-                },
-                controlsPosition: {
-                    type: 'string',
-                    title: '按钮位置',
-                    enum: [
-                        'default',
-                        'right'
-                    ],
-                    enumNames: [
-                        '默认两边',
-                        '右侧显示'
-                    ]
-                },
+                uiOptions: {
+                    type: 'object',
+                    properties: {
+                        stepStrictly: {
+                            title: '严格步长',
+                            type: 'boolean',
+                            default: false
+                        },
+                        precision: {
+                            title: '精度',
+                            type: 'number',
+                            minimum: 0
+                        },
+                        controlsPosition: {
+                            type: 'string',
+                            title: '按钮位置',
+                            enum: [
+                                'default',
+                                'right'
+                            ],
+                            enumNames: [
+                                '默认两边',
+                                '右侧显示'
+                            ],
+                            default: 'default'
+                        },
+                    }
+                }
             }
         },
         rules: {
@@ -51,13 +62,28 @@ export default {
             title: '数据校验',
             required: [],
             properties: {
-                min: {
-                    title: '最小值',
-                    type: 'number'
+                schemaOptions: {
+                    type: 'object',
+                    properties: {
+                        minimum: {
+                            title: '最小值',
+                            type: 'number'
+                        },
+                        maximum: {
+                            title: '最大值',
+                            type: 'number'
+                        },
+                    }
                 },
-                max: {
-                    title: '最大值',
-                    type: 'number'
+                uiOptions: {
+                    type: 'object',
+                    properties: {
+                        required: {
+                            title: '必填',
+                            type: 'boolean',
+                            default: false
+                        }
+                    }
                 }
             }
         }

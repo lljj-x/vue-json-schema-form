@@ -1,14 +1,13 @@
 <template>
     <div style="text-align: right;">
         <el-button @click="toCopy">复制代码</el-button>
-        <el-button type="primary" @click="toDemo">在 Demo 页验证</el-button>
+        <el-button type="primary" @click="$emit('toDemo')">在 Demo 页验证</el-button>
         <JsonPrettyPrint :json-string="genCode"></JsonPrettyPrint>
     </div>
 </template>
 
 <script>
     import JsonPrettyPrint from '@/_common/components/JsonPerttyPrint.vue';
-    import { openNewPage } from '@/_common/utils/url.js';
     import { componentList2JsonSchema } from '../common/editorData';
 
     export default {
@@ -33,11 +32,6 @@
             }
         },
         methods: {
-            toDemo() {
-                const schema = encodeURIComponent(JSON.stringify(this.genCode));
-                const link = `https://form.lljj.me/#/demo?type=Test&schema=${schema}`;
-                openNewPage(link);
-            },
             toCopy() {
                 if (this.copied) {
                     return;

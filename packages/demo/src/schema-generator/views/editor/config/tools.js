@@ -3,14 +3,19 @@
  */
 
 import componentPackInput from '../viewComponents/Input';
-
+import componentPackColor from '../viewComponents/Color';
 import componentPackInputNumber from '../viewComponents/InputNumber';
-
 import componentPackSlider from '../viewComponents/Slider';
+import componentPackSelectBoolean from '../viewComponents/SelectBoolean';
+import componentPackRadio from '../viewComponents/Radio';
+import componentPackMultiSelect from '../viewComponents/MultiSelect';
+
 
 import componentPackTime from '../viewComponents/Time';
 import componentPackDate from '../viewComponents/Date';
+import componentPackDateRange from '../viewComponents/DateRange';
 import componentPackDateTime from '../viewComponents/DateTime';
+import componentPackDateTimeRange from '../viewComponents/DateTimeRange';
 
 import componentPackObject from '../viewComponents/Object';
 import componentPackArray from '../viewComponents/Array';
@@ -35,6 +40,18 @@ const tools = [
         }, {
             title: '数字（slider）',
             componentPack: componentPackSlider
+        }, {
+            title: '是否选择',
+            componentPack: componentPackSelectBoolean
+        }, {
+            title: '单选类型',
+            componentPack: componentPackRadio
+        }, {
+            title: '多选类型',
+            componentPack: componentPackMultiSelect
+        }, {
+            title: '颜色选择',
+            componentPack: componentPackColor
         }]
     },
     {
@@ -48,6 +65,12 @@ const tools = [
         }, {
             title: '日期时间选择',
             componentPack: componentPackDateTime
+        }, {
+            title: '日期范围',
+            componentPack: componentPackDateRange
+        }, {
+            title: '日期时间范围',
+            componentPack: componentPackDateTimeRange
         }]
     },
     {

@@ -25,16 +25,16 @@
                 </el-button>
             </router-link>
         </div>
-        <el-row :gutter="60">
+        <el-row :gutter="25">
             <el-col :class="$style.middleBox" :span="16">
                 <el-row :gutter="6">
-                    <el-col :span="12">
+                    <el-col :span="14">
                         <CodeEditor
                             v-model="curSchemaCode"
                             title="Schema"
                         ></CodeEditor>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="10">
                         <CodeEditor
                             v-model="curFormDataCode"
                             title="FormData"
@@ -56,10 +56,10 @@
                     </el-col>
                 </el-row>
             </el-col>
-            <el-col :class="$style.middleBox" :span="8">
+            <el-col :class="[$style.middleBox, $style.middleBox_form]" :span="8">
                 <el-card
                     shadow="hover"
-                    :class="$style.card"
+                    :class="[$style.card, $style.formBox]"
                 >
                     <div slot="header" class="clearfix">
                         <span>生成表单：</span>
@@ -226,13 +226,15 @@
             },
             handleCancel() {
                 if (this.isTestPage) {
+                    const formatStr = jsonCode => encodeURIComponent(JSON.stringify(JSON.parse(jsonCode)));
+
                     const genRoute = this.$router.resolve({
                         query: {
                             type: 'Test',
-                            schema: encodeURIComponent(this.curSchemaCode),
-                            formData: encodeURIComponent(this.curFormDataCode),
-                            uiSchema: encodeURIComponent(this.curUiSchemaCode),
-                            errorSchema: encodeURIComponent(this.curErrorSchemaCode),
+                            schema: formatStr(this.curSchemaCode),
+                            formData: formatStr(this.curFormDataCode),
+                            uiSchema: formatStr(this.curUiSchemaCode),
+                            errorSchema: formatStr(this.curErrorSchemaCode),
                         }
                     });
                     const url = `${window.location.origin}${window.location.pathname}${genRoute.href}`;
@@ -247,9 +249,6 @@
 </script>
 
 <style module>
-    .box {
-        overflow: hidden;
-    }
     .typeList {
         padding: 10px 0;
     }
@@ -266,9 +265,7 @@
             }
             .el-card__header {
                 border-top: 1px solid #EBEEF5;
-                position: sticky;
                 padding: 10px 20px;
-                top: 0;
                 font-size: 14px;
                 font-weight: bold;
                 background: #FFFFFF;
@@ -276,8 +273,12 @@
             }
         }
     }
-    .middleBox {
-        height: calc(100vh - 140px);
-        overflow: auto;
+    .middleBox_form {
+        position: sticky;
+        top: 0;
+    }
+    .formBox {
+        max-height: calc(100vh - 40px);
+        overflow: auto !important;
     }
 </style>

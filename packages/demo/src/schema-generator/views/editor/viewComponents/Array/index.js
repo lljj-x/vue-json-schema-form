@@ -9,6 +9,7 @@ const viewSchema = {
     type: 'array',
     items: {
         type: 'object',
+        required: [],
         properties: {}
     }
 };

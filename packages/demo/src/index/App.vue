@@ -20,7 +20,7 @@
 <style module>
     .wrap {
         min-width: 1000px;
-        padding: 0 20px;
+        padding: 0 10px;
     }
     .header {
         width: 100%;

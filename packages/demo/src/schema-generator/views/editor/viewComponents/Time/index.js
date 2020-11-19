@@ -18,10 +18,15 @@ export default {
             title: '选项',
             required: [],
             properties: {
-                placeholder: {
-                    type: 'string',
-                    title: '输入占位文本',
-                    default: '请选择时间'
+                uiOptions: {
+                    type: 'object',
+                    properties: {
+                        placeholder: {
+                            type: 'string',
+                            title: '输入占位文本',
+                            default: '请选择时间'
+                        }
+                    }
                 }
             }
         }
