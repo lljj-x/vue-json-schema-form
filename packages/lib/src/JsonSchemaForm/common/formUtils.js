@@ -3,7 +3,7 @@ import FIELDS_MAP from '../config/FIELDS_MAP';
 import retrieveSchema from './schema/retriev';
 import { getPathVal } from './vueUtils';
 
-import { isObject, getSchemaType } from './utils';
+import { getSchemaType, isObject } from './utils';
 
 // 配置表达式，或者常量，或者传入函数
 // 这里打破 JSON Schema 规范
@@ -33,6 +33,21 @@ function handleExpression(rootFormData, curNodePath, expression) {
 
     // 配置了常量 ？？
     return expression;
+}
+
+export function replaceArrayIndex({ schema, uiSchema } = {}, index) {
+    const itemUiOptions = getUiOptions({
+        schema,
+        uiSchema,
+        containsSpec: false
+    });
+
+    return ['title', 'description'].reduce((preVal, curItem) => {
+        if (itemUiOptions[curItem]) {
+            preVal[`ui:${curItem}`] = String(itemUiOptions[curItem]).replace(/\$index/g, index + 1);
+        }
+        return preVal;
+    }, {});
 }
 
 // 是否为 hidden Widget
@@ -105,36 +120,39 @@ export function getUserUiOptions({
 // 解析当前节点的ui options参数
 export function getUiOptions({
     schema = {},
-    uiSchema = {}
+    uiSchema = {},
+    containsSpec = true
 }) {
     const spec = {};
-    if (undefined !== schema.multipleOf) {
+    if (containsSpec) {
+        if (undefined !== schema.multipleOf) {
         // 组件计数器步长
-        spec.step = schema.multipleOf;
-    }
-    if (schema.minimum || schema.minimum === 0) {
-        spec.min = schema.minimum;
-    }
-    if (schema.maximum || schema.maximum === 0) {
-        spec.max = schema.maximum;
-    }
+            spec.step = schema.multipleOf;
+        }
+        if (schema.minimum || schema.minimum === 0) {
+            spec.min = schema.minimum;
+        }
+        if (schema.maximum || schema.maximum === 0) {
+            spec.max = schema.maximum;
+        }
 
-    if (schema.minLength || schema.minLength === 0) {
-        spec.minlength = schema.minLength;
-    }
-    if (schema.maxLength || schema.maxLength === 0) {
-        spec.maxlength = schema.maxLength;
-    }
+        if (schema.minLength || schema.minLength === 0) {
+            spec.minlength = schema.minLength;
+        }
+        if (schema.maxLength || schema.maxLength === 0) {
+            spec.maxlength = schema.maxLength;
+        }
 
-    if (schema.format === 'date-time' || schema.format === 'date') {
+        if (schema.format === 'date-time' || schema.format === 'date') {
         // 数组类型 时间区间
         // 打破了schema的规范，type array 配置了 format
-        if (schema.type === 'array') {
-            spec.isRange = true;
-            spec.isNumberValue = !(schema.items && schema.items.type === 'string');
-        } else {
+            if (schema.type === 'array') {
+                spec.isRange = true;
+                spec.isNumberValue = !(schema.items && schema.items.type === 'string');
+            } else {
             // 字符串 ISO 时间
-            spec.isNumberValue = !(schema.type === 'string');
+                spec.isNumberValue = !(schema.type === 'string');
+            }
         }
     }
 

@@ -4,7 +4,7 @@
 
 
 import vueProps from '../../props';
-import { allowAdditionalItems, getUiOptions } from '../../../common/formUtils';
+import { allowAdditionalItems, getUiOptions, replaceArrayIndex } from '../../../common/formUtils';
 import getDefaultFormState from '../../../common/schema/getDefaultFormState';
 import { computedCurPath } from '../../../common/vueUtils';
 import { cutOff } from '../../../common/arrayUtils';
@@ -96,23 +96,33 @@ export default {
         ));
 
         // 通过order组件做可排序处理
-        const additionalVnodeArr = cutOfArr[1].map((item, index) => ({
-            key: item.key,
-            vNode: h(
-                SchemaField,
-                {
-                    key: item.key,
-                    props: {
-                        ...this.$props,
-                        schema: schema.additionalItems,
-                        required: !([].concat(schema.additionalItems.type).includes('null')),
-                        uiSchema: uiSchema.additionalItems,
-                        errorSchema: errorSchema.additionalItems,
-                        curNodePath: computedCurPath(this.curNodePath, index + schema.items.length)
+        const additionalVnodeArr = cutOfArr[1].map((item, index) => {
+            const tempUiSchema = replaceArrayIndex({
+                schema: schema.additionalItems,
+                uiSchema: uiSchema.additionalItems
+            }, index);
+
+            return {
+                key: item.key,
+                vNode: h(
+                    SchemaField,
+                    {
+                        key: item.key,
+                        props: {
+                            ...this.$props,
+                            schema: schema.additionalItems,
+                            required: !([].concat(schema.additionalItems.type).includes('null')),
+                            uiSchema: {
+                                ...uiSchema.additionalItems,
+                                ...tempUiSchema
+                            },
+                            errorSchema: errorSchema.additionalItems,
+                            curNodePath: computedCurPath(this.curNodePath, index + schema.items.length)
+                        }
                     }
-                }
-            )
-        }));
+                )
+            };
+        });
 
         // 是否可添加同时受限于 additionalItems 属性
         const trueAddable = (addable === undefined ? true : addable) && allowAdditionalItems(this.schema);
