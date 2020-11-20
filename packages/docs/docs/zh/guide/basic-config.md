@@ -126,8 +126,8 @@ uiSchema = {
     'ui:widget': 'el-slider', // 配置input组件，支持字符串或者传入一个vue组件，不支持配置在options中
     'ui:labelWidth': '50px', // form item label宽度
     'ui:options': {
-            showTitle: '是否显示标题', // 只对 type为`object`、`array` 类型有效
-            showDescription: '是否显示描述信息', // 只对type为 `object`、`array` 类型有效
+            showTitle: true, // 只对 type为`object`、`array` 类型有效
+            showDescription: false, // 只对type为 `object`、`array` 类型有效
             attrs: {
                 // 通过 vue render函数 attrs 传递给 Widget 组件，只能配置在叶子节点
                 // 你也配置在外层，程序会合并 attrs 和 其它外层属性 通过 attrs 传递给子组件
