@@ -1,9 +1,6 @@
 <template>
     <div :class="$style.wrap">
-        <header :class="$style.header">
-            <h1>Vue JSON Schema Form</h1>
-            <Menu default-active="2"></Menu>
-        </header>
+        <EditorHeader default-active="2"></EditorHeader>
         <router-view></router-view>
         <footer :class="$style.footer">
             <a href="https://github.com/lljj-x/vue-json-schema-form">vue-json-schema-form</a>
@@ -12,12 +9,12 @@
 </template>
 
 <script>
-    import Menu from '@/_common/components/Menu';
+    import EditorHeader from '@/_common/components/EditorHeader.vue';
 
     export default {
         name: 'App',
         components: {
-            Menu
+            EditorHeader
         }
     };
 </script>

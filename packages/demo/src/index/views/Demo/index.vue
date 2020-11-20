@@ -28,16 +28,16 @@
         <el-row :gutter="25">
             <el-col :class="$style.middleBox" :span="16">
                 <el-row :gutter="6">
-                    <el-col :span="14">
-                        <CodeEditor
-                            v-model="curSchemaCode"
-                            title="Schema"
-                        ></CodeEditor>
-                    </el-col>
                     <el-col :span="10">
                         <CodeEditor
                             v-model="curFormDataCode"
                             title="FormData"
+                        ></CodeEditor>
+                    </el-col>
+                    <el-col :span="14">
+                        <CodeEditor
+                            v-model="curSchemaCode"
+                            title="Schema"
                         ></CodeEditor>
                     </el-col>
                 </el-row>
@@ -253,7 +253,7 @@
         padding: 0 15px;
     }
     .typeList {
-        padding: 0 0 15px;
+        padding: 15px 0 20px;
     }
     .linkItem {
         margin-right: 8px;

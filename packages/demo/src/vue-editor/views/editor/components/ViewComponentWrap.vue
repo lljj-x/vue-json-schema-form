@@ -150,13 +150,13 @@
         }
         &:hover {
             &:after {
-                box-shadow: 0 0 10px 1px color(var(--color-primary) a(0.6)) inset, 0 3px 14px 3px color(var(--color-primary) a(0.7)) inset;
+                box-shadow: 0 0 6px 1px color(var(--color-primary) a(0.7)) inset;
             }
         }
 
         &.active {
             &:after {
-                box-shadow: 0 0 6px 8px var(--color-primary) inset;
+                box-shadow: 0 0 8px 3px var(--color-primary) inset;
             }
         }
     }

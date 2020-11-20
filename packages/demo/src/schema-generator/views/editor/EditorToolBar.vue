@@ -103,9 +103,9 @@
         border: 1px dashed transparent;
         font-size: 12px;
         &:hover {
-            color: #409eff;
-            border: 1px dashed #409eff;
-            box-shadow: 0 0 8px 1px rgba(0,0,0,.2);
+            color: var(--color-primary);
+            border: 1px dashed var(--color-primary);
+            box-shadow: 0 0 4px 1px color(var(--color-primary) a(0.8));
         }
     }
     .line {

@@ -1,4 +1,8 @@
-// import 同步模块
+/**
+ * Created by Liu.Jun on 2020/11/20 9:43.
+ */
+
+import './theme/index.css';
 import ELEMENT from 'ELEMENT';
 
 const {

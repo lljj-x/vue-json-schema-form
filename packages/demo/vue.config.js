@@ -12,7 +12,9 @@ const envConfig = require('./scripts/envConfig').getConfig();
 const {
     entries,
     openPage
-} = require('./scripts/entry.js')();
+} = require('./scripts/entry.js')({
+    chunks: ['user-runtime', 'user-vendors-polyfill']
+});
 
 log({
     data: chalk.green(openPage),
@@ -69,35 +71,29 @@ module.exports = {
     // https://github.com/mozilla-neutrino/webpack-chain
     chainWebpack: (config) => {
         // 添加runtime
-        // config.optimization.runtimeChunk({
-        //     name: 'user-runtime'
-        // });
+        config.optimization.runtimeChunk({
+            name: 'user-runtime'
+        });
 
         // 指定文件提取
-        // const splitConfig = {
-        //     cacheGroups: {
-        //         vendors: {
-        //             name: 'user-vendors-polyfill',
-        //             chunks: 'initial',
-        //             priority: 12,
-        //             test: module => /[\\/]node_modules[\\/]/.test(module.context) && /@gb|vue|vuex|vue-router/.test(module.context),
-        //         },
-        //         elementUi: {
-        //             name: 'user-element-ui',
-        //             chunks: 'initial',
-        //             priority: 10,
-        //             test: module => /[\\/]node_modules[\\/]/.test(module.context) && /element-ui/.test(module.context),
-        //         },
-        //         asyncVendor: {
-        //             name: 'chunk-vendors-async',
-        //             chunks: 'async',
-        //             priority: 8,
-        //             minChunks: 5,
-        //         }
-        //     }
-        // };
+        const splitConfig = {
+            cacheGroups: {
+                vendors: {
+                    name: 'user-vendors-polyfill',
+                    chunks: 'initial',
+                    priority: 12,
+                    test: module => /[\\/]node_modules[\\/]/.test(module.context) || /components\\ElementUi/.test(module.context),
+                },
+                asyncVendor: {
+                    name: 'chunk-vendors-async',
+                    chunks: 'async',
+                    priority: 8,
+                    minChunks: 5,
+                }
+            }
+        };
 
-        config.optimization.splitChunks({});
+        config.optimization.splitChunks(splitConfig);
 
         // js 文件名调整
         if (isProduction) {

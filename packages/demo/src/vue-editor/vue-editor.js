@@ -4,10 +4,10 @@
 
 // bootstrap
 import '@/_common/bootstrap.js';
-import './vue-editor.css';
-
 import Vue from 'vue';
-import elementUI from './components/element-ui/index.js';
+import elementUI from '@/_common/components/ElementUi/index.js';
+
+import './vue-editor.css';
 import router from './router';
 import routerGuards from './router/guards';
 import App from './App';

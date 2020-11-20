@@ -163,7 +163,7 @@
         &.active {
             border: 1px dashed transparent;
             &:after {
-                box-shadow: 0 0 1px 2px var(--color-primary) inset;
+                box-shadow: 0 0 2px 1px var(--color-primary) inset;
             }
         }
     }
@@ -181,7 +181,7 @@
         right: 0;
         height: 26px;
         border-top-left-radius: 8px;
-        background: rgb(64, 158, 255);
+        background: var(--color-primary);
         display: flex;
         justify-content: center;
         align-items: center;

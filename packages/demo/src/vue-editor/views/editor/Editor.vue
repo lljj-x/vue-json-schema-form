@@ -466,7 +466,6 @@
         position: relative;
         box-sizing: border-box;
         padding-left: 0;
-        padding-top: 10px;
         height: calc(100vh - var(--site-top-height));
         transition: 0.2s ease;
     }
@@ -500,7 +499,7 @@
     .toolsBar {
         position: absolute;
         left: 0;
-        top: 10px;
+        top: 0;
         bottom: 0;
         background: var(--color-white);
         width: var(--tool-bar-width);
@@ -558,7 +557,7 @@
         /* min-height: calc(100vh - var(--site-top-height) - 50px); */
         min-height: calc(100vh + 100px);
         background-color: #f5f5f5;
-        padding: 10px 0;
+        padding: 5px 0;
         :global {
             .draggableToolItem {
                 width: 100%;

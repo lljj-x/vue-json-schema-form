@@ -5,7 +5,7 @@
 import '@/_common/bootstrap.js';
 import Vue from 'vue';
 import VueRouter from 'VueRouter';
-import elementUI from 'ELEMENT';
+import elementUI from '@/_common/components/ElementUi/index.js';
 
 import routes from './routes';
 

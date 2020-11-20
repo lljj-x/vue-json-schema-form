@@ -1,9 +1,9 @@
 <template>
     <div v-loading="loading">
-        <EditorHeader
-            @toDemo="handleToDemo"
-            @onExport="handleExportSchema"
-        ></EditorHeader>
+        <EditorHeader default-active="4">
+            <el-button @click="handleToDemo">在 Demo 页验证</el-button>
+            <el-button type="primary" @click="handleExportSchema">导出Schema</el-button>
+        </EditorHeader>
 
         <div :class="[$style.container]">
             <div :class="$style.contentWrap">
@@ -66,8 +66,8 @@
     import componentWithDialog from '@/_common/components/component-with-dialog';
     import { openNewPage } from '@/_common/utils/url.js';
 
+    import EditorHeader from '@/_common/components/EditorHeader.vue';
     import EditorToolBar from './EditorToolBar.vue';
-    import EditorHeader from './EditorHeader.vue';
     import ExportSchemaView from './components/ExportSchemaView.vue';
 
     import { deepFreeze } from './common/utils';
@@ -177,7 +177,6 @@
     .container {
         position: relative;
         box-sizing: border-box;
-        padding-top: 10px;
         height: calc(100vh - var(--site-top-height));
         transition: 0.2s ease;
     }
@@ -194,7 +193,7 @@
         bottom: 0;
         background: var(--color-white);
         overflow: auto;
-        box-shadow: 0 0 4px 0 color(var(--color-black) a(0.2)),  0 0 2px 0 color(var(--color-black) a(0.4));
+        box-shadow: 0 0 0 1px rgba(171 171 171,0.3);
         z-index: 2;
         &::-webkit-scrollbar {
             width: 0;
@@ -202,6 +201,7 @@
         }
     }
     .toolsBar {
+        padding-top: 10px;
         left: 0;
         width: var(--tool-bar-width);
     }
@@ -240,7 +240,7 @@
     }
     .contentBox {
         position: relative;
-        padding: 0 10px;
+        padding: 0;
         height: 100%;
     }
     .tipBox{

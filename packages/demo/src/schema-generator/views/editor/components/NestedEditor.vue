@@ -109,7 +109,7 @@
 
     .dragArea {
         background-color: #f5f5f5;
-        height: calc(100% - 44px);
+        height: calc(100% - 34px);
         padding: 15px;
         overflow: auto;
         .dragArea {

@@ -1,44 +1,38 @@
 <template>
-    <div :class="$style.box">
-        <div :class="$style.headerMenu">
-            <h1>Vue Editor</h1>
-            <Menu default-active="3"></Menu>
-        </div>
-        <div :class="$style.btns">
-            <el-select v-model="platform" placeholder="请选择" :class="$style.selectPlatform">
-                <el-option label="PC" value="editor"></el-option>
-                <el-option label="M" value="editorM"></el-option>
-            </el-select>
-            <el-button icon="el-icon-minus"
-                       :disabled="disabledMinus"
-                       :class="$style.scaleBtn"
-                       circle
-                       @click="handleMinus"
-            >
-            </el-button>
-            <el-button type="text">
-                {{ value }}%
-            </el-button>
-            <el-button icon="el-icon-plus"
-                       :disabled="disabledPlus"
-                       :class="$style.scaleBtn"
-                       circle
-                       @click="handlePlus"
-            ></el-button>
-            <el-button @click="$emit('onPreview')">预览</el-button>
-            <el-button type="primary" plain @click="$emit('onSave')">保存</el-button>
-            <el-button type="primary" @click="$emit('onPublish')">发布</el-button>
-        </div>
-    </div>
+    <BaseEditorHeader default-active="3">
+        <el-select v-model="platform" placeholder="请选择" :class="$style.selectPlatform">
+            <el-option label="PC" value="editor"></el-option>
+            <el-option label="M" value="editorM"></el-option>
+        </el-select>
+        <el-button icon="el-icon-minus"
+                   :disabled="disabledMinus"
+                   :class="$style.scaleBtn"
+                   circle
+                   @click="handleMinus"
+        >
+        </el-button>
+        <el-button type="text">
+            {{ value }}%
+        </el-button>
+        <el-button icon="el-icon-plus"
+                   :disabled="disabledPlus"
+                   :class="$style.scaleBtn"
+                   circle
+                   @click="handlePlus"
+        ></el-button>
+        <el-button @click="$emit('onPreview')">预览</el-button>
+        <el-button type="primary" plain @click="$emit('onSave')">保存</el-button>
+        <el-button type="primary" @click="$emit('onPublish')">发布</el-button>
+    </BaseEditorHeader>
 </template>
 
 <script>
-    import Menu from '@/_common/components/Menu';
+    import BaseEditorHeader from '@/_common/components/EditorHeader.vue';
 
     export default {
         name: 'EditorHeader',
         components: {
-            Menu
+            BaseEditorHeader
         },
         props: {
             value: {
