@@ -43,7 +43,7 @@
         </SchemaField>
 
         <NestedEditor
-            v-if="showNestedEditor"
+            v-if="showNestedEditor(editorItem)"
             :child-component-list="editorItem.childList"
             :drag-options="dragOptions"
             :form-data="formData"
@@ -66,6 +66,10 @@
         },
         mixins: [emitter],
         props: {
+            showNestedEditor: {
+                type: Function,
+                default: () => {}
+            },
             editorItem: {
                 type: Object,
                 default: () => ({})
@@ -82,9 +86,6 @@
         computed: {
             attrs() {
                 return editorItem2SchemaFieldProps(this.editorItem, this.formData);
-            },
-            showNestedEditor() {
-                return this.editorItem.childList && !this.editorItem.componentPack.viewSchema.format;
             }
         },
         beforeDestroy() {

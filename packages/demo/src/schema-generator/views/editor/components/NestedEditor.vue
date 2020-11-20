@@ -2,23 +2,29 @@
     <draggable ref="draggable"
                :list="childComponentList"
                v-bind="dragOptions"
-               :class="[$style.dragArea]"
+               :class="[$style.dragArea, $style.formItemWrap]"
                @change="handleDragChange"
     >
         <div v-for="item in childComponentList"
              :key="item.id"
              :class="{
                  draggableItem: true,
+                 w100: showNestedEditor(item),
+                 [$style.formItem]: true
              }"
         >
             <ViewComponentWrap
                 :form-data="formData"
                 :editor-item="item"
                 :drag-options="dragOptions"
+                :show-nested-editor="showNestedEditor"
                 @onOperate="handleItemOperate"
             >
             </ViewComponentWrap>
         </div>
+        <template slot="footer">
+            <slot></slot>
+        </template>
     </draggable>
 </template>
 
@@ -58,6 +64,9 @@
         created() {
         },
         methods: {
+            showNestedEditor(editorItem) {
+                return editorItem.childList && !editorItem.componentPack.viewSchema.format;
+            },
             handleDragChange(...args) {
                 console.log(args);
             },
@@ -106,6 +115,61 @@
 
 <style module>
     @import 'variable.css';
+    :global {
+        .ghostItem {
+            opacity: 0.6;
+            &.draggableToolItem {
+                margin-top: 0;
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 10px;
+                height: 130px;
+                background-color: color(var(--color-primary) a(0.4)) !important;
+                box-shadow: 0 0 1px 0 var(--color-primary);
+            }
+        }
+        .el-form--label-left,.el-form--label-right {
+            .draggableToolItem {
+                height: 100px;
+            }
+        }
+        .layoutColumn {
+            .w100 {
+                width: 100% !important;
+                flex-basis: 100% !important;;
+            }
+            :local {
+                .formItemWrap {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: flex-start;
+                    align-content: flex-start;
+                }
+            }
+        }
+        .layoutColumn-2 {
+            :local .formItem{
+                width: 50%;
+                flex-basis: 50%;
+            }
+            .draggableToolItem{
+                width: 49.6%;
+                flex-basis: 49.6%;
+            }
+        }
+        .layoutColumn-3 {
+            :local .formItem {
+                width: 33.333%;
+                flex-basis: 33.333%;
+            }
+            .draggableToolItem{
+                width: 33%;
+                flex-basis: 33%;
+            }
+        }
+    }
 
     .dragArea {
         background-color: #f5f5f5;
@@ -126,30 +190,6 @@
         :global {
             .fieldGroupWrap_box {
                 display: none;
-            }
-            .arrayField {
-                margin-bottom: 0;
-            }
-            .draggableToolItem {
-                width: 100%;
-                max-width: 100%;
-                &:local {
-                    &.ghost {
-                        background-color: color(var(--color-primary) a(0.4)) !important;
-                        height: 20px;
-                        padding: 10px 0;
-                        margin-bottom: 15px;
-                        &>div {
-                            width: 100%;
-                            height: 100%;
-                            background-color: var(--color-white);
-                        }
-                        p {
-                            font-size: 16px;
-                            line-height: 24px;
-                        }
-                    }
-                }
             }
             .emptyBox {
                 min-height: 350px;

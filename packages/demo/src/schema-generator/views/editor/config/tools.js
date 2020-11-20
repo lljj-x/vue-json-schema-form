@@ -77,9 +77,11 @@ const tools = [
         groupName: '布局组件',
         componentList: [{
             title: 'Object',
+            btnClass: 'w100',
             componentPack: componentPackObject
         }, {
             title: 'Array',
+            btnClass: 'w100',
             componentPack: componentPackArray
         }]
     },

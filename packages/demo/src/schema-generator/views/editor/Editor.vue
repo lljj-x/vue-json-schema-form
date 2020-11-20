@@ -18,17 +18,23 @@
                 <div :class="[$style.contentBox]">
                     <el-form
                         style="height: 100%"
-                        label-position="top"
-                        label-suffix="："
                         :model="rootFormData"
-                        label-width="80px"
+                        v-bind="formProps"
                         class="genFromComponent"
+                        :class="{
+                            layoutColumn: formProps.layoutColumn > 1,
+                            [`layoutColumn-${formProps.layoutColumn}`]: true
+                        }"
                     >
                         <NestedEditor
                             :child-component-list="componentList"
                             :drag-options="dragOptions"
                             :form-data="rootFormData"
                         >
+                            <el-form-item v-if="componentList.length > 0 && formFooter.show" class="formFooter_item w100">
+                                <el-button @click="$emit('onCancel')">{{ formFooter.cancelBtn }}</el-button>
+                                <el-button type="primary" @click="$emit('onSubmit')">{{ formFooter.okBtn }}</el-button>
+                            </el-form-item>
                         </NestedEditor>
                     </el-form>
                     <div v-if="componentList.length === 0" :class="$style.tipBox">
@@ -36,10 +42,11 @@
                     </div>
                 </div>
                 <div :class="$style.rightForm">
-                    <div v-if="curEditorItem" :class="$style.configForm">
-                        <div style="padding: 20px 0;">
+                    <el-tabs v-model="activeName">
+                        <el-tab-pane v-if="curEditorItem" label="组件配置" name="compConfig">
                             <VueJsonFrom
                                 v-model="curEditorItem.componentValue"
+                                :class="$style.configForm"
                                 :schema="curEditorItem.componentPack.propsSchema"
                                 :form-props="{
                                     labelPosition: 'right',
@@ -50,11 +57,23 @@
                                 }"
                             >
                             </VueJsonFrom>
-                        </div>
-                    </div>
-                    <div v-else>
-                        请先点击你要编辑的formItem
-                    </div>
+                        </el-tab-pane>
+                        <el-tab-pane label="表单配置" name="formConfig">
+                            <VueJsonFrom
+                                v-model="formConfig"
+                                :class="$style.configForm"
+                                :schema="FormConfSchema"
+                                :form-props="{
+                                    labelPosition: 'right',
+                                    labelWidth: '110px'
+                                }"
+                                :form-footer="{
+                                    show: false
+                                }"
+                            >
+                            </VueJsonFrom>
+                        </el-tab-pane>
+                    </el-tabs>
                 </div>
             </div>
         </div>
@@ -67,6 +86,7 @@
     import { openNewPage } from '@/_common/utils/url.js';
 
     import EditorHeader from '@/_common/components/EditorHeader.vue';
+    import FormConfSchema from './viewComponents/FormConf';
     import EditorToolBar from './EditorToolBar.vue';
     import ExportSchemaView from './components/ExportSchemaView.vue';
 
@@ -77,7 +97,7 @@
     import './common/registerExtraElementComponent';
 
     import NestedEditor from './components/NestedEditor';
-    import { componentList2JsonSchema } from './common/editorData';
+    import { componentList2JsonSchema, formatFormLabelWidth } from './common/editorData';
 
     deepFreeze(configTools);
 
@@ -95,17 +115,30 @@
                 configTools,
                 rootFormData: {},
                 curEditorItem: null, // 选中的formItem
-                componentList: []
+                componentList: [],
+                FormConfSchema,
+                formConfig: {},
+                activeName: 'formConfig'
             };
         },
 
         computed: {
+            formProps() {
+                if (!this.formConfig.formProps) return {};
+                return {
+                    ...this.formConfig.formProps,
+                    labelWidth: formatFormLabelWidth(this.formConfig.formProps.labelWidth)
+                };
+            },
+            formFooter() {
+                return this.formConfig.formFooter || {};
+            },
             dragOptions() {
                 return {
                     animation: 300,
                     group: 'listComponentsGroup',
                     disabled: false,
-                    ghostClass: this.$style.ghost,
+                    ghostClass: 'ghostItem',
                     filter: this.$style.disabled,
                     draggable: '.draggableItem',
                     tag: 'div',
@@ -123,10 +156,16 @@
         },
         created() {
             this.$on('onSetCurEditorItem', ({ editorItem }) => {
+                if (editorItem) {
+                    this.setComponentActive();
+                }
                 this.curEditorItem = editorItem;
             });
         },
         methods: {
+            setComponentActive() {
+                this.activeName = 'compConfig';
+            },
             handleExportSchema() {
                 componentWithDialog({
                     VueComponent: ExportSchemaView,
@@ -212,7 +251,7 @@
         width: var(--right-form-width);
     }
     .configForm {
-        padding: 10px;
+        padding: 0 20px;
         &>h3 {
             font-size: 15px;
             font-weight: bold;
@@ -255,8 +294,5 @@
             margin: 20px 0;
             font-size: 16px;
         }
-    }
-    .ghost {
-        opacity: 0.5;
     }
 </style>

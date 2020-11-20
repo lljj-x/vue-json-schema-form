@@ -22,7 +22,9 @@
                          :key="cIndex"
                          :class="{
                              [$style.listItem]: true,
-                             draggableToolItem: true
+                             draggableToolItem: true,
+                             [item.btnClass]: item.btnClass
+
                          }"
                     >
                         {{ item.title }}

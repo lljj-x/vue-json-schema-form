@@ -176,6 +176,12 @@ export default {
         } else if (isMultiSelect(schema, rootSchema)) {
             // item 为枚举固定值
             CurrentField = ArrayFieldMultiSelect;
+            return h(ArrayFieldMultiSelect, {
+                props: this.$props,
+                class: {
+                    [lowerCase(ArrayFieldMultiSelect.name)]: true
+                }
+            });
         }
 
         return h('div', [
