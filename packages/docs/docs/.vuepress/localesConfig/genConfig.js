@@ -22,7 +22,7 @@
 //     }
 // ]
 
-exports.getGuideSidebar = ([groupA = '指南', groupB = '详细配置', groupC = '深入了解', groupD = '更新计划'] = []) => {
+exports.getGuideSidebar = ([groupA = '指南', groupB = '入门使用', groupC = '深入了解', groupD = '更新计划'] = []) => {
     return [
         {
             title: groupA,
@@ -30,32 +30,28 @@ exports.getGuideSidebar = ([groupA = '指南', groupB = '详细配置', groupC =
             children: [
                 '',
                 'basic-config',
-                'data-linkage',
                 'components',
-                'datetime-config',
-                'validate',
                 'i18n',
                 'polyfill',
                 'faq',
                 'demo',
             ]
         },
-        // {
-        //     title: groupB,
-        //     collapsable: false,
-        //     children: [
-        //         'schema',
-        //         'uiSchema',
-        //         'errorSchema'
-        //     ]
-        // },
+        {
+            title: groupB,
+            collapsable: false,
+            children: [
+                'datetime-config',
+                'data-linkage',
+                'validate',
+            ]
+        },
         {
             title: groupC,
             collapsable: false,
             children: [
                 'adv-config',
                 'design',
-                // 'custom-render-component',
                 'why',
             ]
         },
@@ -70,15 +66,13 @@ exports.getGuideSidebar = ([groupA = '指南', groupB = '详细配置', groupC =
 };
 
 // 配置页左侧菜单
-exports.getConfigSidebar = ([groupA = '配置'] = []) => {
+exports.getConfigSidebar = ([groupA = '配置项'] = []) => {
     return [
         {
             title: groupA,
             collapsable: false,
             children: [
-                'schema',
-                'uiSchema',
-                'errorSchema',
+                // 'basic-config',
             ]
         }
     ]

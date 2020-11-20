@@ -3,14 +3,14 @@
 * 支持通过 [可视化Schema编辑器](https://form.lljj.me/schema-generator.html "Vue JSON Schema Form 可视化编辑器") 快速生成表单对应Schema
 * :star2: :star2: :star2: 你的 `star` 就是最大的支持
 
+![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vue-json-schema-form.gif)
+
 ## 快速体验
 * [查看文档](https://vue-json-schema-form.lljj.me/ "Vue JSON Schema Docs")
 * [Playground 演示](https://form.lljj.me/ "Vue JSON Schema Form Demo") / [可视化表单Schema编辑器](https://form.lljj.me/schema-generator.html "Vue JSON Schema Form 可视化编辑器") / [可视化活动编辑器](https://form.lljj.me/vue-editor.html)
 * [标准 JSON Schema 不支持部分和更新计划](https://vue-json-schema-form.lljj.me/zh/guide/todo.html)
 
 > 查看如何启动 [Playground/表单Schema生成器/活动编辑器](#如何启动相关编辑器页面)
-
-![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vue-json-schema-form.gif)
 
 ## 交流群
 
@@ -22,12 +22,12 @@ QQ群：`146845780` ，欢迎入群讨论
 
 ![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vue-editor.jpg)
 
-安装依赖
+1、 安装依赖
 ```ssh
 yarn install
 ```
 
-同时运行 `Playground/表单Schema生成器/活动编辑器`
+2、 同时运行 `Playground/表单Schema生成器/活动编辑器`
 ```ssh
 # Playground http://127.0.0.1:8800/
 # 可视化表单Schema编辑器 http://127.0.0.1:8800/schema-generator.html
@@ -36,7 +36,7 @@ yarn install
 yarn run demo:dev
 ```
 
-单个运行（指定entry编译更快）
+3、 单个运行（指定entry编译更快）
 ```ssh
 # 只运行 Playground
 yarn run demo:dev --dir=index

@@ -2,7 +2,7 @@
 sidebarDepth: 2
 ---
 
-# 基本配置
+# 配置（API）
 
 ## 参数 Props
 
