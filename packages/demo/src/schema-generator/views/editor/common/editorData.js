@@ -5,6 +5,10 @@
 import { getDefaultFormState } from '@lljj/vue-json-schema-form';
 import { genId } from '@/_common/utils/id';
 
+function isObject(obj) {
+    return (Object.prototype.toString.call(obj) === '[object Object]');
+}
+
 function isEmptyObject(obj) {
     for (const key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
@@ -50,9 +54,9 @@ export function formatFormLabelWidth(value) {
     return value ? `${value * 4}px` : undefined;
 }
 
-function filterObj(obj, filter = (key, value) => value !== undefined && !isEmptyObject(value)) {
+function filterObj(obj, filter = (key, value) => (isObject(value) && !isEmptyObject(value)) || value !== undefined) {
     const result = {};
-    if (Object.prototype.toString.call(obj) !== '[object Object]') return result;
+    if (!isObject(obj)) return result;
 
     for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
@@ -161,10 +165,6 @@ export function editorItem2SchemaFieldProps(editorItem, formData) {
             'ui:options': mergeUiOptions
         }
     };
-
-    console.log(schema);
-    console.log(uiSchema);
-    console.log('\n');
 
     return {
         rootSchema: schema,
