@@ -22,8 +22,8 @@
                         v-bind="formProps"
                         class="genFromComponent"
                         :class="{
-                            layoutColumn: formProps.layoutColumn > 1,
-                            [`layoutColumn-${formProps.layoutColumn}`]: true
+                            layoutColumn: !formProps.inline,
+                            [`layoutColumn-${formProps.layoutColumn}`]: !formProps.inline,
                         }"
                     >
                         <NestedEditor
@@ -31,7 +31,13 @@
                             :drag-options="dragOptions"
                             :form-data="rootFormData"
                         >
-                            <el-form-item v-if="componentList.length > 0 && formFooter.show" class="formFooter_item w100">
+                            <el-form-item
+                                v-if="componentList.length > 0 && formFooter.show"
+                                :style="{
+                                    display: formProps.inline && formProps.inlineFooter ? 'inline-block' : 'block'
+                                }"
+                                class="formFooter_item w100 formFooter_item-editor"
+                            >
                                 <el-button @click="$emit('onCancel')">{{ formFooter.cancelBtn }}</el-button>
                                 <el-button type="primary" @click="$emit('onSubmit')">{{ formFooter.okBtn }}</el-button>
                             </el-form-item>
@@ -166,6 +172,39 @@
             setComponentActive() {
                 this.activeName = 'compConfig';
             },
+            getExportCode() {
+                const { formFooter, formProps } = this.formConfig;
+                const defaultConfig = {
+                    formFooter: {
+                        show: true,
+                        okBtn: '保存',
+                        cancelBtn: '取消'
+                    },
+                    formProps: {
+                        inline: false,
+                        inlineFooter: false,
+                        layoutColumn: 1,
+                        labelPosition: 'top',
+                        labelWidth: 25,
+                        labelSuffix: '：'
+                    }
+                };
+
+                // 不做深度
+                const filter = (obj, defaultObj) => Object.keys(obj).reduce((pre, cur) => {
+                    if (!(obj[cur] === defaultObj[cur])) {
+                        pre[cur] = obj[cur];
+                    }
+                    return pre;
+                }, {});
+
+                return {
+                    schema: componentList2JsonSchema(this.componentList),
+                    uiSchema: {},
+                    formFooter: filter(formFooter, defaultConfig.formFooter),
+                    formProps: filter(formProps, defaultConfig.formProps)
+                };
+            },
             handleExportSchema() {
                 componentWithDialog({
                     VueComponent: ExportSchemaView,
@@ -174,7 +213,7 @@
                         width: '1000px'
                     },
                     componentProps: {
-                        componentList: this.componentList
+                        genCode: this.getExportCode(),
                     },
                     componentListeners: {
                         toDemo: () => {
@@ -184,10 +223,14 @@
                 });
             },
             handleToDemo() {
-                const schema = componentList2JsonSchema(this.componentList);
-                const schemaEncode = encodeURIComponent(JSON.stringify(schema));
-                const link = `https://form.lljj.me/#/demo?type=Test&schema=${schemaEncode}`;
-                openNewPage(link);
+                const codeObj = this.getExportCode();
+                const urlQueryString = Object.keys(codeObj).reduce((pre, cur) => {
+                    pre.push(`${cur}=${encodeURIComponent(JSON.stringify(codeObj[cur]))}`);
+                    return pre;
+                }, []).join('&');
+
+                const link = `/index.html#/demo?type=Test&${urlQueryString}`;
+                openNewPage(link, '_specialViewForm');
             }
         }
     };

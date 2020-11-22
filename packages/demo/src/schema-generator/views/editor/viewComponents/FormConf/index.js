@@ -12,7 +12,18 @@ export default {
         formProps: {
             title: '表单配置',
             type: 'object',
+            description: '提示：如果使用inline布局（ElementUi form inline 配置），则多列布局不生效；另外 Footer inline 只支持一行表单项',
             properties: {
+                inline: {
+                    type: 'boolean',
+                    title: 'Inline布局',
+                    default: false
+                },
+                inlineFooter: {
+                    type: 'boolean',
+                    title: 'Footer inline',
+                    default: false
+                },
                 layoutColumn: {
                     title: '布局',
                     type: 'number',
@@ -39,11 +50,10 @@ export default {
                         'top'
                     ],
                     enumNames: [
-                        'left',
-                        'right',
-                        'top'
+                        'Left',
+                        'Right',
+                        'Top'
                     ],
-                    'ui:widget': 'RadioWidget'
                 },
                 labelWidth: {
                     title: '标签宽度',

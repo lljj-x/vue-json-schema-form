@@ -1,89 +1,111 @@
 <template>
-    <div :class="$style.box">
-        <div :class="$style.typeList">
-            <router-link
-                v-for="item in typeItems"
-                :key="item"
-                v-slot="{ href, route, navigate, isActive, isExactActive }"
-                :class="{
-                    [$style.linkItem]: true,
-                    [$style.active]: item === curType
-                }"
-                :to="{
-                    name: 'demo',
-                    query: {
-                        type: item
-                    }
-                }"
+    <div :class="$style.container">
+        <EditorHeader default-active="2">
+            <el-select v-model="formProps.layoutColumn" placeholder="布局" size="small" style="margin-right: 10px;width: 110px;">
+                <el-option :value="1" label="一列显示"></el-option>
+                <el-option :value="2" label="二列显示"></el-option>
+                <el-option :value="3" label="三列显示"></el-option>
+            </el-select>
+            <el-select v-model="formProps.labelPosition" placeholder="对其" size="small" style="margin-right: 10px;width: 110px;">
+                <el-option value="top" label="Label top"></el-option>
+                <el-option value="left" label="Label left"></el-option>
+                <el-option value="right" label="Label right"></el-option>
+            </el-select>
+            <el-button icon="el-icon-share"
+                       type="primary"
+                       @click="handlePreview"
+                       size="small"
             >
-                <el-button
-                    :type="item === curType ? 'primary' : ''"
-                    size="small"
-                    @click="navigate"
+                分享
+            </el-button>
+        </EditorHeader>
+        <div :class="$style.box">
+            <div :class="$style.typeList">
+                <router-link
+                    v-for="item in typeItems"
+                    :key="item"
+                    v-slot="{ href, route, navigate, isActive, isExactActive }"
+                    :class="{
+                        [$style.linkItem]: true,
+                        [$style.active]: item === curType
+                    }"
+                    :to="{
+                        name: 'demo',
+                        query: {
+                            type: item
+                        }
+                    }"
                 >
-                    {{ item }}
-                </el-button>
-            </router-link>
-        </div>
-        <el-row :gutter="25">
-            <el-col :class="$style.middleBox" :span="16">
-                <el-row :gutter="6">
-                    <el-col :span="10">
-                        <CodeEditor
-                            v-model="curFormDataCode"
-                            title="FormData"
-                        ></CodeEditor>
-                    </el-col>
-                    <el-col :span="14">
-                        <CodeEditor
-                            v-model="curSchemaCode"
-                            title="Schema"
-                        ></CodeEditor>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="6" style="margin-top: 10px;">
-                    <el-col :span="12">
-                        <CodeEditor
-                            v-model="curUiSchemaCode"
-                            title="Ui Schema"
-                        ></CodeEditor>
-                    </el-col>
-                    <el-col :span="12">
-                        <CodeEditor
-                            v-model="curErrorSchemaCode"
-                            title="Error Schema"
-                        ></CodeEditor>
-                    </el-col>
-                </el-row>
-            </el-col>
-            <el-col :class="[$style.middleBox, $style.middleBox_form]" :span="8">
-                <el-card
-                    shadow="hover"
-                    :class="[$style.card, $style.formBox]"
-                >
-                    <div slot="header" class="clearfix">
-                        <span>生成表单：</span>
-                    </div>
-                    <VueElementForm
-                        v-model="formData"
-                        :schema="schema"
-                        :ui-schema="uiSchema"
-                        :error-schema="errorSchema"
-                        :custom-formats="customFormats"
-                        :form-footer="formFooter"
-                        :form-props="formProps"
-                        @on-change="handleDataChange"
-                        @on-cancel="handleCancel"
-                        @on-submit="handleSubmit"
+                    <el-button
+                        :type="item === curType ? 'primary' : ''"
+                        size="small"
+                        @click="navigate"
                     >
-                    </VueElementForm>
-                </el-card>
-            </el-col>
-        </el-row>
+                        {{ item }}
+                    </el-button>
+                </router-link>
+            </div>
+            <el-row :gutter="25">
+                <el-col :class="$style.middleBox" :span="16">
+                    <el-row :gutter="6">
+                        <el-col :span="10">
+                            <CodeEditor
+                                v-model="curFormDataCode"
+                                title="FormData"
+                            ></CodeEditor>
+                        </el-col>
+                        <el-col :span="14">
+                            <CodeEditor
+                                v-model="curSchemaCode"
+                                title="Schema"
+                            ></CodeEditor>
+                        </el-col>
+                    </el-row>
+                    <el-row :gutter="6" style="margin-top: 10px;">
+                        <el-col :span="12">
+                            <CodeEditor
+                                v-model="curUiSchemaCode"
+                                title="Ui Schema"
+                            ></CodeEditor>
+                        </el-col>
+                        <el-col :span="12">
+                            <CodeEditor
+                                v-model="curErrorSchemaCode"
+                                title="Error Schema"
+                            ></CodeEditor>
+                        </el-col>
+                    </el-row>
+                </el-col>
+                <el-col :class="[$style.middleBox, $style.middleBox_form]" :span="8">
+                    <el-card
+                        shadow="hover"
+                        :class="[$style.card, $style.formBox]"
+                    >
+                        <div slot="header" class="clearfix">
+                            <span>生成表单：</span>
+                        </div>
+                        <VueElementForm
+                            v-model="formData"
+                            :schema="schema"
+                            :ui-schema="uiSchema"
+                            :error-schema="errorSchema"
+                            :custom-formats="customFormats"
+                            :form-footer="formFooter"
+                            :form-props="formProps"
+                            @on-change="handleDataChange"
+                            @on-cancel="handleCancel"
+                            @on-submit="handleSubmit"
+                        >
+                        </VueElementForm>
+                    </el-card>
+                </el-col>
+            </el-row>
+        </div>
     </div>
 </template>
 
 <script>
+    import EditorHeader from '@/_common/components/EditorHeader.vue';
     import VueElementForm from '@lljj/vue-json-schema-form';
 
     import CodeEditor from '../../components/CodeEditor';
@@ -95,7 +117,8 @@
         name: 'Demo',
         components: {
             CodeEditor,
-            VueElementForm
+            VueElementForm,
+            EditorHeader
         },
         data() {
             return {
@@ -105,26 +128,12 @@
                     price(value) {
                         return value !== '' && /^[0-9]\d*$|^\d+(\.\d{1,2})$/.test(value) && value >= 0 && value <= 999999.99;
                     }
-                },
-                formProps: {
-                    inline: false,
-                    layoutColumn: 1
                 }
             };
         },
         computed: {
-            formFooter() {
-                return {
-                    show: true,
-                    okBtn: '保存',
-                    cancelBtn: this.isTestPage ? '生成预览链接' : '取消'
-                };
-            },
             curType() {
                 return this.$route.query.type;
-            },
-            isTestPage() {
-                return this.curType === 'Test';
             },
             curSchemaCode: {
                 get() {
@@ -173,7 +182,14 @@
                     schema: {},
                     uiSchema: {},
                     formData: {},
-                    errorSchema: {}
+                    errorSchema: {},
+                    formFooter: {},
+                    formProps: {
+                        inline: false,
+                        labelPosition: 'top',
+                        inlineFooter: false,
+                        layoutColumn: 1
+                    }
                 };
             },
             genCodeStrComputedGetter(vmKey) {
@@ -229,24 +245,23 @@
                 this.$message.info(value);
                 return false;
             },
-            handleCancel() {
-                if (this.isTestPage) {
-                    const formatStr = jsonCode => encodeURIComponent(JSON.stringify(JSON.parse(jsonCode)));
+            handleCancel() {},
+            handlePreview() {
+                const formatStr = jsonCode => encodeURIComponent(JSON.stringify(JSON.parse(jsonCode)));
 
-                    const genRoute = this.$router.resolve({
-                        query: {
-                            type: 'Test',
-                            schema: formatStr(this.curSchemaCode),
-                            formData: formatStr(this.curFormDataCode),
-                            uiSchema: formatStr(this.curUiSchemaCode),
-                            errorSchema: formatStr(this.curErrorSchemaCode),
-                        }
-                    });
-                    const url = `${window.location.origin}${window.location.pathname}${genRoute.href}`;
-
-                    if (this.clipboard(url)) {
-                        this.$message.success('复制预览地址成功');
+                const genRoute = this.$router.resolve({
+                    query: {
+                        type: 'Test',
+                        schema: formatStr(this.curSchemaCode),
+                        formData: formatStr(this.curFormDataCode),
+                        uiSchema: formatStr(this.curUiSchemaCode),
+                        errorSchema: formatStr(this.curErrorSchemaCode),
                     }
+                });
+                const url = `${window.location.origin}${window.location.pathname}${genRoute.href}`;
+
+                if (this.clipboard(url)) {
+                    this.$message.success('复制预览地址成功');
                 }
             }
         }

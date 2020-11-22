@@ -133,6 +133,32 @@
                 height: 100px;
             }
         }
+
+        /* inline 布局 */
+        .el-form--inline {
+            :local .formItem {
+                display: inline-block;
+                margin-right: 10px;
+                vertical-align: top;
+            }
+            .draggableToolItem{
+                width: auto;
+                max-width: none;
+                padding: 0 20px;
+                display: inline-block;
+                margin-right: 10px;
+                vertical-align: top;
+            }
+            .w100 {
+                width: 100%;
+            }
+            .formFooter_item-editor {
+                width: auto;
+                max-width: none;
+            }
+        }
+
+        /* column 布局 */
         .layoutColumn {
             .w100 {
                 width: 100% !important;
@@ -140,6 +166,8 @@
             }
             :local {
                 .formItemWrap {
+                    width: 100%;
+                    box-sizing: border-box;
                     display: flex;
                     flex-direction: row;
                     flex-wrap: wrap;
@@ -148,25 +176,35 @@
                     align-content: flex-start;
                 }
             }
-        }
-        .layoutColumn-2 {
-            :local .formItem{
-                width: 50%;
-                flex-basis: 50%;
+            &.layoutColumn-1 {
+                :local .formItem{
+                    width: 100%;
+                    flex-basis: 100%;
+                }
+                .draggableToolItem{
+                    width: 100%;
+                    flex-basis: 100%;
+                }
             }
-            .draggableToolItem{
-                width: 49.6%;
-                flex-basis: 49.6%;
+            &.layoutColumn-2 {
+                :local .formItem{
+                    width: 50%;
+                    flex-basis: 50%;
+                }
+                .draggableToolItem{
+                    width: 49.6%;
+                    flex-basis: 49.6%;
+                }
             }
-        }
-        .layoutColumn-3 {
-            :local .formItem {
-                width: 33.333%;
-                flex-basis: 33.333%;
-            }
-            .draggableToolItem{
-                width: 33%;
-                flex-basis: 33%;
+            &.layoutColumn-3 {
+                :local .formItem {
+                    width: 33.333%;
+                    flex-basis: 33.333%;
+                }
+                .draggableToolItem{
+                    width: 33%;
+                    flex-basis: 33%;
+                }
             }
         }
     }

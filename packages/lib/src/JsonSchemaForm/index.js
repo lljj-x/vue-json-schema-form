@@ -130,7 +130,7 @@ export default {
                     'form-inlineFooter': formProps.inlineFooter,
                     [`genFromComponent_${this.schema.id}Form`]: !!this.schema.id,
                     layoutColumn: !formProps.inline,
-                    [`layoutColumn-${layoutColumn}`]: true
+                    [`layoutColumn-${layoutColumn}`]: !formProps.inline
                 },
                 ref: 'genEditForm',
                 props: {

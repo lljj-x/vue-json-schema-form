@@ -8,7 +8,6 @@
 
 <script>
     import JsonPrettyPrint from '@/_common/components/JsonPerttyPrint.vue';
-    import { componentList2JsonSchema } from '../common/editorData';
 
     export default {
         name: 'ExportSchemaView',
@@ -16,20 +15,15 @@
             JsonPrettyPrint
         },
         props: {
-            componentList: {
-                type: Array,
-                default: () => []
+            genCode: {
+                type: Object,
+                default: () => ({})
             }
         },
         data() {
             return {
                 genType: 1
             };
-        },
-        computed: {
-            genCode() {
-                return componentList2JsonSchema(this.componentList);
-            }
         },
         methods: {
             toCopy() {
