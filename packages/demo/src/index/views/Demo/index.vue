@@ -71,6 +71,7 @@
                         :error-schema="errorSchema"
                         :custom-formats="customFormats"
                         :form-footer="formFooter"
+                        :form-props="formProps"
                         @on-change="handleDataChange"
                         @on-cancel="handleCancel"
                         @on-submit="handleSubmit"
@@ -104,6 +105,10 @@
                     price(value) {
                         return value !== '' && /^[0-9]\d*$|^\d+(\.\d{1,2})$/.test(value) && value >= 0 && value <= 999999.99;
                     }
+                },
+                formProps: {
+                    inline: false,
+                    layoutColumn: 1
                 }
             };
         },

@@ -246,3 +246,52 @@
         vertical-align: top;
     }
 }
+
+
+/* 适配多列布局 */
+:root {
+    --width-column-gutter : 10px;
+}
+
+.layoutColumn {
+    .layoutColumn_w100 {
+        width: 100% !important;
+        flex-basis: 100% !important;;
+    }
+    .fieldGroupWrap_box {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+        align-content: flex-start;
+        &>div {
+            width: 100%;
+            flex-basis: 100%;
+        }
+        &>.el-form-item{
+            flex-grow: 0;
+            flex-shrink: 0;
+            box-sizing: border-box;
+            padding-right: var(--width-column-gutter);
+        }
+    }
+    &.layoutColumn-1 {
+        .fieldGroupWrap_box>.el-form-item {
+            padding-right: 0;
+        }
+    }
+    &.layoutColumn-2 {
+        .fieldGroupWrap_box>.el-form-item {
+            width: 50%;
+            flex-basis: 50%;
+        }
+    }
+    &.layoutColumn-3 {
+        .fieldGroupWrap_box>.el-form-item{
+            width: 33.333%;
+            flex-basis: 33.333%;
+        }
+    }
+}

@@ -203,6 +203,7 @@ export function getWidgetConfig({
         fieldStyle,
         fieldClass,
         emptyValue,
+        width,
         ...uiProps
     } = uiOptions;
 
@@ -215,6 +216,7 @@ export function getWidgetConfig({
         widgetClass,
         widgetStyle,
         fieldAttrs,
+        width,
         fieldStyle,
         fieldClass,
         emptyValue,

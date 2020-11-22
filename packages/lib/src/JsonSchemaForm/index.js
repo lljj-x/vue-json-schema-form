@@ -121,20 +121,23 @@ export default {
             curNodePath: '' // 当前节点路径
         };
 
+        const { layoutColumn = 1, ...formProps } = self.$props.formProps;
         return h(
             'el-form',
             {
                 class: {
                     genFromComponent: true,
-                    'form-inlineFooter': self.formProps.inlineFooter,
-                    [`genFromComponent_${this.schema.id}Form`]: !!this.schema.id
+                    'form-inlineFooter': formProps.inlineFooter,
+                    [`genFromComponent_${this.schema.id}Form`]: !!this.schema.id,
+                    layoutColumn: !formProps.inline,
+                    [`layoutColumn-${layoutColumn}`]: true
                 },
                 ref: 'genEditForm',
                 props: {
                     model: self.formData,
                     labelPosition: 'top',
                     labelSuffix: '：',
-                    ...self.formProps
+                    ...formProps
                     // size: 'small'
                 }
             },

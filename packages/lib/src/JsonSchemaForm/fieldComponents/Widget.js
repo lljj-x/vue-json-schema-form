@@ -76,6 +76,11 @@ export default {
             type: String,
             default: ''
         },
+        // width -> formItem width
+        width: {
+            type: String,
+            default: ''
+        },
         labelWidth: {
             type: String,
             default: ''
@@ -158,6 +163,16 @@ export default {
         // 判断是否为根节点
         const isRootNode = isRootNodePath(this.curNodePath);
 
+        // form-item style
+        const formItemStyle = {
+            ...self.fieldStyle,
+            ...(self.width ? {
+                width: self.width,
+                flexBasis: self.width,
+                paddingRight: '10px'
+            } : {})
+        };
+
         return h(
             'el-form-item',
             {
@@ -165,7 +180,7 @@ export default {
                     ...self.fieldClass,
                     'is-required': self.required
                 },
-                style: self.fieldStyle,
+                style: formItemStyle,
                 attrs: self.fieldAttrs,
                 props: {
                     label: self.label,
