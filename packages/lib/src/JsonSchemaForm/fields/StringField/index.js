@@ -12,10 +12,12 @@ export default {
     props: vueProps,
     functional: true,
     render(h, context) {
-        const { schema, uiSchema } = context.props;
+        const {
+            schema, uiSchema, curNodePath, rootFormData
+        } = context.props;
 
         // 可能是枚举数据使用select组件，否则使用 input
-        const enumOptions = isSelect(schema) && optionsList(schema, uiSchema);
+        const enumOptions = isSelect(schema) && optionsList(schema, uiSchema, curNodePath, rootFormData);
 
         const widgetConfig = getWidgetConfig({
             schema,

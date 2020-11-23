@@ -13,13 +13,15 @@ export default {
     props: vueProps,
     functional: true,
     render(h, context) {
-        const { schema, uiSchema } = context.props;
+        const {
+            schema, uiSchema, curNodePath, rootFormData
+        } = context.props;
 
         // Bool 会默认传入枚举类型选项 true false
         const enumOptions = optionsList({
             enumNames: schema.enumNames || ['true', 'false'],
             enum: schema.enum || [true, false]
-        }, uiSchema);
+        }, uiSchema, curNodePath, rootFormData);
 
         const widgetConfig = getWidgetConfig({
             schema,

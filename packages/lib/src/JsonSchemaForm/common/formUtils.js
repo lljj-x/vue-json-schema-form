@@ -5,10 +5,10 @@ import { getPathVal } from './vueUtils';
 
 import { getSchemaType, isObject } from './utils';
 
-// 配置表达式，或者常量，或者传入函数
+// 通用的处理表达式方法
 // 这里打破 JSON Schema 规范
 const regExpression = /{{(.*)}}/;
-function handleExpression(rootFormData, curNodePath, expression) {
+function handleExpression(rootFormData, curNodePath, expression, fallBack) {
     // 未配置
     if (undefined === expression) {
         return undefined;
@@ -26,13 +26,8 @@ function handleExpression(rootFormData, curNodePath, expression) {
         return fn(getPathVal(rootFormData, curNodePath, 1), rootFormData);
     }
 
-    // 配置了函数 function
-    if (typeof expression === 'function') {
-        return expression(getPathVal(rootFormData, curNodePath, 1), rootFormData);
-    }
-
-    // 配置了常量 ？？
-    return expression;
+    // 回退
+    return fallBack();
 }
 
 export function replaceArrayIndex({ schema, uiSchema } = {}, index) {
@@ -61,7 +56,17 @@ export function isHiddenWidget({
     const hiddenExpression = uiSchema['ui:hidden'] || schema['ui:hidden'];
 
     // 支持配置 ui:hidden 表达式
-    return widget === 'HiddenWidget' || widget === 'hidden' || !!handleExpression(rootFormData, curNodePath, hiddenExpression);
+    return widget === 'HiddenWidget'
+        || widget === 'hidden'
+        || !!handleExpression(rootFormData, curNodePath, hiddenExpression, () => {
+            // 配置了函数 function
+            if (typeof hiddenExpression === 'function') {
+                return hiddenExpression(getPathVal(rootFormData, curNodePath, 1), rootFormData);
+            }
+
+            // 配置了常量 ？？
+            return hiddenExpression;
+        });
 }
 
 // 解析当前节点 ui field
@@ -102,7 +107,9 @@ export function getUiField({
 // 解析用户配置的 uiSchema options
 export function getUserUiOptions({
     schema = {},
-    uiSchema = {}
+    uiSchema = {},
+    curNodePath, // undefined 不处理 表达式
+    rootFormData = {}
 }) {
     // 支持 uiSchema配置在 schema文件中
     return Object.assign({}, ...[schema, uiSchema].map(itemSchema => Object.keys(itemSchema)
@@ -113,7 +120,12 @@ export function getUserUiOptions({
             if (key === 'ui:options' && isObject(value)) {
                 return { ...options, ...value };
             }
-            return { ...options, [key.substring(3)]: value };
+
+            // 只对 ui:xxx 配置形式支持表达式
+            return {
+                ...options,
+                [key.substring(3)]: curNodePath === undefined ? value : handleExpression(rootFormData, curNodePath, value, () => value)
+            };
         }, {})));
 }
 
@@ -121,7 +133,9 @@ export function getUserUiOptions({
 export function getUiOptions({
     schema = {},
     uiSchema = {},
-    containsSpec = true
+    containsSpec = true,
+    curNodePath,
+    rootFormData,
 }) {
     const spec = {};
     if (containsSpec) {
@@ -168,6 +182,8 @@ export function getUiOptions({
         ...getUserUiOptions({
             schema,
             uiSchema,
+            curNodePath,
+            rootFormData
         })
     };
 }
@@ -345,12 +361,14 @@ export function allowAdditionalItems(schema) {
 }
 
 // 下拉选项
-export function optionsList(schema, uiSchema) {
+export function optionsList(schema, uiSchema, curNodePath, rootFormData) {
     // enum
     if (schema.enum) {
         const uiOptions = getUserUiOptions({
             schema,
-            uiSchema
+            uiSchema,
+            curNodePath,
+            rootFormData
         });
 
         // ui配置 enumNames 优先
@@ -367,7 +385,9 @@ export function optionsList(schema, uiSchema) {
     return altSchemas.map((curSchema, i) => {
         const uiOptions = (altUiSchemas && altUiSchemas[i]) ? getUserUiOptions({
             schema: curSchema,
-            uiSchema: altUiSchemas[i]
+            uiSchema: altUiSchemas[i],
+            curNodePath,
+            rootFormData
         }) : {};
         const value = toConstant(curSchema);
         const label = uiOptions.title || curSchema.title || String(value);

@@ -74,7 +74,9 @@ export default {
             fieldStyle,
         } = getUiOptions({
             schema,
-            uiSchema
+            uiSchema,
+            curNodePath: this.curNodePath,
+            rootFormData: this.rootFormData,
         });
 
         // 拆分为 tuple 和 additional

@@ -20,13 +20,13 @@ export default {
     },
     render(h, context) {
         const {
-            schema, rootSchema, uiSchema
+            schema, rootSchema, uiSchema, curNodePath, rootFormData
         } = context.props;
 
         // 这里需要索引当前节点，通过到schemaField组件的会统一处理
         const itemsSchema = retrieveSchema(schema.items, rootSchema);
 
-        const enumOptions = optionsList(itemsSchema, uiSchema);
+        const enumOptions = optionsList(itemsSchema, uiSchema, curNodePath, rootFormData);
 
         const widgetConfig = getWidgetConfig({
             schema,
