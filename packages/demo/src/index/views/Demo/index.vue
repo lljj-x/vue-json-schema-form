@@ -289,6 +289,8 @@
                         formData: formatStr(this.curFormDataCode),
                         uiSchema: formatStr(this.curUiSchemaCode),
                         errorSchema: formatStr(this.curErrorSchemaCode),
+                        formFooter: formatStr(JSON.stringify(this.trueFormFooter)),
+                        formProps: formatStr(JSON.stringify(this.trueFormProps)),
                     }
                 });
                 const url = `${window.location.origin}${window.location.pathname}${genRoute.href}`;
