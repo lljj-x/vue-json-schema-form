@@ -4,6 +4,10 @@
 
 // 递归参数，统一props
 export default {
+    formProps: {
+        type: null
+    },
+
     // 当前节点schema
     schema: {
         type: Object,

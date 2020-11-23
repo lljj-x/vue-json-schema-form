@@ -110,6 +110,8 @@ export default {
                     }
                 }) : undefined;
 
+        const { layoutColumn = 1, ...formProps } = self.$props.formProps;
+
         const props = {
             schema: this.schema,
             uiSchema: this.uiSchema,
@@ -118,10 +120,10 @@ export default {
             customRule: this.customRule,
             rootSchema: this.schema,
             rootFormData: this.formData, // 根节点的数据
-            curNodePath: '' // 当前节点路径
+            curNodePath: '', // 当前节点路径
+            formProps
         };
 
-        const { layoutColumn = 1, ...formProps } = self.$props.formProps;
         return h(
             'el-form',
             {

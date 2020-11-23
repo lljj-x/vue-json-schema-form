@@ -1,23 +1,34 @@
 <template>
     <div :class="$style.container">
         <EditorHeader default-active="2">
-            <el-select v-model="formProps.layoutColumn" placeholder="布局" size="small" style="margin-right: 10px;width: 110px;">
-                <el-option :value="1" label="一列显示"></el-option>
-                <el-option :value="2" label="二列显示"></el-option>
-                <el-option :value="3" label="三列显示"></el-option>
-            </el-select>
-            <el-select v-model="formProps.labelPosition" placeholder="对其" size="small" style="margin-right: 10px;width: 110px;">
-                <el-option value="top" label="Label top"></el-option>
-                <el-option value="left" label="Label left"></el-option>
-                <el-option value="right" label="Label right"></el-option>
-            </el-select>
-            <el-button icon="el-icon-share"
-                       type="primary"
-                       @click="handlePreview"
-                       size="small"
-            >
-                分享
-            </el-button>
+            <div :class="$style.btns">
+                <span style="font-size: 13px;">标签：</span>
+                <el-slider
+                    v-model="formProps.labelWidth"
+                    style="width: 80px; margin-right: 6px;"
+                    size="small"
+                    :format-tooltip="sliderFormat"
+                ></el-slider>
+                <el-checkbox v-model="formProps.inline" style="margin-right: 6px;" size="small">Inline</el-checkbox>
+                <el-checkbox v-model="formFooter.show" style="margin-right: 6px;" size="small">底部</el-checkbox>
+                <el-select v-model="formProps.layoutColumn" placeholder="布局" size="small" style="margin-right: 6px;width: 104px;">
+                    <el-option :value="1" label="一列显示"></el-option>
+                    <el-option :value="2" label="二列显示"></el-option>
+                    <el-option :value="3" label="三列显示"></el-option>
+                </el-select>
+                <el-select v-model="formProps.labelPosition" placeholder="对其" size="small" style="margin-right: 6px;width: 104px;">
+                    <el-option value="top" label="Label top"></el-option>
+                    <el-option value="left" label="Label left"></el-option>
+                    <el-option value="right" label="Label right"></el-option>
+                </el-select>
+                <el-button icon="el-icon-share"
+                           type="primary"
+                           size="small"
+                           @click="handlePreview"
+                >
+                    分享
+                </el-button>
+            </div>
         </EditorHeader>
         <div :class="$style.box">
             <div :class="$style.typeList">
@@ -90,8 +101,8 @@
                             :ui-schema="uiSchema"
                             :error-schema="errorSchema"
                             :custom-formats="customFormats"
-                            :form-footer="formFooter"
-                            :form-props="formProps"
+                            :form-footer="trueFormFooter"
+                            :form-props="trueFormProps"
                             @on-change="handleDataChange"
                             @on-cancel="handleCancel"
                             @on-submit="handleSubmit"
@@ -132,6 +143,16 @@
             };
         },
         computed: {
+            trueFormProps() {
+                if (!this.formProps) return {};
+                return {
+                    ...this.formProps,
+                    labelWidth: this.formProps.labelWidth ? `${this.formProps.labelWidth * 4}px` : undefined
+                };
+            },
+            trueFormFooter() {
+                return this.formFooter || {};
+            },
             curType() {
                 return this.$route.query.type;
             },
@@ -166,7 +187,8 @@
                 set(val) {
                     return this.genCodeStrComputedSetter('errorSchema', val);
                 }
-            }
+            },
+            // trueFormProps:
         },
         watch: {
             $route() {
@@ -177,14 +199,20 @@
             this.initData();
         },
         methods: {
+            sliderFormat(value) {
+                return value ? `${value * 4}px` : undefined;
+            },
             getDefaultSchemaMap() {
                 return {
                     schema: {},
                     uiSchema: {},
                     formData: {},
                     errorSchema: {},
-                    formFooter: {},
+                    formFooter: {
+                        show: true
+                    },
                     formProps: {
+                        labelWidth: 25,
                         inline: false,
                         labelPosition: 'top',
                         inlineFooter: false,
@@ -219,6 +247,11 @@
                     }, {});
                 } catch (e) {
                     // nothing ...
+                }
+
+                // 还原 labelWidth
+                if (queryParamsObj.formProps && queryParamsObj.formProps.labelWidth) {
+                    queryParamsObj.formProps.labelWidth = parseFloat(queryParamsObj.formProps.labelWidth) / 4;
                 }
 
                 Object.assign(this, this.getDefaultSchemaMap(), Object.assign(schemaTypes[this.curType], queryParamsObj));
@@ -269,6 +302,11 @@
 </script>
 
 <style module>
+    .btns {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     .box {
         padding: 0 15px;
     }

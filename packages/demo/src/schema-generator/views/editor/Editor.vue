@@ -30,6 +30,7 @@
                             :child-component-list="componentList"
                             :drag-options="dragOptions"
                             :form-data="rootFormData"
+                            :form-props="formProps"
                         >
                             <el-form-item
                                 v-if="componentList.length > 0 && formFooter.show"
@@ -173,7 +174,7 @@
                 this.activeName = 'compConfig';
             },
             getExportCode() {
-                const { formFooter, formProps } = this.formConfig;
+                const { formFooter, formProps } = this;
                 const defaultConfig = {
                     formFooter: {
                         show: true,
@@ -185,8 +186,6 @@
                         inlineFooter: false,
                         layoutColumn: 1,
                         labelPosition: 'top',
-                        labelWidth: 25,
-                        labelSuffix: '：'
                     }
                 };
 

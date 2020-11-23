@@ -81,11 +81,18 @@
             formData: {
                 type: Object,
                 default: () => ({})
+            },
+            formProps: {
+                type: null,
+                default: null
             }
         },
         computed: {
             attrs() {
-                return editorItem2SchemaFieldProps(this.editorItem, this.formData);
+                return {
+                    formProps: this.formProps,
+                    ...editorItem2SchemaFieldProps(this.editorItem, this.formData)
+                };
             }
         },
         beforeDestroy() {

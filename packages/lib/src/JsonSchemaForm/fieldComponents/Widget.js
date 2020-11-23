@@ -123,6 +123,9 @@ export default {
         uiProps: {
             type: Object,
             default: () => ({})
+        },
+        formProps: {
+            type: null
         }
     },
     computed: {
@@ -162,6 +165,40 @@ export default {
 
         // 判断是否为根节点
         const isRootNode = isRootNodePath(this.curNodePath);
+
+        // labelPosition left/right
+        const miniDesModel = self.formProps && self.formProps.labelPosition !== 'top';
+
+        const descriptionVnode = (self.description) ? h(
+            'p',
+            {
+                domProps: {
+                    innerHTML: self.description
+                },
+                class: {
+                    genFromWidget_des: true
+                }
+            },
+        ) : null;
+
+        const miniDescriptionVnode = (miniDesModel && descriptionVnode) ? h('el-popover', {
+            style: {
+                marginLeft: '4px',
+                fontSize: '16px',
+                cursor: 'pointer'
+            },
+            props: {
+                placement: 'top',
+                trigger: 'hover'
+            }
+        }, [
+            descriptionVnode,
+            h('i', {
+                slot: 'reference',
+                class: 'el-icon-question'
+            })
+        ]) : null;
+
 
         // form-item style
         const formItemStyle = {
@@ -236,20 +273,18 @@ export default {
                 },
             },
             [
-                ...self.description ? [ // 有描述信息才会渲染
-                    h(
-                        'p',
-                        {
-                            domProps: {
-                                innerHTML: self.description
-                            },
-                            class: {
-                                genFromWidget_des: true
-                            }
-                        },
-                        // self.description
-                    )
-                ] : [],
+                // label slot
+                // mini模式下重置
+                miniDescriptionVnode ? h('template', {
+                    slot: 'label',
+                }, [
+                    `${self.label || ''}${self.formProps.labelSuffix || ''}`,
+                    miniDescriptionVnode
+                ]) : null,
+
+                // description
+                // 非mini模式显示 description
+                !miniDesModel ? descriptionVnode : null,
                 h( // 关键输入组件
                     self.widget,
                     {
