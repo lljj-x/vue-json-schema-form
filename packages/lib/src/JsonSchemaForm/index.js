@@ -121,7 +121,11 @@ export default {
             rootSchema: this.schema,
             rootFormData: this.formData, // 根节点的数据
             curNodePath: '', // 当前节点路径
-            formProps
+            formProps: {
+                labelPosition: 'top',
+                labelSuffix: '：',
+                ...formProps,
+            }
         };
 
         return h(
@@ -137,10 +141,7 @@ export default {
                 ref: 'genEditForm',
                 props: {
                     model: self.formData,
-                    labelPosition: 'top',
-                    labelSuffix: '：',
-                    ...formProps
-                    // size: 'small'
+                    ...props.formProps
                 }
             },
             [

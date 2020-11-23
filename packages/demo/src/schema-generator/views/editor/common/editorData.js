@@ -180,7 +180,8 @@ function genBaseObj() {
     return {
         type: 'object',
         required: [],
-        properties: {}
+        properties: {},
+        'ui:order': []
     };
 }
 
@@ -214,6 +215,9 @@ export function componentList2JsonSchema(componentList) {
 
             // 连接数据
             (parentObj.properties || parentObj.items.properties)[item.componentValue.property] = curSchema;
+
+            // 设置 ui:order
+            (parentObj['ui:order'] || parentObj.items['ui:order']).push(item.componentValue.property);
 
             // 设置 required
             if (required) {

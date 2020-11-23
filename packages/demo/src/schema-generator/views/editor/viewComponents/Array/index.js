@@ -10,7 +10,8 @@ const viewSchema = {
     items: {
         type: 'object',
         required: [],
-        properties: {}
+        properties: {},
+        'ui:order': []
     }
 };
 

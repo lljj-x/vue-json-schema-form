@@ -8,7 +8,8 @@ const viewSchema = {
     title: 'Object',
     type: 'object',
     required: [],
-    properties: {}
+    properties: {},
+    'ui:order': []
 };
 
 export default {
