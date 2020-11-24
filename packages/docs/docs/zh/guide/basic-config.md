@@ -103,6 +103,20 @@ export default {
 
 用于配置表单展示样式，普通json数据，非 `JSON Schema` 规范
 
+
+#### ui-schema 表达式
+* `0.2` 版本之后，所有 `ui:xxx` 形式的配置都支持表达式（ui:options内不支持表达式以便区分）
+mustache 表达式可使用 `parentFormData`、`rootFormData` 两个内置变量。
+* `parentFormData` 当前节点父级的 FormData值
+* `rootFormData` 根节点的 FormData值
+
+> 配置表达式会通过 `new Function` return 出结果，所以实际你在表达式中也可以访问到全局变量。
+
+比如：（参考这里：[uiSchema 使用表达式](https://form.lljj.me/#/demo?type=uiSchema%28表达式%29)）
+```
+'ui:title': `{{ parentFormData.age > 18 ? '呵呵呵' : '嘿嘿嘿' }}`
+```
+
 :::tip
 * 配置数据结构和 `schema` 保持一致，所有的ui配置属性 `ui:` 开头
 * 也可以在 `ui:options` 内配置所有的属性，不需要 `ui:` 开头
@@ -113,6 +127,7 @@ export default {
 :::warning 注意
 * `ui:hidden` `ui:widget` `ui:field` `ui:fieldProps` 不支持配置在 `ui:options` 中
 :::
+
 
 通用参数格式如下：
 ```js
