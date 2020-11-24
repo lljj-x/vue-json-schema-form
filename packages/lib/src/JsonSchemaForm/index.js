@@ -20,11 +20,8 @@ export default {
     data() {
         const formData = this.getStateFromData(this.$props.schema, this.$props.value);
 
-        // 计算form默认值和用户传入的值不相等
         // 保持v-model双向数据及时性
-        if (!deepEquals(formData, this.value)) {
-            this.handlerFormDataChange(formData, this.value);
-        }
+        this.handlerFormDataChange(formData, this.value);
 
         return {
             formData
