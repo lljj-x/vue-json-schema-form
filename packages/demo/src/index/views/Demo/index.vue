@@ -242,7 +242,7 @@
                 let queryParamsObj = {};
                 try {
                     queryParamsObj = Object.entries(queryParams).reduce((preVal, [key, value]) => {
-                        preVal[key] = JSON.parse(decodeURIComponent(String(value)));
+                        preVal[key] = JSON.parse(String(value));
                         return preVal;
                     }, {});
                 } catch (e) {
