@@ -1,7 +1,8 @@
 <template>
     <div v-loading="loading">
         <EditorHeader default-active="4">
-            <el-button @click="handleToDemo">在 Demo 页验证</el-button>
+            <el-button plain @click="handleToDemo">Playground中验证</el-button>
+            <el-button type="primary" plain @click="handlePreview">预览展示</el-button>
             <el-button type="primary" @click="handleExportSchema">导出Schema</el-button>
         </EditorHeader>
 
@@ -203,6 +204,20 @@
                     formFooter: filter(formFooter, defaultConfig.formFooter),
                     formProps: filter(formProps, defaultConfig.formProps)
                 };
+            },
+            handlePreview() {
+                const props = this.getExportCode();
+                componentWithDialog({
+                    VueComponent: VueJsonFrom,
+                    dialogProps: {
+                        title: '预览展示',
+                        width: '1000px'
+                    },
+                    componentProps: {
+                        value: {},
+                        ...props
+                    }
+                });
             },
             handleExportSchema() {
                 componentWithDialog({

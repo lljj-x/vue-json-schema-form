@@ -183,7 +183,7 @@ export default {
 
         const miniDescriptionVnode = (miniDesModel && descriptionVnode) ? h('el-popover', {
             style: {
-                marginLeft: '4px',
+                margin: '0 2px',
                 fontSize: '16px',
                 cursor: 'pointer'
             },
@@ -278,8 +278,9 @@ export default {
                 miniDescriptionVnode ? h('template', {
                     slot: 'label',
                 }, [
-                    `${self.label || ''}${self.formProps.labelSuffix || ''}`,
-                    miniDescriptionVnode
+                    `${self.label || ''}`,
+                    miniDescriptionVnode,
+                    `${self.formProps.labelSuffix || ''}`
                 ]) : null,
 
                 // description

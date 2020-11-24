@@ -130,7 +130,10 @@ export function editorItem2SchemaFieldProps(editorItem, formData) {
         disabled: false,
         showPassword: false,
         showWordLimit: false,
-        type: 'text'
+        type: 'text',
+
+        showTitle: true,
+        showDescription: true,
     };
 
     // uiSchema

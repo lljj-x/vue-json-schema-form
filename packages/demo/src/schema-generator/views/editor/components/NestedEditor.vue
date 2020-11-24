@@ -12,6 +12,10 @@
                  w100: showNestedEditor(item),
                  [$style.formItem]: true
              }"
+             :style=" item.componentValue.baseValue.uiOptions.width ? {
+                 width: item.componentValue.baseValue.uiOptions.width,
+                 flexBasis: item.componentValue.baseValue.uiOptions.width
+             } : {}"
         >
             <ViewComponentWrap
                 :form-data="formData"
@@ -179,6 +183,12 @@
                     align-items: center;
                     justify-content: flex-start;
                     align-content: flex-start;
+                    :global {
+                        .el-form-item {
+                            width: 100% !important;
+                            flex-basis: 100% !important;
+                        }
+                    }
                 }
             }
             &.layoutColumn-1 {

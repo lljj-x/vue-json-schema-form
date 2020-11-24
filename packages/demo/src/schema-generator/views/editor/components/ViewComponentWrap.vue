@@ -13,6 +13,7 @@
                 :class="$style.toolBarBtn"
                 class="el-icon-caret-top"
                 title="上移"
+                type="button"
                 @click="$emit('onOperate', { item: editorItem, command: 'moveUp'})"
             ></button>
             <button
@@ -20,6 +21,7 @@
                 :class="$style.toolBarBtn"
                 class="el-icon-caret-bottom"
                 title="下移"
+                type="button"
                 @click="$emit('onOperate', { item: editorItem, command: 'moveDown'})"
             ></button>
             <button
@@ -27,6 +29,7 @@
                 :class="[$style.toolBarBtn]"
                 class="el-icon-copy-document"
                 title="复制"
+                type="button"
                 @click="$emit('onOperate', { item: editorItem, command: 'copy' })"
             ></button>
             <button
@@ -34,6 +37,7 @@
                 :class="$style.toolBarBtn"
                 class="el-icon-delete"
                 title="移除"
+                type="button"
                 @click="$emit('onOperate', { item: editorItem, command: 'remove' })"
             ></button>
         </div>
