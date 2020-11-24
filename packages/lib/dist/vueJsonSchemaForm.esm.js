@@ -6,6 +6,9 @@ import Vue from 'vue';
  */
 // 递归参数，统一props
 var vueProps = {
+  formProps: {
+    type: null
+  },
   // 当前节点schema
   schema: {
     type: Object,
@@ -534,6 +537,25 @@ function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
+function _toPrimitive(input, hint) {
+  if (typeof input !== "object" || input === null) return input;
+  var prim = input[Symbol.toPrimitive];
+
+  if (prim !== undefined) {
+    var res = prim.call(input, hint || "default");
+    if (typeof res !== "object") return res;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+
+  return (hint === "string" ? String : Number)(input);
+}
+
+function _toPropertyKey(arg) {
+  var key = _toPrimitive(arg, "string");
+
+  return typeof key === "symbol" ? key : String(key);
+}
+
 /**
  * Created by Liu.Jun on 2020/4/17 17:05.
  */
@@ -607,6 +629,11 @@ function getSchemaType(schema) {
 
   if (!type && schema.enum) {
     return 'string';
+  } // items 推断为 array 类型
+
+
+  if (!type && schema.items) {
+    return 'array';
   } // anyOf oneOf 不申明 type 字段
 
 
@@ -8433,6 +8460,11 @@ var Widget = {
       type: String,
       default: ''
     },
+    // width -> formItem width
+    width: {
+      type: String,
+      default: ''
+    },
     labelWidth: {
       type: String,
       default: ''
@@ -8489,6 +8521,9 @@ var Widget = {
       default: function _default() {
         return {};
       }
+    },
+    formProps: {
+      type: null
     }
   },
   computed: {
@@ -8514,18 +8549,54 @@ var Widget = {
   created: function created() {
     // 枚举类型默认值为第一个选项
     if (this.uiProps.enumOptions && this.uiProps.enumOptions.length > 0 && this.value === undefined && this.value !== this.uiProps.enumOptions[0]) {
-      this.value = this.uiProps.enumOptions[0].value;
+      // array 渲染为多选框时默认为空数组
+      if (this.schema.items) {
+        this.value = [];
+      } else {
+        this.value = this.uiProps.enumOptions[0].value;
+      }
     }
   },
   render: function render(h) {
     var self = this; // 判断是否为根节点
 
-    var isRootNode = isRootNodePath(this.curNodePath);
+    var isRootNode = isRootNodePath(this.curNodePath); // labelPosition left/right
+
+    var miniDesModel = self.formProps && self.formProps.labelPosition !== 'top';
+    var descriptionVnode = self.description ? h('p', {
+      domProps: {
+        innerHTML: self.description
+      },
+      class: {
+        genFromWidget_des: true
+      }
+    }) : null;
+    var miniDescriptionVnode = miniDesModel && descriptionVnode ? h('el-popover', {
+      style: {
+        margin: '0 2px',
+        fontSize: '16px',
+        cursor: 'pointer'
+      },
+      props: {
+        placement: 'top',
+        trigger: 'hover'
+      }
+    }, [descriptionVnode, h('i', {
+      slot: 'reference',
+      class: 'el-icon-question'
+    })]) : null; // form-item style
+
+    var formItemStyle = _objectSpread2(_objectSpread2({}, self.fieldStyle), self.width ? {
+      width: self.width,
+      flexBasis: self.width,
+      paddingRight: '10px'
+    } : {});
+
     return h('el-form-item', {
       class: _objectSpread2(_objectSpread2({}, self.fieldClass), {}, {
         'is-required': self.required
       }),
-      style: self.fieldStyle,
+      style: formItemStyle,
       attrs: self.fieldAttrs,
       props: _objectSpread2({
         label: self.label,
@@ -8577,16 +8648,13 @@ var Widget = {
           }, [props.error]) : null;
         }
       }
-    }, [].concat(_toConsumableArray(self.description ? [// 有描述信息才会渲染
-    h('p', {
-      domProps: {
-        innerHTML: self.description
-      },
-      class: {
-        genFromWidget_des: true
-      }
-    } // self.description
-    )] : []), [h( // 关键输入组件
+    }, [// label slot
+    // mini模式下重置
+    miniDescriptionVnode ? h('template', {
+      slot: 'label'
+    }, ["".concat(self.label || ''), miniDescriptionVnode, "".concat(self.formProps.labelSuffix || '')]) : null, // description
+    // 非mini模式显示 description
+    !miniDesModel ? descriptionVnode : null, h( // 关键输入组件
     self.widget, {
       style: self.widgetStyle,
       class: self.widgetClass,
@@ -8601,12 +8669,12 @@ var Widget = {
           // 比如 1. 1.010 这类特殊数据输入是不需要触发 新值的设置，否则会导致schema校验为非数字
           // 但由于element为了解另外的问题，会在nextTick时强制同步dom的值等于vm的值所以无法通过这种方式来hack，这里旧的这份逻辑依旧保留 不过update一直为true
 
-          if (formatValue.update) {
+          if (formatValue.update && self.value !== formatValue.value) {
             self.value = formatValue.value;
           }
         }
       }
-    })]));
+    })]);
   }
 };
 
@@ -8672,9 +8740,17 @@ function removeAt(target, index) {
 
 function fillObj(target, data) {
   // 简单复制 异常直接抛错
-  return target.fill(null).map(function () {
-    return JSON.parse(JSON.stringify(data));
-  });
+  try {
+    if (_typeof(data) === 'object') {
+      return target.fill(null).map(function () {
+        return JSON.parse(JSON.stringify(data));
+      });
+    }
+  } catch (e) {} // nothing ...
+  // 默认返回一个 undefined
+
+
+  return undefined;
 } // 切割分为多个数组
 
 function cutOff(target, cutOffPointIndex) {
@@ -9222,7 +9298,9 @@ var ObjectField = {
 
     var _getUiOptions = getUiOptions({
       schema: schema,
-      uiSchema: uiSchema
+      uiSchema: uiSchema,
+      curNodePath: curNodePath,
+      rootFormData: rootFormData
     }),
         title = _getUiOptions.title,
         description = _getUiOptions.description,
@@ -9729,12 +9807,16 @@ var StringField = {
   render: function render(h, context) {
     var _context$props = context.props,
         schema = _context$props.schema,
-        uiSchema = _context$props.uiSchema; // 可能是枚举数据使用select组件，否则使用 input
+        uiSchema = _context$props.uiSchema,
+        curNodePath = _context$props.curNodePath,
+        rootFormData = _context$props.rootFormData; // 可能是枚举数据使用select组件，否则使用 input
 
-    var enumOptions = isSelect(schema) && optionsList(schema, uiSchema);
+    var enumOptions = isSelect(schema) && optionsList(schema, uiSchema, curNodePath, rootFormData);
     var widgetConfig = getWidgetConfig({
       schema: schema,
-      uiSchema: uiSchema
+      uiSchema: uiSchema,
+      curNodePath: curNodePath,
+      rootFormData: rootFormData
     }, function () {
       var isNumber = schema.type === 'number' || schema.type === 'integer';
       return {
@@ -9785,14 +9867,19 @@ var BooleanField = {
   render: function render(h, context) {
     var _context$props = context.props,
         schema = _context$props.schema,
-        uiSchema = _context$props.uiSchema; // Bool 会默认传入枚举类型选项 true false
+        uiSchema = _context$props.uiSchema,
+        curNodePath = _context$props.curNodePath,
+        rootFormData = _context$props.rootFormData; // Bool 会默认传入枚举类型选项 true false
 
     var enumOptions = optionsList({
+      enumNames: schema.enumNames || ['true', 'false'],
       enum: schema.enum || [true, false]
-    }, uiSchema);
+    }, uiSchema, curNodePath, rootFormData);
     var widgetConfig = getWidgetConfig({
       schema: schema,
-      uiSchema: uiSchema
+      uiSchema: uiSchema,
+      curNodePath: curNodePath,
+      rootFormData: rootFormData
     }, function () {
       return {
         widget: WIDGET_MAP.types.boolean
@@ -10225,12 +10312,15 @@ var ArrayFieldNormal = {
         schema = _context$props.schema,
         uiSchema = _context$props.uiSchema,
         curNodePath = _context$props.curNodePath,
+        rootFormData = _context$props.rootFormData,
         itemsFormData = _context$props.itemsFormData,
         errorSchema = _context$props.errorSchema;
 
     var _getUiOptions = getUiOptions({
       schema: schema,
-      uiSchema: uiSchema
+      uiSchema: uiSchema,
+      curNodePath: curNodePath,
+      rootFormData: rootFormData
     }),
         title = _getUiOptions.title,
         description = _getUiOptions.description,
@@ -10245,6 +10335,10 @@ var ArrayFieldNormal = {
         fieldStyle = _getUiOptions.fieldStyle;
 
     var arrayItemsVNodeList = itemsFormData.map(function (item, index) {
+      var tempUiSchema = replaceArrayIndex({
+        schema: schema.items,
+        uiSchema: uiSchema.items
+      }, index);
       return {
         key: item.key,
         vNode: h(SchemaField, {
@@ -10252,7 +10346,7 @@ var ArrayFieldNormal = {
           props: _objectSpread2(_objectSpread2({}, context.props), {}, {
             schema: schema.items,
             required: ![].concat(schema.items.type).includes('null'),
-            uiSchema: uiSchema.items,
+            uiSchema: _objectSpread2(_objectSpread2({}, uiSchema.items), tempUiSchema),
             errorSchema: errorSchema.items,
             curNodePath: computedCurPath(curNodePath, index)
           })
@@ -10292,13 +10386,17 @@ var ArrayFieldMultiSelect = {
     var _context$props = context.props,
         schema = _context$props.schema,
         rootSchema = _context$props.rootSchema,
-        uiSchema = _context$props.uiSchema; // 这里需要索引当前节点，通过到schemaField组件的会统一处理
+        uiSchema = _context$props.uiSchema,
+        curNodePath = _context$props.curNodePath,
+        rootFormData = _context$props.rootFormData; // 这里需要索引当前节点，通过到schemaField组件的会统一处理
 
     var itemsSchema = retrieveSchema(schema.items, rootSchema);
-    var enumOptions = optionsList(itemsSchema, uiSchema);
+    var enumOptions = optionsList(itemsSchema, uiSchema, curNodePath, rootFormData);
     var widgetConfig = getWidgetConfig({
       schema: schema,
-      uiSchema: uiSchema
+      uiSchema: uiSchema,
+      curNodePath: curNodePath,
+      rootFormData: rootFormData
     }, function () {
       return {
         widget: WIDGET_MAP.common.checkboxGroup
@@ -10366,11 +10464,14 @@ var ArrayFieldTuple = {
     var _this$$props = this.$props,
         schema = _this$$props.schema,
         uiSchema = _this$$props.uiSchema,
-        errorSchema = _this$$props.errorSchema;
+        errorSchema = _this$$props.errorSchema,
+        curNodePath = _this$$props.curNodePath;
 
     var _getUiOptions = getUiOptions({
       schema: schema,
-      uiSchema: uiSchema
+      uiSchema: uiSchema,
+      curNodePath: curNodePath,
+      rootFormData: this.rootFormData
     }),
         title = _getUiOptions.title,
         description = _getUiOptions.description,
@@ -10394,12 +10495,16 @@ var ArrayFieldTuple = {
           schema: schema.items[index],
           uiSchema: uiSchema.items ? uiSchema.items[index] : {},
           errorSchema: errorSchema.items ? errorSchema.items[index] : {},
-          curNodePath: computedCurPath(_this.curNodePath, index)
+          curNodePath: computedCurPath(curNodePath, index)
         })
       });
     }); // 通过order组件做可排序处理
 
     var additionalVnodeArr = cutOfArr[1].map(function (item, index) {
+      var tempUiSchema = replaceArrayIndex({
+        schema: schema.additionalItems,
+        uiSchema: uiSchema.additionalItems
+      }, index);
       return {
         key: item.key,
         vNode: h(SchemaField, {
@@ -10407,7 +10512,7 @@ var ArrayFieldTuple = {
           props: _objectSpread2(_objectSpread2({}, _this.$props), {}, {
             schema: schema.additionalItems,
             required: ![].concat(schema.additionalItems.type).includes('null'),
-            uiSchema: uiSchema.additionalItems,
+            uiSchema: _objectSpread2(_objectSpread2({}, uiSchema.additionalItems), tempUiSchema),
             errorSchema: errorSchema.additionalItems,
             curNodePath: computedCurPath(_this.curNodePath, index + schema.items.length)
           })
@@ -10451,12 +10556,16 @@ var ArrayFieldDateRange = {
   render: function render(h, context) {
     var _context$props = context.props,
         schema = _context$props.schema,
-        uiSchema = _context$props.uiSchema;
+        uiSchema = _context$props.uiSchema,
+        curNodePath = _context$props.curNodePath,
+        rootFormData = _context$props.rootFormData;
     var widgetConfig = getWidgetConfig({
       schema: schema,
       uiSchema: _objectSpread2({
         'ui:widget': WIDGET_MAP.formats[schema.format]
-      }, uiSchema)
+      }, uiSchema),
+      curNodePath: curNodePath,
+      rootFormData: rootFormData
     });
     return h(Widget, _objectSpread2(_objectSpread2({}, context.data), {}, {
       props: _objectSpread2(_objectSpread2({}, context.props), widgetConfig)
@@ -10635,6 +10744,10 @@ var ArrayField = {
     } else if (isMultiSelect(schema, rootSchema)) {
       // item 为枚举固定值
       CurrentField = ArrayFieldMultiSelect;
+      return h(ArrayFieldMultiSelect, {
+        props: this.$props,
+        class: _defineProperty({}, lowerCase(ArrayFieldMultiSelect.name), true)
+      });
     }
 
     return h('div', [h(CurrentField, {
@@ -10703,8 +10816,10 @@ var SelectLinkageField = {
       var selectWidgetConfig = getWidgetConfig({
         schema: this.schema["".concat(this.combiningType, "Select")] || {},
         // 扩展 oneOfSelect,anyOfSelect字段
-        uiSchema: this.uiSchema["".concat(this.combiningType, "Select")] || {} // 通过 uiSchema['oneOf'] 配置ui信息
-
+        uiSchema: this.uiSchema["".concat(this.combiningType, "Select")] || {},
+        // 通过 uiSchema['oneOf'] 配置ui信息
+        curNodePath: this.curNodePath,
+        rootFormData: this.rootFormData
       }, function () {
         return {
           // 枚举参数
@@ -10713,19 +10828,27 @@ var SelectLinkageField = {
       }); // title description 回退到 schema 配置，但这里不使用 uiSchema配置
       // select ui配置需要使用 (oneOf|anyOf)Select
 
-      Object.assign(selectWidgetConfig, {
-        label: selectWidgetConfig.label || this.schema.title,
-        description: selectWidgetConfig.description || this.schema.description
-      }); // 下拉列表枚举值
+      selectWidgetConfig.label = selectWidgetConfig.label || this.schema.title;
+      selectWidgetConfig.description = selectWidgetConfig.description || this.schema.description; // 下拉列表枚举值
 
-      var uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
-      selectWidgetConfig.uiProps.enumOptions = this.selectList.map(function (option, index) {
-        return {
-          label: uiSchemaSelectList[index] && uiSchemaSelectList[index]['ui:title'] || option.title || "\u9009\u9879 ".concat(index + 1),
-          value: index
-        };
-      }); // oneOf option 渲染
+      if (!selectWidgetConfig.uiProps.enumOptions) {
+        var uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
+        selectWidgetConfig.uiProps.enumOptions = this.selectList.map(function (option, index) {
+          var curUiOptions = getUiOptions({
+            schema: option,
+            uiSchema: uiSchemaSelectList[index],
+            containsSpec: false // curNodePath: this.curNodePath,
+            // rootFormData: this.rootFormData,
+
+          });
+          return {
+            label: curUiOptions.title || "\u9009\u9879 ".concat(index + 1),
+            value: index
+          };
+        });
+      } // oneOf option 渲染
       // 选择框 vnode
+
 
       return this.$createElement(Widget, {
         key: "fieldSelect_".concat(this.combiningType),
@@ -10783,7 +10906,8 @@ var SelectLinkageField = {
     var _this2 = this,
         _class4;
 
-    var pathClassName = nodePath2ClassName(this.$props.curNodePath); // object 需要保持原有属性，如果存在原有属性这里单独渲染
+    var curNodePath = this.$props.curNodePath;
+    var pathClassName = nodePath2ClassName(curNodePath); // object 需要保持原有属性，如果存在原有属性这里单独渲染
 
     var originVnode = null;
     var isTypeObject = this.schema.type === 'object' || this.schema.properties;
@@ -10810,13 +10934,23 @@ var SelectLinkageField = {
 
     if (curSelectSchema) {
       // 覆盖父级的属性
-      curSelectSchema = Object.assign({}, this.schema, curSelectSchema);
-      delete curSelectSchema[this.combiningType]; // 当前节点的ui err配置，用来支持所有选项的统一配置
+      var _this$schema = this.schema,
+          _this$combiningType = this.combiningType,
+          _ref3 = "".concat(this.combiningType, "Select"),
+          properties = _this$schema.properties,
+          combiningType = _this$schema[_this$combiningType],
+          combiningTypeSelect = _this$schema[_ref3],
+          parentSchema = _objectWithoutProperties(_this$schema, ["properties", _this$combiningType, _ref3].map(_toPropertyKey));
+
+      curSelectSchema = Object.assign({}, parentSchema, curSelectSchema); // 当前节点的ui err配置，用来支持所有选项的统一配置
       // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
 
-      var userUiOptions = filterObject(getUserUiOptions({
+      var userUiOptions = filterObject(getUiOptions({
         schema: this.schema,
-        uiSchema: this.uiSchema
+        uiSchema: this.uiSchema,
+        containsSpec: false,
+        curNodePath: curNodePath,
+        rootFormData: this.rootFormData
       }), function (key) {
         return key === _this2.combiningType ? undefined : "ui:".concat(key);
       });
@@ -10830,13 +10964,13 @@ var SelectLinkageField = {
       childrenVnodeList.push(h(SchemaField, {
         key: "appendSchema_".concat(this.combiningType),
         props: _objectSpread2(_objectSpread2({}, this.$props), {}, {
-          schema: curSelectSchema,
-          required: this.required,
-          uiSchema: _objectSpread2(_objectSpread2({
+          schema: _objectSpread2({
             'ui:showTitle': false,
             // 默认不显示title
             'ui:showDescription': false
-          }, userUiOptions), (this.uiSchema[this.combiningType] || [])[this.curSelectIndex]),
+          }, curSelectSchema),
+          required: this.required,
+          uiSchema: _objectSpread2(_objectSpread2({}, userUiOptions), (this.uiSchema[this.combiningType] || [])[this.curSelectIndex]),
           errorSchema: _objectSpread2(_objectSpread2({}, userErrOptions), (this.errorSchema[this.combiningType] || [])[this.curSelectIndex]) // needValidFieldGroup: false // 单独校验，这里无需处理
 
         })
@@ -10923,7 +11057,7 @@ var FIELDS_MAPS = {
 
 var regExpression = /{{(.*)}}/;
 
-function handleExpression(rootFormData, curNodePath, expression) {
+function handleExpression(rootFormData, curNodePath, expression, fallBack) {
   // 未配置
   if (undefined === expression) {
     return undefined;
@@ -10938,38 +11072,60 @@ function handleExpression(rootFormData, curNodePath, expression) {
 
     var fn = new Function('parentFormData', 'rootFormData', "return ".concat(code));
     return fn(getPathVal(rootFormData, curNodePath, 1), rootFormData);
-  } // 配置了函数 function
+  } // 回退
 
 
-  if (typeof expression === 'function') {
-    return expression(getPathVal(rootFormData, curNodePath, 1), rootFormData);
-  } // 配置了常量 ？？
+  return fallBack();
+}
 
+function replaceArrayIndex() {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      schema = _ref.schema,
+      uiSchema = _ref.uiSchema;
 
-  return expression;
+  var index = arguments.length > 1 ? arguments[1] : undefined;
+  var itemUiOptions = getUiOptions({
+    schema: schema,
+    uiSchema: uiSchema,
+    containsSpec: false
+  });
+  return ['title', 'description'].reduce(function (preVal, curItem) {
+    if (itemUiOptions[curItem]) {
+      preVal["ui:".concat(curItem)] = String(itemUiOptions[curItem]).replace(/\$index/g, index + 1);
+    }
+
+    return preVal;
+  }, {});
 } // 是否为 hidden Widget
 
-
-function isHiddenWidget(_ref) {
-  var _ref$schema = _ref.schema,
-      schema = _ref$schema === void 0 ? {} : _ref$schema,
-      _ref$uiSchema = _ref.uiSchema,
-      uiSchema = _ref$uiSchema === void 0 ? {} : _ref$uiSchema,
-      _ref$curNodePath = _ref.curNodePath,
-      curNodePath = _ref$curNodePath === void 0 ? '' : _ref$curNodePath,
-      _ref$rootFormData = _ref.rootFormData,
-      rootFormData = _ref$rootFormData === void 0 ? {} : _ref$rootFormData;
-  var widget = uiSchema['ui:widget'] || schema['ui:widget'];
-  var hiddenExpression = uiSchema['ui:hidden'] || schema['ui:hidden']; // 支持配置 ui:hidden 表达式
-
-  return widget === 'HiddenWidget' || widget === 'hidden' || !!handleExpression(rootFormData, curNodePath, hiddenExpression);
-} // 解析当前节点 ui field
-
-function getUiField(_ref2) {
+function isHiddenWidget(_ref2) {
   var _ref2$schema = _ref2.schema,
       schema = _ref2$schema === void 0 ? {} : _ref2$schema,
       _ref2$uiSchema = _ref2.uiSchema,
-      uiSchema = _ref2$uiSchema === void 0 ? {} : _ref2$uiSchema;
+      uiSchema = _ref2$uiSchema === void 0 ? {} : _ref2$uiSchema,
+      _ref2$curNodePath = _ref2.curNodePath,
+      curNodePath = _ref2$curNodePath === void 0 ? '' : _ref2$curNodePath,
+      _ref2$rootFormData = _ref2.rootFormData,
+      rootFormData = _ref2$rootFormData === void 0 ? {} : _ref2$rootFormData;
+  var widget = uiSchema['ui:widget'] || schema['ui:widget'];
+  var hiddenExpression = uiSchema['ui:hidden'] || schema['ui:hidden']; // 支持配置 ui:hidden 表达式
+
+  return widget === 'HiddenWidget' || widget === 'hidden' || !!handleExpression(rootFormData, curNodePath, hiddenExpression, function () {
+    // 配置了函数 function
+    if (typeof hiddenExpression === 'function') {
+      return hiddenExpression(getPathVal(rootFormData, curNodePath, 1), rootFormData);
+    } // 配置了常量 ？？
+
+
+    return hiddenExpression;
+  });
+} // 解析当前节点 ui field
+
+function getUiField(_ref3) {
+  var _ref3$schema = _ref3.schema,
+      schema = _ref3$schema === void 0 ? {} : _ref3$schema,
+      _ref3$uiSchema = _ref3.uiSchema,
+      uiSchema = _ref3$uiSchema === void 0 ? {} : _ref3$uiSchema;
   var field = schema['ui:field'] || uiSchema['ui:field']; // vue 组件，或者已注册的组件名
 
   if (typeof field === 'function' || _typeof(field) === 'object' || typeof field === 'string') {
@@ -11001,56 +11157,78 @@ function getUiField(_ref2) {
   throw new Error("\u4E0D\u652F\u6301\u7684field\u7C7B\u578B ".concat(schema.type));
 } // 解析用户配置的 uiSchema options
 
-function getUserUiOptions(_ref3) {
-  var _ref3$schema = _ref3.schema,
-      schema = _ref3$schema === void 0 ? {} : _ref3$schema,
-      _ref3$uiSchema = _ref3.uiSchema,
-      uiSchema = _ref3$uiSchema === void 0 ? {} : _ref3$uiSchema;
+function getUserUiOptions(_ref4) {
+  var _ref4$schema = _ref4.schema,
+      schema = _ref4$schema === void 0 ? {} : _ref4$schema,
+      _ref4$uiSchema = _ref4.uiSchema,
+      uiSchema = _ref4$uiSchema === void 0 ? {} : _ref4$uiSchema,
+      curNodePath = _ref4.curNodePath,
+      _ref4$rootFormData = _ref4.rootFormData,
+      rootFormData = _ref4$rootFormData === void 0 ? {} : _ref4$rootFormData;
   // 支持 uiSchema配置在 schema文件中
   return Object.assign.apply(Object, [{}].concat(_toConsumableArray([schema, uiSchema].map(function (itemSchema) {
-    return Object.keys(itemSchema).filter(function (key) {
-      return key.indexOf('ui:') === 0;
-    }).reduce(function (options, key) {
+    return Object.keys(itemSchema).reduce(function (options, key) {
       var value = itemSchema[key]; // options 内外合并
 
       if (key === 'ui:options' && isObject(value)) {
         return _objectSpread2(_objectSpread2({}, options), value);
       }
 
-      return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(3), value));
+      if (key.indexOf('ui:') === 0) {
+        // 只对 ui:xxx 配置形式支持表达式
+        return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(3), curNodePath === undefined ? value : handleExpression(rootFormData, curNodePath, value, function () {
+          return value;
+        })));
+      }
+
+      return options;
     }, {});
   }))));
 } // 解析当前节点的ui options参数
 
-function getUiOptions(_ref4) {
-  var _ref4$schema = _ref4.schema,
-      schema = _ref4$schema === void 0 ? {} : _ref4$schema,
-      _ref4$uiSchema = _ref4.uiSchema,
-      uiSchema = _ref4$uiSchema === void 0 ? {} : _ref4$uiSchema;
+function getUiOptions(_ref5) {
+  var _ref5$schema = _ref5.schema,
+      schema = _ref5$schema === void 0 ? {} : _ref5$schema,
+      _ref5$uiSchema = _ref5.uiSchema,
+      uiSchema = _ref5$uiSchema === void 0 ? {} : _ref5$uiSchema,
+      _ref5$containsSpec = _ref5.containsSpec,
+      containsSpec = _ref5$containsSpec === void 0 ? true : _ref5$containsSpec,
+      curNodePath = _ref5.curNodePath,
+      rootFormData = _ref5.rootFormData;
   var spec = {};
 
-  if (undefined !== schema.multipleOf) {
-    // 组件计数器步长
-    spec.step = schema.multipleOf;
-  }
+  if (containsSpec) {
+    if (undefined !== schema.multipleOf) {
+      // 组件计数器步长
+      spec.step = schema.multipleOf;
+    }
 
-  if (schema.minimum || schema.minimum === 0) {
-    spec.min = schema.minimum;
-  }
+    if (schema.minimum || schema.minimum === 0) {
+      spec.min = schema.minimum;
+    }
 
-  if (schema.maximum || schema.maximum === 0) {
-    spec.max = schema.maximum;
-  }
+    if (schema.maximum || schema.maximum === 0) {
+      spec.max = schema.maximum;
+    }
 
-  if (schema.format === 'date-time' || schema.format === 'date') {
-    // 数组类型 时间区间
-    // 打破了schema的规范，type array 配置了 format
-    if (schema.type === 'array') {
-      spec.isRange = true;
-      spec.isNumberValue = !(schema.items && schema.items.type === 'string');
-    } else {
-      // 字符串 ISO 时间
-      spec.isNumberValue = !(schema.type === 'string');
+    if (schema.minLength || schema.minLength === 0) {
+      spec.minlength = schema.minLength;
+    }
+
+    if (schema.maxLength || schema.maxLength === 0) {
+      spec.maxlength = schema.maxLength;
+    }
+
+    if (schema.format === 'date-time' || schema.format === 'date') {
+      // 数组类型 时间区间
+      // 打破了schema的规范，type array 配置了 format
+      if (schema.type === 'array') {
+        spec.isRange = true;
+        spec.isNumberValue = !(schema.items && schema.items.type === 'string');
+      } else {
+        // 字符串 ISO 时间
+        spec.isNumberValue = !(schema.type === 'string');
+      }
     }
   } // 计算ui配置
 
@@ -11061,20 +11239,26 @@ function getUiOptions(_ref4) {
     description: schema.description
   }, spec), getUserUiOptions({
     schema: schema,
-    uiSchema: uiSchema
+    uiSchema: uiSchema,
+    curNodePath: curNodePath,
+    rootFormData: rootFormData
   }));
 } // 获取当前节点的ui 配置 （options + widget）
 // 处理成 Widget 组件需要的格式
 
-function getWidgetConfig(_ref5) {
-  var _ref5$schema = _ref5.schema,
-      schema = _ref5$schema === void 0 ? {} : _ref5$schema,
-      _ref5$uiSchema = _ref5.uiSchema,
-      uiSchema = _ref5$uiSchema === void 0 ? {} : _ref5$uiSchema;
+function getWidgetConfig(_ref6) {
+  var _ref6$schema = _ref6.schema,
+      schema = _ref6$schema === void 0 ? {} : _ref6$schema,
+      _ref6$uiSchema = _ref6.uiSchema,
+      uiSchema = _ref6$uiSchema === void 0 ? {} : _ref6$uiSchema,
+      curNodePath = _ref6.curNodePath,
+      rootFormData = _ref6.rootFormData;
   var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   var uiOptions = getUiOptions({
     schema: schema,
-    uiSchema: uiSchema
+    uiSchema: uiSchema,
+    curNodePath: curNodePath,
+    rootFormData: rootFormData
   }); // 没有配置 Widget ，各个Field组件根据类型判断
 
   if (!uiOptions.widget && fallback) {
@@ -11095,7 +11279,8 @@ function getWidgetConfig(_ref5) {
       fieldStyle = uiOptions.fieldStyle,
       fieldClass = uiOptions.fieldClass,
       emptyValue = uiOptions.emptyValue,
-      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue"]);
+      width = uiOptions.width,
+      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width"]);
 
   return {
     widget: widget,
@@ -11106,6 +11291,7 @@ function getWidgetConfig(_ref5) {
     widgetClass: widgetClass,
     widgetStyle: widgetStyle,
     fieldAttrs: fieldAttrs,
+    width: width,
     fieldStyle: fieldStyle,
     fieldClass: fieldClass,
     emptyValue: emptyValue,
@@ -11113,24 +11299,26 @@ function getWidgetConfig(_ref5) {
   };
 } // 解析用户配置的 errorSchema options
 
-function getUserErrOptions(_ref6) {
-  var _ref6$schema = _ref6.schema,
-      schema = _ref6$schema === void 0 ? {} : _ref6$schema,
-      _ref6$uiSchema = _ref6.uiSchema,
-      uiSchema = _ref6$uiSchema === void 0 ? {} : _ref6$uiSchema,
-      _ref6$errorSchema = _ref6.errorSchema,
-      errorSchema = _ref6$errorSchema === void 0 ? {} : _ref6$errorSchema;
+function getUserErrOptions(_ref7) {
+  var _ref7$schema = _ref7.schema,
+      schema = _ref7$schema === void 0 ? {} : _ref7$schema,
+      _ref7$uiSchema = _ref7.uiSchema,
+      uiSchema = _ref7$uiSchema === void 0 ? {} : _ref7$uiSchema,
+      _ref7$errorSchema = _ref7.errorSchema,
+      errorSchema = _ref7$errorSchema === void 0 ? {} : _ref7$errorSchema;
   return Object.assign.apply(Object, [{}].concat(_toConsumableArray([schema, uiSchema, errorSchema].map(function (itemSchema) {
-    return Object.keys(itemSchema).filter(function (key) {
-      return key.indexOf('err:') === 0;
-    }).reduce(function (options, key) {
+    return Object.keys(itemSchema).reduce(function (options, key) {
       var value = itemSchema[key]; // options 内外合并
 
       if (key === 'err:options' && isObject(value)) {
         return _objectSpread2(_objectSpread2({}, options), value);
       }
 
-      return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(4), value));
+      if (key.indexOf('err:') === 0) {
+        return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(4), value));
+      }
+
+      return options;
     }, {});
   }))));
 } // ui:order object-> properties 排序
@@ -11248,12 +11436,14 @@ function allowAdditionalItems(schema) {
   return isObject(schema.additionalItems);
 } // 下拉选项
 
-function optionsList(schema, uiSchema) {
+function optionsList(schema, uiSchema, curNodePath, rootFormData) {
   // enum
   if (schema.enum) {
     var uiOptions = getUserUiOptions({
       schema: schema,
-      uiSchema: uiSchema
+      uiSchema: uiSchema,
+      curNodePath: curNodePath,
+      rootFormData: rootFormData
     }); // ui配置 enumNames 优先
 
     var enumNames = uiOptions.enumNames || schema.enumNames;
@@ -11272,7 +11462,9 @@ function optionsList(schema, uiSchema) {
   return altSchemas.map(function (curSchema, i) {
     var uiOptions = altUiSchemas && altUiSchemas[i] ? getUserUiOptions({
       schema: curSchema,
-      uiSchema: altUiSchemas[i]
+      uiSchema: altUiSchemas[i],
+      curNodePath: curNodePath,
+      rootFormData: rootFormData
     }) : {};
     var value = toConstant(curSchema);
     var label = uiOptions.title || curSchema.title || String(value);
@@ -11285,6 +11477,7 @@ function optionsList(schema, uiSchema) {
 
 var formUtils = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    replaceArrayIndex: replaceArrayIndex,
     isHiddenWidget: isHiddenWidget,
     getUiField: getUiField,
     getUserUiOptions: getUserUiOptions,
@@ -11483,20 +11676,16 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .el-color-picker{vertical-align:top}.genFromComponent .fieldGroupWrap+.fieldGroupWrap{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .formItemErrorBox{color:#ff5757;padding-top:2px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:16px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 20px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{padding-top:6px;-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .arrayListItem_index,.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px}.genFromComponent .arrayListItem_index{top:6px;line-height:18px;height:18px;padding:0 6px;background-color:rgba(0,0,0,.28);color:#fff;font-size:12px;border-radius:2px}.genFromComponent .arrayListItem_operateTool{width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}.genFromComponent .formFooter_item{text-align:right;border-top:1px solid rgba(0,0,0,.08);padding-top:10px}.genFromComponent.form-inlineFooter>.fieldGroupWrap{display:inline-block;margin-right:10px}.genFromComponent.el-form--inline .validateWidget{margin-right:0}.genFromComponent.el-form--inline .formFooter_item{border-top:none;padding-top:0}";
+var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .fieldGroupWrap+.fieldGroupWrap .fieldGroupWrap_title{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .formItemErrorBox{color:#ff5757;padding-top:2px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:16px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0;width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 12px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{padding-top:15px;-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_index,.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px}.genFromComponent .arrayListItem_index{top:6px;line-height:18px;height:18px;padding:0 6px;background-color:rgba(0,0,0,.28);color:#fff;font-size:12px;border-radius:2px}.genFromComponent .arrayListItem_operateTool{width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}.genFromComponent .formFooter_item{text-align:right;border-top:1px solid rgba(0,0,0,.08);padding-top:10px}.genFromComponent.form-inlineFooter>.fieldGroupWrap{display:inline-block;margin-right:10px}.genFromComponent .arrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .arrayListItem_content{padding-top:8px}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent.el-form--inline .validateWidget{margin-right:0}.genFromComponent.el-form--inline .formFooter_item{border-top:none;padding-top:0}.genFromComponent .el-checkbox,.genFromComponent .el-color-picker{vertical-align:top}.layoutColumn .layoutColumn_w100{width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important}.layoutColumn .fieldGroupWrap_box{width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-ms-flex-line-pack:start;align-content:flex-start}.layoutColumn .fieldGroupWrap_box>div{width:100%;-ms-flex-preferred-size:100%;flex-basis:100%}.layoutColumn .fieldGroupWrap_box>.el-form-item{-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;-ms-flex-negative:0;flex-shrink:0;-webkit-box-sizing:border-box;box-sizing:border-box;padding-right:10px}.layoutColumn.layoutColumn-1 .fieldGroupWrap_box>.el-form-item{padding-right:0}.layoutColumn.layoutColumn-2 .fieldGroupWrap_box>.el-form-item{width:50%;-ms-flex-preferred-size:50%;flex-basis:50%}.layoutColumn.layoutColumn-3 .fieldGroupWrap_box>.el-form-item{width:33.333%;-ms-flex-preferred-size:33.333%;flex-basis:33.333%}";
 styleInject(css_248z);
 
 var JsonSchemaForm = {
-  name: 'ElementFrom',
+  name: 'ElementForm',
   props: vueProps$1,
   data: function data() {
-    var formData = this.getStateFromData(this.$props.schema, this.$props.value); // 计算form默认值和用户传入的值不相等
-    // 保持v-model双向数据及时性
+    var formData = this.getStateFromData(this.$props.schema, this.$props.value); // 保持v-model双向数据及时性
 
-    if (!deepEquals(formData, this.value)) {
-      this.handlerFormDataChange(formData, this.value);
-    }
-
+    this.handlerFormDataChange(formData, this.value);
     return {
       formData: formData
     };
@@ -11551,6 +11740,8 @@ var JsonSchemaForm = {
     }
   },
   render: function render(h) {
+    var _class;
+
     var self = this; // default scoped slot
 
     var defaultSlot = this.$scopedSlots.default ? this.$scopedSlots.default({
@@ -11575,6 +11766,12 @@ var JsonSchemaForm = {
         }
       }
     }) : undefined;
+
+    var _self$$props$formProp = self.$props.formProps,
+        _self$$props$formProp2 = _self$$props$formProp.layoutColumn,
+        layoutColumn = _self$$props$formProp2 === void 0 ? 1 : _self$$props$formProp2,
+        formProps = _objectWithoutProperties(_self$$props$formProp, ["layoutColumn"]);
+
     var props = {
       schema: this.schema,
       uiSchema: this.uiSchema,
@@ -11584,20 +11781,22 @@ var JsonSchemaForm = {
       rootSchema: this.schema,
       rootFormData: this.formData,
       // 根节点的数据
-      curNodePath: '' // 当前节点路径
-
-    };
-    return h('el-form', {
-      class: _defineProperty({
-        genFromComponent: true,
-        'form-inlineFooter': self.formProps.inlineFooter
-      }, "genFromComponent_".concat(this.schema.id, "Form"), !!this.schema.id),
-      ref: 'genEditForm',
-      props: _objectSpread2({
-        model: self.formData,
+      curNodePath: '',
+      // 当前节点路径
+      formProps: _objectSpread2({
         labelPosition: 'top',
         labelSuffix: '：'
-      }, self.formProps)
+      }, formProps)
+    };
+    return h('el-form', {
+      class: (_class = {
+        genFromComponent: true,
+        'form-inlineFooter': formProps.inlineFooter
+      }, _defineProperty(_class, "genFromComponent_".concat(this.schema.id, "Form"), !!this.schema.id), _defineProperty(_class, "layoutColumn", !formProps.inline), _defineProperty(_class, "layoutColumn-".concat(layoutColumn), !formProps.inline), _class),
+      ref: 'genEditForm',
+      props: _objectSpread2({
+        model: self.formData
+      }, props.formProps)
     }, [h(SchemaField, {
       props: props
     }), defaultSlot]);
@@ -11613,4 +11812,4 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default JsonSchemaForm;
-export { vueProps as fieldProps, formUtils, getDefaultFormState, i18n, validate$2 as schemaValidate, vueUtils };
+export { SchemaField, vueProps as fieldProps, formUtils, getDefaultFormState, i18n, validate$2 as schemaValidate, vueUtils };
