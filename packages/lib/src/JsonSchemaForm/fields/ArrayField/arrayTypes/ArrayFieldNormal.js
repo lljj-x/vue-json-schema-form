@@ -23,7 +23,7 @@ export default {
     },
     render(h, context) {
         const {
-            schema, uiSchema, curNodePath, itemsFormData, errorSchema
+            schema, uiSchema, curNodePath, rootFormData, itemsFormData, errorSchema
         } = context.props;
 
         const {
@@ -40,7 +40,9 @@ export default {
             fieldStyle,
         } = getUiOptions({
             schema,
-            uiSchema
+            uiSchema,
+            curNodePath,
+            rootFormData,
         });
 
         const arrayItemsVNodeList = itemsFormData.map((item, index) => {

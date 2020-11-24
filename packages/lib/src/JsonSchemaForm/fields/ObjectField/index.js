@@ -60,7 +60,9 @@ export default {
             title, description, showTitle, showDescription, order, fieldClass, fieldAttrs, fieldStyle, onlyShowIfDependent
         } = getUiOptions({
             schema,
-            uiSchema
+            uiSchema,
+            curNodePath,
+            rootFormData
         });
 
         const properties = Object.keys(schema.properties || {});

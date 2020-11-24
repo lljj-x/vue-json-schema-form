@@ -189,14 +189,14 @@ export function componentList2JsonSchema(componentList) {
     const baseObj = genBaseObj();
 
     let parentObj = baseObj;
-    let stack = [{ $$parentFlag: parentObj }, ...componentList];
+    let queue = [{ $$parentFlag: parentObj }, ...componentList];
 
     const hasChild = data => Array.isArray(data.childList) && data.childList.length > 0;
 
-    // 广度，同时标记父节点
-    while (stack.length) {
-        // 出栈
-        const item = stack.shift();
+    // 队列广度，同时标记父节点
+    while (queue.length) {
+        // 出队
+        const item = queue.shift();
 
         // 标记节点 切换parent
         if (item.$$parentFlag) {
@@ -208,9 +208,9 @@ export function componentList2JsonSchema(componentList) {
                 ...uiSchema
             };
 
-            // 入栈
+            // 入队
             if (hasChild(item)) {
-                stack = [...stack, { $$parentFlag: curSchema }, ...item.childList];
+                queue = [...queue, { $$parentFlag: curSchema }, ...item.childList];
             }
 
             // 连接数据

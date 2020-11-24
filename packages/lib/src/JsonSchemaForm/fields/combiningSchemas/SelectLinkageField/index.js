@@ -54,7 +54,9 @@ export default {
             // 下拉选项参数
             const selectWidgetConfig = getWidgetConfig({
                 schema: this.schema[`${this.combiningType}Select`] || {}, // 扩展 oneOfSelect,anyOfSelect字段
-                uiSchema: this.uiSchema[`${this.combiningType}Select`] || {} // 通过 uiSchema['oneOf'] 配置ui信息
+                uiSchema: this.uiSchema[`${this.combiningType}Select`] || {}, // 通过 uiSchema['oneOf'] 配置ui信息
+                curNodePath: this.curNodePath,
+                rootFormData: this.rootFormData,
             }, () => ({
                 // 枚举参数
                 widget: 'SelectWidget'
@@ -72,7 +74,9 @@ export default {
                     const curUiOptions = getUiOptions({
                         schema: option,
                         uiSchema: uiSchemaSelectList[index],
-                        containsSpec: false
+                        containsSpec: false,
+                        // curNodePath: this.curNodePath,
+                        // rootFormData: this.rootFormData,
                     });
                     return {
                         label: curUiOptions.title || `选项 ${index + 1}`,
@@ -141,7 +145,8 @@ export default {
         }
     },
     render(h) {
-        const pathClassName = nodePath2ClassName(this.$props.curNodePath);
+        const { curNodePath } = this.$props;
+        const pathClassName = nodePath2ClassName(curNodePath);
 
         // object 需要保持原有属性，如果存在原有属性这里单独渲染
         let originVnode = null;
@@ -188,7 +193,9 @@ export default {
             const userUiOptions = filterObject(getUiOptions({
                 schema: this.schema,
                 uiSchema: this.uiSchema,
-                containsSpec: false
+                containsSpec: false,
+                curNodePath,
+                rootFormData: this.rootFormData,
             }), key => (key === this.combiningType ? undefined : `ui:${key}`));
 
             const userErrOptions = filterObject(getUserErrOptions({

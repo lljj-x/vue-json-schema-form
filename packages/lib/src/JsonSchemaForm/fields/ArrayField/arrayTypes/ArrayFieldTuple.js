@@ -57,7 +57,7 @@ export default {
         if (!Array.isArray(this.itemsFormData)) return false;
 
         const {
-            schema, uiSchema, errorSchema
+            schema, uiSchema, errorSchema, curNodePath
         } = this.$props;
 
         const {
@@ -75,7 +75,7 @@ export default {
         } = getUiOptions({
             schema,
             uiSchema,
-            curNodePath: this.curNodePath,
+            curNodePath,
             rootFormData: this.rootFormData,
         });
 
@@ -92,7 +92,7 @@ export default {
                     schema: schema.items[index],
                     uiSchema: uiSchema.items ? uiSchema.items[index] : {},
                     errorSchema: errorSchema.items ? errorSchema.items[index] : {},
-                    curNodePath: computedCurPath(this.curNodePath, index)
+                    curNodePath: computedCurPath(curNodePath, index)
                 }
             }
         ));

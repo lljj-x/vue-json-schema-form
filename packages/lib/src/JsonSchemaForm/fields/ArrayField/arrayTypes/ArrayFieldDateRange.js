@@ -12,13 +12,17 @@ export default {
     props: vueProps,
     functional: true,
     render(h, context) {
-        const { schema, uiSchema } = context.props;
+        const {
+            schema, uiSchema, curNodePath, rootFormData
+        } = context.props;
         const widgetConfig = getWidgetConfig({
             schema,
             uiSchema: {
                 'ui:widget': WIDGET_MAP.formats[schema.format],
-                ...uiSchema
-            }
+                ...uiSchema,
+            },
+            curNodePath,
+            rootFormData
         });
 
         return h(

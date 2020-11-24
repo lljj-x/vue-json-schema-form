@@ -21,7 +21,9 @@ export default {
 
         const widgetConfig = getWidgetConfig({
             schema,
-            uiSchema
+            uiSchema,
+            curNodePath,
+            rootFormData
         }, () => {
             const isNumber = schema.type === 'number' || schema.type === 'integer';
 

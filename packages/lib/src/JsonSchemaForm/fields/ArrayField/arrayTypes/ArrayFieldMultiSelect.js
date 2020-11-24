@@ -30,7 +30,9 @@ export default {
 
         const widgetConfig = getWidgetConfig({
             schema,
-            uiSchema
+            uiSchema,
+            curNodePath,
+            rootFormData
         }, () => ({
             widget: WIDGET_MAP.common.checkboxGroup
         }));

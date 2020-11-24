@@ -113,7 +113,6 @@ export function getUserUiOptions({
 }) {
     // 支持 uiSchema配置在 schema文件中
     return Object.assign({}, ...[schema, uiSchema].map(itemSchema => Object.keys(itemSchema)
-        .filter(key => key.indexOf('ui:') === 0)
         .reduce((options, key) => {
             const value = itemSchema[key];
             // options 内外合并
@@ -121,11 +120,15 @@ export function getUserUiOptions({
                 return { ...options, ...value };
             }
 
-            // 只对 ui:xxx 配置形式支持表达式
-            return {
-                ...options,
-                [key.substring(3)]: curNodePath === undefined ? value : handleExpression(rootFormData, curNodePath, value, () => value)
-            };
+            if (key.indexOf('ui:') === 0) {
+                // 只对 ui:xxx 配置形式支持表达式
+                return {
+                    ...options,
+                    [key.substring(3)]: curNodePath === undefined ? value : handleExpression(rootFormData, curNodePath, value, () => value)
+                };
+            }
+
+            return options;
         }, {})));
 }
 
@@ -192,11 +195,15 @@ export function getUiOptions({
 // 处理成 Widget 组件需要的格式
 export function getWidgetConfig({
     schema = {},
-    uiSchema = {}
+    uiSchema = {},
+    curNodePath,
+    rootFormData,
 }, fallback = null) {
     const uiOptions = getUiOptions({
         schema,
-        uiSchema
+        uiSchema,
+        curNodePath,
+        rootFormData,
     });
 
     // 没有配置 Widget ，各个Field组件根据类型判断
@@ -247,14 +254,18 @@ export function getUserErrOptions({
     errorSchema = {}
 }) {
     return Object.assign({}, ...[schema, uiSchema, errorSchema].map(itemSchema => Object.keys(itemSchema)
-        .filter(key => key.indexOf('err:') === 0)
         .reduce((options, key) => {
             const value = itemSchema[key];
             // options 内外合并
             if (key === 'err:options' && isObject(value)) {
                 return { ...options, ...value };
             }
-            return { ...options, [key.substring(4)]: value };
+
+            if (key.indexOf('err:') === 0) {
+                return { ...options, [key.substring(4)]: value };
+            }
+
+            return options;
         }, {})));
 }
 
