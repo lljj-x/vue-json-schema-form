@@ -1,5 +1,4 @@
 .DS_Store
-CHANGELOG.md
 node_modules
 
 /packages/docs/docs/node_modules
@@ -27,3 +26,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+CHANGELOG.md
+packages/demo/CHANGELOG.md
+packages/docs/CHANGELOG.md
+packages/lib/CHANGELOG.md
