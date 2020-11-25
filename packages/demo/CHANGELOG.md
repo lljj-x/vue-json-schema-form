@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/lljj-x/vue-json-schema-form/compare/v0.2.0...v0.2.1) (2020-11-25)
+
+
+### Bug Fixes
+
+* **schema generator:** 修复schema生成器预览不支持% ([ff0d2da](https://github.com/lljj-x/vue-json-schema-form/commit/ff0d2da9b1944056185803898d3a2c66194cc508))
+* **schema generator:** 多选类型强制 uniqueItems ([cd3349e](https://github.com/lljj-x/vue-json-schema-form/commit/cd3349ed960bdf2908ffd76ffce86cf99914b222))
+
+
+
+
+
 # [0.2.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.1.3...v0.2.0) (2020-11-24)
 
 
