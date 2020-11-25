@@ -280,7 +280,7 @@
             },
             handleCancel() {},
             handlePreview() {
-                const formatStr = jsonCode => encodeURIComponent(JSON.stringify(JSON.parse(jsonCode)));
+                const formatStr = jsonCode => JSON.stringify(JSON.parse(jsonCode));
 
                 const genRoute = this.$router.resolve({
                     query: {

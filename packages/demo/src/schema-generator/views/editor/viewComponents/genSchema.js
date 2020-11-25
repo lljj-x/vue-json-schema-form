@@ -45,7 +45,8 @@ function genBaseVal(type = 'string') {
                         },
                         uniqueItems: {
                             type: 'boolean',
-                            title: '不允许重复项',
+                            title: '不重复',
+                            description: '多选框强制默认为 true，且配置无效',
                             'ui:widget': 'el-switch',
                             default: false
                         }

@@ -207,7 +207,7 @@
             },
             handlePreview() {
                 const props = this.getExportCode();
-                componentWithDialog({
+                const instance = componentWithDialog({
                     VueComponent: VueJsonFrom,
                     dialogProps: {
                         title: '预览展示',
@@ -216,6 +216,18 @@
                     componentProps: {
                         value: {},
                         ...props
+                    },
+                    componentListeners: {
+                        toDemo: () => {
+                            this.handleToDemo();
+                        },
+                        'on-cancel': () => {
+                            instance.close();
+                        },
+                        'on-submit': (data) => {
+                            // eslint-disable-next-line no-alert
+                            alert(JSON.stringify(data, null, 2));
+                        }
                     }
                 });
             },

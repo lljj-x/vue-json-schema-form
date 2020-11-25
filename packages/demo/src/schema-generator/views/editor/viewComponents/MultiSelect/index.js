@@ -39,6 +39,11 @@ export default {
                 schemaOptions: {
                     type: 'object',
                     properties: {
+                        uniqueItems: {
+                            type: 'boolean',
+                            'ui:widget': 'hidden',
+                            default: true
+                        },
                         items: {
                             type: 'object',
                             properties: {
