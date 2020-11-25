@@ -9743,6 +9743,142 @@ var TimePickerWidget = {
   }
 };
 
+/**
+ * Created by Liu.Jun on 2020/11/26 10:01 下午.
+ */
+// mock
+// https://run.mocky.io/v3/518d7af7-204f-45ab-9628-a6e121dab8ca
+var UploadWidget = {
+  name: 'UploadWidget',
+  props: {
+    value: {
+      default: null,
+      type: [String, Array]
+    },
+    responseFileUrl: {
+      default: function _default(res) {
+        return res ? res.url || res.data && res.data.url : '';
+      },
+      type: [Function]
+    },
+    btnText: {
+      type: String,
+      default: '点击上传'
+    },
+    // 传入 VNode
+    slots: {
+      type: null,
+      default: null
+    }
+  },
+  data: function data() {
+    // 设置默认 fileList
+    var value = this.value;
+    var isArrayValue = Array.isArray(value);
+    var fileList = this.$attrs.fileList || [];
+
+    if (isArrayValue) {
+      fileList = value.map(function (item, index) {
+        return {
+          name: "\u5DF2\u4E0A\u4F20\u6587\u4EF6\uFF08".concat(index + 1, "\uFF09"),
+          url: item
+        };
+      });
+    } else if (value) {
+      fileList.push({
+        name: '已上传文件',
+        url: value
+      });
+    }
+
+    return {
+      isArrayValue: isArrayValue,
+      fileList: fileList
+    };
+  },
+  methods: {
+    emitValue: function emitValue(fileList) {
+      var _this = this;
+
+      // v-model
+      var value;
+
+      var geUrl = function geUrl(fileItem) {
+        return fileItem && (fileItem.url || _this.responseFileUrl(fileItem.response)) || '';
+      };
+
+      if (this.isArrayValue) {
+        value = fileList.length ? fileList.reduce(function (pre, item) {
+          var url = geUrl(item);
+          if (url) pre.push(url);
+          return pre;
+        }, []) : [];
+      } else {
+        var fileItem = fileList[fileList.length - 1];
+        value = geUrl(fileItem);
+      }
+
+      this.$emit('input', value);
+    }
+  },
+  render: function render() {
+    var _this2 = this;
+
+    var h = this.$createElement;
+    var attrs = this.$attrs;
+    var slots = this.$props.slots;
+    var data = {
+      attrs: _objectSpread2(_objectSpread2({
+        fileList: this.fileList,
+        'on-exceed': function onExceed() {
+          if (_this2.$message) {
+            _this2.$message.warning('超出文件上传数');
+          }
+        }
+      }, attrs), {}, {
+        'on-remove': function onRemove(file, fileList) {
+          _this2.emitValue(fileList);
+
+          if (attrs['on-remove']) {
+            attrs['on-remove'](file, fileList);
+          }
+        },
+        'on-success': function onSuccess(response, file, fileList) {
+          _this2.emitValue(fileList); // 用户注册的 onSuccess
+
+
+          if (attrs['on-success']) {
+            attrs['on-success'](response, file, fileList);
+          }
+        }
+      })
+    };
+    if (!this.isArrayValue) data.attrs.limit = 1;
+    var childVNode = [];
+
+    if (slots && slots.default) {
+      childVNode.push(h('template', {
+        slot: 'default'
+      }, [slots.default]));
+    } else {
+      childVNode.push(h('el-button', {
+        props: {
+          type: 'primary'
+        }
+      }, [this.btnText]));
+    }
+
+    if (slots && slots.tip) {
+      childVNode.push(h('template', {
+        slot: 'tip'
+      }, [slots.tip]));
+    }
+
+    window.childVNode = childVNode;
+    return h('el-upload', data, childVNode);
+  }
+};
+
 // const files = require.context('.', true, /\.js|vue$/);
 // const widgetComponents = files.keys().reduce((preVal, curKey) => {
 //     if (curKey !== './index.js') {
@@ -9757,7 +9893,8 @@ var widgetComponents = {
   SelectWidget: __vue_component__$3,
   TimePickerWidget: TimePickerWidget,
   DatePickerWidget: DatePickerWidget,
-  DateTimePickerWidget: DateTimePickerWidget
+  DateTimePickerWidget: DateTimePickerWidget,
+  UploadWidget: UploadWidget
 }; // 注册组件
 
 Object.entries(widgetComponents).forEach(function (_ref) {
@@ -10549,8 +10686,8 @@ var ArrayFieldTuple = {
   }
 };
 
-var ArrayFieldDateRange = {
-  name: 'ArrayFieldDateRange',
+var ArrayFieldSpecialFormat = {
+  name: 'ArrayFieldSpecialFormat',
   props: vueProps,
   functional: true,
   render: function render(h, context) {
@@ -10560,10 +10697,10 @@ var ArrayFieldDateRange = {
         curNodePath = _context$props.curNodePath,
         rootFormData = _context$props.rootFormData;
     var widgetConfig = getWidgetConfig({
-      schema: schema,
-      uiSchema: _objectSpread2({
+      schema: _objectSpread2({
         'ui:widget': WIDGET_MAP.formats[schema.format]
-      }, uiSchema),
+      }, schema),
+      uiSchema: uiSchema,
       curNodePath: curNodePath,
       rootFormData: rootFormData
     });
@@ -10725,13 +10862,14 @@ var ArrayField = {
 
     if (!schema.hasOwnProperty('items')) {
       throw new Error("[".concat(schema, "] \u8BF7\u5148\u5B9A\u4E49 items\u5C5E\u6027"));
-    } // 特殊处理date datetime format
+    } // 特殊处理 date datetime time url-upload
+    // array  支持配置 ui:widget
 
 
-    if (schema.format) {
-      return h(ArrayFieldDateRange, {
+    if (schema.format || schema['ui:widget'] || uiSchema['ui:widget']) {
+      return h(ArrayFieldSpecialFormat, {
         props: this.$props,
-        class: _defineProperty({}, lowerCase(ArrayFieldDateRange.name), true)
+        class: _defineProperty({}, lowerCase(ArrayFieldSpecialFormat.name), true)
       });
     } // https://json-schema.org/understanding-json-schema/reference/array.html#list-validation
 

@@ -179,7 +179,9 @@ uiSchema = {
 :::
 
 ## 自定义Widget
-自定义Widget通过配置 `ui-schema` `ui:widget`字段
+自定义Widget通过配置 `ui:widget` 字段，不支持直接配置在 `type: object` 中
+
+> `0.3` 以上版本支持在 `type: array` 中直接配置 `ui:widget`，如：[配置多文件上传](https://form.lljj.me/#/demo?type=Upload)
 
 * 类型：`String` | `Object` | `Function`  (参见 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0) 第一个参数)
 * 使用场景：需要自定义输入组件，比如结合业务的`图片上传` `商品选择` 等等

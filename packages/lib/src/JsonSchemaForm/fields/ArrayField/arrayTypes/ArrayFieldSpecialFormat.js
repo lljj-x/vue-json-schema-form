@@ -8,7 +8,7 @@ import { getWidgetConfig } from '../../../common/formUtils';
 import WIDGET_MAP from '../../../config/WIDGET_MAP';
 
 export default {
-    name: 'ArrayFieldDateRange',
+    name: 'ArrayFieldSpecialFormat',
     props: vueProps,
     functional: true,
     render(h, context) {
@@ -16,11 +16,11 @@ export default {
             schema, uiSchema, curNodePath, rootFormData
         } = context.props;
         const widgetConfig = getWidgetConfig({
-            schema,
-            uiSchema: {
+            schema: {
                 'ui:widget': WIDGET_MAP.formats[schema.format],
-                ...uiSchema,
+                ...schema
             },
+            uiSchema,
             curNodePath,
             rootFormData
         });

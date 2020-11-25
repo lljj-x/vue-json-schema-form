@@ -10,7 +10,7 @@ import SelectWidget from './SelectWidget';
 import DatePickerWidget from './DatePickerWidget';
 import DateTimePickerWidget from './DateTimePickerWidget';
 import TimePickerWidget from './TimePickerWidget';
-
+import UploadWidget from './UploadWidget';
 
 // webpack -> rollup
 // const files = require.context('.', true, /\.js|vue$/);
@@ -28,7 +28,8 @@ const widgetComponents = {
     SelectWidget,
     TimePickerWidget,
     DatePickerWidget,
-    DateTimePickerWidget
+    DateTimePickerWidget,
+    UploadWidget
 };
 
 // 注册组件

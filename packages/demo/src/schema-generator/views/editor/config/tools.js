@@ -10,6 +10,8 @@ import componentPackSelectBoolean from '../viewComponents/SelectBoolean';
 import componentPackRadio from '../viewComponents/Radio';
 import componentPackMultiSelect from '../viewComponents/MultiSelect';
 
+import componentPackUpload from '../viewComponents/Upload';
+import componentPackMultiUpload from '../viewComponents/MultiUpload';
 
 import componentPackTime from '../viewComponents/Time';
 import componentPackDate from '../viewComponents/Date';
@@ -52,6 +54,16 @@ const tools = [
         }, {
             title: '颜色选择',
             componentPack: componentPackColor
+        }]
+    },
+    {
+        groupName: '文件上传',
+        componentList: [{
+            title: '单文件',
+            componentPack: componentPackUpload
+        }, {
+            title: '多个文件',
+            componentPack: componentPackMultiUpload
         }]
     },
     {

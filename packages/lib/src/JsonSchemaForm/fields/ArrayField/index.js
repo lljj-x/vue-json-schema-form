@@ -19,7 +19,7 @@ import * as arrayMethods from '../../common/arrayUtils';
 import ArrayFieldNormal from './arrayTypes/ArrayFieldNormal';
 import ArrayFieldMultiSelect from './arrayTypes/ArrayFieldMultiSelect';
 import ArrayFieldTuple from './arrayTypes/ArrayFieldTuple';
-import ArrayFieldDateRange from './arrayTypes/ArrayFieldDateRange';
+import ArrayFieldSpecialFormat from './arrayTypes/ArrayFieldSpecialFormat';
 
 export default {
     name: 'ArrayField',
@@ -156,12 +156,13 @@ export default {
             throw new Error(`[${schema}] 请先定义 items属性`);
         }
 
-        // 特殊处理date datetime format
-        if (schema.format) {
-            return h(ArrayFieldDateRange, {
+        // 特殊处理 date datetime time url-upload
+        // array  支持配置 ui:widget
+        if (schema.format || schema['ui:widget'] || uiSchema['ui:widget']) {
+            return h(ArrayFieldSpecialFormat, {
                 props: this.$props,
                 class: {
-                    [lowerCase(ArrayFieldDateRange.name)]: true
+                    [lowerCase(ArrayFieldSpecialFormat.name)]: true
                 }
             });
         }
