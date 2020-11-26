@@ -953,7 +953,7 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@lljj/eslint-config@^0.0.1":
+"@lljj/eslint-config@0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@lljj/eslint-config/-/eslint-config-0.0.1.tgz#2fde51d09bfaca3bc4c61aec541dbd6953940e9d"
   integrity sha512-6SK8Puxw61vBhu0BAOFnOu8dwtCVmaIKLYkCFJ6u9Kx1aM0P3gOJVkJb5lukbB5lSTEKKqJsGF3Mf7oukf2cHA==
@@ -972,13 +972,12 @@
     core-js "^2.6.0"
     regenerator-runtime "^0.11.1"
 
-"@lljj/vue-json-schema-form@0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@lljj/vue-json-schema-form/-/vue-json-schema-form-0.0.14.tgz#cc92fc65975c14e6feb584c48204647b0fb831c2"
-  integrity sha512-GffBWWQBuE1x081YOZfh4PyF90ViH4ghTendhxjWaWpyyGuza8rEMkCvAuqXjl2xb/2PSRaQoliBmIkuxC7GKQ==
+"@lljj/vue-json-schema-form@0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@lljj/vue-json-schema-form/-/vue-json-schema-form-0.2.2.tgz#1d307d9938d8eb047e969279413a3ff55b763cfe"
+  integrity sha512-HbCIz8gAMF3Ih+O91KjTL5hUUe2bbDsF+R4E3PKfcTjNbCm768sCrtyk5NS6aPBNkkjvgVFkDyMmVWzSy3HbiQ==
   dependencies:
     ajv "^6.10.2"
-    vue "^2.6.10"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -4393,9 +4392,9 @@ hex-color-regex@^1.1.0:
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
 highlight.js@^9.6.0:
-  version "9.18.1"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.1.tgz#ed21aa001fe6252bb10a3d76d47573c6539fe13c"
-  integrity sha512-OrVKYz70LHsnCgmbXctv/bfuvntIKDz177h0Co37DQ5jamGZLVmoCVMtjMtNZY3X9DrCcKfklHPNeA0uPZhSJg==
+  version "9.18.5"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.5.tgz#d18a359867f378c138d6819edfc2a8acd5f29825"
+  integrity sha512-a5bFyofd/BHCX52/8i8uJkjr9DYwXIPnM/plwI6W7ezItLGqzt7X2G2nXuYSfsIJdkwwj/g9DG1LkcGJI/dDoA==
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
