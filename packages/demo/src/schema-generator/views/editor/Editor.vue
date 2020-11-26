@@ -164,16 +164,11 @@
         },
         created() {
             this.$on('onSetCurEditorItem', ({ editorItem }) => {
-                if (editorItem) {
-                    this.setComponentActive();
-                }
+                this.activeName = editorItem ? 'compConfig' : 'formConfig';
                 this.curEditorItem = editorItem;
             });
         },
         methods: {
-            setComponentActive() {
-                this.activeName = 'compConfig';
-            },
             getExportCode() {
                 const { formFooter, formProps } = this;
                 const defaultConfig = {

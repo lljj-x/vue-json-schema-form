@@ -127,19 +127,21 @@
     :global {
         .ghostItem {
             opacity: 0.6;
+            background-color: color(var(--color-primary) a(0.4)) !important;
+            box-shadow: 0 0 1px 0 var(--color-primary);
             &.draggableToolItem {
                 margin-top: 0;
                 width: 100%;
                 max-width: 100%;
                 margin-bottom: 10px;
                 height: 130px;
-                background-color: color(var(--color-primary) a(0.4)) !important;
-                box-shadow: 0 0 1px 0 var(--color-primary);
+                line-height: 130px;
             }
         }
         .el-form--label-left,.el-form--label-right {
             .draggableToolItem {
                 height: 100px;
+                line-height: 100px;
             }
         }
 
@@ -171,18 +173,12 @@
         .layoutColumn {
             .w100 {
                 width: 100% !important;
-                flex-basis: 100% !important;;
             }
             :local {
                 .formItemWrap {
                     width: 100%;
                     box-sizing: border-box;
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    align-items: center;
-                    justify-content: flex-start;
-                    align-content: flex-start;
+                    font-size: 0;
                     :global {
                         .el-form-item {
                             width: 100% !important;
@@ -191,34 +187,37 @@
                     }
                 }
             }
+            :local .formItem {
+                display: inline-block;
+                vertical-align: top;
+            }
+            .draggableToolItem {
+                display: inline-block;
+                vertical-align: top;
+                border: none;
+            }
             &.layoutColumn-1 {
                 :local .formItem{
                     width: 100%;
-                    flex-basis: 100%;
                 }
                 .draggableToolItem{
                     width: 100%;
-                    flex-basis: 100%;
                 }
             }
             &.layoutColumn-2 {
                 :local .formItem{
                     width: 50%;
-                    flex-basis: 50%;
                 }
                 .draggableToolItem{
                     width: 49.6%;
-                    flex-basis: 49.6%;
                 }
             }
             &.layoutColumn-3 {
                 :local .formItem {
                     width: 33.333%;
-                    flex-basis: 33.333%;
                 }
                 .draggableToolItem{
                     width: 33%;
-                    flex-basis: 33%;
                 }
             }
         }
