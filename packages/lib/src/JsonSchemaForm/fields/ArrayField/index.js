@@ -156,8 +156,20 @@ export default {
             throw new Error(`[${schema}] 请先定义 items属性`);
         }
 
+        // 多选类型
+        if (isMultiSelect(schema, rootSchema)) {
+            // item 为枚举固定值
+            return h(ArrayFieldMultiSelect, {
+                props: this.$props,
+                class: {
+                    [lowerCase(ArrayFieldMultiSelect.name)]: true
+                }
+            });
+        }
+
         // 特殊处理 date datetime time url-upload
-        // array  支持配置 ui:widget
+        // array 支持配置 ui:widget
+        // 时间日期区间 或者 ui:widget 特殊配置
         if (schema.format || schema['ui:widget'] || uiSchema['ui:widget']) {
             return h(ArrayFieldSpecialFormat, {
                 props: this.$props,
@@ -168,22 +180,8 @@ export default {
         }
 
         // https://json-schema.org/understanding-json-schema/reference/array.html#list-validation
-        let CurrentField = ArrayFieldNormal;
-
-        if (isFixedItems(schema)) {
-            // https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation
-            CurrentField = ArrayFieldTuple;
-
-        } else if (isMultiSelect(schema, rootSchema)) {
-            // item 为枚举固定值
-            CurrentField = ArrayFieldMultiSelect;
-            return h(ArrayFieldMultiSelect, {
-                props: this.$props,
-                class: {
-                    [lowerCase(ArrayFieldMultiSelect.name)]: true
-                }
-            });
-        }
+        // https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation
+        const CurrentField = isFixedItems(schema) ? ArrayFieldTuple : ArrayFieldNormal;
 
         return h('div', [
             h(CurrentField, {
