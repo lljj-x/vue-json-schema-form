@@ -8246,7 +8246,8 @@ function validateFormDataAndTransformMsg() {
       isOnlyFirstError = _ref2$isOnlyFirstErro === void 0 ? true : _ref2$isOnlyFirstErro;
   // 如果数组类型针对配置了 format 的特殊处理
 
-  var isEmpty = formData === undefined || schema.type === 'array' && schema.format && Array.isArray(formData) && formData.length === 0;
+  var emptyArray = schema.type === 'array' && Array.isArray(formData) && formData.length === 0;
+  var isEmpty = formData === undefined || emptyArray;
 
   if (required) {
     if (isEmpty) {
@@ -8272,7 +8273,7 @@ function validateFormDataAndTransformMsg() {
 
       return [requireErrObj];
     }
-  } else if (isEmpty) {
+  } else if (isEmpty && !emptyArray) {
     // 非required 为空 校验通过
     return [];
   } // 校验ajv错误信息
@@ -9414,15 +9415,20 @@ var __vue_render__$1 = function() {
   var _c = _vm._self._c || _h;
   return _c(
     "el-checkbox-group",
-    {
-      model: {
-        value: _vm.checkList,
-        callback: function($$v) {
-          _vm.checkList = $$v;
-        },
-        expression: "checkList"
-      }
-    },
+    _vm._b(
+      {
+        model: {
+          value: _vm.checkList,
+          callback: function($$v) {
+            _vm.checkList = $$v;
+          },
+          expression: "checkList"
+        }
+      },
+      "el-checkbox-group",
+      _vm.$attrs,
+      false
+    ),
     _vm._l(_vm.enumOptions, function(item, index) {
       return _c("el-checkbox", { key: index, attrs: { label: item.value } }, [
         _vm._v(_vm._s(item.label))
@@ -9874,7 +9880,6 @@ var UploadWidget = {
       }, [slots.tip]));
     }
 
-    window.childVNode = childVNode;
     return h('el-upload', data, childVNode);
   }
 };
@@ -10862,8 +10867,18 @@ var ArrayField = {
 
     if (!schema.hasOwnProperty('items')) {
       throw new Error("[".concat(schema, "] \u8BF7\u5148\u5B9A\u4E49 items\u5C5E\u6027"));
+    } // 多选类型
+
+
+    if (isMultiSelect(schema, rootSchema)) {
+      // item 为枚举固定值
+      return h(ArrayFieldMultiSelect, {
+        props: this.$props,
+        class: _defineProperty({}, lowerCase(ArrayFieldMultiSelect.name), true)
+      });
     } // 特殊处理 date datetime time url-upload
-    // array  支持配置 ui:widget
+    // array 支持配置 ui:widget
+    // 时间日期区间 或者 ui:widget 特殊配置
 
 
     if (schema.format || schema['ui:widget'] || uiSchema['ui:widget']) {
@@ -10872,22 +10887,10 @@ var ArrayField = {
         class: _defineProperty({}, lowerCase(ArrayFieldSpecialFormat.name), true)
       });
     } // https://json-schema.org/understanding-json-schema/reference/array.html#list-validation
+    // https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation
 
 
-    var CurrentField = ArrayFieldNormal;
-
-    if (isFixedItems(schema)) {
-      // https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation
-      CurrentField = ArrayFieldTuple;
-    } else if (isMultiSelect(schema, rootSchema)) {
-      // item 为枚举固定值
-      CurrentField = ArrayFieldMultiSelect;
-      return h(ArrayFieldMultiSelect, {
-        props: this.$props,
-        class: _defineProperty({}, lowerCase(ArrayFieldMultiSelect.name), true)
-      });
-    }
-
+    var CurrentField = isFixedItems(schema) ? ArrayFieldTuple : ArrayFieldNormal;
     return h('div', [h(CurrentField, {
       props: _objectSpread2({
         itemsFormData: this.itemsFormData
@@ -10946,8 +10949,8 @@ var SelectLinkageField = {
 
       return this.curSelectIndex || 0;
     },
-    // 下拉选项 Vnode
-    getSelectBoxVnode: function getSelectBoxVnode() {
+    // 下拉选项 VNode
+    getSelectBoxVNode: function getSelectBoxVNode() {
       var _this = this;
 
       // 下拉选项参数
@@ -10985,7 +10988,7 @@ var SelectLinkageField = {
           };
         });
       } // oneOf option 渲染
-      // 选择框 vnode
+      // 选择框 VNode
 
 
       return this.$createElement(Widget, {
@@ -11008,16 +11011,19 @@ var SelectLinkageField = {
     // 如果object 类型 option有添加属性 这里做移除
     // 对新option计算默认值
     curSelectIndex: function curSelectIndex(newVal, oldVal) {
-      var curFormData = getPathVal(this.rootFormData, this.curNodePath); // 移除旧key
+      var curFormData = getPathVal(this.rootFormData, this.curNodePath); // 计算出 新选项默认值
+
+      var newOptionData = getDefaultFormState(this.selectList[newVal], undefined, this.rootSchema);
+      var hasOwn = Object.prototype.hasOwnProperty; // 移除旧key
 
       if (isObject(curFormData)) {
         var oldSelectSchema = retrieveSchema(this.selectList[oldVal], this.rootSchema);
 
-        if (oldSelectSchema.type === 'object' || oldSelectSchema.properties) {
+        if (getSchemaType(oldSelectSchema) === 'object') {
           // 移除旧schema添加的属性
           // Object.keys(oldSelectSchema.properties)
           for (var key in oldSelectSchema.properties) {
-            if (Object.prototype.hasOwnProperty.call(oldSelectSchema.properties, key)) {
+            if (hasOwn.call(oldSelectSchema.properties, key) && !hasOwn.call(newOptionData, key)) {
               deletePathVal(curFormData, key); // delete curFormData[key];
             }
           }
@@ -11025,18 +11031,18 @@ var SelectLinkageField = {
       } // 设置新值
 
 
-      var newOptionValue = getDefaultFormState(this.selectList[newVal], undefined, this.rootSchema);
-
-      if (guessType(newOptionValue) === 'object') {
-        Object.entries(newOptionValue).forEach(function (_ref) {
+      if (isObject(newOptionData)) {
+        Object.entries(newOptionData).forEach(function (_ref) {
           var _ref2 = _slicedToArray(_ref, 2),
               key = _ref2[0],
               value = _ref2[1];
 
-          setPathVal(curFormData, key, value);
+          if (value !== undefined) {
+            setPathVal(curFormData, key, value);
+          }
         });
       } else {
-        setPathVal(this.rootFormData, this.curNodePath, newOptionValue || curFormData);
+        setPathVal(this.rootFormData, this.curNodePath, newOptionData || curFormData);
       }
     }
   },
@@ -11047,7 +11053,7 @@ var SelectLinkageField = {
     var curNodePath = this.$props.curNodePath;
     var pathClassName = nodePath2ClassName(curNodePath); // object 需要保持原有属性，如果存在原有属性这里单独渲染
 
-    var originVnode = null;
+    var originVNode = null;
     var isTypeObject = this.schema.type === 'object' || this.schema.properties;
 
     if (isTypeObject && !isEmptyObject(this.schema.properties)) {
@@ -11055,7 +11061,7 @@ var SelectLinkageField = {
 
       var origSchema = Object.assign({}, this.schema);
       delete origSchema[this.combiningType];
-      originVnode = h(SchemaField, {
+      originVNode = h(SchemaField, {
         key: "origin_".concat(this.combiningType),
         class: (_class2 = {}, _defineProperty(_class2, "".concat(this.combiningType, "_originBox"), true), _defineProperty(_class2, "".concat(pathClassName, "-originBox"), true), _class2),
         props: _objectSpread2(_objectSpread2({}, this.$props), {}, {
@@ -11066,7 +11072,7 @@ var SelectLinkageField = {
     } // 选择附加的节点
 
 
-    var childrenVnodeList = [this.getSelectBoxVnode()]; // 当前选中的 oneOf 附加的节点
+    var childrenVNodeList = [this.getSelectBoxVNode()]; // 当前选中的 oneOf 附加的节点
 
     var curSelectSchema = this.selectList[this.curSelectIndex];
 
@@ -11099,7 +11105,7 @@ var SelectLinkageField = {
       }), function (key) {
         return key === _this2.combiningType ? undefined : "err:".concat(key);
       });
-      childrenVnodeList.push(h(SchemaField, {
+      childrenVNodeList.push(h(SchemaField, {
         key: "appendSchema_".concat(this.combiningType),
         props: _objectSpread2(_objectSpread2({}, this.$props), {}, {
           schema: _objectSpread2({
@@ -11113,10 +11119,10 @@ var SelectLinkageField = {
 
         })
       }));
-    } // oneOf 校验 vnode
+    } // oneOf 校验 VNode
 
 
-    childrenVnodeList.push(h(Widget, {
+    childrenVNodeList.push(h(Widget, {
       class: _defineProperty({
         validateWidget: true
       }, "validateWidget-".concat(this.combiningType), true),
@@ -11128,12 +11134,12 @@ var SelectLinkageField = {
         rootFormData: this.rootFormData
       }
     }));
-    return h('div', [originVnode, h('div', {
+    return h('div', [originVNode, h('div', {
       key: "appendBox_".concat(this.combiningType),
       class: (_class4 = {
         appendCombining_box: true
       }, _defineProperty(_class4, "".concat(this.combiningType, "_appendBox"), true), _defineProperty(_class4, "".concat(pathClassName, "-appendBox"), true), _class4)
-    }, childrenVnodeList)]);
+    }, childrenVNodeList)]);
   }
 };
 
