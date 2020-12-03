@@ -164,7 +164,8 @@ export function validateFormDataAndTransformMsg({
 
     // 校验required信息 isEmpty 校验
     // 如果数组类型针对配置了 format 的特殊处理
-    const isEmpty = formData === undefined || (schema.type === 'array' && Array.isArray(formData) && formData.length === 0);
+    const emptyArray = (schema.type === 'array' && Array.isArray(formData) && formData.length === 0);
+    const isEmpty = formData === undefined || emptyArray;
 
     if (required) {
         if (isEmpty) {
@@ -189,7 +190,7 @@ export function validateFormDataAndTransformMsg({
             }
             return [requireErrObj];
         }
-    } else if (isEmpty) {
+    } else if (isEmpty && !emptyArray) {
         // 非required 为空 校验通过
         return [];
     }

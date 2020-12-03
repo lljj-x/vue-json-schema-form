@@ -144,7 +144,7 @@ export default {
             // 设置新值
             if (isObject(newOptionData)) {
                 Object.entries(newOptionData).forEach(([key, value]) => {
-                    if (value !== undefined && curFormData[key] === undefined) {
+                    if (value !== undefined) {
                         setPathVal(curFormData, key, value);
                     }
                 });
