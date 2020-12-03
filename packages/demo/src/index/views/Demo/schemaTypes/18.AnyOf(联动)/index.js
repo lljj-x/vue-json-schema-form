@@ -97,6 +97,10 @@ export default {
                 'ui:showTitle': true,
                 title: 'Second method of identification',
                 properties: {
+                    firstName: {
+                        type: 'string',
+                        title: 'First name'
+                    },
                     idCode: {
                         type: 'string',
                         title: 'ID code',

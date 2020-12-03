@@ -6,7 +6,7 @@ import {
     getPathVal, setPathVal, deletePathVal, nodePath2ClassName
 } from '../../../common/vueUtils';
 import {
-    isEmptyObject, filterObject, guessType, isObject
+    isEmptyObject, filterObject, isObject, getSchemaType
 } from '../../../common/utils';
 
 import {
@@ -49,8 +49,8 @@ export default {
             return this.curSelectIndex || 0;
         },
 
-        // 下拉选项 Vnode
-        getSelectBoxVnode() {
+        // 下拉选项 VNode
+        getSelectBoxVNode() {
             // 下拉选项参数
             const selectWidgetConfig = getWidgetConfig({
                 schema: this.schema[`${this.combiningType}Select`] || {}, // 扩展 oneOfSelect,anyOfSelect字段
@@ -86,7 +86,7 @@ export default {
             }
 
             // oneOf option 渲染
-            // 选择框 vnode
+            // 选择框 VNode
             return this.$createElement(
                 Widget,
                 {
@@ -115,17 +115,25 @@ export default {
         curSelectIndex(newVal, oldVal) {
             const curFormData = getPathVal(this.rootFormData, this.curNodePath);
 
+            // 计算出 新选项默认值
+            const newOptionData = getDefaultFormState(this.selectList[newVal], undefined, this.rootSchema);
+
+            const hasOwn = Object.prototype.hasOwnProperty;
+
             // 移除旧key
             if (isObject(curFormData)) {
                 const oldSelectSchema = retrieveSchema(
                     this.selectList[oldVal],
                     this.rootSchema
                 );
-                if (oldSelectSchema.type === 'object' || oldSelectSchema.properties) {
+                if (getSchemaType(oldSelectSchema) === 'object') {
                     // 移除旧schema添加的属性
                     // Object.keys(oldSelectSchema.properties)
                     for (const key in oldSelectSchema.properties) {
-                        if (Object.prototype.hasOwnProperty.call(oldSelectSchema.properties, key)) {
+                        if (
+                            hasOwn.call(oldSelectSchema.properties, key)
+                            && !hasOwn.call(newOptionData, key)
+                        ) {
                             deletePathVal(curFormData, key);
                             // delete curFormData[key];
                         }
@@ -134,13 +142,14 @@ export default {
             }
 
             // 设置新值
-            const newOptionValue = getDefaultFormState(this.selectList[newVal], undefined, this.rootSchema);
-            if (guessType(newOptionValue) === 'object') {
-                Object.entries(newOptionValue).forEach(([key, value]) => {
-                    setPathVal(curFormData, key, value);
+            if (isObject(newOptionData)) {
+                Object.entries(newOptionData).forEach(([key, value]) => {
+                    if (value !== undefined && curFormData[key] === undefined) {
+                        setPathVal(curFormData, key, value);
+                    }
                 });
             } else {
-                setPathVal(this.rootFormData, this.curNodePath, newOptionValue || curFormData);
+                setPathVal(this.rootFormData, this.curNodePath, newOptionData || curFormData);
             }
         }
     },
@@ -149,13 +158,13 @@ export default {
         const pathClassName = nodePath2ClassName(curNodePath);
 
         // object 需要保持原有属性，如果存在原有属性这里单独渲染
-        let originVnode = null;
+        let originVNode = null;
         const isTypeObject = (this.schema.type === 'object' || this.schema.properties);
         if (isTypeObject && !isEmptyObject(this.schema.properties)) {
             const origSchema = Object.assign({}, this.schema);
             delete origSchema[this.combiningType];
 
-            originVnode = h(SchemaField, {
+            originVNode = h(SchemaField, {
                 key: `origin_${this.combiningType}`,
                 class: {
                     [`${this.combiningType}_originBox`]: true,
@@ -170,7 +179,7 @@ export default {
         }
 
         // 选择附加的节点
-        const childrenVnodeList = [this.getSelectBoxVnode()];
+        const childrenVNodeList = [this.getSelectBoxVNode()];
 
         // 当前选中的 oneOf 附加的节点
         let curSelectSchema = this.selectList[this.curSelectIndex];
@@ -204,7 +213,7 @@ export default {
                 errorSchema: this.errorSchema
             }), key => (key === this.combiningType ? undefined : `err:${key}`));
 
-            childrenVnodeList.push(
+            childrenVNodeList.push(
                 h(
                     SchemaField,
                     {
@@ -232,8 +241,8 @@ export default {
             );
         }
 
-        // oneOf 校验 vnode
-        childrenVnodeList.push(
+        // oneOf 校验 VNode
+        childrenVNodeList.push(
             h(Widget, {
                 class: {
                     validateWidget: true,
@@ -250,7 +259,7 @@ export default {
         );
 
         return h('div', [
-            originVnode,
+            originVNode,
             h('div', {
                 key: `appendBox_${this.combiningType}`,
                 class: {
@@ -258,7 +267,7 @@ export default {
                     [`${this.combiningType}_appendBox`]: true,
                     [`${pathClassName}-appendBox`]: true
                 }
-            }, childrenVnodeList)
+            }, childrenVNodeList)
         ]);
     }
 };
