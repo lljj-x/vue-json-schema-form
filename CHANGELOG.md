@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.2.2...v0.3.0) (2020-12-03)
+
+
+### Bug Fixes
+
+* **lib:** 修复array widget 覆盖多选类型问题 ([d7453b3](https://github.com/lljj-x/vue-json-schema-form/commit/d7453b33abea5f903a3cbee073172a28c3cf02ac))
+* **lib:** 修复array 多选类型不配置required ，导致array minItems 等后续不校验问题 ([683380e](https://github.com/lljj-x/vue-json-schema-form/commit/683380eb824a4e4dc281eda98f19deb64b0c3fa7))
+
+
+### Features
+
+* 优化 anyOf 切换 ([2c2388d](https://github.com/lljj-x/vue-json-schema-form/commit/2c2388d0b46e068ec24c9e64e7ec2154e3237a59))
+
+
+
+
+
 ## [0.2.2](https://github.com/lljj-x/vue-json-schema-form/compare/v0.2.1...v0.2.2) (2020-11-25)
 
 **Note:** Version bump only for package vue-json-schema-form
