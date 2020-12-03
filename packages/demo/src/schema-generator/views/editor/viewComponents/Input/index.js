@@ -72,16 +72,6 @@ export default {
                             type: 'number'
                         }
                     }
-                },
-                uiOptions: {
-                    type: 'object',
-                    properties: {
-                        required: {
-                            title: '必填',
-                            type: 'boolean',
-                            default: false
-                        }
-                    }
                 }
             }
         }

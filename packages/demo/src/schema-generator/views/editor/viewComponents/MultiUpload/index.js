@@ -37,23 +37,6 @@ export default {
                     }
                 }
             }
-        },
-        rules: {
-            type: 'object',
-            title: '数据校验',
-            required: [],
-            properties: {
-                uiOptions: {
-                    type: 'object',
-                    properties: {
-                        required: {
-                            title: '必填',
-                            type: 'boolean',
-                            default: false
-                        }
-                    }
-                }
-            }
         }
     })
 };

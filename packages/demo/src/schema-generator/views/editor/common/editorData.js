@@ -83,7 +83,10 @@ export function editorItem2SchemaFieldProps(editorItem, formData) {
     // baseValue
     const {
         schemaOptions: baseSchemaOptions,
-        uiOptions: baseUiOptions
+        uiOptions: {
+            required,
+            ...baseUiOptions
+        } = {}
     } = editorItem.componentValue.baseValue;
 
     // options
@@ -95,10 +98,7 @@ export function editorItem2SchemaFieldProps(editorItem, formData) {
     // rules
     const {
         schemaOptions: ruleSchemaOptions,
-        uiOptions: {
-            required = false,
-            ruleUiOptions
-        } = {}
+        uiOptions: ruleUiOptions,
     } = editorItem.componentValue.rules || {};
 
     // schema

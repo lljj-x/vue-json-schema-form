@@ -59,5 +59,5 @@ export default {
                 }
             }
         }
-    }, 'array')
+    }, 'array', true)
 };

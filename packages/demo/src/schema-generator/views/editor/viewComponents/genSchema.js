@@ -4,7 +4,7 @@
 
 import { formatFormLabelWidth } from '../common/editorData';
 
-function genBaseVal(type = 'string') {
+function genBaseVal(type = 'string', isMultiSelect = false) {
     return {
         title: '基础配置',
         type: 'object',
@@ -56,7 +56,7 @@ function genBaseVal(type = 'string') {
             uiOptions: {
                 type: 'object',
                 properties: {
-                    ...!['array', 'object'].includes(type) ? {
+                    ...!['array', 'object'].includes(type) || isMultiSelect ? {
                         width: {
                             title: '宽度',
                             type: 'string',
@@ -72,6 +72,11 @@ function genBaseVal(type = 'string') {
                                     return formatFormLabelWidth(val);
                                 }
                             }
+                        },
+                        required: {
+                            title: '必填',
+                            type: 'boolean',
+                            default: false
                         },
                         disabled: {
                             title: '禁用',
@@ -98,7 +103,7 @@ function genBaseVal(type = 'string') {
     };
 }
 
-export default (schema, type) => ({
+export default (schema, type, isMultiSelect) => ({
     type: 'object',
     required: ['property'],
     properties: {
@@ -108,7 +113,7 @@ export default (schema, type) => ({
             'ui:placeholder': '请输入属性名',
             'err:required': '属性名必填'
         },
-        baseValue: genBaseVal(type),
+        baseValue: genBaseVal(type, isMultiSelect),
         ...schema
     }
 });
