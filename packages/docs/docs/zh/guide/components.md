@@ -38,7 +38,7 @@
 
 > 传递其它额外的参数会透传给 `el-select` 组件
 
-## uploadWidget
+## UploadWidget
 * 文件上传组件，支持多文件上传
 * 页面体验地址：[Playground upload 组件](https://form.lljj.me/#/demo?type=Upload)
 
@@ -47,6 +47,8 @@
 * `responseFileUrl` Function ，用于处理上传文件接口返回值中提取 url 字段，接受上传接口返回值为参数
 * `btnText` 配置上传按钮文字
 * `slots` 支持传入 VNode 对象，最终传递给 upload 组件slot，用于自定义上传按钮和提示文案(使用方法参见如下DEMO)
+
+> 传递其它额外的参数会透传给 el-upload 组件
 
 `responseFileUrl` 默认值如下：
 ```js
@@ -78,7 +80,7 @@ export default {
             schema: {
                 title: '文件上传',
                 type: 'object',
-                description: '文件上传 使用 el-upload组件，只是所有的 el-upload 参数，<br/>slot 可以通过 slots参数传入数组VNode list',
+                description: '文件上传 使用 el-upload组件，支持所有的 el-upload 参数，<br/>slot 可以通过 slots参数传入数组VNode list',
                 properties: {
                     imgUrl: {
                         title: '单个图片',

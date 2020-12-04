@@ -7,15 +7,25 @@
         </EditorHeader>
 
         <div :class="[$style.container]">
-            <div :class="$style.contentWrap">
-                <div :class="$style.toolsBar">
-                    <EditorToolBar
-                        :drag-group="dragOptions.group"
-                        :config-tools="configTools"
-                        @onFilter="$message.error('该组件添加数目已达上限！')"
-                    >
-                    </EditorToolBar>
+            <div :class="{
+                [$style.contentWrap]: true,
+                [$style.closeToolbar]: closeToolbar
+            }"
+            >
+                <div :class="$style.toolBarWrap">
+                    <div :class="$style.toolsBar">
+                        <EditorToolBar
+                            :drag-group="dragOptions.group"
+                            :config-tools="configTools"
+                            @onFilter="$message.error('该组件添加数目已达上限！')"
+                        >
+                        </EditorToolBar>
+                    </div>
+                    <span :class="$style.leftCaret" @click="closeToolbar = !closeToolbar">
+                        <i class="el-icon-caret-right"></i>
+                    </span>
                 </div>
+
                 <div :class="[$style.contentBox]">
                     <el-form
                         style="height: 100%"
@@ -119,6 +129,7 @@
         },
         data() {
             return {
+                closeToolbar: false,
                 loading: false,
                 configTools,
                 rootFormData: {},
@@ -290,23 +301,53 @@
         }
     }
     /*tools*/
-    .toolsBar, .rightForm{
+    .toolBarWrap, .rightForm{
         position: absolute;
         top: 0;
         bottom: 0;
         background: var(--color-white);
-        overflow: auto;
         box-shadow: 0 0 0 1px rgba(171 171 171,0.3);
         z-index: 2;
+    }
+
+    .rightForm, .toolsBar {
+        overflow: auto;
         &::-webkit-scrollbar {
             width: 0;
             height: 0;
         }
     }
-    .toolsBar {
+
+    .toolBarWrap {
         padding-top: 10px;
-        left: 0;
         width: var(--tool-bar-width);
+        left: 0;
+        overflow: visible;
+    }
+    .toolsBar {
+        height: 100%;
+    }
+    .leftCaret {
+        cursor: pointer;
+        position: absolute;
+        display: flex;
+        width: 18px;
+        height: 38px;
+        align-items: center;
+        justify-content: center;
+        top: 2px;
+        right: 0;
+        background: #FFFFFF;
+        box-shadow: 0 0 4px 0 color(var(--color-black) a(0.2));
+        border-radius: 2px 0 0 2px;
+        :global .el-icon-caret-right {
+            transition: all .3s ease;
+            transform: rotate(180deg);
+        }
+        &:hover {
+            box-shadow: 0 0 4px 0 color(var(--color-black) a(0.4));
+            opacity: 1;
+        }
     }
     .rightForm {
         box-sizing: border-box;
@@ -339,6 +380,20 @@
         &::-webkit-scrollbar-thumb {
             border-radius: 10px;
             background-color: var(--color-text-placeholder);
+        }
+    }
+    .closeToolbar {
+        padding-left: 0;
+        .toolBarWrap {
+            left: calc(0 - var(--tool-bar-width));
+            .leftCaret {
+                right: -18px;
+            }
+            :global {
+                .el-icon-caret-right {
+                    transform: rotate(0);
+                }
+            }
         }
     }
     .contentBox {

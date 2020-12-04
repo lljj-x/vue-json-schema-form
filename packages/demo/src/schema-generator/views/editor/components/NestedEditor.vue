@@ -225,7 +225,7 @@
 
     .dragArea {
         background-color: #f5f5f5;
-        height: calc(100% - 34px);
+        height: 100%;
         padding: 15px;
         overflow: auto;
         .dragArea {

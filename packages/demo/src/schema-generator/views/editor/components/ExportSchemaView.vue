@@ -1,7 +1,7 @@
 <template>
     <div style="text-align: right;">
         <el-button @click="toCopy">复制代码</el-button>
-        <el-button type="primary" @click="$emit('toDemo')">在 Demo 页验证</el-button>
+        <el-button type="primary" @click="$emit('toDemo')">在 Playground 页验证</el-button>
         <JsonPrettyPrint :json-string="genCode"></JsonPrettyPrint>
     </div>
 </template>
