@@ -1,6 +1,6 @@
 {
     "name": "demo",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "private": true,
     "license": "Apache-2.0",
     "scripts": {
@@ -10,7 +10,7 @@
     },
     "dependencies": {
         "@lljj/polyfill": "^0.1.0",
-        "@lljj/vue-json-schema-form": "0.3.0",
+        "@lljj/vue-json-schema-form": "0.4.0",
         "ajv-i18n": "^3.5.0",
         "vue": "^2.6.10",
         "vuedraggable": "2.23.2"
@@ -23,8 +23,8 @@
         "babel-eslint": "^10.0.3",
         "copy-webpack-plugin": "^5.0.4",
         "eslint": "^5.16.0",
-        "eslint-plugin-vue": "^5.0.0",
         "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-vue": "^5.0.0",
         "markdown-it-task-lists": "^2.1.1",
         "postcss-color-mod-function": "^3.0.3",
         "postcss-cssnext": "^3.1.0",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.3.0...v0.4.0) (2020-12-05)
+
+
+### Features
+
+* **lib:** 更新eslint配置 ([6c8d9d5](https://github.com/lljj-x/vue-json-schema-form/commit/6c8d9d5ab355c895e6983ee01cfad0f610781eeb))
+
+
+
+
+
 # [0.3.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.2.2...v0.3.0) (2020-12-03)
 
 
