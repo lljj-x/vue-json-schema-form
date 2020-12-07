@@ -1,6 +1,7 @@
 <template>
     <div v-loading="loading">
         <EditorHeader default-active="4">
+            <el-button @click="handleImportSchema">导入Schema</el-button>
             <el-button plain @click="handleToDemo">Playground中验证</el-button>
             <el-button type="primary" plain @click="handlePreview">预览展示</el-button>
             <el-button type="primary" @click="handleExportSchema">导出Schema</el-button>
@@ -107,6 +108,8 @@
     import FormConfSchema from './viewComponents/FormConf';
     import EditorToolBar from './EditorToolBar.vue';
     import ExportSchemaView from './components/ExportSchemaView.vue';
+    import ImportSchemaView from './components/ImportSchemaView.vue';
+
 
     import { deepFreeze } from './common/utils';
 
@@ -116,6 +119,7 @@
 
     import NestedEditor from './components/NestedEditor';
     import { componentList2JsonSchema, formatFormLabelWidth } from './common/editorData';
+    import jsonSchema2ComponentList from './common/jsonSchema2ComponentList';
 
     deepFreeze(configTools);
 
@@ -233,6 +237,50 @@
                         'on-submit': (data) => {
                             // eslint-disable-next-line no-alert
                             alert(JSON.stringify(data, null, 2));
+                        }
+                    }
+                });
+            },
+            handleImportSchema() {
+                const instance = componentWithDialog({
+                    VueComponent: ImportSchemaView,
+                    dialogProps: {
+                        title: '导入Schema',
+                        width: '1000px'
+                    },
+                    componentListeners: {
+                        onImport: (code) => {
+                            try {
+                                const data = jsonSchema2ComponentList(code, this.configTools);
+                                if (!data) return this.$message.warning('请先输入导入Schema');
+
+                                const { errorNode, componentList, formConfig } = data;
+                                this.componentList = componentList;
+                                if (formConfig.formProps) Object.assign(this.formConfig.formProps, formConfig.formProps);
+                                if (formConfig.formFooter) Object.assign(this.formConfig.formFooter, formConfig.formFooter);
+
+                                instance.close();
+
+                                // 存在导入失败的部分节点
+                                if (errorNode.length > 0 && Array.isArray(errorNode)) {
+                                    return this.$msgbox({
+                                        title: '如下节点导入失败，请检查数据',
+                                        message: this.$createElement(
+                                            'div', {
+                                                style: {
+                                                    padding: '10px 0'
+                                                }
+                                            },
+                                            errorNode.map(item => this.$createElement('pre', null, JSON.stringify(item, null, 4)))
+                                        )
+                                    });
+                                }
+
+                                return undefined;
+                            } catch (e) {
+                                this.$alert(e.message, '导入失败，详细查看控制台');
+                                throw e;
+                            }
                         }
                     }
                 });

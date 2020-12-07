@@ -3,10 +3,10 @@
  */
 
 import genSchema from '../genSchema.js';
-import { selectOptionsSchema } from '../Radio';
+import { selectOptionsSchema } from '../SingleSelect';
 
 const viewSchema = {
-    title: '多选类型',
+    // title: '多选类型',
     type: 'array',
     uniqueItems: true,
     items: {
@@ -22,20 +22,6 @@ export default {
             title: '选项',
             required: [],
             properties: {
-                uiOptions: {
-                    type: 'object',
-                    properties: {
-                        widget: {
-                            title: '渲染组件',
-                            type: 'string',
-                            default: 'CheckboxesWidget',
-                            enum: [
-                                'CheckboxesWidget',
-                                'SelectWidget',
-                            ]
-                        }
-                    }
-                },
                 schemaOptions: {
                     type: 'object',
                     properties: {

@@ -26,7 +26,6 @@ uiSchema = {
 
 :::warning
 * $ref 不支持跨文件调用
-* `ui-schema` `error-schema` 暂不支持递归配置，需要逐级配置，或者配置一个存在循环引用的对象 Orz...
 :::
 
 如下demo：

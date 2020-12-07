@@ -4,6 +4,18 @@
 
 // import { genId } from '@/_common/utils/id';
 
+export function isObject(obj) {
+    return (Object.prototype.toString.call(obj) === '[object Object]');
+}
+
+export function isEmptyObject(obj) {
+    for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            return false;
+        }
+    }
+    return true;
+}
 
 export function deepFreeze(obj) {
     // 取回定义在obj上的属性名

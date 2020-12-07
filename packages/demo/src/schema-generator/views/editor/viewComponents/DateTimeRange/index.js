@@ -5,11 +5,11 @@
 import genSchema from '../genSchema.js';
 
 const viewSchema = {
-    title: '日期时间范围',
+    title: 'DateTime范围(时间戳)',
     type: 'array',
     format: 'date-time',
     items: {
-        type: 'string'
+        type: 'number'
     }
 };
 
@@ -21,29 +21,6 @@ export default {
             title: '选项',
             required: [],
             properties: {
-                schemaOptions: {
-                    type: 'object',
-                    properties: {
-                        items: {
-                            type: 'object',
-                            properties: {
-                                type: {
-                                    title: '返回值类型',
-                                    type: 'string',
-                                    default: 'number',
-                                    enum: [
-                                        'number',
-                                        'string',
-                                    ],
-                                    enumNames: [
-                                        '数字时间戳',
-                                        'ISO字符串'
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                },
                 uiOptions: {
                     type: 'object',
                     properties: {

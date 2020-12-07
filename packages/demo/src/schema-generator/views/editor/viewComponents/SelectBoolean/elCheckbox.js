@@ -1,13 +1,14 @@
 /**
- * Created by Liu.Jun on 2020/10/30 17:11.
+ * Created by Liu.Jun on 2020/12/10 15:16.
  */
+
 
 import genSchema from '../genSchema.js';
 
 const viewSchema = {
-    title: 'Date(时间戳)',
-    type: 'number',
-    format: 'date'
+    title: '是否选择(Checkbox)',
+    type: 'boolean',
+    'ui:widget': 'el-checkbox'
 };
 
 export default {
@@ -16,15 +17,14 @@ export default {
         options: {
             type: 'object',
             title: '选项',
-            required: [],
             properties: {
                 uiOptions: {
                     type: 'object',
                     properties: {
-                        placeholder: {
+                        label: {
+                            title: '标签文案',
                             type: 'string',
-                            title: '输入占位文本',
-                            default: '请选择日期'
+                            default: '是否'
                         }
                     }
                 }

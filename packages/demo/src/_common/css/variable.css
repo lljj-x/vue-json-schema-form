@@ -136,6 +136,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     word-wrap: normal;
+    word-break: normal;
 }
 
 

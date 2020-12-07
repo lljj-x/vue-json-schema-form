@@ -4,19 +4,7 @@
 
 import { getDefaultFormState } from '@lljj/vue-json-schema-form';
 import { genId } from '@/_common/utils/id';
-
-function isObject(obj) {
-    return (Object.prototype.toString.call(obj) === '[object Object]');
-}
-
-function isEmptyObject(obj) {
-    for (const key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            return false;
-        }
-    }
-    return true;
-}
+import { isObject, isEmptyObject } from './utils';
 
 // 生成一个新的editor item
 export function generateEditorItem(toolItem) {
@@ -40,7 +28,7 @@ export function generateEditorItem(toolItem) {
                 {}, // 初始值为空
                 currentComponentPack.propsSchema
             ) : toolItem.componentValue,
-            property: id
+            property: (toolItem.componentValue && toolItem.componentValue.property) || id
         },
         id,
         ...(currentComponentPack.viewSchema.properties || (currentComponentPack.viewSchema.items && currentComponentPack.viewSchema.items.properties))
@@ -52,6 +40,11 @@ export function generateEditorItem(toolItem) {
 // formLabel格式化
 export function formatFormLabelWidth(value) {
     return value ? `${value * 4}px` : undefined;
+}
+
+// 转回来
+export function deFormatFormLabelWidth(value) {
+    return parseFloat(value) / 4;
 }
 
 function filterObj(obj, filter = (key, value) => (isObject(value) && !isEmptyObject(value)) || value !== undefined) {

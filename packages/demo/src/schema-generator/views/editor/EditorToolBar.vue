@@ -27,7 +27,7 @@
 
                          }"
                     >
-                        {{ item.title }}
+                        <span>{{ item.title }}</span>
                     </div>
                 </draggable>
             </template>
@@ -104,6 +104,12 @@
         background-color: var(--background-color-selected);
         border: 1px dashed transparent;
         font-size: 12px;
+        &>span {
+            display: block;
+            width: 100%;
+            padding: 0 3px;
+            @mixin nowrap;
+        }
         &:hover {
             color: var(--color-primary);
             border: 1px dashed var(--color-primary);

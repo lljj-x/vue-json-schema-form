@@ -5,7 +5,7 @@
 import genSchema from '../genSchema.js';
 
 const viewSchema = {
-    title: '日期时间',
+    title: 'DateTime(时间戳)',
     type: 'number',
     format: 'date-time'
 };
@@ -18,24 +18,6 @@ export default {
             title: '选项',
             required: [],
             properties: {
-                schemaOptions: {
-                    type: 'object',
-                    properties: {
-                        type: {
-                            title: '返回值类型',
-                            type: 'string',
-                            default: 'number',
-                            enum: [
-                                'number',
-                                'string',
-                            ],
-                            enumNames: [
-                                '数字时间戳',
-                                'ISO字符串'
-                            ]
-                        }
-                    }
-                },
                 uiOptions: {
                     type: 'object',
                     properties: {

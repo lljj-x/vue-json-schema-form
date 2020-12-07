@@ -2,23 +2,50 @@
  * Created by Liu.Jun on 2019/9/29 18:58.
  */
 
+// 基础组件
 import componentPackInput from '../viewComponents/Input';
 import componentPackColor from '../viewComponents/Color';
 import componentPackInputNumber from '../viewComponents/InputNumber';
 import componentPackSlider from '../viewComponents/Slider';
-import componentPackSelectBoolean from '../viewComponents/SelectBoolean';
-import componentPackRadio from '../viewComponents/Radio';
-import componentPackMultiSelect from '../viewComponents/MultiSelect';
 
+// 是否 Boolean
+import componentPackBooleanSwitch from '../viewComponents/SelectBoolean/elSwitch';
+import componentPackBooleanCheckbox from '../viewComponents/SelectBoolean/elCheckbox';
+import componentPackBooleanSelect from '../viewComponents/SelectBoolean/elSelect';
+import componentPackBooleanRadio from '../viewComponents/SelectBoolean/elRadio';
+
+// 单多选
+import componentPackRadio from '../viewComponents/SingleSelect/elRadio';
+import componentPackRadioSelect from '../viewComponents/SingleSelect/elSelect';
+
+import componentPackMultiSelect from '../viewComponents/MultiSelect/elSelect';
+import componentPackMultiCheckbox from '../viewComponents/MultiSelect/elCheckbox';
+
+// 上传
 import componentPackUpload from '../viewComponents/Upload';
 import componentPackMultiUpload from '../viewComponents/MultiUpload';
 
+// 时间 日期
 import componentPackTime from '../viewComponents/Time';
-import componentPackDate from '../viewComponents/Date';
-import componentPackDateRange from '../viewComponents/DateRange';
-import componentPackDateTime from '../viewComponents/DateTime';
-import componentPackDateTimeRange from '../viewComponents/DateTimeRange';
 
+// 日期
+import componentPackDate from '../viewComponents/Date';
+import componentPackDateString from '../viewComponents/Date/string';
+
+// 日期时间
+import componentPackDateTime from '../viewComponents/DateTime';
+import componentPackDateTimeString from '../viewComponents/DateTime/string';
+
+// 日期区间
+import componentPackDateRange from '../viewComponents/DateRange';
+import componentPackDateRangeString from '../viewComponents/DateRange/string';
+
+// 日期时间区间
+import componentPackDateTimeRange from '../viewComponents/DateTimeRange';
+import componentPackDateTimeRangeString from '../viewComponents/DateTimeRange/string';
+
+
+// 布局 Object Array
 import componentPackObject from '../viewComponents/Object';
 import componentPackArray from '../viewComponents/Array';
 
@@ -32,28 +59,63 @@ import componentPackArray from '../viewComponents/Array';
  */
 const tools = [
     {
+        groupName: '布局组件',
+        componentList: [{
+            title: 'Object',
+            btnClass: 'w100',
+            componentPack: componentPackObject
+        }, {
+            title: 'Array',
+            btnClass: 'w100',
+            componentPack: componentPackArray
+        }]
+    },
+    {
         groupName: '基础组件',
         componentList: [{
             title: '输入框',
             componentPack: componentPackInput
         }, {
+            title: '数字(slider)', // 这里顺便必须在 componentPackInputNumber 前，导入匹配的时候优先匹配
+            componentPack: componentPackSlider
+        }, {
             title: '数字输入框',
             componentPack: componentPackInputNumber
         }, {
-            title: '数字（slider）',
-            componentPack: componentPackSlider
-        }, {
-            title: '是否选择',
-            componentPack: componentPackSelectBoolean
-        }, {
-            title: '单选类型',
-            componentPack: componentPackRadio
-        }, {
-            title: '多选类型',
-            componentPack: componentPackMultiSelect
-        }, {
             title: '颜色选择',
             componentPack: componentPackColor
+        }]
+    },
+    {
+        groupName: '是否Bool',
+        componentList: [{
+            title: '是否(Switch)',
+            componentPack: componentPackBooleanSwitch
+        }, {
+            title: '是否(Checkbox)',
+            componentPack: componentPackBooleanCheckbox
+        }, {
+            title: '是否(Select)',
+            componentPack: componentPackBooleanSelect
+        }, {
+            title: '是否(Radio)',
+            componentPack: componentPackBooleanRadio
+        }]
+    },
+    {
+        groupName: '单选/多选',
+        componentList: [{
+            title: '单选(Radio)',
+            componentPack: componentPackRadio
+        }, {
+            title: '单选(Select)',
+            componentPack: componentPackRadioSelect
+        }, {
+            title: '多选(Select)',
+            componentPack: componentPackMultiSelect
+        }, {
+            title: '多选(Checkbox)',
+            componentPack: componentPackMultiCheckbox
         }]
     },
     {
@@ -69,35 +131,34 @@ const tools = [
     {
         groupName: '时间日期',
         componentList: [{
-            title: '时间选择',
-            componentPack: componentPackTime
-        }, {
-            title: '日期选择',
+            title: 'Date(时间戳)',
             componentPack: componentPackDate
         }, {
-            title: '日期时间选择',
+            title: 'Date(字符串)',
+            componentPack: componentPackDateString
+        }, {
+            title: 'DateTime(时间戳)',
             componentPack: componentPackDateTime
         }, {
-            title: '日期范围',
+            title: 'DateTime(字符串)',
+            componentPack: componentPackDateTimeString
+        }, {
+            title: 'Date范围(时间戳)',
             componentPack: componentPackDateRange
         }, {
-            title: '日期时间范围',
-            componentPack: componentPackDateTimeRange
-        }]
-    },
-    {
-        groupName: '布局组件',
-        componentList: [{
-            title: 'Object',
-            btnClass: 'w100',
-            componentPack: componentPackObject
+            title: 'Date范围(字符串)',
+            componentPack: componentPackDateRangeString
         }, {
-            title: 'Array',
-            btnClass: 'w100',
-            componentPack: componentPackArray
+            title: 'DateTime范围(时间戳)',
+            componentPack: componentPackDateTimeRange
+        }, {
+            title: 'DateTime范围(字符串)',
+            componentPack: componentPackDateTimeRangeString
+        }, {
+            title: 'Time(字符串)',
+            componentPack: componentPackTime
         }]
-    },
-
+    }
 ];
 
 export default tools;

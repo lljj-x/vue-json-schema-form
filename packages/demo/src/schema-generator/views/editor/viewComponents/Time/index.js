@@ -5,7 +5,7 @@
 import genSchema from '../genSchema.js';
 
 const viewSchema = {
-    title: '时间',
+    title: 'Time(字符串)',
     type: 'string',
     format: 'time'
 };

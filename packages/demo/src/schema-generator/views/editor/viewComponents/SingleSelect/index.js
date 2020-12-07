@@ -46,24 +46,6 @@ export default {
             title: '选项',
             required: [],
             properties: {
-                uiOptions: {
-                    type: 'object',
-                    properties: {
-                        widget: {
-                            title: '渲染组件',
-                            type: 'string',
-                            default: 'RadioWidget',
-                            enum: [
-                                'RadioWidget',
-                                'SelectWidget',
-                            ],
-                            enumNames: [
-                                'RadioWidget',
-                                'SelectWidget'
-                            ]
-                        }
-                    }
-                },
                 schemaOptions: {
                     type: 'object',
                     properties: selectOptionsSchema
