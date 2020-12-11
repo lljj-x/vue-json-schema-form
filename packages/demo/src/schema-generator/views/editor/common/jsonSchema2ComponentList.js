@@ -62,40 +62,47 @@ function getUserConfigByViewSchema(curSchema, toolConfigList) {
     const toolItem = toolConfigList.find(item => viewSchemaMatch(curSchema, item));
 
     if (toolItem) {
-        let componentValue;
+        let componentValue = {};
 
         // 需要计算 value
         if (curSchema.$$key) {
             const curSchemaUiOptions = formUtils.getUserUiOptions({
                 schema: curSchema
             });
-            componentValue = getDefaultFormDataBySchema(toolItem.componentPack.propsSchema);
+            const emptyComponentValue = getDefaultFormDataBySchema(toolItem.componentPack.propsSchema);
+
             componentValue.property = curSchema.$$key;
-            ['baseValue', 'options', 'rules'].forEach((curVal) => {
-                if (componentValue[curVal]) {
-                    const { schemaOptions, uiOptions } = componentValue[curVal];
+            componentValue = ['baseValue', 'options', 'rules'].reduce((preVal, curVal) => {
+                if (emptyComponentValue[curVal]) {
+                    preVal[curVal] = {};
+
+                    const { schemaOptions, uiOptions } = emptyComponentValue[curVal];
 
                     // 回填 schema options
                     if (schemaOptions) {
+                        preVal[curVal].schemaOptions = {};
                         for (const k in schemaOptions) {
                             if (schemaOptions.hasOwnProperty(k)) {
                                 const tmpVal = curSchema[k];
-                                if (tmpVal !== undefined) schemaOptions[k] = tmpVal;
+                                if (tmpVal !== undefined) preVal[curVal].schemaOptions[k] = tmpVal;
                             }
                         }
                     }
 
                     // 回填 ui options
                     if (uiOptions) {
+                        preVal[curVal].uiOptions = {};
                         for (const k in uiOptions) {
                             if (uiOptions.hasOwnProperty(k)) {
                                 const tmpVal = curSchemaUiOptions[k];
-                                if (tmpVal !== undefined) uiOptions[k] = k === 'labelWidth' ? deFormatFormLabelWidth(tmpVal) : tmpVal;
+                                if (tmpVal !== undefined) preVal[curVal].uiOptions[k] = k === 'labelWidth' ? deFormatFormLabelWidth(tmpVal) : tmpVal;
                             }
                         }
                     }
                 }
-            });
+
+                return preVal;
+            }, componentValue);
         }
 
         return generateEditorItem({
