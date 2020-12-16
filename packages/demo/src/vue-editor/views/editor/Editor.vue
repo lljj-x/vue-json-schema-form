@@ -443,7 +443,7 @@
             height: 100vh;
             padding-left: 0;
         }
-        .contentWrap, .dragAreaWrap{
+        .dragAreaWrap{
             overflow-x: hidden;
         }
         .contentBox, .dragAreaWrap{
