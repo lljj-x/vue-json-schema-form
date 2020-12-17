@@ -17,7 +17,7 @@ sidebarDepth: 2
 
 :::warning
 在使用通过UI配置的方式时，可能打破 `JSON Schema` 规范，所以在使用时需要注意避免和 `JSON Schema` 描述的数据结构冲突。
-> 比如：配置了 `required`, 但ui-schema又配置了 `ui:hidden: false`，必须输入又不显示 ....
+> 比如：配置了 `required`, 但ui-schema又配置了 `ui:hidden: true`，必须输入又不显示 ....
 
 如果冲突因为生成的表单中会只校验显示的元素所以不会存在问题，但即使是表单通过了校验，数据结构也已经不在符合了，所以一定要避免....
 :::
@@ -309,7 +309,7 @@ export default {
 就目前来看 if else 比较容易解决数据联动的场景，可以根据值来做判断，但依旧不能解决对值支持逻辑判断，比如`大于`、`小于`，后续版本会考虑支持该特性。
 
 ## ui-schema配置表达式
-可能打破 `JSON Schema` 规范，配置思想来源 [ali form-render](https://github.com/alibaba/form-render)，目前只支持对 ui-schema `ui:hidden` 配置表达式。
+可能打破 `JSON Schema` 规范，配置思想来源 [ali form-render](https://github.com/alibaba/form-render)，通过对ui-schema `ui:hidden` 配置表达式。
 
 **ui:hidden实际不仅仅只支持表达式，详细的包含如下三种格式：**
 

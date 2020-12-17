@@ -39,7 +39,7 @@ const customRule = ({
 >* `rootFormData`：根节点`formData`数据，响应式数据，避免直接修改数据
 >* `callback`：`function` 必须调用 `callback` 返回当前的校验结果，不传参数说明校验通过
 
-配置了 `custom-rule` 你将会获得最大程度的自定义校验，所有的表单项都会通过改方法处理。
+配置了 `custom-rule` 你将会获得最大程度的自定义校验，所有的表单项都会通过该方法处理。
 调用者需要自行匹配 `field` 参数来判断是否为你所需要校验的字段。
 
 :::tip

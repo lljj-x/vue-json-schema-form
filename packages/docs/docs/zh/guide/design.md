@@ -102,6 +102,6 @@ function render(h) {
 ## 设计思想
 
 * 设计思想借鉴[react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)，
-在对schema的解析索引也使用了 `react-json-schema` 的源码。
+在对schema的解析索引也使用了 `react-json-schema` 的源码，同时也顺便解决了一些原有的小问题。
 
 * 在用户输入的时候可以最小程度的重新渲染，做到在绝大部分的场景都是只需要重新渲染输入内容的 `Widget` 组件。

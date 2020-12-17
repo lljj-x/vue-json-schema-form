@@ -169,6 +169,12 @@
             }
         }
 
+        .formItemWrap {
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0;
+        }
+
         /* column 布局 */
         .layoutColumn {
             .w100 {
@@ -176,9 +182,6 @@
             }
             :local {
                 .formItemWrap {
-                    width: 100%;
-                    box-sizing: border-box;
-                    font-size: 0;
                     :global {
                         .el-form-item {
                             width: 100% !important;

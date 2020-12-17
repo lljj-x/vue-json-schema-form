@@ -51,6 +51,7 @@
             :child-component-list="editorItem.childList"
             :drag-options="dragOptions"
             :form-data="formData"
+            :form-props="formProps"
         >
         </NestedEditor>
     </div>

@@ -2,10 +2,10 @@
 
 ## 不支持 （持续更新）
 目前对标准JSON Schema不支持的部分包含可能不限于如下：
-1. object additionalProperties 属性只支持配置false
-1. object Dependencies schema依赖不支持
-1. if else 新特性不支持
-1. $ref 不支持跨文件调用
+1. object additionalProperties 属性只支持配置false（暂不计划）
+1. object Dependencies schema依赖不支持（暂不计划）
+1. if else 新特性不支持（暂不计划）
+1. $ref 不支持跨文件调用（暂不计划）
 
 ## Todo
 - [x] anyOf 嵌套数组调整顺序的时候数据渲染异常问题修复
@@ -25,7 +25,6 @@
 - [x] 支持属性依赖 [属性依赖](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies)
 - [x] 支持 ui:hidden 使用 mustache 表达式
 - [x] 支持 所有ui配置使用 mustache 表达式
-- [ ] 支持Schema依赖 [Schema依赖](https://json-schema.org/understanding-json-schema/reference/object.html#schema-dependencies)
 - [ ] 添加代码测试
-- [ ] 对照react schema from适配更多规则支持
-- [ ] 解耦elementUi 重新开发form 和formItem组件，通过配置化实现适配elementUi iView 等常用ui组件
+- [ ] 支持Vue3
+- [ ] 适配elementUi、iView、Ant vue 等常用ui组件
