@@ -169,12 +169,6 @@
             }
         }
 
-        .formItemWrap {
-            width: 100%;
-            box-sizing: border-box;
-            font-size: 0;
-        }
-
         /* column 布局 */
         .layoutColumn {
             .w100 {
@@ -219,7 +213,7 @@
                 :local .formItem {
                     width: 33.333%;
                 }
-                .draggableToolItem{
+                .draggableToolItem {
                     width: 33%;
                 }
             }
@@ -227,6 +221,9 @@
     }
 
     .dragArea {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 0;
         background-color: #f5f5f5;
         height: 100%;
         padding: 15px;
