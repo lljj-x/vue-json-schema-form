@@ -160,6 +160,13 @@ uiSchema = {
     'ui:labelWidth': '50px',
 
     'ui:options': {
+            // 获取widget组件实例，非必要场景不建议使用
+            // widget组件 mounted 组件后回调该方法传出vm实例
+            // 支持版本: "0.4.1"
+            getWidget: (widgetVm) => {
+                console.log(widgetVm);
+            },
+
             // 显示标题？只对 type为`object`、`array` 类型有效
             showTitle: true,
 
