@@ -71,7 +71,6 @@ export default {
                 value = geUrl(fileItem);
             }
 
-            debugger;
             this.$emit('input', value);
         }
     },
@@ -82,6 +81,8 @@ export default {
         const {
             slots,
         } = this.$props;
+
+        console.log(slots);
 
         const data = {
             attrs: {
@@ -119,10 +120,11 @@ export default {
 
         const childVNode = [];
 
+        console.log(slots);
         if (slots && slots.default) {
             childVNode.push(h('template', {
                 slot: 'default',
-            }, [slots.default]));
+            }, [typeof slots.default === 'function' ? slots.default(h) : slots.default]));
         } else {
             childVNode.push(h('el-button', {
                 props: {
@@ -134,7 +136,7 @@ export default {
         if (slots && slots.tip) {
             childVNode.push(h('template', {
                 slot: 'tip',
-            }, [slots.tip]));
+            }, [typeof slots.tip === 'function' ? slots.tip(h) : slots.tip]));
         }
 
         return h('el-upload', data, childVNode);

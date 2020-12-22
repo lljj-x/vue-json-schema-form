@@ -89,19 +89,24 @@ export default {
                         'ui:action': 'https://run.mocky.io/v3/518d7af7-204f-45ab-9628-a6e121dab8ca',
                         'ui:widget': 'UploadWidget',
                         'ui:slots': {
-                            default: this.$createElement('el-button', {
-                                slot: 'default',
-                                props: {
-                                    type: 'primary'
-                               },
-                            }, ['替换了上传按钮']),
-                            tip: this.$createElement('div', {
-                                slot: 'tip',
-                                style: {
-                                    fontSize: '12px',
-                                    color: '#666'
-                                }
-                            }, ['只能上传jpg/png文件，且不超过500kb，且不超过500kb且不超过500kb且不超过500kb']),
+                            default(h) {
+                                return h('el-button', {
+                                    slot: 'default',
+                                    props: {
+                                        size: 'mini',
+                                        type: 'primary'
+                                    },
+                                }, ['上传图片'])
+                            },
+                            tip(h) {
+                                return h('div', {
+                                    slot: 'tip',
+                                    style: {
+                                        fontSize: '12px',
+                                        color: '#666'
+                                    }
+                                }, ['注：请上传100 * 100尺寸的图片'])
+                            },
                        }
                     },
                     imgUrlList: {
