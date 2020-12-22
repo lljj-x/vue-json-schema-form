@@ -32,7 +32,7 @@ export default {
             widget: WIDGET_MAP.types.boolean
         }));
 
-        widgetConfig.uiProps.enumOptions = enumOptions;
+        widgetConfig.uiProps.enumOptions = widgetConfig.uiProps.enumOptions || enumOptions;
 
         return h(
             Widget,

@@ -36,7 +36,7 @@ export default {
         });
 
         // 存在枚举数据列表 传入 enumOptions
-        if (enumOptions) {
+        if (enumOptions && !widgetConfig.uiProps.enumOptions) {
             widgetConfig.uiProps.enumOptions = enumOptions;
         }
 
