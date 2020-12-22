@@ -244,6 +244,7 @@ export default {
         // oneOf 校验 VNode
         childrenVNodeList.push(
             h(Widget, {
+                key: `validateWidget-${this.combiningType}`,
                 class: {
                     validateWidget: true,
                     [`validateWidget-${this.combiningType}`]: true

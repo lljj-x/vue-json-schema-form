@@ -114,6 +114,7 @@ export default {
 
                         // 插入一个Widget，校验 object组 - minProperties. maxProperties. oneOf 等需要外层校验的数据
                         needValidFieldGroup ? h(Widget, {
+                            key: 'validateWidget-object',
                             class: {
                                 validateWidget: true,
                                 'validateWidget-object': true

@@ -199,6 +199,7 @@ export default {
 
             // 插入一个Widget，校验 array - maxItems. minItems. uniqueItems 等items外的属性校验
             this.needValidFieldGroup ? h(Widget, {
+                key: 'validateWidget-array',
                 class: {
                     validateWidget: true,
                     'validateWidget-array': true
