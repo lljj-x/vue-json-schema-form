@@ -55,7 +55,10 @@ export default {
             // v-model
             let value;
 
-            const geUrl = fileItem => (fileItem && (fileItem.url || this.responseFileUrl(fileItem.response))) || '';
+            const geUrl = fileItem => (
+                fileItem
+                && ((fileItem.response && this.responseFileUrl(fileItem.response)) || fileItem.url))
+                || '';
 
             if (this.isArrayValue) {
                 value = fileList.length ? fileList.reduce((pre, item) => {
@@ -67,6 +70,8 @@ export default {
                 const fileItem = fileList[fileList.length - 1];
                 value = geUrl(fileItem);
             }
+
+            debugger;
             this.$emit('input', value);
         }
     },
@@ -84,6 +89,11 @@ export default {
                 'on-exceed': () => {
                     if (this.$message) {
                         this.$message.warning('超出文件上传数');
+                    }
+                },
+                'on-error': () => {
+                    if (this.$message) {
+                        this.$message.error('文件上传失败');
                     }
                 },
                 ...attrs,
