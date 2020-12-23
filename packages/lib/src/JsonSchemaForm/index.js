@@ -99,9 +99,11 @@ export default {
                             self.$emit('on-cancel');
                         },
                         onSubmit() {
-                            self.$refs.genEditForm.validate().then(() => {
-                                // console.log(self.$refs.genEditForm);
-                                self.$emit('on-submit', self.formData);
+                            self.$refs.genEditForm.validate((isValid, resData) => {
+                                if (isValid) {
+                                    return self.$emit('on-submit', self.formData);
+                                }
+                                return self.$emit('on-validation-failed', resData);
                             });
                         }
                     }

@@ -82,8 +82,6 @@ export default {
             slots,
         } = this.$props;
 
-        console.log(slots);
-
         const data = {
             attrs: {
                 fileList: this.fileList,
@@ -120,7 +118,6 @@ export default {
 
         const childVNode = [];
 
-        console.log(slots);
         if (slots && slots.default) {
             childVNode.push(h('template', {
                 slot: 'default',
