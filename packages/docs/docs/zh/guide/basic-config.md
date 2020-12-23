@@ -25,7 +25,7 @@ description: '渲染为描述信息' // 支持html代码
 
 :::tip 如何隐藏
 * 不配置 `title` `description` 属性不会显示
-* 特例：对于`object` `array` 类型可以通过 [ui-schema showTitle](#ui-schema) 参数控制是否显示
+* 特例：对于`object` `array` 类型可以通过 ['ui:showTitle': false](#ui-schema) 参数控制是否显示
 :::
 
 
@@ -97,6 +97,7 @@ export default {
 ### ui-schema
 * 类型：`object`
 * 默认值：`{}`
+* `非必须`：ui 也可直接配置在 `schema` 中
 
 >* `0.0.16` 之后版本支持配置 `ui-schema` 在 `schema` 参数中 [点击查看](#ui-schema配置在schema中)
 >* `0.1.0` 之后版本支持配置 [error-schema](#error-schema) 在 [ui-schema](#ui-schema) 中。（`ui-schema` 和 `error-schema` 格式完全相同，且同属ui显示，一份可方便配置）
@@ -400,6 +401,7 @@ uiSchema = {
 ### error-schema
 * 类型：`object`
 * 默认值：`{}`
+* `非必须`：ui 也可直接配置在 `schema` 中
 
 >* `0.0.16` 之后版本支持配置 `error-schema` 在 `schema` 参数中 [点击查看](#error-schema配置在schema中)
 >* `0.1.0` 之后版本支持配置 [error-schema](#error-schema) 在 [ui-schema](#ui-schema) 中。（`ui-schema` 和 `error-schema` 格式完全相同，且同属ui显示，一份可方便配置）
@@ -699,6 +701,14 @@ export default {
 点击提交按钮，且表单通过校验
 
 > 事件只有在配置了显示默认底部才会触发，[props form-footer](#form-footer)
+
+### on-validation-failed
+* 参数(errorObj)
+
+点击提交按钮，且表单不通过，可以在这里获取到错误信息
+
+> 事件只有在配置了显示默认底部才会触发，[props form-footer](#form-footer)
+
 
 ### on-cancel
 * 参数(无)

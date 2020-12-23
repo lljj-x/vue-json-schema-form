@@ -41,6 +41,7 @@ exports.getGuideSidebar = ([groupA = '指南', groupB = '入门使用', groupC =
             title: groupB,
             collapsable: false,
             children: [
+                'layout-config',
                 'datetime-config',
                 'data-linkage',
                 'validate',
