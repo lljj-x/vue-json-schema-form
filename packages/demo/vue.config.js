@@ -62,7 +62,7 @@ module.exports = {
         };
         config.resolve.alias = {
             ...config.resolve.alias,
-            '@lljj/vue-json-schema-form': path.resolve(__dirname, '../lib/src/index.js')
+            '@lljj/vue-json-schema-form': '@lljj/vue-json-schema-form/src/index'
             // '@lljj/vue-json-schema-form': path.resolve(__dirname, '../lib/dist/vueJsonSchemaForm.esm.js')
         };
     },

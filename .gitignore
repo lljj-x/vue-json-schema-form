@@ -1,13 +1,10 @@
 .DS_Store
 node_modules
+stats.html
 
-/packages/docs/docs/node_modules
+packages/lib/vue2-form-element/stats.html
 /packages/docs/docs/.vuepress/dist/
-
 /packages/demo/dist
-/packages/demo/node_modules
-
-/packages/lib/node_modules
 
 # local env files
 .env.local
@@ -26,7 +23,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-CHANGELOG.md
-packages/demo/CHANGELOG.md
-packages/docs/CHANGELOG.md
-packages/lib/CHANGELOG.md

@@ -117,7 +117,7 @@
 
 <script>
     import EditorHeader from '@/_common/components/EditorHeader.vue';
-    import VueElementForm from '@lljj/vue-json-schema-form';
+    import VueElementForm from '@lljj/vue2-form-iview3/src/index';
 
     import CodeEditor from '../../components/CodeEditor';
     import schemaTypes from './schemaTypes';

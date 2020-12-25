@@ -11,6 +11,7 @@ module.exports = {
     },
     extends: ["@lljj/eslint-config", "plugin:vue/recommended"],
     plugins: ["vue"],
+    // ignorePatterns: ["**/*.css"], // webstorm 报错 ...
     rules: {
         // 递归组件导致了循环依赖
         'import/no-cycle': 'off',

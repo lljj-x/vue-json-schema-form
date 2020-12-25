@@ -5,7 +5,7 @@
     "homepage": "https://github.com/lljj-x/vue-json-schema-form",
     "author": "Liu.Jun",
     "workspaces": [
-        "packages/lib",
+        "packages/lib/**",
         "packages/docs",
         "packages/demo"
     ],
