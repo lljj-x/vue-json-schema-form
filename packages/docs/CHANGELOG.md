@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.4.1...v0.5.0) (2020-12-25)
+
+
+### Features
+
+* **lib:** uploadWidget 组件支持slots 配置function 接受createElement参数 ([2ceebcb](https://github.com/lljj-x/vue-json-schema-form/commit/2ceebcb6970bf0a46d0f8a80acb6dbe3ebcd7b80))
+
+
+
+
+
 # [0.4.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.3.0...v0.4.0) (2020-12-05)
 
 **Note:** Version bump only for package docs

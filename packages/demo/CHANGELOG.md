@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.4.1...v0.5.0) (2020-12-25)
+
+
+### Features
+
+* **lib:** 配置 format color，默认使用 el-color-picker 组件 ([be915ad](https://github.com/lljj-x/vue-json-schema-form/commit/be915ad8eace3b33bbb70180788c251dafbac50e))
+
+
+
+
+
 # [0.4.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.3.0...v0.4.0) (2020-12-05)
 
 

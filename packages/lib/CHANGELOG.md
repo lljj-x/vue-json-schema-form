@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.4.1...v0.5.0) (2020-12-25)
+
+
+### Bug Fixes
+
+* **lib:** 修复 anyOf 切换时原item下错误不会清除问题 ([8d0b09a](https://github.com/lljj-x/vue-json-schema-form/commit/8d0b09a36a23626d34ffba46bad02d96e060b30e))
+* **uploadwidget:** 修复上传图片 picture 模式文件获取错误问题 ([e672d74](https://github.com/lljj-x/vue-json-schema-form/commit/e672d7425521b9b3fc51e0bea1f5d101a669a7f8))
+
+
+### Features
+
+* **lib:** uploadWidget 组件支持slots 配置function 接受createElement参数 ([2ceebcb](https://github.com/lljj-x/vue-json-schema-form/commit/2ceebcb6970bf0a46d0f8a80acb6dbe3ebcd7b80))
+* 下拉选项组件支持直接配置ui:enumOptions，优先级高于schema默计算出的下拉选项 ([af8bee4](https://github.com/lljj-x/vue-json-schema-form/commit/af8bee437cae86deae38480cce6607e7dd42b867))
+* **lib:** 添加on-validation-failed event，表单校验失败触发 ([388454e](https://github.com/lljj-x/vue-json-schema-form/commit/388454eac1fd1c1d5aa205e965c477604176df09))
+* **lib:** 配置 format color，默认使用 el-color-picker 组件 ([be915ad](https://github.com/lljj-x/vue-json-schema-form/commit/be915ad8eace3b33bbb70180788c251dafbac50e))
+
+
+
+
+
 # [0.4.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.3.0...v0.4.0) (2020-12-05)
 
 **Note:** Version bump only for package @lljj/vue-json-schema-form
