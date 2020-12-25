@@ -24,6 +24,7 @@ export default {
         // array: '',
     },
     formats: {
+        color: 'el-color-picker',
         time: TimePickerWidget, // 20:20:39+00:00
         date: DatePickerWidget, // 2018-11-13
         'date-time': DateTimePickerWidget, // 2018-11-13T20:20:39+00:00
