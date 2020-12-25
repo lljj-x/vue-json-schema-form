@@ -9359,6 +9359,7 @@ var ObjectField = {
       slot: 'default'
     }, [].concat(_toConsumableArray(propertiesVNodeList), [// 插入一个Widget，校验 object组 - minProperties. maxProperties. oneOf 等需要外层校验的数据
     needValidFieldGroup ? h(Widget, {
+      key: 'validateWidget-object',
       class: {
         validateWidget: true,
         'validateWidget-object': true
@@ -9820,7 +9821,7 @@ var UploadWidget = {
       var value;
 
       var geUrl = function geUrl(fileItem) {
-        return fileItem && (fileItem.url || _this.responseFileUrl(fileItem.response)) || '';
+        return fileItem && (fileItem.response && _this.responseFileUrl(fileItem.response) || fileItem.url) || '';
       };
 
       if (this.isArrayValue) {
@@ -9850,6 +9851,11 @@ var UploadWidget = {
           if (_this2.$message) {
             _this2.$message.warning('超出文件上传数');
           }
+        },
+        'on-error': function onError() {
+          if (_this2.$message) {
+            _this2.$message.error('文件上传失败');
+          }
         }
       }, attrs), {}, {
         'on-remove': function onRemove(file, fileList) {
@@ -9875,7 +9881,7 @@ var UploadWidget = {
     if (slots && slots.default) {
       childVNode.push(h('template', {
         slot: 'default'
-      }, [slots.default]));
+      }, [typeof slots.default === 'function' ? slots.default(h) : slots.default]));
     } else {
       childVNode.push(h('el-button', {
         props: {
@@ -9887,7 +9893,7 @@ var UploadWidget = {
     if (slots && slots.tip) {
       childVNode.push(h('template', {
         slot: 'tip'
-      }, [slots.tip]));
+      }, [typeof slots.tip === 'function' ? slots.tip(h) : slots.tip]));
     }
 
     return h('el-upload', data, childVNode);
@@ -9938,6 +9944,7 @@ var WIDGET_MAP = {
 
   },
   formats: {
+    color: 'el-color-picker',
     time: TimePickerWidget$1,
     // 20:20:39+00:00
     date: DatePickerWidget$1,
@@ -9976,7 +9983,7 @@ var StringField = {
       };
     }); // 存在枚举数据列表 传入 enumOptions
 
-    if (enumOptions) {
+    if (enumOptions && !widgetConfig.uiProps.enumOptions) {
       widgetConfig.uiProps.enumOptions = enumOptions;
     }
 
@@ -10037,7 +10044,7 @@ var BooleanField = {
         widget: WIDGET_MAP.types.boolean
       };
     });
-    widgetConfig.uiProps.enumOptions = enumOptions;
+    widgetConfig.uiProps.enumOptions = widgetConfig.uiProps.enumOptions || enumOptions;
     return h(Widget, _objectSpread2(_objectSpread2({}, context.data), {}, {
       props: _objectSpread2(_objectSpread2({}, context.props), widgetConfig)
     }));
@@ -10557,7 +10564,7 @@ var ArrayFieldMultiSelect = {
 
     widgetConfig.uiProps.multiple = true;
 
-    if (enumOptions) {
+    if (enumOptions && !widgetConfig.uiProps.enumOptions) {
       widgetConfig.uiProps.enumOptions = enumOptions;
     }
 
@@ -10911,6 +10918,7 @@ var ArrayField = {
       }
     }), // 插入一个Widget，校验 array - maxItems. minItems. uniqueItems 等items外的属性校验
     this.needValidFieldGroup ? h(Widget, {
+      key: 'validateWidget-array',
       class: {
         validateWidget: true,
         'validateWidget-array': true
@@ -11133,6 +11141,7 @@ var SelectLinkageField = {
 
 
     childrenVNodeList.push(h(Widget, {
+      key: "validateWidget-".concat(this.combiningType),
       class: _defineProperty({
         validateWidget: true
       }, "validateWidget-".concat(this.combiningType), true),
@@ -11915,9 +11924,12 @@ var JsonSchemaForm = {
           self.$emit('on-cancel');
         },
         onSubmit: function onSubmit() {
-          self.$refs.genEditForm.validate().then(function () {
-            // console.log(self.$refs.genEditForm);
-            self.$emit('on-submit', self.formData);
+          self.$refs.genEditForm.validate(function (isValid, resData) {
+            if (isValid) {
+              return self.$emit('on-submit', self.formData);
+            }
+
+            return self.$emit('on-validation-failed', resData);
           });
         }
       }
