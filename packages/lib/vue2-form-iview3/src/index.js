@@ -21,13 +21,11 @@ const JsonSchemaForm = createVue2Core(Object.freeze({
         form: {
             functional: true,
             render(h, context) {
-                const labelWidth = (context.data.props.labelPosition === 'top' || !context.data.props.labelWidth || !context.data.props)
-                    ? undefined
-                    : parseFloat(String(context.data.props.labelWidth));
-
                 context.data.props = {
                     ...context.data.props,
-                    labelWidth
+                    labelWidth: (context.data.props.labelPosition === 'top' || !context.data.props.labelWidth)
+                        ? undefined
+                        : parseFloat(String(context.data.props.labelWidth))
                 };
 
                 return h('i-form', context.data, context.children);
@@ -68,11 +66,11 @@ const JsonSchemaForm = createVue2Core(Object.freeze({
         },
     }),
     ICONS_MAP: Object.freeze({
-        question: 'el-icon-question',
-        moveUp: 'el-icon-caret-top',
-        moveDown: 'el-icon-caret-bottom',
-        close: 'el-icon-close',
-        plus: 'el-icon-plus'
+        question: 'ivu-icon ivu-icon-md-help-circle',
+        moveUp: 'ivu-icon ivu-icon-md-arrow-round-up',
+        moveDown: 'ivu-icon ivu-icon-md-arrow-round-down',
+        close: 'ivu-icon ivu-icon-md-close',
+        plus: 'ivu-icon ivu-icon-md-add'
     })
 }));
 
