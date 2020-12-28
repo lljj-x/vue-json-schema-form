@@ -18,10 +18,54 @@ import WIDGET_MAP from './config/widgets/WIDGET_MAP.js';
 const JsonSchemaForm = createVue2Core(Object.freeze({
     WIDGET_MAP: Object.freeze(WIDGET_MAP),
     COMPONENT_MAP: Object.freeze({
-        form: 'el-form',
-        formItem: 'el-form-item',
-        button: 'el-button',
-        popover: 'el-popover'
+        form: {
+            functional: true,
+            render(h, context) {
+                const labelWidth = (context.data.props.labelPosition === 'top' || !context.data.props.labelWidth || !context.data.props)
+                    ? undefined
+                    : parseFloat(String(context.data.props.labelWidth));
+
+                context.data.props = {
+                    ...context.data.props,
+                    labelWidth
+                };
+
+                return h('i-form', context.data, context.children);
+            }
+        },
+        formItem: {
+            functional: true,
+            render(h, context) {
+                context.data.props = {
+                    ...context.data.props,
+                    labelWidth: (context.data.props && context.data.props.labelWidth)
+                        ? parseFloat(String(context.data.props.labelWidth))
+                        : undefined
+                };
+
+                // https://github.com/vuejs/vue/issues/8380
+                // 具名插槽需要重新显示的指定，无法直接透传 Orz...
+                return h('form-item', context.data, Object.entries(context.slots()).map(([slotName, VNode]) => h('template', {
+                    slot: slotName
+                }, VNode)));
+            }
+        },
+        button: 'i-button',
+        popover: {
+            functional: true,
+            render(h, context) {
+                const { default: content, reference: defaults } = context.slots();
+
+                return h('poptip', context.data, [
+                    h('template', {
+                        slot: 'default'
+                    }, defaults),
+                    h('template', {
+                        slot: 'content'
+                    }, content),
+                ]);
+            }
+        },
     }),
     ICONS_MAP: Object.freeze({
         question: 'el-icon-question',

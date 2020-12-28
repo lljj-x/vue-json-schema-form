@@ -183,7 +183,7 @@ export default {
 
         const { COMPONENT_MAP, ICONS_MAP } = self.globalOptions;
 
-        const miniDescriptionVnode = (miniDesModel && descriptionVnode) ? h(COMPONENT_MAP.popover, {
+        const miniDescriptionVNode = (miniDesModel && descriptionVnode) ? h(COMPONENT_MAP.popover, {
             style: {
                 margin: '0 2px',
                 fontSize: '16px',
@@ -217,12 +217,11 @@ export default {
             {
                 class: {
                     ...self.fieldClass,
-                    'is-required': self.required
+                    genFormItem: true
                 },
                 style: formItemStyle,
                 attrs: self.fieldAttrs,
                 props: {
-                    label: self.label,
                     labelWidth: self.labelWidth,
                     ...this.isFormData ? {
                         // 这里对根节点打特殊标志，绕过elementUi无prop属性不校验
@@ -271,19 +270,21 @@ export default {
                         attrs: {
                             title: props.error
                         }
-                    }, [props.error]) : null)
+                    }, [props.error]) : null),
                 },
             },
             [
-                // label slot
-                // mini模式下重置
-                miniDescriptionVnode ? h('template', {
+                h('span', {
                     slot: 'label',
+                    class: {
+                        genFormLabel: true,
+                        genFormItemRequired: self.required,
+                    },
                 }, [
                     `${self.label || ''}`,
-                    miniDescriptionVnode,
-                    `${self.formProps.labelSuffix || ''}`
-                ]) : null,
+                    miniDescriptionVNode || null,
+                    `${(self.formProps && self.formProps.labelSuffix) || ''}`
+                ]),
 
                 // description
                 // 非mini模式显示 description

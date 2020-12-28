@@ -76,6 +76,7 @@
         /*margin-top: -10px;*/
         margin-bottom: 2px;
         color: #999;
+        text-align: left;
     }
     .formItemErrorBox {
         color: #ff5757;
@@ -92,6 +93,13 @@
         white-space: normal;
         font-size: 12px;
         text-align: left;
+    }
+    .genFormItemRequired {
+        &:before {
+            content: "*";
+            color: #f56c6c;
+            margin-right: 4px;
+        }
     }
 
     /* oneOf anyOf -  appendCombining_box*/
@@ -215,20 +223,31 @@
         border-top: 1px solid rgba(0, 0, 0, 0.08);
         padding-top: 10px;
     }
-    &.form-inlineFooter {
+
+    &.formInlineFooter {
         &>.fieldGroupWrap{
             display: inline-block;
             margin-right: 10px;
         }
     }
 
-    /* el-form */
-    .arrayListItem_content .el-form-item {
-        &:last-child{
+    .arrayListItem_content .genFormItem {
+        &:last-child {
             margin-bottom: 0;
         }
     }
-    &.el-form--label-top {
+    &.formInline {
+        .validateWidget {
+            margin-right: 0;
+        }
+        .formFooter_item {
+            border-top: none;
+            padding-top: 0;
+        }
+    }
+
+    /* el-form 重置样式*/
+    &.formLabel-top {
         .arrayListItem_content {
             padding-top: 8px;
         }
@@ -236,15 +255,6 @@
             line-height: 26px;
             padding-bottom: 6px;
             font-size: 14px;
-        }
-    }
-    &.el-form--inline {
-        .validateWidget {
-            margin-right: 0;
-        }
-        .formFooter_item {
-            border-top: none;
-            padding-top: 0;
         }
     }
     .el-checkbox, .el-color-picker{
@@ -275,7 +285,7 @@
             width: 100%;
             flex-basis: 100%;
         }
-        &>.el-form-item{
+        &>.genFormItem{
             flex-grow: 0;
             flex-shrink: 0;
             box-sizing: border-box;
@@ -283,18 +293,18 @@
         }
     }
     &.layoutColumn-1 {
-        .fieldGroupWrap_box>.el-form-item {
+        .fieldGroupWrap_box>.genFormItem {
             padding-right: 0;
         }
     }
     &.layoutColumn-2 {
-        .fieldGroupWrap_box>.el-form-item {
+        .fieldGroupWrap_box>.genFormItem {
             width: 50%;
             flex-basis: 50%;
         }
     }
     &.layoutColumn-3 {
-        .fieldGroupWrap_box>.el-form-item{
+        .fieldGroupWrap_box>.genFormItem{
             width: 33.333%;
             flex-basis: 33.333%;
         }

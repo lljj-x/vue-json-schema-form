@@ -117,10 +117,17 @@
 
 <script>
     import EditorHeader from '@/_common/components/EditorHeader.vue';
-    import VueElementForm from '@lljj/vue2-form-iview3/src/index';
-
     import CodeEditor from '../../components/CodeEditor';
     import schemaTypes from './schemaTypes';
+
+    const VueElementForm = async () => {
+        if (window.location.hash.includes('ui=iview')) {
+            // 注册iview
+            await import('@/_common/components/iView/index.js');
+            return import('@lljj/vue2-form-iview3/src/index');
+        }
+        return import('@lljj/vue-json-schema-form');
+    };
 
     const typeItems = Object.keys(schemaTypes);
 
