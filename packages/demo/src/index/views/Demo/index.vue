@@ -281,7 +281,15 @@
                     queryParamsObj.formProps.labelWidth = parseFloat(queryParamsObj.formProps.labelWidth) / 4;
                 }
 
-                Object.assign(this, this.getDefaultSchemaMap(), Object.assign(schemaTypes[this.curType], queryParamsObj));
+                const defaultState = this.getDefaultSchemaMap();
+                const formProps = {
+                    ...defaultState.formProps,
+                    ...(queryParamsObj.formProps || {})
+                };
+
+                Object.assign(this, defaultState, Object.assign(schemaTypes[this.curType], queryParamsObj, {
+                    formProps
+                }));
             },
             handleDataChange() {
                 console.log('Data change');

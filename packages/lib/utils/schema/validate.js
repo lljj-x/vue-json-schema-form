@@ -221,7 +221,7 @@ export function validateFormDataAndTransformMsg({
 
     return (isOnlyFirstError && ajvErrors.length > 0 ? [ajvErrors[0]] : ajvErrors).reduce((preErrors, errorItem) => {
         // 优先获取 errorSchema 配置
-        errorItem.message = userErrOptions[errorItem.name] || errorItem.message;
+        errorItem.message = userErrOptions[errorItem.name] !== undefined ? userErrOptions[errorItem.name] : errorItem.message;
         preErrors.push(errorItem);
         return preErrors;
     }, []);
