@@ -11,3 +11,18 @@ export function openNewPage(url, target = '_blank') {
     a.click();
     document.body.removeChild(a);
 }
+
+// 解析当前url的query 参数
+export function getUrlQuery(href) {
+    const url = String(href === undefined ? window.location.href : href).replace(/#.*$/, '');
+    const search = url.substring(url.lastIndexOf('?') + 1);
+    const obj = {};
+    const reg = /([^?&=]+)=([^?&=]*)/g;
+    search.replace(reg, (rs, $1, $2) => {
+        const name = decodeURIComponent($1);
+        const query = String(decodeURIComponent($2));
+        obj[name] = query;
+        return rs;
+    });
+    return obj;
+}

@@ -2,6 +2,10 @@
     <div :class="$style.container">
         <EditorHeader default-active="2">
             <div :class="$style.btns">
+                <el-select v-model="formProps.ui" placeholder="ui" size="small" style="margin-right: 6px;width: 104px;" @change="handleChangeUi">
+                    <el-option value="element" label="element"></el-option>
+                    <el-option value="iview3" label="iview3"></el-option>
+                </el-select>
                 <span style="font-size: 13px;">标签：</span>
                 <el-slider
                     v-model="formProps.labelWidth"
@@ -117,13 +121,19 @@
 
 <script>
     import EditorHeader from '@/_common/components/EditorHeader.vue';
+    import { getUrlQuery } from '@/_common/utils/url';
     import CodeEditor from '../../components/CodeEditor';
     import schemaTypes from './schemaTypes';
 
+    const urlQuery = getUrlQuery();
+    const curUi = urlQuery.ui || 'element';
+
     const VueElementForm = async () => {
-        if (window.location.hash.includes('ui=iview')) {
-            // 注册iview
+        if (curUi === 'iview3') {
+            // 注册iview3
             await import('@/_common/components/iView/index.js');
+
+            // iview3 form
             return import('@lljj/vue2-form-iview3/src/index');
         }
         return import('@lljj/vue-json-schema-form');
@@ -206,6 +216,15 @@
             this.initData();
         },
         methods: {
+            handleChangeUi(value) {
+                const { origin, pathname, hash } = window.location;
+                const qs = Object.entries({
+                    ...urlQuery,
+                    ui: value
+                }).map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join('&');
+
+                window.location.href = `${origin}${pathname}?${qs}${hash}`;
+            },
             sliderFormat(value) {
                 return value ? `${value * 4}px` : undefined;
             },
@@ -219,6 +238,7 @@
                         show: true
                     },
                     formProps: {
+                        ui: curUi,
                         labelWidth: 25,
                         inline: false,
                         labelPosition: 'top',
