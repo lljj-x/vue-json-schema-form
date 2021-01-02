@@ -60,6 +60,7 @@ export default {
                     color: {
                         type: 'string',
                         title: 'color picker',
+                        format: 'color',
                         default: '#151ce6',
                     },
                 },
@@ -112,7 +113,6 @@ export default {
                 },
             },
             color: {
-                'ui:widget': 'el-color-picker',
                 'ui:options': {
                     size: 'medium'
                 }

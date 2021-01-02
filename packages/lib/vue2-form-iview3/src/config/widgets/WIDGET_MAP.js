@@ -12,36 +12,17 @@ const {
     SelectWidget,
     TimePickerWidget,
     DatePickerWidget,
-    DateTimePickerWidget
+    DateTimePickerWidget,
+    SwitchWidget,
+    InputNumberWidget
 } = widgetComponents;
 
 export default {
     types: {
-        boolean: {
-            functional: true,
-            render(h, context) {
-                const { activeText, inactiveText } = context.props;
-
-                // 转换elementUi activeText inactiveText 支持 iview slot
-                const childNode = Object.entries({
-                    open: activeText,
-                    close: inactiveText,
-                }).reduce((preVal, [slot, value]) => {
-                    if (value !== undefined) {
-                        preVal.push(h('span', {
-                            slot
-                        }, [value]));
-                    }
-
-                    return preVal;
-                }, []);
-
-                return h('i-switch', context.data, childNode);
-            }
-        },
+        boolean: SwitchWidget,
         string: 'i-input',
-        number: 'input-number',
-        integer: 'input-number',
+        number: InputNumberWidget,
+        integer: InputNumberWidget,
     },
     formats: {
         color: 'color-picker',

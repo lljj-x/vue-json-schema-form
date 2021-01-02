@@ -2,28 +2,28 @@
     <div :class="$style.container">
         <EditorHeader default-active="2">
             <div :class="$style.btns">
-                <el-select v-model="formProps.ui" placeholder="ui" size="small" style="margin-right: 6px;width: 104px;" @change="handleChangeUi">
+                <el-select v-model="formProps.ui" placeholder="ui" size="mini" style="margin-right: 6px;width: 90px;" @change="handleChangeUi">
                     <el-option value="element" label="element"></el-option>
                     <el-option value="iview3" label="iview3"></el-option>
                 </el-select>
                 <span style="font-size: 13px;">标签：</span>
                 <el-slider
                     v-model="formProps.labelWidth"
-                    style="width: 80px; margin-right: 6px;"
-                    size="small"
+                    style="width: 70px; margin-right: 6px;"
+                    size="mini"
                     :format-tooltip="sliderFormat"
                 ></el-slider>
-                <el-checkbox v-model="formProps.inline" style="margin-right: 6px;" size="small">Inline</el-checkbox>
-                <el-checkbox v-model="formFooter.show" style="margin-right: 6px;" size="small">底部</el-checkbox>
-                <el-select v-model="formProps.layoutColumn" placeholder="布局" size="small" style="margin-right: 6px;width: 104px;">
+                <el-checkbox v-model="formProps.inline" style="margin-right: 6px;" size="mini">Inline</el-checkbox>
+                <el-checkbox v-model="formFooter.show" style="margin-right: 6px;" size="mini">底部</el-checkbox>
+                <el-select v-model="formProps.layoutColumn" placeholder="布局" size="small" style="margin-right: 6px;width: 100px;">
                     <el-option :value="1" label="一列显示"></el-option>
                     <el-option :value="2" label="二列显示"></el-option>
                     <el-option :value="3" label="三列显示"></el-option>
                 </el-select>
-                <el-select v-model="formProps.labelPosition" placeholder="对其" size="small" style="margin-right: 6px;width: 104px;">
-                    <el-option value="top" label="Label top"></el-option>
-                    <el-option value="left" label="Label left"></el-option>
-                    <el-option value="right" label="Label right"></el-option>
+                <el-select v-model="formProps.labelPosition" placeholder="对其" size="small" style="margin-right: 6px;width: 96px;">
+                    <el-option value="top" label="Label上"></el-option>
+                    <el-option value="left" label="Label左"></el-option>
+                    <el-option value="right" label="Label右"></el-option>
                 </el-select>
                 <el-button icon="el-icon-share"
                            type="primary"
@@ -100,6 +100,7 @@
                             <span>生成表单：</span>
                         </div>
                         <VueElementForm
+                            :key="pageKey"
                             v-model="formData"
                             :schema="schema"
                             :ui-schema="uiSchema"
@@ -160,6 +161,9 @@
             };
         },
         computed: {
+            pageKey() {
+                return this.$route.query.type;
+            },
             trueFormProps() {
                 if (!this.formProps) return {};
                 return {

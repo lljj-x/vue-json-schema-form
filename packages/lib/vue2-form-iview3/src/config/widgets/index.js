@@ -11,6 +11,8 @@ import DatePickerWidget from './DatePickerWidget';
 import DateTimePickerWidget from './DateTimePickerWidget';
 import TimePickerWidget from './TimePickerWidget';
 import UploadWidget from './UploadWidget';
+import SwitchWidget from './SwitchWidget';
+import InputNumberWidget from './InputNumberWidget';
 
 // webpack -> rollup
 // const files = require.context('.', true, /\.js|vue$/);
@@ -29,7 +31,9 @@ const widgetComponents = {
     TimePickerWidget,
     DatePickerWidget,
     DateTimePickerWidget,
-    UploadWidget
+    UploadWidget,
+    SwitchWidget,
+    InputNumberWidget
 };
 
 // 注册组件

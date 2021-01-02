@@ -251,14 +251,6 @@
         .arrayListItem_content {
             padding-top: 8px;
         }
-        .el-form-item__label {
-            line-height: 26px;
-            padding-bottom: 6px;
-            font-size: 14px;
-        }
-    }
-    .el-checkbox, .el-color-picker{
-        vertical-align: top;
     }
 }
 

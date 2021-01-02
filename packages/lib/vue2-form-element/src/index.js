@@ -15,6 +15,8 @@ import WIDGET_MAP from './config/widgets/WIDGET_MAP.js';
 // import fieldProps from '@lljj/vue2-form-core/JsonSchemaForm/fields/props';
 // import SchemaField from './JsonSchemaForm/fields/SchemaField';
 
+import './style.css';
+
 const JsonSchemaForm = createVue2Core(Object.freeze({
     WIDGET_MAP: Object.freeze(WIDGET_MAP),
     COMPONENT_MAP: Object.freeze({

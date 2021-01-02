@@ -137,7 +137,8 @@ export default {
                 return this.curValue;
             },
             set(value) {
-                const trueValue = value === '' ? this.emptyValue : value;
+                // 大多组件删除为空值会重置为null。
+                const trueValue = (value === '' || value === null) ? this.emptyValue : value;
                 if (this.isFormData) {
                     setPathVal(this.rootFormData, this.curNodePath, trueValue);
                 }
