@@ -31,7 +31,7 @@ export default {
         const value = this.value;
         const isArrayValue = Array.isArray(value);
 
-        let fileList = this.$attrs.fileList || [];
+        let fileList = [];
 
         if (isArrayValue) {
             fileList = value.map((item, index) => ({
@@ -84,12 +84,7 @@ export default {
 
         const data = {
             attrs: {
-                fileList: this.fileList,
-                'on-exceed': () => {
-                    if (this.$message) {
-                        this.$message.warning('超出文件上传数');
-                    }
-                },
+                defaultFileList: this.fileList,
                 'on-error': () => {
                     if (this.$message) {
                         this.$message.error('文件上传失败');
@@ -123,7 +118,7 @@ export default {
                 slot: 'default',
             }, [typeof slots.default === 'function' ? slots.default(h) : slots.default]));
         } else {
-            childVNode.push(h('el-button', {
+            childVNode.push(h('i-button', {
                 props: {
                     type: 'primary'
                 },
@@ -136,6 +131,6 @@ export default {
             }, [typeof slots.tip === 'function' ? slots.tip(h) : slots.tip]));
         }
 
-        return h('el-upload', data, childVNode);
+        return h('upload', data, childVNode);
     }
 };
