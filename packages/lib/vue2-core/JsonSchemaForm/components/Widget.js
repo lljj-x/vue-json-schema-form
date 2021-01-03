@@ -170,7 +170,7 @@ export default {
         // labelPosition left/right
         const miniDesModel = self.formProps && self.formProps.labelPosition !== 'top';
 
-        const descriptionVnode = (self.description) ? h(
+        const descriptionVNode = (self.description) ? h(
             'p',
             {
                 domProps: {
@@ -184,7 +184,7 @@ export default {
 
         const { COMPONENT_MAP, ICONS_MAP } = self.globalOptions;
 
-        const miniDescriptionVNode = (miniDesModel && descriptionVnode) ? h(COMPONENT_MAP.popover, {
+        const miniDescriptionVNode = (miniDesModel && descriptionVNode) ? h(COMPONENT_MAP.popover, {
             style: {
                 margin: '0 2px',
                 fontSize: '16px',
@@ -195,7 +195,7 @@ export default {
                 trigger: 'hover'
             }
         }, [
-            descriptionVnode,
+            descriptionVNode,
             h('i', {
                 slot: 'reference',
                 class: ICONS_MAP.question
@@ -275,21 +275,21 @@ export default {
                 },
             },
             [
-                h('span', {
+                self.label ? h('span', {
                     slot: 'label',
                     class: {
                         genFormLabel: true,
                         genFormItemRequired: self.required,
                     },
                 }, [
-                    `${self.label || ''}`,
-                    miniDescriptionVNode || null,
+                    `${self.label}`,
+                    miniDescriptionVNode,
                     `${(self.formProps && self.formProps.labelSuffix) || ''}`
-                ]),
+                ]) : null,
 
                 // description
                 // 非mini模式显示 description
-                !miniDesModel ? descriptionVnode : null,
+                !miniDesModel ? descriptionVNode : null,
                 h( // 关键输入组件
                     self.widget,
                     {

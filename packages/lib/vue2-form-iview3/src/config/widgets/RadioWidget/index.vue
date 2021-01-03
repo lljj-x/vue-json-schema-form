@@ -1,7 +1,7 @@
 <template>
-    <el-radio-group v-model="checkList" v-bind="$attrs">
-        <el-radio v-for="(item, index) in enumOptions" :key="index" :label="item.value">{{ item.label }}</el-radio>
-    </el-radio-group>
+    <radio-group v-model="checkList" v-bind="$attrs">
+        <radio v-for="(item, index) in enumOptions" :key="index" :label="item.value">{{ item.label }}</radio>
+    </radio-group>
 </template>
 
 <script>

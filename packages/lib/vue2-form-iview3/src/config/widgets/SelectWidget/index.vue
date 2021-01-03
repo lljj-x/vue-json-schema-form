@@ -1,9 +1,9 @@
 <template>
-    <el-select v-model="selectList"
-               v-bind="$attrs"
+    <i-select v-model="selectList"
+              v-bind="$attrs"
     >
-        <el-option v-for="(item, index) in enumOptions" :key="index" :label="item.label" :value="item.value"></el-option>
-    </el-select>
+        <i-option v-for="(item, index) in enumOptions" :key="index" :value="item.value">{{ item.label }}</i-option>
+    </i-select>
 </template>
 
 <script>

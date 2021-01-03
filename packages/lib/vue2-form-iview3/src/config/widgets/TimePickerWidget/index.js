@@ -6,11 +6,6 @@ export default {
     name: 'TimePickerWidget',
     functional: true,
     render(h, context) {
-        context.data.attrs = {
-            'value-format': 'HH:mm:ss',
-            ...context.data.attrs || {}
-        };
-
         const oldInputCall = context.data.on.input;
         context.data.on = {
             ...context.data.on,
@@ -19,6 +14,6 @@ export default {
             }
         };
 
-        return h('el-time-picker', context.data, context.children);
+        return h('time-picker', context.data, context.children);
     }
 };
