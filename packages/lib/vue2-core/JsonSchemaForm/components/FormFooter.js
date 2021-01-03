@@ -32,6 +32,9 @@ export default {
                 }
             }, cancelBtn),
             h(COMPONENT_MAP.button, {
+                style: {
+                    marginLeft: '10px'
+                },
                 props: {
                     type: 'primary'
                 },
