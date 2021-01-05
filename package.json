@@ -7,7 +7,8 @@
     "workspaces": [
         "packages/lib/**",
         "packages/docs",
-        "packages/demo"
+        "packages/demo",
+        "packages/demo-v3"
     ],
     "scripts": {
         "docs:dev": "yarn workspace docs dev",
@@ -15,6 +16,7 @@
         "lib:watch": "yarn workspace @lljj/vue-json-schema-form watch",
         "lib:build": "yarn workspace @lljj/vue-json-schema-form build",
         "demo:dev": "yarn workspace demo dev",
+        "demo3:dev": "yarn workspace demo-v3 dev",
         "demo:build": "yarn workspace demo build",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 2",
         "clean": "lerna clean && rm -rf node_modules",
@@ -44,6 +46,7 @@
         "cz-conventional-changelog": "^3.2.0",
         "conventional-changelog-cli": "^2.0.34",
         "husky": "^4.2.5",
-        "lerna": "^3.22.1"
+        "lerna": "^3.22.1",
+        "@vue/compiler-sfc": "^3.0.0"
     }
 }

@@ -1,0 +1,89 @@
+@import './variable.css';
+
+body {
+    color: var(--normalC);
+    line-height: 1;
+    min-width: var(--contentWidth);
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+body,
+td,
+a,
+p,
+li,
+dl,
+ul,
+dt,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+dd {
+    @mixin fontBase;
+    padding: 0;
+    margin: 0;
+    font-weight: normal;
+}
+
+em, i {
+    font-style: normal;
+}
+
+strong, b {
+    font-weight: normal;
+}
+
+sub, sup {
+    position: static;
+    top: auto;
+    font-size: 100%;
+}
+
+input,
+textarea,
+button {
+    @mixin fontBase;
+    outline: none;
+}
+
+input::-ms-clear {
+    display: none;
+}
+img {
+    vertical-align: top;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    color: var(--normalC);
+    text-decoration: none;
+    font-size: inherit;
+    outline: none;
+}
+
+.siteScroll,
+.siteHeader_currencyList,
+* {
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: white;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: #999999;
+    }
+}
+
+.hide{
+    display: none;
+}

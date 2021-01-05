@@ -21,25 +21,25 @@
 </template>
 
 <script>
-    export default {
-        name: 'FieldGroupWrap',
-        props: {
-            showTitle: {
-                type: Boolean,
-                default: true
-            },
-            showDescription: {
-                type: Boolean,
-                default: true
-            },
-            title: {
-                type: String,
-                default: ''
-            },
-            description: {
-                type: String,
-                default: ''
-            }
+export default {
+    name: 'FieldGroupWrap',
+    props: {
+        showTitle: {
+            type: Boolean,
+            default: true
+        },
+        showDescription: {
+            type: Boolean,
+            default: true
+        },
+        title: {
+            type: String,
+            default: ''
+        },
+        description: {
+            type: String,
+            default: ''
         }
-    };
+    }
+};
 </script>

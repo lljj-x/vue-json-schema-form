@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        var __replaceUrl = ~window.location.host.indexOf('buhuida.com') ? window.location.href.replace(/.*?buhuida\.com/, 'https://form.lljj.me') : (window.location.protocol === 'http:' && ~window.location.host.indexOf('lljj.me') ? window.location.href.replace(/^http/, 'https') : '');
+        __replaceUrl && window.location.replace(__replaceUrl);
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue JSON Schema form editor - VJSF</title>
+    <meta name="description" content="vue-json-schema-form - 基于JSON Schema动态创建表单在线演示编辑器" />
+    <link rel="icon" href="https://vue-json-schema-form.lljj.me/icons/ico.png">
+    <link rel="apple-touch-icon" href="https://vue-json-schema-form.lljj.me/icons/ico.png">
+</head>
+<body>
+    <div id="app"></div>
+    <script src="//cdn.jsdelivr.net/npm/@lljj/polyfill@0.1.1/dist/polyfill.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@next"></script>
+    <script src="//cdn.jsdelivr.net/npm/element-plus/lib/index.full.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@4"></script>
+
+    <script src="//cdn.jsdelivr.net/npm/monaco-editor@0.20.0/min/vs/loader.js"></script>
+    <script>
+        require.config({ paths: { 'vs': '//cdn.jsdelivr.net/npm/monaco-editor@0.20.0/min/vs' }});
+    </script>
+</body>
+</html>

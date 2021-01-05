@@ -2,11 +2,21 @@
     <div :class="$style.box">
         <div :class="$style.headerMenuBox">
             <h1>
-                <a :class="$style.menuLink" href="https://vue-json-schema-form.lljj.me/">
-                    <img :class="$style.logo" src="https://vue-json-schema-form.lljj.me/logo.png" alt="Vue JSON Schema Form">
+                <a
+                    :class="$style.menuLink"
+                    href="https://vue-json-schema-form.lljj.me/"
+                >
+                    <img
+                        :class="$style.logo"
+                        src="https://vue-json-schema-form.lljj.me/logo.png"
+                        alt="Vue JSON Schema Form"
+                    >
                 </a>
             </h1>
-            <Menu :class="$style.menu" v-bind="$attrs"></Menu>
+            <Menu
+                :class="$style.menu"
+                v-bind="$attrs"
+            ></Menu>
         </div>
         <div :class="$style.btns">
             <slot></slot>
@@ -15,14 +25,14 @@
 </template>
 
 <script>
-    import Menu from './Menu';
+import Menu from './Menu';
 
-    export default {
-        name: 'EditorHeader',
-        components: {
-            Menu
-        }
-    };
+export default {
+    name: 'EditorHeader',
+    components: {
+        Menu
+    }
+};
 </script>
 
 <style module>

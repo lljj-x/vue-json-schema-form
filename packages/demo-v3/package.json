@@ -1,0 +1,41 @@
+{
+    "name": "demo-v3",
+    "version": "0.5.0",
+    "private": true,
+    "license": "Apache-2.0",
+    "scripts": {
+        "dev": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "lint": "vue-cli-service lint"
+    },
+    "dependencies": {
+        "@lljj/polyfill": "^0.1.0",
+        "@lljj/vue-json-schema-form": "0.5.0",
+        "ajv-i18n": "^3.5.0",
+        "vue": "^3.0.0",
+        "vuedraggable": "2.23.2"
+    },
+    "devDependencies": {
+        "@lljj/babel-preset-app": "^0.0.1",
+        "@lljj/eslint-config": "0.1.0",
+        "@vue/cli-plugin-babel": "~4.5.0",
+        "@vue/cli-plugin-eslint": "~4.5.0",
+        "@vue/cli-service": "~4.5.0",
+        "@vue/compiler-sfc": "^3.0.0",
+        "babel-eslint": "^10.0.3",
+        "copy-webpack-plugin": "^5.0.4",
+        "eslint": "^5.16.0",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-vue": "^5.0.0",
+        "markdown-it-task-lists": "^2.1.1",
+        "postcss-color-mod-function": "^3.0.3",
+        "postcss-cssnext": "^3.1.0",
+        "postcss-import": "^12.0.1",
+        "postcss-mixins": "^6.2.0",
+        "postcss-nested": "^4.1.0",
+        "watchpack": "^1.6.1",
+        "webpack-bundle-analyzer": "^3.6.0",
+        "webpack-manifest-plugin": "^2.2.0",
+        "yargs": "^6.6.0"
+    }
+}
