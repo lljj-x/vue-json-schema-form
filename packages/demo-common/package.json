@@ -1,0 +1,23 @@
+{
+    "name": "demo-common",
+    "version": "0.5.0",
+    "description": "vue json schema form demo公共代码",
+    "keywords": [
+        "@lljj/vjsf-utils",
+        "vue",
+        "vuejs",
+        "form",
+        "jsonSchema"
+    ],
+    "repository": "https://github.com/lljj-x/vue-json-schema-form",
+    "homepage": "https://github.com/lljj-x/vue-json-schema-form",
+    "license": "Apache-2.0",
+    "private": true,
+    "author": "Liu.Jun",
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ],
+    "gitHead": "92795075169c879e1c1fabfe26f1d3c10b861060"
+}

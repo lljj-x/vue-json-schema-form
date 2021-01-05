@@ -58,7 +58,6 @@ module.exports = {
         config.externals = {
             vue: 'Vue',
             ElementPlus: 'ElementPlus',
-            ELEMENT: 'ELEMENT',
             VueRouter: 'VueRouter',
         };
         config.resolve.alias = {

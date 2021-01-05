@@ -12,8 +12,7 @@ const routes = [
         component: () => import('./views/Demo/index'),
     },
     {
-        path: '*',
-        hidden: true,
+        path: '/:pathMatch(.*)*',
         redirect: {
             name: 'demo',
             query: {
