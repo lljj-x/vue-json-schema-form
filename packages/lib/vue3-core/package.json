@@ -1,0 +1,27 @@
+{
+    "name": "@lljj/vue3-form-core",
+    "version": "0.5.0",
+    "description": "基于 Vue 、JsonSchema快速构建一个带完整校验的form表单，vue2版本基础框架",
+    "main": "JsonSchemaForm/index.js",
+    "module": "JsonSchemaForm/index.js",
+    "keywords": [
+        "vue",
+        "vuejs",
+        "form",
+        "jsonSchema"
+    ],
+    "dependencies": {
+        "@lljj/vjsf-utils": "0.5.0"
+    },
+    "repository": "https://github.com/lljj-x/vue-json-schema-form",
+    "homepage": "https://github.com/lljj-x/vue-json-schema-form",
+    "private": true,
+    "license": "Apache-2.0",
+    "author": "Liu.Jun",
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ],
+    "gitHead": "92795075169c879e1c1fabfe26f1d3c10b861060"
+}

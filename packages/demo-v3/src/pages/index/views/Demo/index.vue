@@ -165,7 +165,6 @@
                             <span>生成表单：</span>
                         </div>
                         <VueElementForm
-                            v-if="false"
                             v-model="formData"
                             :schema="schema"
                             :ui-schema="uiSchema"
@@ -202,7 +201,8 @@ const VueElementForm = async () => {
     //     // iview3 form
     //     return import('@lljj/vue2-form-iview3/src/index');
     // }
-    return import('@lljj/vue-json-schema-form');
+    debugger;
+    return import('@lljj/vue3-form-element/src/index');
 };
 
 const typeItems = Object.keys(schemaTypes);

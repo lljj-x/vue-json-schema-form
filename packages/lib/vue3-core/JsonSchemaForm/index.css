@@ -1,0 +1,302 @@
+.genFromComponent {
+    font-size: 14px;
+    line-height: 1;
+    word-wrap: break-word;
+    word-break: break-word;
+    padding: 0;
+    margin: 0;
+    a,
+    p,
+    li,
+    ul,
+    h1,
+    h2,
+    h3,
+    p {
+        font-size: 14px;
+    }
+    .genFormBtn {
+        display: inline-block;
+        line-height: 1;
+        white-space: nowrap;
+        cursor: pointer;
+        background: #fff;
+        border: 1px solid #dcdfe6;
+        color: #606266;
+        -webkit-appearance: none;
+        text-align: center;
+        box-sizing: border-box;
+        outline: none;
+        margin: 0;
+        transition: .1s;
+        font-weight: 500;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 4px;
+        &.is-plain{
+            &:focus, &:hover {
+                background: #fff;
+                border-color: #409eff;
+                color: #409eff;
+            }
+        }
+    }
+    .hiddenWidget {
+        display: none;
+    }
+    .fieldGroupWrap+.fieldGroupWrap {
+        .fieldGroupWrap_title {
+            margin-top: 20px;
+        }
+    }
+    .fieldGroupWrap_title {
+        position: relative;
+        display: block;
+        width: 100%;
+        line-height: 26px;
+        margin-bottom: 8px;
+        font-size: 15px;
+        font-weight: bold;
+        border: 0;
+    }
+    .fieldGroupWrap_des {
+        font-size: 12px;
+        line-height: 20px;
+        margin-bottom: 10px;
+        color: rgb(153, 153, 153);
+    }
+    .genFromWidget_des {
+        font-size: 12px;
+        line-height: 20px;
+        /*margin-top: -10px;*/
+        margin-bottom: 2px;
+        color: #999;
+        text-align: left;
+    }
+    .formItemErrorBox {
+        color: #ff5757;
+        padding-top: 2px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        display: -webkit-box !important;
+        line-height: 16px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        white-space: normal;
+        font-size: 12px;
+        text-align: left;
+    }
+    .genFormItemRequired {
+        &:before {
+            content: "*";
+            color: #f56c6c;
+            margin-right: 4px;
+        }
+    }
+
+    /* oneOf anyOf -  appendCombining_box*/
+    .appendCombining_box {
+        margin-bottom: 22px;
+        .appendCombining_box {
+            margin-bottom: 10px;
+        }
+        padding: 10px;
+        background: rgba(242,242,242,0.8);
+        box-shadow: 0 3px 1px -2px rgba(0,0,0,0.2), 0 0 3px 1px rgba(0,0,0,0.1);
+    }
+
+    /* validateWidget 单独的校验不属于输入框的*/
+    .validateWidget {
+        margin-bottom: 0;
+        width: 100% !important;
+        flex-basis: 100% !important;
+        .formItemErrorBox {
+            padding: 5px 0;
+            position: relative;
+        }
+    }
+
+    /* type array */
+    .arrayField {
+        margin-bottom: 22px;
+        .arrayField {
+            margin-bottom: 10px;
+        }
+    }
+    .arrayOrderList {
+        background: rgba(242,242,242,0.8);
+        box-shadow: 0 3px 1px -2px rgba(0,0,0,0.2), 0 0 3px 1px rgba(0,0,0,0.1);
+    }
+    .arrayOrderList_item {
+        position: relative;
+        padding: 25px 10px 12px;
+        border-radius: 2px;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+    }
+    .arrayOrderList_bottomAddBtn {
+        text-align: right;
+        padding: 15px 10px;
+        margin-bottom: 10px;
+    }
+    .bottomAddBtn {
+        width: 40%;
+        min-width: 10px;
+        max-width: 180px;
+        /*box-shadow: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 1px rgba(0,0,0,0.1);*/
+    }
+    .arrayListItem_content {
+        padding-top: 15px;
+        flex: 1;
+        margin: 0 auto;
+        box-shadow: 0 -1px 0 0 rgba(0,0,0,0.05);
+    }
+
+    .arrayListItem_index, .arrayListItem_operateTool{
+        position: absolute;
+        height: 25px;
+    }
+    .arrayListItem_index {
+        top: 6px;
+        line-height: 18px;
+        height: 18px;
+        padding: 0 6px;
+        background-color: rgba(0,0,0,.28);
+        color: #fff;
+        font-size: 12px;
+        border-radius: 2px;
+    }
+    .arrayListItem_operateTool {
+        width: 75px;
+        right: 9px;
+        top: -2px;
+        text-align: right;
+        font-size: 0;
+    }
+    .arrayListItem_btn {
+        vertical-align: top;
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        -webkit-appearance: none;
+        appearance: none;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        background: transparent;
+        color: #666;
+        &:hover {
+            opacity: 0.6;
+        }
+        &[disabled] {
+            color: #999999;
+            opacity: 0.3 !important;
+            cursor: not-allowed;
+        }
+    }
+    .arrayListItem_orderBtn-top {
+        background-color: #f0f9eb;
+    }
+    .arrayListItem_orderBtn-bottom {
+        background-color: #f0f9eb;
+    }
+    .arrayListItem_btn-delete {
+        background-color: #fef0f0;
+    }
+
+    .formFooter_item {
+        text-align: right;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        padding-top: 10px;
+    }
+
+    &.formInlineFooter {
+        &>.fieldGroupWrap{
+            display: inline-block;
+            margin-right: 10px;
+        }
+    }
+
+    .arrayListItem_content .genFormItem {
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    &.formInline {
+        .validateWidget {
+            margin-right: 0;
+        }
+        .formFooter_item {
+            border-top: none;
+            padding-top: 0;
+        }
+    }
+
+    /* el-form 重置样式*/
+    &.formLabel-top {
+        .arrayListItem_content {
+            padding-top: 8px;
+        }
+    }
+}
+
+
+/* 适配多列布局 */
+:root {
+    --width-column-gutter : 10px;
+}
+
+.layoutColumn {
+    .layoutColumn_w100 {
+        width: 100% !important;
+        flex-basis: 100% !important;;
+    }
+    .fieldGroupWrap_box {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+        align-content: flex-start;
+        &>div {
+            width: 100%;
+            flex-basis: 100%;
+        }
+        &>.genFormItem{
+            flex-grow: 0;
+            flex-shrink: 0;
+            box-sizing: border-box;
+            padding-right: var(--width-column-gutter);
+        }
+    }
+    &.layoutColumn-1 {
+        .fieldGroupWrap_box>.genFormItem {
+            padding-right: 0;
+        }
+    }
+    &.layoutColumn-2 {
+        .fieldGroupWrap_box>.genFormItem {
+            width: 50%;
+            flex-basis: 50%;
+        }
+    }
+    &.layoutColumn-3 {
+        .fieldGroupWrap_box>.genFormItem{
+            width: 33.333%;
+            flex-basis: 33.333%;
+        }
+    }
+}
