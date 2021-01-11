@@ -190,20 +190,22 @@ import { getUrlQuery } from 'demo-common/utils/url';
 import schemaTypes from 'demo-common/schemaTypes';
 import CodeEditor from 'demo-common/components/CodeEditor';
 
+import VueElementForm from '@lljj/vue3-form-element/src/index';
+
 const urlQuery = getUrlQuery();
 const curUi = urlQuery.ui || 'element';
 
-const VueElementForm = async () => {
-    // if (curUi === 'iview3') {
-    //     // 注册iview3
-    //     await import('@/_common/components/iView/index.js');
-    //
-    //     // iview3 form
-    //     return import('@lljj/vue2-form-iview3/src/index');
-    // }
-    debugger;
-    return import('@lljj/vue3-form-element/src/index');
-};
+// const VueElementForm = async () => {
+//     if (curUi === 'iview3') {
+//         // 注册iview3
+//         await import('@/_common/components/iView/index.js');
+//
+//         // iview3 form
+//         return import('@lljj/vue2-form-iview3/src/index');
+//     }
+//     return import('@lljj/vue3-form-element/src/index');
+// };
+
 
 const typeItems = Object.keys(schemaTypes);
 

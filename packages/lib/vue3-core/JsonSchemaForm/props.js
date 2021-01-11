@@ -11,7 +11,7 @@ export default {
             cancelBtn: '取消',
         }),
     },
-    value: {
+    modelValue: {
         type: null,
         default: () => ({}),
         required: true

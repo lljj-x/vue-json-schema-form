@@ -32,5 +32,6 @@ export default {
         select: SelectWidget,
         radioGroup: RadioWidget,
         checkboxGroup: CheckboxesWidget,
-    }
+    },
+    widgetComponents
 };

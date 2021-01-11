@@ -2,7 +2,7 @@
  * Created by Liu.Jun on 2019/11/29 11:25.
  */
 
-import createVue2Core from '@lljj/vue3-form-core';
+import createVue3Core from '@lljj/vue3-form-core';
 
 import WIDGET_MAP from './config/widgets/WIDGET_MAP.js';
 
@@ -17,22 +17,22 @@ import WIDGET_MAP from './config/widgets/WIDGET_MAP.js';
 
 import './style.css';
 
-const JsonSchemaForm = createVue2Core(Object.freeze({
-    WIDGET_MAP: Object.freeze(WIDGET_MAP),
-    COMPONENT_MAP: Object.freeze({
+const JsonSchemaForm = createVue3Core({
+    WIDGET_MAP,
+    COMPONENT_MAP: {
         form: 'el-form',
         formItem: 'el-form-item',
         button: 'el-button',
         popover: 'el-popover'
-    }),
-    ICONS_MAP: Object.freeze({
+    },
+    ICONS_MAP: {
         question: 'el-icon-question',
         moveUp: 'el-icon-caret-top',
         moveDown: 'el-icon-caret-bottom',
         close: 'el-icon-close',
         plus: 'el-icon-plus'
-    })
-}));
+    }
+});
 
 export default JsonSchemaForm;
 
