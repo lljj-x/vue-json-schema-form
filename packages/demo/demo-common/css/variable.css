@@ -1,0 +1,148 @@
+:root {
+    /* base color
+-------------------------- */
+    --color-white                       : #FFF;
+    --color-black                       : #000;
+
+    //--color-primary                     : #AFA37E;
+    --color-primary                     : #2b9939;
+    --color-primary-light               : #EAE5D4;
+    --color-primary-darken              : #978755;
+
+    --color-success                     : #5BBA69;
+    --color-warning                     : #FFB403;
+    --color-danger                      : #FF5757;
+    --color-error                       : #FF001F;
+
+    /* layout navigate
+    -------------------------- */
+    --nav-background-color              : #3C3C3C;
+    --nav-background-color-hover        : #585858;
+
+    /* link
+    -------------------------- */
+    --color-link-base                   : #2774FF;
+
+    /* checkbox radio
+    -------------------------- */
+    --checkbox-color                    : #61A5FF;
+
+    /* text color
+    -------------------------- */
+    --color-text-base                   : #000;
+    --color-text-second                 : #333;
+    --color-text-third                  : #666;
+    --color-text-light                  : #999;
+    --color-text-placeholder            : #999;
+    --color-text-disabled               : #D8D8D8;
+    --color-text-selected               : #FF8A00;
+
+    /* icon
+    -------------------------- */
+    --color-icon-base                   : #999;
+    --color-icon-info                   : var(--color-primary);
+    --color-icon-success                : var(--color-success);
+    --color-icon-error                  : var(--color-danger);
+    --color-icon-warning                : var(--color-warning);
+
+    /* background-color
+    -------------------------- */
+    --background-color-base             : #F2F2F2;
+    --background-color-selected         : #F2F2F2;
+    --background-color-hover            : #F7F7F7;
+    --background-color-light            : #FBFBFB;
+    --background-color-lighter          : #FAFAFA;
+
+    /* border
+    -------------------------- */
+    --border-base-style                 : 1px solid var(--border-color-base);
+    --border-radius                     : 4px;
+    --border-color-base                 : #DDD;
+    --border-color-light                : #D8D8D8;
+    --border-color-lighter              : #EEE;
+
+    /* Font
+    -------------------------- */
+    --font-size-base                    : 14px;
+    --font-size-small                   : 12px;
+    --font-size-large                   : 14px;
+    --font-size-larger                  : 16px;
+    --font-size-largest                 : 18px;
+    --font-weight-medium                : 500;
+    --font-family                       : OpenSans,Arial,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+    --font-line-height                  : 1;
+
+    /* Animation
+    -------------------------- */
+    --animation-transition-time          : 300ms;
+    --animation-transition-timing        : ease-in-out;
+
+    /* Layout
+    -------------------------- */
+    --layout-safe-width                  : 1200px;
+    --layout-better-width                : 1440px;
+
+    --mainC: #000;
+    --emphasizeC: #FF8A00;
+    --warningC: #f30240;
+    --normalC: #666;
+    --assistC: #999;
+    --disableC: #CCC;
+    --borderC: #EEE;
+    --assistBgC: #F9F9F9;
+    --contentWidth: 980px; /*内容区宽度*/
+}
+
+/* 反馈颜色 */
+@define-mixin actionFb $color {
+    background-color: $color;
+    transition: background-color .5s ease;
+    &:hover{
+        background-color: color($(color) alpha(-20%));
+    }
+}
+
+/* css绘制三角形 */
+@define-mixin triangle $width {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-width: $(width);
+}
+
+/* 多行文字超过部分显示 "..." */
+@define-mixin multiline $lineHeight, $line {
+    display: -webkit-box !important;
+    height: calc($lineHeight * $line);
+    line-height: $lineHeight;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $line;
+}
+
+/* 滑过阴影 */
+@define-mixin hoverShadow {
+    transition: box-shadow .2s linear;
+    &:hover{
+        box-shadow: 0 2px 10px var(--color-boxshadow);
+    }
+}
+
+/* 单行文本超过部分显示 "..." */
+@define-mixin nowrap {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    word-break: normal;
+}
+
+
+@define-mixin fontBase{
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
+}
+
+@define-mixin fontBold{
+    font-weight: bold;
+}
