@@ -14,16 +14,6 @@ import UploadWidget from './UploadWidget';
 import SwitchWidget from './SwitchWidget';
 import InputNumberWidget from './InputNumberWidget';
 
-// webpack -> rollup
-// const files = require.context('.', true, /\.js|vue$/);
-// const widgetComponents = files.keys().reduce((preVal, curKey) => {
-//     if (curKey !== './index.js') {
-//         preVal[curKey.replace(/(\.\/|\/index\.(js|vue))/g, '')] = files(curKey).default;
-//     }
-//     return preVal;
-// }, {});
-
-
 const widgetComponents = {
     CheckboxesWidget,
     RadioWidget,

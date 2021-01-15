@@ -17,4 +17,8 @@
         text-align: left;
         line-height: 1.2;
     }
+    .validateWidget .ivu-form-item-error-tip {
+        padding: 5px 0;
+        position: relative;
+    }
 }

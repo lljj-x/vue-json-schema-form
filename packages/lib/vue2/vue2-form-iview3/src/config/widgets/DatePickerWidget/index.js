@@ -19,6 +19,8 @@ function formatDateStr(date, isDatetime) {
     return `${year}-${f(month)}-${f(day)}`;
 }
 
+const toDateObj = value => (Array.isArray(value) ? value.map(item => value && new Date(item)) : value && new Date(value));
+
 function isEmptyValue(value) {
     return value === null || value === '' || (Array.isArray(value) && value.every(item => item === ''));
 }
@@ -44,7 +46,7 @@ export default {
     },
     data() {
         return {
-            originValue: this.value,
+            originValue: toDateObj(this.value),
             formatValue: this.formatDate(this.value)
         };
     },
@@ -52,11 +54,12 @@ export default {
         value(newVal) {
             // 兼容 iview 绑定字符串类型值会导致无限循环的问题
 
+            debugger;
             if (newVal === this.formatValue) {
                 // 内部date-picker选择框更新
             } else {
                 // 外部更新值
-                this.originValue = newVal;
+                this.originValue = toDateObj(newVal);
             }
         }
     },
@@ -97,6 +100,7 @@ export default {
             on: {
                 ...this.$listeners,
                 input(val) {
+                    debugger;
                     self.originValue = val;
                     self.formatValue = self.formatDate(val);
 
