@@ -2,6 +2,10 @@
  * Created by Liu.Jun on 2020/12/27 9:53 下午.
  */
 
+import { h } from 'vue';
+
+import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
+
 export default {
     name: 'FormFooter',
     props: {
@@ -13,38 +17,35 @@ export default {
             type: String,
             default: '取消'
         },
-        globalOptions: null
+        globalOptions: {
+            type: Object,
+            default: () => ({})
+        }
     },
-    render(h) {
-        const self = this;
-        const { okBtn, cancelBtn, globalOptions: { COMPONENT_MAP } } = this.$props;
+    emits: ['cancel', 'submit'],
+    setup(props, { emit }) {
+        // globalOptions 不需要响应式
+        const { globalOptions: { COMPONENT_MAP } } = props;
 
-        return h(COMPONENT_MAP.formItem, {
+        return () => h(COMPONENT_MAP.formItem, {
             class: {
                 formFooter_item: true
             }
         }, [
-            h(COMPONENT_MAP.button, {
-                on: {
-                    click() {
-                        self.$emit('onCancel');
-                    }
+            h(resolveComponent(COMPONENT_MAP.button), {
+                onClick() {
+                    emit('cancel');
                 }
-            }, cancelBtn),
-            h(COMPONENT_MAP.button, {
+            }, props.cancelBtn),
+            h(resolveComponent(COMPONENT_MAP.button), {
                 style: {
                     marginLeft: '10px'
                 },
-                props: {
-                    type: 'primary'
-                },
-                on: {
-                    click() {
-                        self.$emit('onSubmit');
-                    }
+                type: 'primary',
+                onClick() {
+                    emit('submit');
                 }
-            }, okBtn)
+            }, props.okBtn)
         ]);
-
     }
 };

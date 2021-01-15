@@ -30,3 +30,5 @@ app.use(ElementPlus);
 
 // mount
 app.mount('#app');
+
+window.app1 = app;
