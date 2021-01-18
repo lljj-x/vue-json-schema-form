@@ -10,12 +10,12 @@
         "form",
         "jsonSchema"
     ],
+    "private": false,
     "dependencies": {
         "@lljj/vjsf-utils": "0.5.0"
     },
     "repository": "https://github.com/lljj-x/vue-json-schema-form",
     "homepage": "https://github.com/lljj-x/vue-json-schema-form",
-    "private": true,
     "license": "Apache-2.0",
     "author": "Liu.Jun",
     "browserslist": [

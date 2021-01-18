@@ -2,6 +2,7 @@
     "name": "@lljj/vjsf-utils",
     "version": "0.5.0",
     "description": "vue json schema form 使用的基础utils工具类",
+    "private": false,
     "keywords": [
         "@lljj/vjsf-utils",
         "vue",
@@ -15,7 +16,6 @@
     "repository": "https://github.com/lljj-x/vue-json-schema-form",
     "homepage": "https://github.com/lljj-x/vue-json-schema-form",
     "license": "Apache-2.0",
-    "private": true,
     "author": "Liu.Jun",
     "browserslist": [
         "> 1%",

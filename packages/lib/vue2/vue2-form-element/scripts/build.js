@@ -29,6 +29,4 @@ async function build() {
     }
 }
 
-build().catch((error) => {
-    debugger;
-});
+build();
