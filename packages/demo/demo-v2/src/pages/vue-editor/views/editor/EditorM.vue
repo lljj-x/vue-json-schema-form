@@ -130,9 +130,9 @@
 import Draggable from 'vuedraggable';
 import VueElementForm, { schemaValidate } from '@lljj/vue-json-schema-form';
 
-import * as arrayMethods from '@/_common/utils/array';
-import componentWithDialog from '@/_common/components/component-with-dialog';
-import JsonPerttyPrint from '@/_common/components/JsonPerttyPrint.vue';
+import * as arrayMethods from 'demo-common/utils/array';
+import componentWithDialog from 'demo-common/components/component-with-dialog';
+import JsonPerttyPrint from 'demo-common/components/JsonPerttyPrint.vue';
 
 import EditorToolBar from './EditorToolBar.vue';
 import EditorHeader from './EditorHeader.vue';
@@ -443,7 +443,7 @@ export default {
     }
 </style>
 <style module>
-    @import 'variable.css';
+    @import 'demo-common/css/variable.css';
     :root {
         --site-top-height: 80px;
         --tool-bar-width: 260px;

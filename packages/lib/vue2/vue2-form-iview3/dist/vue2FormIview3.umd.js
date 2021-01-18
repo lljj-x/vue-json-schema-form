@@ -1,346 +1,13 @@
-/** @license @lljj/vue-json-schema-form (c) 2020-2020 Liu.Jun License: Apache-2.0 */
+/** @license @lljj/vue2-form-iview3 (c) 2020-2021 Liu.Jun License: Apache-2.0 */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('vue')) :
     typeof define === 'function' && define.amd ? define(['exports', 'vue'], factory) :
-    (global = global || self, factory(global.vueJsonSchemaForm = {}, global.Vue));
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.vue2FormIview3 = {}, global.Vue));
 }(this, (function (exports, Vue) { 'use strict';
 
-    Vue = Vue && Object.prototype.hasOwnProperty.call(Vue, 'default') ? Vue['default'] : Vue;
+    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-    /**
-     * Created by Liu.Jun on 2020/4/22 18:58.
-     */
-    // 递归参数，统一props
-    var vueProps = {
-      formProps: {
-        type: null
-      },
-      // 当前节点schema
-      schema: {
-        type: Object,
-        default: () => ({})
-      },
-      // 当前节点Ui Schema
-      uiSchema: {
-        type: Object,
-        default: () => ({})
-      },
-      // 当前节点Error Schema
-      errorSchema: {
-        type: Object,
-        default: () => ({})
-      },
-      // 自定义校验
-      customRule: {
-        type: Function,
-        default: null
-      },
-      // 自定义校验规则
-      customFormats: {
-        type: Object,
-        default: () => ({})
-      },
-      // 根节点 Schema
-      rootSchema: {
-        type: Object,
-        default: () => ({})
-      },
-      // 根节点的数据
-      rootFormData: {
-        type: null,
-        default: () => ({})
-      },
-      // 当前节点路径
-      curNodePath: {
-        type: String,
-        default: ''
-      },
-      // 是否必填
-      required: {
-        type: Boolean,
-        default: false
-      },
-      // 是否需要校验数据组
-      // object array 类型默认会最后追加一个校验组件校验整体数据
-      needValidFieldGroup: {
-        type: Boolean,
-        default: true
-      }
-    };
-
-    // https://github.com/epoberezkin/ajv-i18n
-    function localizeZh(errors) {
-      if (!(errors && errors.length)) return;
-
-      for (let i = 0; i < errors.length; i += 1) {
-        const e = errors[i];
-        let out;
-        let n;
-        let cond;
-
-        switch (e.keyword) {
-          case '$ref':
-            out = `无法找到引用${e.params.ref}`;
-            break;
-
-          case 'additionalItems':
-            out = '';
-            n = e.params.limit;
-            out += `不允许超过${n}个元素`;
-            break;
-
-          case 'additionalProperties':
-            out = '不允许有额外的属性';
-            break;
-
-          case 'anyOf':
-            out = '数据应为 anyOf 所指定的其中一个';
-            break;
-
-          case 'const':
-            out = '应当等于常量';
-            break;
-
-          case 'contains':
-            out = '应当包含一个有效项';
-            break;
-
-          case 'custom':
-            out = `应当通过 "${e.keyword} 关键词校验"`;
-            break;
-
-          case 'dependencies':
-            out = '';
-            n = e.params.depsCount;
-            out += `应当拥有属性${e.params.property}的依赖属性${e.params.deps}`;
-            break;
-
-          case 'enum':
-            out = '应当是预设定的枚举值之一';
-            break;
-
-          case 'exclusiveMaximum':
-            out = '';
-            cond = `${e.params.comparison} ${e.params.limit}`;
-            out += `应当为 ${cond}`;
-            break;
-
-          case 'exclusiveMinimum':
-            out = '';
-            cond = `${e.params.comparison} ${e.params.limit}`;
-            out += `应当为 ${cond}`;
-            break;
-
-          case 'false schema':
-            out = '布尔模式出错';
-            break;
-
-          case 'format':
-            out = `应当匹配格式 "${e.params.format}"`;
-            break;
-
-          case 'formatExclusiveMaximum':
-            out = 'formatExclusiveMaximum 应当是布尔值';
-            break;
-
-          case 'formatExclusiveMinimum':
-            out = 'formatExclusiveMinimum 应当是布尔值';
-            break;
-
-          case 'formatMaximum':
-            out = '';
-            cond = `${e.params.comparison} ${e.params.limit}`;
-            out += `应当是 ${cond}`;
-            break;
-
-          case 'formatMinimum':
-            out = '';
-            cond = `${e.params.comparison} ${e.params.limit}`;
-            out += `应当是 ${cond}`;
-            break;
-
-          case 'if':
-            out = `应当匹配模式 "${e.params.failingKeyword}" `;
-            break;
-
-          case 'maximum':
-            out = '';
-            cond = `${e.params.comparison} ${e.params.limit}`;
-            out += `应当为 ${cond}`;
-            break;
-
-          case 'maxItems':
-            out = '';
-            n = e.params.limit;
-            out += `不应多于 ${n} 个项`;
-            break;
-
-          case 'maxLength':
-            out = '';
-            n = e.params.limit;
-            out += `不应多于 ${n} 个字符`;
-            break;
-
-          case 'maxProperties':
-            out = '';
-            n = e.params.limit;
-            out += `不应有多于 ${n} 个属性`;
-            break;
-
-          case 'minimum':
-            out = '';
-            cond = `${e.params.comparison} ${e.params.limit}`;
-            out += `应当为 ${cond}`;
-            break;
-
-          case 'minItems':
-            out = '';
-            n = e.params.limit;
-            out += `不应少于 ${n} 个项`;
-            break;
-
-          case 'minLength':
-            out = '';
-            n = e.params.limit;
-            out += `不应少于 ${n} 个字符`;
-            break;
-
-          case 'minProperties':
-            out = '';
-            n = e.params.limit;
-            out += `不应有少于 ${n} 个属性`;
-            break;
-
-          case 'multipleOf':
-            out = `应当是 ${e.params.multipleOf} 的整数倍`;
-            break;
-
-          case 'not':
-            out = '不应当匹配 "not" schema';
-            break;
-
-          case 'oneOf':
-            out = '只能匹配一个 "oneOf" 中的 schema';
-            break;
-
-          case 'pattern':
-            out = `应当匹配模式 "${e.params.pattern}"`;
-            break;
-
-          case 'patternRequired':
-            out = `应当有属性匹配模式 ${e.params.missingPattern}`;
-            break;
-
-          case 'propertyNames':
-            out = `属性名 '${e.params.propertyName}' 无效`;
-            break;
-
-          case 'required':
-            out = `应当有必需属性 ${e.params.missingProperty}`;
-            break;
-
-          case 'switch':
-            out = `由于 ${e.params.caseIndex} 失败，未通过 "switch" 校验, `;
-            break;
-
-          case 'type':
-            out = `应当是 ${e.params.type} 类型`;
-            break;
-
-          case 'uniqueItems':
-            out = `不应当含有重复项 (第 ${e.params.j} 项与第 ${e.params.i} 项是重复的)`;
-            break;
-
-          default:
-            // eslint-disable-next-line no-continue
-            continue;
-        }
-
-        e.message = out;
-      }
-    }
-
-    /**
-     * Created by Liu.Jun on 2020/4/30 11:22.
-     */
-    var i18n = {
-      $$currentLocalizeFn: localizeZh,
-
-      getCurrentLocalize() {
-        return this.$$currentLocalizeFn;
-      },
-
-      useLocal(fn) {
-        this.$$currentLocalizeFn = fn;
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/4/25 14:45.
-     */
-
-    const pathSeparator = '.'; // nodePath 转css类名
-
-    function nodePath2ClassName(path) {
-      const rootPathName = '__pathRoot';
-      return path ? `${rootPathName}.${path}`.replace(/\./g, '_') : rootPathName;
-    } // 是否为根节点
-
-    function isRootNodePath(path) {
-      return path === '';
-    } // 计算当前节点path
-
-    function computedCurPath(prePath, curKey) {
-      return prePath === '' ? curKey : [prePath, curKey].join(pathSeparator);
-    } // 删除当前path值
-
-    function deletePathVal(vueData, name) {
-      Vue.delete(vueData, name);
-    } // 设置当前path值
-
-    function setPathVal(obj, path, value) {
-      // Vue.set ?
-      const pathArr = path.split(pathSeparator);
-
-      for (let i = 0; i < pathArr.length; i += 1) {
-        if (pathArr.length - i < 2) {
-          // 倒数第一个数据
-          // obj[pathArr[pathArr.length - 1]] = value;
-          Vue.set(obj, pathArr[pathArr.length - 1], value);
-          break;
-        }
-
-        obj = obj[pathArr[i]];
-      }
-    } // 获取当前path值
-
-    function getPathVal(obj, path, leftDeviation = 0) {
-      const pathArr = path.split(pathSeparator);
-
-      for (let i = 0; i < pathArr.length - leftDeviation; i += 1) {
-        // 错误路径或者undefined中断查找
-        if (obj === undefined) return undefined;
-        obj = pathArr[i] === '' ? obj : obj[pathArr[i]];
-      }
-
-      return obj;
-    } // path 等于props
-
-    function path2prop(path) {
-      return path;
-    }
-
-    var vueUtils = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        nodePath2ClassName: nodePath2ClassName,
-        isRootNodePath: isRootNodePath,
-        computedCurPath: computedCurPath,
-        deletePathVal: deletePathVal,
-        setPathVal: setPathVal,
-        getPathVal: getPathVal,
-        path2prop: path2prop
-    });
+    var Vue__default = /*#__PURE__*/_interopDefaultLegacy(Vue);
 
     /**
      * Created by Liu.Jun on 2020/4/17 17:05.
@@ -577,188 +244,41 @@
       return a * b / gcd(a, b);
     }
 
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    var script = {
-      name: 'FieldGroupWrap',
-      props: {
-        showTitle: {
-          type: Boolean,
-          default: true
-        },
-        showDescription: {
-          type: Boolean,
-          default: true
-        },
-        title: {
-          type: String,
-          default: ''
-        },
-        description: {
-          type: String,
-          default: ''
-        }
+    // $ref 引用
+    function getPathVal(obj, pathStr) {
+      const pathArr = pathStr.split('/');
+
+      for (let i = 0; i < pathArr.length; i += 1) {
+        if (obj === undefined) return undefined;
+        obj = pathArr[i] === '' ? obj : obj[pathArr[i]];
       }
-    };
 
-    function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
-        if (typeof shadowMode !== 'boolean') {
-            createInjectorSSR = createInjector;
-            createInjector = shadowMode;
-            shadowMode = false;
-        }
-        // Vue.extend constructor export interop.
-        const options = typeof script === 'function' ? script.options : script;
-        // render functions
-        if (template && template.render) {
-            options.render = template.render;
-            options.staticRenderFns = template.staticRenderFns;
-            options._compiled = true;
-            // functional template
-            if (isFunctionalTemplate) {
-                options.functional = true;
-            }
-        }
-        // scopedId
-        if (scopeId) {
-            options._scopeId = scopeId;
-        }
-        let hook;
-        if (moduleIdentifier) {
-            // server build
-            hook = function (context) {
-                // 2.3 injection
-                context =
-                    context || // cached call
-                        (this.$vnode && this.$vnode.ssrContext) || // stateful
-                        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
-                // 2.2 with runInNewContext: true
-                if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-                    context = __VUE_SSR_CONTEXT__;
-                }
-                // inject component styles
-                if (style) {
-                    style.call(this, createInjectorSSR(context));
-                }
-                // register component module identifier for async chunk inference
-                if (context && context._registeredComponents) {
-                    context._registeredComponents.add(moduleIdentifier);
-                }
-            };
-            // used by ssr in case component is cached and beforeCreate
-            // never gets called
-            options._ssrRegister = hook;
-        }
-        else if (style) {
-            hook = shadowMode
-                ? function (context) {
-                    style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
-                }
-                : function (context) {
-                    style.call(this, createInjector(context));
-                };
-        }
-        if (hook) {
-            if (options.functional) {
-                // register for functional component in vue file
-                const originalRender = options.render;
-                options.render = function renderWithStyleInjection(h, context) {
-                    hook.call(context);
-                    return originalRender(h, context);
-                };
-            }
-            else {
-                // inject component registration as beforeCreate hook
-                const existing = options.beforeCreate;
-                options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
-            }
-        }
-        return script;
+      return obj;
+    } // 找到ref引用的schema
+
+
+    function findSchemaDefinition($ref, rootSchema = {}) {
+      const origRef = $ref;
+
+      if ($ref.startsWith('#')) {
+        // Decode URI fragment representation.
+        $ref = decodeURIComponent($ref.substring(1));
+      } else {
+        throw new Error(`Could not find a definition for ${origRef}.`);
+      }
+
+      const current = getPathVal(rootSchema, $ref);
+
+      if (current === undefined) {
+        throw new Error(`Could not find a definition for ${origRef}.`);
+      }
+
+      if (current.hasOwnProperty('$ref')) {
+        return findSchemaDefinition(current.$ref, rootSchema);
+      }
+
+      return current;
     }
-
-    /* script */
-    const __vue_script__ = script;
-
-    /* template */
-    var __vue_render__ = function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c(
-        "div",
-        { staticClass: "fieldGroupWrap" },
-        [
-          [
-            _vm.showTitle && _vm.title
-              ? _c("h3", { staticClass: "fieldGroupWrap_title" }, [
-                  _vm._v("\n            " + _vm._s(_vm.title) + "\n        ")
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.showDescription && _vm.description
-              ? _c("p", {
-                  staticClass: "fieldGroupWrap_des",
-                  domProps: { innerHTML: _vm._s(_vm.description) }
-                })
-              : _vm._e()
-          ],
-          _vm._v(" "),
-          _c("div", { staticClass: "fieldGroupWrap_box" }, [_vm._t("default")], 2)
-        ],
-        2
-      )
-    };
-    var __vue_staticRenderFns__ = [];
-    __vue_render__._withStripped = true;
-
-      /* style */
-      const __vue_inject_styles__ = undefined;
-      /* scoped */
-      const __vue_scope_id__ = undefined;
-      /* module identifier */
-      const __vue_module_identifier__ = undefined;
-      /* functional template */
-      const __vue_is_functional_template__ = false;
-      /* style inject */
-      
-      /* style inject SSR */
-      
-      /* style inject shadow dom */
-      
-
-      
-      const __vue_component__ = /*#__PURE__*/normalizeComponent(
-        { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
-        __vue_inject_styles__,
-        __vue_script__,
-        __vue_scope_id__,
-        __vue_is_functional_template__,
-        __vue_module_identifier__,
-        false,
-        undefined,
-        undefined,
-        undefined
-      );
 
     var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -775,7 +295,7 @@
     }
 
     var uri_all = createCommonjsModule(function (module, exports) {
-    /** @license URI.js v4.2.1 (c) 2011 Gary Court. License: http://github.com/garycourt/uri-js */
+    /** @license URI.js v4.4.0 (c) 2011 Gary Court. License: http://github.com/garycourt/uri-js */
     (function (global, factory) {
     	 factory(exports) ;
     }(commonjsGlobal, (function (exports) {
@@ -1698,9 +1218,9 @@
                 return "[" + $1 + ($2 ? "%25" + $2 : "") + "]";
             }));
         }
-        if (typeof components.port === "number") {
+        if (typeof components.port === "number" || typeof components.port === "string") {
             uriTokens.push(":");
-            uriTokens.push(components.port.toString(10));
+            uriTokens.push(String(components.port));
         }
         return uriTokens.length ? uriTokens.join("") : undefined;
     }
@@ -1903,8 +1423,9 @@
             return components;
         },
         serialize: function serialize(components, options) {
+            var secure = String(components.scheme).toLowerCase() === "https";
             //normalize the default port
-            if (components.port === (String(components.scheme).toLowerCase() !== "https" ? 80 : 443) || components.port === "") {
+            if (components.port === (secure ? 443 : 80) || components.port === "") {
                 components.port = undefined;
             }
             //normalize the empty path
@@ -1923,6 +1444,57 @@
         domainHost: handler.domainHost,
         parse: handler.parse,
         serialize: handler.serialize
+    };
+
+    function isSecure(wsComponents) {
+        return typeof wsComponents.secure === 'boolean' ? wsComponents.secure : String(wsComponents.scheme).toLowerCase() === "wss";
+    }
+    //RFC 6455
+    var handler$2 = {
+        scheme: "ws",
+        domainHost: true,
+        parse: function parse(components, options) {
+            var wsComponents = components;
+            //indicate if the secure flag is set
+            wsComponents.secure = isSecure(wsComponents);
+            //construct resouce name
+            wsComponents.resourceName = (wsComponents.path || '/') + (wsComponents.query ? '?' + wsComponents.query : '');
+            wsComponents.path = undefined;
+            wsComponents.query = undefined;
+            return wsComponents;
+        },
+        serialize: function serialize(wsComponents, options) {
+            //normalize the default port
+            if (wsComponents.port === (isSecure(wsComponents) ? 443 : 80) || wsComponents.port === "") {
+                wsComponents.port = undefined;
+            }
+            //ensure scheme matches secure flag
+            if (typeof wsComponents.secure === 'boolean') {
+                wsComponents.scheme = wsComponents.secure ? 'wss' : 'ws';
+                wsComponents.secure = undefined;
+            }
+            //reconstruct path from resource name
+            if (wsComponents.resourceName) {
+                var _wsComponents$resourc = wsComponents.resourceName.split('?'),
+                    _wsComponents$resourc2 = slicedToArray(_wsComponents$resourc, 2),
+                    path = _wsComponents$resourc2[0],
+                    query = _wsComponents$resourc2[1];
+
+                wsComponents.path = path && path !== '/' ? path : undefined;
+                wsComponents.query = query;
+                wsComponents.resourceName = undefined;
+            }
+            //forbid fragment component
+            wsComponents.fragment = undefined;
+            return wsComponents;
+        }
+    };
+
+    var handler$3 = {
+        scheme: "wss",
+        domainHost: handler$2.domainHost,
+        parse: handler$2.parse,
+        serialize: handler$2.serialize
     };
 
     var O = {};
@@ -1954,7 +1526,7 @@
         var decStr = pctDecChars(str);
         return !decStr.match(UNRESERVED) ? str : decStr;
     }
-    var handler$2 = {
+    var handler$4 = {
         scheme: "mailto",
         parse: function parse$$1(components, options) {
             var mailtoComponents = components;
@@ -2042,7 +1614,7 @@
 
     var URN_PARSE = /^([^\:]+)\:(.*)/;
     //RFC 2141
-    var handler$3 = {
+    var handler$5 = {
         scheme: "urn",
         parse: function parse$$1(components, options) {
             var matches = components.path && components.path.match(URN_PARSE);
@@ -2081,7 +1653,7 @@
 
     var UUID = /^[0-9A-Fa-f]{8}(?:\-[0-9A-Fa-f]{4}){3}\-[0-9A-Fa-f]{12}$/;
     //RFC 4122
-    var handler$4 = {
+    var handler$6 = {
         scheme: "urn:uuid",
         parse: function parse(urnComponents, options) {
             var uuidComponents = urnComponents;
@@ -2105,6 +1677,8 @@
     SCHEMES[handler$2.scheme] = handler$2;
     SCHEMES[handler$3.scheme] = handler$3;
     SCHEMES[handler$4.scheme] = handler$4;
+    SCHEMES[handler$5.scheme] = handler$5;
+    SCHEMES[handler$6.scheme] = handler$6;
 
     exports.SCHEMES = SCHEMES;
     exports.pctEncChar = pctEncChar;
@@ -2203,8 +1777,6 @@
       ucs2length: ucs2length,
       varOccurences: varOccurences,
       varReplace: varReplace,
-      cleanUpCode: cleanUpCode,
-      finalCleanUpCode: finalCleanUpCode,
       schemaHasRules: schemaHasRules,
       schemaHasRulesExcept: schemaHasRulesExcept,
       schemaUnknownRules: schemaUnknownRules,
@@ -2226,7 +1798,7 @@
     }
 
 
-    function checkDataType(dataType, data, negate) {
+    function checkDataType(dataType, data, strictNumbers, negate) {
       var EQUAL = negate ? ' !== ' : ' === '
         , AND = negate ? ' || ' : ' && '
         , OK = negate ? '!' : ''
@@ -2239,15 +1811,18 @@
                               NOT + 'Array.isArray(' + data + '))';
         case 'integer': return '(typeof ' + data + EQUAL + '"number"' + AND +
                                NOT + '(' + data + ' % 1)' +
-                               AND + data + EQUAL + data + ')';
+                               AND + data + EQUAL + data +
+                               (strictNumbers ? (AND + OK + 'isFinite(' + data + ')') : '') + ')';
+        case 'number': return '(typeof ' + data + EQUAL + '"' + dataType + '"' +
+                              (strictNumbers ? (AND + OK + 'isFinite(' + data + ')') : '') + ')';
         default: return 'typeof ' + data + EQUAL + '"' + dataType + '"';
       }
     }
 
 
-    function checkDataTypes(dataTypes, data) {
+    function checkDataTypes(dataTypes, data, strictNumbers) {
       switch (dataTypes.length) {
-        case 1: return checkDataType(dataTypes[0], data, true);
+        case 1: return checkDataType(dataTypes[0], data, strictNumbers, true);
         default:
           var code = '';
           var types = toHash(dataTypes);
@@ -2260,7 +1835,7 @@
           }
           if (types.number) delete types.integer;
           for (var t in types)
-            code += (code ? ' && ' : '' ) + checkDataType(t, data, true);
+            code += (code ? ' && ' : '' ) + checkDataType(t, data, strictNumbers, true);
 
           return code;
       }
@@ -2323,42 +1898,6 @@
       dataVar += '([^0-9])';
       expr = expr.replace(/\$/g, '$$$$');
       return str.replace(new RegExp(dataVar, 'g'), expr + '$1');
-    }
-
-
-    var EMPTY_ELSE = /else\s*{\s*}/g
-      , EMPTY_IF_NO_ELSE = /if\s*\([^)]+\)\s*\{\s*\}(?!\s*else)/g
-      , EMPTY_IF_WITH_ELSE = /if\s*\(([^)]+)\)\s*\{\s*\}\s*else(?!\s*if)/g;
-    function cleanUpCode(out) {
-      return out.replace(EMPTY_ELSE, '')
-                .replace(EMPTY_IF_NO_ELSE, '')
-                .replace(EMPTY_IF_WITH_ELSE, 'if (!($1))');
-    }
-
-
-    var ERRORS_REGEXP = /[^v.]errors/g
-      , REMOVE_ERRORS = /var errors = 0;|var vErrors = null;|validate.errors = vErrors;/g
-      , REMOVE_ERRORS_ASYNC = /var errors = 0;|var vErrors = null;/g
-      , RETURN_VALID = 'return errors === 0;'
-      , RETURN_TRUE = 'validate.errors = null; return true;'
-      , RETURN_ASYNC = /if \(errors === 0\) return data;\s*else throw new ValidationError\(vErrors\);/
-      , RETURN_DATA_ASYNC = 'return data;'
-      , ROOTDATA_REGEXP = /[^A-Za-z_$]rootData[^A-Za-z0-9_$]/g
-      , REMOVE_ROOTDATA = /if \(rootData === undefined\) rootData = data;/;
-
-    function finalCleanUpCode(out, async) {
-      var matches = out.match(ERRORS_REGEXP);
-      if (matches && matches.length == 2) {
-        out = async
-              ? out.replace(REMOVE_ERRORS_ASYNC, '')
-                   .replace(RETURN_ASYNC, RETURN_DATA_ASYNC)
-              : out.replace(REMOVE_ERRORS, '')
-                   .replace(RETURN_VALID, RETURN_TRUE);
-      }
-
-      matches = out.match(ROOTDATA_REGEXP);
-      if (!matches || matches.length !== 3) return out;
-      return out.replace(REMOVE_ROOTDATA, '');
     }
 
 
@@ -2440,7 +1979,7 @@
 
     function joinPaths (a, b) {
       if (a == '""') return b;
-      return (a + ' + ' + b).replace(/' \+ '/g, '');
+      return (a + ' + ' + b).replace(/([^\\])' \+ '/g, '$1');
     }
 
 
@@ -3004,7 +2543,7 @@
         it.rootId = it.resolve.fullPath(it.self._getId(it.root.schema));
         it.baseId = it.baseId || it.rootId;
         delete it.isTop;
-        it.dataPathArr = [undefined];
+        it.dataPathArr = [""];
         if (it.schema.default !== undefined && it.opts.useDefaults && it.opts.strictDefaults) {
           var $defaultMsg = 'default is ignored in the schema root';
           if (it.opts.strictDefaults === 'log') it.logger.warn($defaultMsg);
@@ -3062,47 +2601,39 @@
           var $schemaPath = it.schemaPath + '.type',
             $errSchemaPath = it.errSchemaPath + '/type',
             $method = $typeIsArray ? 'checkDataTypes' : 'checkDataType';
-          out += ' if (' + (it.util[$method]($typeSchema, $data, true)) + ') { ';
+          out += ' if (' + (it.util[$method]($typeSchema, $data, it.opts.strictNumbers, true)) + ') { ';
           if ($coerceToTypes) {
             var $dataType = 'dataType' + $lvl,
               $coerced = 'coerced' + $lvl;
-            out += ' var ' + ($dataType) + ' = typeof ' + ($data) + '; ';
+            out += ' var ' + ($dataType) + ' = typeof ' + ($data) + '; var ' + ($coerced) + ' = undefined; ';
             if (it.opts.coerceTypes == 'array') {
-              out += ' if (' + ($dataType) + ' == \'object\' && Array.isArray(' + ($data) + ')) ' + ($dataType) + ' = \'array\'; ';
+              out += ' if (' + ($dataType) + ' == \'object\' && Array.isArray(' + ($data) + ') && ' + ($data) + '.length == 1) { ' + ($data) + ' = ' + ($data) + '[0]; ' + ($dataType) + ' = typeof ' + ($data) + '; if (' + (it.util.checkDataType(it.schema.type, $data, it.opts.strictNumbers)) + ') ' + ($coerced) + ' = ' + ($data) + '; } ';
             }
-            out += ' var ' + ($coerced) + ' = undefined; ';
-            var $bracesCoercion = '';
+            out += ' if (' + ($coerced) + ' !== undefined) ; ';
             var arr1 = $coerceToTypes;
             if (arr1) {
               var $type, $i = -1,
                 l1 = arr1.length - 1;
               while ($i < l1) {
                 $type = arr1[$i += 1];
-                if ($i) {
-                  out += ' if (' + ($coerced) + ' === undefined) { ';
-                  $bracesCoercion += '}';
-                }
-                if (it.opts.coerceTypes == 'array' && $type != 'array') {
-                  out += ' if (' + ($dataType) + ' == \'array\' && ' + ($data) + '.length == 1) { ' + ($coerced) + ' = ' + ($data) + ' = ' + ($data) + '[0]; ' + ($dataType) + ' = typeof ' + ($data) + ';  } ';
-                }
                 if ($type == 'string') {
-                  out += ' if (' + ($dataType) + ' == \'number\' || ' + ($dataType) + ' == \'boolean\') ' + ($coerced) + ' = \'\' + ' + ($data) + '; else if (' + ($data) + ' === null) ' + ($coerced) + ' = \'\'; ';
+                  out += ' else if (' + ($dataType) + ' == \'number\' || ' + ($dataType) + ' == \'boolean\') ' + ($coerced) + ' = \'\' + ' + ($data) + '; else if (' + ($data) + ' === null) ' + ($coerced) + ' = \'\'; ';
                 } else if ($type == 'number' || $type == 'integer') {
-                  out += ' if (' + ($dataType) + ' == \'boolean\' || ' + ($data) + ' === null || (' + ($dataType) + ' == \'string\' && ' + ($data) + ' && ' + ($data) + ' == +' + ($data) + ' ';
+                  out += ' else if (' + ($dataType) + ' == \'boolean\' || ' + ($data) + ' === null || (' + ($dataType) + ' == \'string\' && ' + ($data) + ' && ' + ($data) + ' == +' + ($data) + ' ';
                   if ($type == 'integer') {
                     out += ' && !(' + ($data) + ' % 1)';
                   }
                   out += ')) ' + ($coerced) + ' = +' + ($data) + '; ';
                 } else if ($type == 'boolean') {
-                  out += ' if (' + ($data) + ' === \'false\' || ' + ($data) + ' === 0 || ' + ($data) + ' === null) ' + ($coerced) + ' = false; else if (' + ($data) + ' === \'true\' || ' + ($data) + ' === 1) ' + ($coerced) + ' = true; ';
+                  out += ' else if (' + ($data) + ' === \'false\' || ' + ($data) + ' === 0 || ' + ($data) + ' === null) ' + ($coerced) + ' = false; else if (' + ($data) + ' === \'true\' || ' + ($data) + ' === 1) ' + ($coerced) + ' = true; ';
                 } else if ($type == 'null') {
-                  out += ' if (' + ($data) + ' === \'\' || ' + ($data) + ' === 0 || ' + ($data) + ' === false) ' + ($coerced) + ' = null; ';
+                  out += ' else if (' + ($data) + ' === \'\' || ' + ($data) + ' === 0 || ' + ($data) + ' === false) ' + ($coerced) + ' = null; ';
                 } else if (it.opts.coerceTypes == 'array' && $type == 'array') {
-                  out += ' if (' + ($dataType) + ' == \'string\' || ' + ($dataType) + ' == \'number\' || ' + ($dataType) + ' == \'boolean\' || ' + ($data) + ' == null) ' + ($coerced) + ' = [' + ($data) + ']; ';
+                  out += ' else if (' + ($dataType) + ' == \'string\' || ' + ($dataType) + ' == \'number\' || ' + ($dataType) + ' == \'boolean\' || ' + ($data) + ' == null) ' + ($coerced) + ' = [' + ($data) + ']; ';
                 }
               }
             }
-            out += ' ' + ($bracesCoercion) + ' if (' + ($coerced) + ' === undefined) {   ';
+            out += ' else {   ';
             var $$outStack = $$outStack || [];
             $$outStack.push(out);
             out = ''; /* istanbul ignore else */
@@ -3142,7 +2673,7 @@
             } else {
               out += ' var err = ' + (__err) + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
             }
-            out += ' } else {  ';
+            out += ' } if (' + ($coerced) + ' !== undefined) {  ';
             var $parentData = $dataLvl ? 'data' + (($dataLvl - 1) || '') : 'parentData',
               $parentDataProperty = $dataLvl ? it.dataPathArr[$dataLvl] : 'parentDataProperty';
             out += ' ' + ($data) + ' = ' + ($coerced) + '; ';
@@ -3215,7 +2746,7 @@
             $rulesGroup = arr2[i2 += 1];
             if ($shouldUseGroup($rulesGroup)) {
               if ($rulesGroup.type) {
-                out += ' if (' + (it.util.checkDataType($rulesGroup.type, $data)) + ') { ';
+                out += ' if (' + (it.util.checkDataType($rulesGroup.type, $data, it.opts.strictNumbers)) + ') { ';
               }
               if (it.opts.useDefaults) {
                 if ($rulesGroup.type == 'object' && it.schema.properties) {
@@ -3383,10 +2914,6 @@
       } else {
         out += ' var ' + ($valid) + ' = errors === errs_' + ($lvl) + ';';
       }
-      out = it.util.cleanUpCode(out);
-      if ($top) {
-        out = it.util.finalCleanUpCode(out, $async);
-      }
 
       function $shouldUseGroup($rulesGroup) {
         var rules = $rulesGroup.rules;
@@ -3512,7 +3039,7 @@
                        + vars(defaults, defaultCode) + vars(customRules, customRuleCode)
                        + sourceCode;
 
-        if (opts.processCode) sourceCode = opts.processCode(sourceCode);
+        if (opts.processCode) sourceCode = opts.processCode(sourceCode, _schema);
         // console.log('\n\n\n *** \n', JSON.stringify(sourceCode));
         var validate$1;
         try {
@@ -3824,8 +3351,8 @@
     // For the source: https://gist.github.com/dperini/729294
     // For test cases: https://mathiasbynens.be/demo/url-regex
     // @todo Delete current URL in favour of the commented out URL rule when this issue is fixed https://github.com/eslint/eslint/issues/7983.
-    // var URL = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u{00a1}-\u{ffff}0-9]+-?)*[a-z\u{00a1}-\u{ffff}0-9]+)(?:\.(?:[a-z\u{00a1}-\u{ffff}0-9]+-?)*[a-z\u{00a1}-\u{ffff}0-9]+)*(?:\.(?:[a-z\u{00a1}-\u{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/iu;
-    var URL = /^(?:(?:http[s\u017F]?|ftp):\/\/)(?:(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+(?::(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*)?@)?(?:(?!10(?:\.[0-9]{1,3}){3})(?!127(?:\.[0-9]{1,3}){3})(?!169\.254(?:\.[0-9]{1,3}){2})(?!192\.168(?:\.[0-9]{1,3}){2})(?!172\.(?:1[6-9]|2[0-9]|3[01])(?:\.[0-9]{1,3}){2})(?:[1-9][0-9]?|1[0-9][0-9]|2[01][0-9]|22[0-3])(?:\.(?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])){2}(?:\.(?:[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-4]))|(?:(?:(?:[0-9KSa-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+-?)*(?:[0-9KSa-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+)(?:\.(?:(?:[0-9KSa-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+-?)*(?:[0-9KSa-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+)*(?:\.(?:(?:[KSa-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]){2,})))(?::[0-9]{2,5})?(?:\/(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*)?$/i;
+    // var URL = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u{00a1}-\u{ffff}0-9]+-)*[a-z\u{00a1}-\u{ffff}0-9]+)(?:\.(?:[a-z\u{00a1}-\u{ffff}0-9]+-)*[a-z\u{00a1}-\u{ffff}0-9]+)*(?:\.(?:[a-z\u{00a1}-\u{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/iu;
+    var URL = /^(?:(?:http[s\u017F]?|ftp):\/\/)(?:(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+(?::(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*)?@)?(?:(?!10(?:\.[0-9]{1,3}){3})(?!127(?:\.[0-9]{1,3}){3})(?!169\.254(?:\.[0-9]{1,3}){2})(?!192\.168(?:\.[0-9]{1,3}){2})(?!172\.(?:1[6-9]|2[0-9]|3[01])(?:\.[0-9]{1,3}){2})(?:[1-9][0-9]?|1[0-9][0-9]|2[01][0-9]|22[0-3])(?:\.(?:1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])){2}(?:\.(?:[1-9][0-9]?|1[0-9][0-9]|2[0-4][0-9]|25[0-4]))|(?:(?:(?:[0-9a-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+-)*(?:[0-9a-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+)(?:\.(?:(?:[0-9a-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+-)*(?:[0-9a-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+)*(?:\.(?:(?:[a-z\xA1-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]){2,})))(?::[0-9]{2,5})?(?:\/(?:[\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uD7FF\uE000-\uFEFE\uFF00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*)?$/i;
     var UUID = /^(?:urn:uuid:)?[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i;
     var JSON_POINTER$1 = /^(?:\/(?:[^~/]|~0|~1)*)*$/;
     var JSON_POINTER_URI_FRAGMENT = /^#(?:\/(?:[a-z0-9_\-.!$&'()*+,;:=@]|%[0-9a-f]{2}|~0|~1)*)*$/i;
@@ -3847,8 +3374,8 @@
       time: /^(?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)?(?:z|[+-]\d\d(?::?\d\d)?)?$/i,
       'date-time': /^\d\d\d\d-[0-1]\d-[0-3]\d[t\s](?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)?(?:z|[+-]\d\d(?::?\d\d)?)$/i,
       // uri: https://github.com/mafintosh/is-my-json-valid/blob/master/formats.js
-      uri: /^(?:[a-z][a-z0-9+-.]*:)(?:\/?\/)?[^\s]*$/i,
-      'uri-reference': /^(?:(?:[a-z][a-z0-9+-.]*:)?\/?\/)?(?:[^\\\s#][^\s#]*)?(?:#[^\\\s]*)?$/i,
+      uri: /^(?:[a-z][a-z0-9+\-.]*:)(?:\/?\/)?[^\s]*$/i,
+      'uri-reference': /^(?:(?:[a-z][a-z0-9+\-.]*:)?\/?\/)?(?:[^\\\s#][^\s#]*)?(?:#[^\\\s]*)?$/i,
       'uri-template': URITEMPLATE,
       url: URL,
       // email (sources from jsen validator):
@@ -4094,7 +3621,7 @@
           l1 = arr1.length - 1;
         while ($i < l1) {
           $sch = arr1[$i += 1];
-          if ((it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 : it.util.schemaHasRules($sch, it.RULES.all))) {
+          if ((it.opts.strictKeywords ? (typeof $sch == 'object' && Object.keys($sch).length > 0) || $sch === false : it.util.schemaHasRules($sch, it.RULES.all))) {
             $allSchemasEmpty = false;
             $it.schema = $sch;
             $it.schemaPath = $schemaPath + '[' + $i + ']';
@@ -4115,7 +3642,6 @@
           out += ' ' + ($closingBraces.slice(0, -1)) + ' ';
         }
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -4135,7 +3661,7 @@
       $it.level++;
       var $nextValid = 'valid' + $it.level;
       var $noEmptySchema = $schema.every(function($sch) {
-        return (it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 : it.util.schemaHasRules($sch, it.RULES.all));
+        return (it.opts.strictKeywords ? (typeof $sch == 'object' && Object.keys($sch).length > 0) || $sch === false : it.util.schemaHasRules($sch, it.RULES.all));
       });
       if ($noEmptySchema) {
         var $currentBaseId = $it.baseId;
@@ -4184,7 +3710,6 @@
         if (it.opts.allErrors) {
           out += ' } ';
         }
-        out = it.util.cleanUpCode(out);
       } else {
         if ($breakOnError) {
           out += ' if (true) { ';
@@ -4278,7 +3803,7 @@
         $dataNxt = $it.dataLevel = it.dataLevel + 1,
         $nextData = 'data' + $dataNxt,
         $currentBaseId = it.baseId,
-        $nonEmptySchema = (it.opts.strictKeywords ? typeof $schema == 'object' && Object.keys($schema).length > 0 : it.util.schemaHasRules($schema, it.RULES.all));
+        $nonEmptySchema = (it.opts.strictKeywords ? (typeof $schema == 'object' && Object.keys($schema).length > 0) || $schema === false : it.util.schemaHasRules($schema, it.RULES.all));
       out += 'var ' + ($errs) + ' = errors;var ' + ($valid) + ';';
       if ($nonEmptySchema) {
         var $wasComposite = it.compositeRule;
@@ -4337,7 +3862,6 @@
       if (it.opts.allErrors) {
         out += ' } ';
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -4359,6 +3883,7 @@
         $propertyDeps = {},
         $ownProperties = it.opts.ownProperties;
       for ($property in $schema) {
+        if ($property == '__proto__') continue;
         var $sch = $schema[$property];
         var $deps = Array.isArray($sch) ? $propertyDeps : $schemaDeps;
         $deps[$property] = $sch;
@@ -4484,7 +4009,7 @@
       var $currentBaseId = $it.baseId;
       for (var $property in $schemaDeps) {
         var $sch = $schemaDeps[$property];
-        if ((it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 : it.util.schemaHasRules($sch, it.RULES.all))) {
+        if ((it.opts.strictKeywords ? (typeof $sch == 'object' && Object.keys($sch).length > 0) || $sch === false : it.util.schemaHasRules($sch, it.RULES.all))) {
           out += ' ' + ($nextValid) + ' = true; if ( ' + ($data) + (it.util.getProperty($property)) + ' !== undefined ';
           if ($ownProperties) {
             out += ' && Object.prototype.hasOwnProperty.call(' + ($data) + ', \'' + (it.util.escapeQuotes($property)) + '\') ';
@@ -4505,7 +4030,6 @@
       if ($breakOnError) {
         out += '   ' + ($closingBraces) + ' if (' + ($errs) + ' == errors) {';
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -4737,8 +4261,8 @@
       var $nextValid = 'valid' + $it.level;
       var $thenSch = it.schema['then'],
         $elseSch = it.schema['else'],
-        $thenPresent = $thenSch !== undefined && (it.opts.strictKeywords ? typeof $thenSch == 'object' && Object.keys($thenSch).length > 0 : it.util.schemaHasRules($thenSch, it.RULES.all)),
-        $elsePresent = $elseSch !== undefined && (it.opts.strictKeywords ? typeof $elseSch == 'object' && Object.keys($elseSch).length > 0 : it.util.schemaHasRules($elseSch, it.RULES.all)),
+        $thenPresent = $thenSch !== undefined && (it.opts.strictKeywords ? (typeof $thenSch == 'object' && Object.keys($thenSch).length > 0) || $thenSch === false : it.util.schemaHasRules($thenSch, it.RULES.all)),
+        $elsePresent = $elseSch !== undefined && (it.opts.strictKeywords ? (typeof $elseSch == 'object' && Object.keys($elseSch).length > 0) || $elseSch === false : it.util.schemaHasRules($elseSch, it.RULES.all)),
         $currentBaseId = $it.baseId;
       if ($thenPresent || $elsePresent) {
         var $ifClause;
@@ -4816,7 +4340,6 @@
         if ($breakOnError) {
           out += ' else { ';
         }
-        out = it.util.cleanUpCode(out);
       } else {
         if ($breakOnError) {
           out += ' if (true) { ';
@@ -4892,7 +4415,7 @@
             l1 = arr1.length - 1;
           while ($i < l1) {
             $sch = arr1[$i += 1];
-            if ((it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 : it.util.schemaHasRules($sch, it.RULES.all))) {
+            if ((it.opts.strictKeywords ? (typeof $sch == 'object' && Object.keys($sch).length > 0) || $sch === false : it.util.schemaHasRules($sch, it.RULES.all))) {
               out += ' ' + ($nextValid) + ' = true; if (' + ($data) + '.length > ' + ($i) + ') { ';
               var $passData = $data + '[' + $i + ']';
               $it.schema = $sch;
@@ -4915,7 +4438,7 @@
             }
           }
         }
-        if (typeof $additionalItems == 'object' && (it.opts.strictKeywords ? typeof $additionalItems == 'object' && Object.keys($additionalItems).length > 0 : it.util.schemaHasRules($additionalItems, it.RULES.all))) {
+        if (typeof $additionalItems == 'object' && (it.opts.strictKeywords ? (typeof $additionalItems == 'object' && Object.keys($additionalItems).length > 0) || $additionalItems === false : it.util.schemaHasRules($additionalItems, it.RULES.all))) {
           $it.schema = $additionalItems;
           $it.schemaPath = it.schemaPath + '.additionalItems';
           $it.errSchemaPath = it.errSchemaPath + '/additionalItems';
@@ -4939,7 +4462,7 @@
             $closingBraces += '}';
           }
         }
-      } else if ((it.opts.strictKeywords ? typeof $schema == 'object' && Object.keys($schema).length > 0 : it.util.schemaHasRules($schema, it.RULES.all))) {
+      } else if ((it.opts.strictKeywords ? (typeof $schema == 'object' && Object.keys($schema).length > 0) || $schema === false : it.util.schemaHasRules($schema, it.RULES.all))) {
         $it.schema = $schema;
         $it.schemaPath = $schemaPath;
         $it.errSchemaPath = $errSchemaPath;
@@ -4962,7 +4485,6 @@
       if ($breakOnError) {
         out += ' ' + ($closingBraces) + ' if (' + ($errs) + ' == errors) {';
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -4991,6 +4513,12 @@
         $op = $isMax ? '<' : '>',
         $notOp = $isMax ? '>' : '<',
         $errorKeyword = undefined;
+      if (!($isData || typeof $schema == 'number' || $schema === undefined)) {
+        throw new Error($keyword + ' must be number');
+      }
+      if (!($isDataExcl || $schemaExcl === undefined || typeof $schemaExcl == 'number' || typeof $schemaExcl == 'boolean')) {
+        throw new Error($exclusiveKeyword + ' must be number or boolean');
+      }
       if ($isDataExcl) {
         var $schemaValueExcl = it.util.getData($schemaExcl.$data, $dataLvl, it.dataPathArr),
           $exclusive = 'exclusive' + $lvl,
@@ -5141,6 +4669,9 @@
       } else {
         $schemaValue = $schema;
       }
+      if (!($isData || typeof $schema == 'number')) {
+        throw new Error($keyword + ' must be number');
+      }
       var $op = $keyword == 'maxItems' ? '>' : '<';
       out += 'if ( ';
       if ($isData) {
@@ -5217,6 +4748,9 @@
         $schemaValue = 'schema' + $lvl;
       } else {
         $schemaValue = $schema;
+      }
+      if (!($isData || typeof $schema == 'number')) {
+        throw new Error($keyword + ' must be number');
       }
       var $op = $keyword == 'maxLength' ? '>' : '<';
       out += 'if ( ';
@@ -5300,6 +4834,9 @@
       } else {
         $schemaValue = $schema;
       }
+      if (!($isData || typeof $schema == 'number')) {
+        throw new Error($keyword + ' must be number');
+      }
       var $op = $keyword == 'maxProperties' ? '>' : '<';
       out += 'if ( ';
       if ($isData) {
@@ -5376,6 +4913,9 @@
       } else {
         $schemaValue = $schema;
       }
+      if (!($isData || typeof $schema == 'number')) {
+        throw new Error($keyword + ' must be number');
+      }
       out += 'var division' + ($lvl) + ';if (';
       if ($isData) {
         out += ' ' + ($schemaValue) + ' !== undefined && ( typeof ' + ($schemaValue) + ' != \'number\' || ';
@@ -5449,7 +4989,7 @@
       var $it = it.util.copy(it);
       $it.level++;
       var $nextValid = 'valid' + $it.level;
-      if ((it.opts.strictKeywords ? typeof $schema == 'object' && Object.keys($schema).length > 0 : it.util.schemaHasRules($schema, it.RULES.all))) {
+      if ((it.opts.strictKeywords ? (typeof $schema == 'object' && Object.keys($schema).length > 0) || $schema === false : it.util.schemaHasRules($schema, it.RULES.all))) {
         $it.schema = $schema;
         $it.schemaPath = $schemaPath;
         $it.errSchemaPath = $errSchemaPath;
@@ -5547,7 +5087,7 @@
           l1 = arr1.length - 1;
         while ($i < l1) {
           $sch = arr1[$i += 1];
-          if ((it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 : it.util.schemaHasRules($sch, it.RULES.all))) {
+          if ((it.opts.strictKeywords ? (typeof $sch == 'object' && Object.keys($sch).length > 0) || $sch === false : it.util.schemaHasRules($sch, it.RULES.all))) {
             $it.schema = $sch;
             $it.schemaPath = $schemaPath + '[' + $i + ']';
             $it.errSchemaPath = $errSchemaPath + '/' + $i;
@@ -5687,9 +5227,9 @@
         $dataNxt = $it.dataLevel = it.dataLevel + 1,
         $nextData = 'data' + $dataNxt,
         $dataProperties = 'dataProperties' + $lvl;
-      var $schemaKeys = Object.keys($schema || {}),
+      var $schemaKeys = Object.keys($schema || {}).filter(notProto),
         $pProperties = it.schema.patternProperties || {},
-        $pPropertyKeys = Object.keys($pProperties),
+        $pPropertyKeys = Object.keys($pProperties).filter(notProto),
         $aProperties = it.schema.additionalProperties,
         $someProperties = $schemaKeys.length || $pPropertyKeys.length,
         $noAdditional = $aProperties === false,
@@ -5699,7 +5239,13 @@
         $ownProperties = it.opts.ownProperties,
         $currentBaseId = it.baseId;
       var $required = it.schema.required;
-      if ($required && !(it.opts.$data && $required.$data) && $required.length < it.opts.loopRequired) var $requiredHash = it.util.toHash($required);
+      if ($required && !(it.opts.$data && $required.$data) && $required.length < it.opts.loopRequired) {
+        var $requiredHash = it.util.toHash($required);
+      }
+
+      function notProto(p) {
+        return p !== '__proto__';
+      }
       out += 'var ' + ($errs) + ' = errors;var ' + ($nextValid) + ' = true;';
       if ($ownProperties) {
         out += ' var ' + ($dataProperties) + ' = undefined;';
@@ -5852,7 +5398,7 @@
           while (i3 < l3) {
             $propertyKey = arr3[i3 += 1];
             var $sch = $schema[$propertyKey];
-            if ((it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 : it.util.schemaHasRules($sch, it.RULES.all))) {
+            if ((it.opts.strictKeywords ? (typeof $sch == 'object' && Object.keys($sch).length > 0) || $sch === false : it.util.schemaHasRules($sch, it.RULES.all))) {
               var $prop = it.util.getProperty($propertyKey),
                 $passData = $data + $prop,
                 $hasDefault = $useDefaults && $sch.default !== undefined;
@@ -5955,7 +5501,7 @@
           while (i4 < l4) {
             $pProperty = arr4[i4 += 1];
             var $sch = $pProperties[$pProperty];
-            if ((it.opts.strictKeywords ? typeof $sch == 'object' && Object.keys($sch).length > 0 : it.util.schemaHasRules($sch, it.RULES.all))) {
+            if ((it.opts.strictKeywords ? (typeof $sch == 'object' && Object.keys($sch).length > 0) || $sch === false : it.util.schemaHasRules($sch, it.RULES.all))) {
               $it.schema = $sch;
               $it.schemaPath = it.schemaPath + '.patternProperties' + it.util.getProperty($pProperty);
               $it.errSchemaPath = it.errSchemaPath + '/patternProperties/' + it.util.escapeFragment($pProperty);
@@ -5994,7 +5540,6 @@
       if ($breakOnError) {
         out += ' ' + ($closingBraces) + ' if (' + ($errs) + ' == errors) {';
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -6013,7 +5558,7 @@
       $it.level++;
       var $nextValid = 'valid' + $it.level;
       out += 'var ' + ($errs) + ' = errors;';
-      if ((it.opts.strictKeywords ? typeof $schema == 'object' && Object.keys($schema).length > 0 : it.util.schemaHasRules($schema, it.RULES.all))) {
+      if ((it.opts.strictKeywords ? (typeof $schema == 'object' && Object.keys($schema).length > 0) || $schema === false : it.util.schemaHasRules($schema, it.RULES.all))) {
         $it.schema = $schema;
         $it.schemaPath = $schemaPath;
         $it.errSchemaPath = $errSchemaPath;
@@ -6076,7 +5621,6 @@
       if ($breakOnError) {
         out += ' ' + ($closingBraces) + ' if (' + ($errs) + ' == errors) {';
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -6105,7 +5649,7 @@
             while (i1 < l1) {
               $property = arr1[i1 += 1];
               var $propertySch = it.schema.properties[$property];
-              if (!($propertySch && (it.opts.strictKeywords ? typeof $propertySch == 'object' && Object.keys($propertySch).length > 0 : it.util.schemaHasRules($propertySch, it.RULES.all)))) {
+              if (!($propertySch && (it.opts.strictKeywords ? (typeof $propertySch == 'object' && Object.keys($propertySch).length > 0) || $propertySch === false : it.util.schemaHasRules($propertySch, it.RULES.all)))) {
                 $required[$required.length] = $property;
               }
             }
@@ -6376,7 +5920,7 @@
         } else {
           out += ' var itemIndices = {}, item; for (;i--;) { var item = ' + ($data) + '[i]; ';
           var $method = 'checkDataType' + ($typeIsArray ? 's' : '');
-          out += ' if (' + (it.util[$method]($itemType, 'item', true)) + ') continue; ';
+          out += ' if (' + (it.util[$method]($itemType, 'item', it.opts.strictNumbers, true)) + ') continue; ';
           if ($typeIsArray) {
             out += ' if (typeof item == \'string\') item = \'"\' + item; ';
           }
@@ -6566,7 +6110,7 @@
             keywords[key] = {
               anyOf: [
                 schema,
-                { $ref: 'https://raw.githubusercontent.com/epoberezkin/ajv/master/lib/refs/data.json#' }
+                { $ref: 'https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#' }
               ]
             };
           }
@@ -7159,7 +6703,7 @@
     var require$$2 = getCjsExportFromNamespace(jsonSchemaDraft07$1);
 
     var definition_schema = {
-      $id: 'https://github.com/epoberezkin/ajv/blob/master/lib/definition_schema.js',
+      $id: 'https://github.com/ajv-validator/ajv/blob/master/lib/definition_schema.js',
       definitions: {
         simpleTypes: require$$2.definitions.simpleTypes
       },
@@ -7238,7 +6782,7 @@
             metaSchema = {
               anyOf: [
                 metaSchema,
-                { '$ref': 'https://raw.githubusercontent.com/epoberezkin/ajv/master/lib/refs/data.json#' }
+                { '$ref': 'https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#' }
               ]
             };
           }
@@ -7338,7 +6882,7 @@
     }
 
     var $schema$1 = "http://json-schema.org/draft-07/schema#";
-    var $id$1 = "https://raw.githubusercontent.com/epoberezkin/ajv/master/lib/refs/data.json#";
+    var $id$1 = "https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#";
     var description = "Meta-schema for $data reference (JSON Schema extension proposal)";
     var type$1 = "object";
     var required$1 = [
@@ -7877,606 +7421,213 @@
 
     function noop() {}
 
-    let ajv$1 = createAjvInstance();
-    let formerCustomFormats = null;
-    let formerMetaSchema = null; // 创建实例
+    // https://github.com/epoberezkin/ajv-i18n
+    function localizeZh(errors) {
+      if (!(errors && errors.length)) return;
 
-    function createAjvInstance() {
-      const ajvInstance = new ajv({
-        errorDataPath: 'property',
-        allErrors: true,
-        multipleOfPrecision: 8,
-        schemaId: 'auto',
-        unknownFormats: 'ignore'
-      }); // 添加base-64 format
+      for (let i = 0; i < errors.length; i += 1) {
+        const e = errors[i];
+        let out;
+        let n;
+        let cond;
 
-      ajvInstance.addFormat('data-url', /^data:([a-z]+\/[a-z0-9-+.]+)?;(?:name=(.*);)?base64,(.*)$/); // 添加color format
+        switch (e.keyword) {
+          case '$ref':
+            out = `无法找到引用${e.params.ref}`;
+            break;
 
-      ajvInstance.addFormat('color', // eslint-disable-next-line max-len
-      /^(#?([0-9A-Fa-f]{3}){1,2}\b|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow|(rgb\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*\))|(rgb\(\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*\)))$/);
-      return ajvInstance;
-    }
-    /**
-     * 将错误输出从ajv转换为jsonschema使用的格式
-     * At some point, components should be updated to support ajv.
-     */
+          case 'additionalItems':
+            out = '';
+            n = e.params.limit;
+            out += `不允许超过${n}个元素`;
+            break;
 
+          case 'additionalProperties':
+            out = '不允许有额外的属性';
+            break;
 
-    function transformAjvErrors(errors = []) {
-      if (errors === null) {
-        return [];
-      }
+          case 'anyOf':
+            out = '数据应为 anyOf 所指定的其中一个';
+            break;
 
-      return errors.map(e => {
-        const {
-          dataPath,
-          keyword,
-          message,
-          params,
-          schemaPath
-        } = e;
-        const property = `${dataPath}`; // put data in expected format
+          case 'const':
+            out = '应当等于常量';
+            break;
 
-        return {
-          name: keyword,
-          property,
-          message,
-          params,
-          // specific to ajv
-          stack: `${property} ${message}`.trim(),
-          schemaPath
-        };
-      });
-    }
-    /**
-     * 通过 schema校验formData并返回错误信息
-     * @param formData 校验的数据
-     * @param schema
-     * @param transformErrors function - 转换错误, 如个性化的配置
-     * @param additionalMetaSchemas 数组 添加 ajv metaSchema
-     * @param customFormats 添加 ajv 自定义 formats
-     * @returns {{errors: ([]|{stack: string, schemaPath: *, name: *, property: string, message: *, params: *}[])}}
-     */
+          case 'contains':
+            out = '应当包含一个有效项';
+            break;
 
+          case 'custom':
+            out = `应当通过 "${e.keyword} 关键词校验"`;
+            break;
 
-    function ajvValidateFormData({
-      formData,
-      schema,
-      transformErrors,
-      additionalMetaSchemas = [],
-      customFormats = {}
-    } = {}) {
-      const hasNewMetaSchemas = !deepEquals(formerMetaSchema, additionalMetaSchemas);
-      const hasNewFormats = !deepEquals(formerCustomFormats, customFormats); // 变更了 Meta或者调整了format配置重置新的实例
+          case 'dependencies':
+            out = '';
+            n = e.params.depsCount;
+            out += `应当拥有属性${e.params.property}的依赖属性${e.params.deps}`;
+            break;
 
-      if (hasNewMetaSchemas || hasNewFormats) {
-        ajv$1 = createAjvInstance();
-      } // 添加更多要验证的模式
+          case 'enum':
+            out = '应当是预设定的枚举值之一';
+            break;
 
+          case 'exclusiveMaximum':
+            out = '';
+            cond = `${e.params.comparison} ${e.params.limit}`;
+            out += `应当为 ${cond}`;
+            break;
 
-      if (additionalMetaSchemas && hasNewMetaSchemas && Array.isArray(additionalMetaSchemas)) {
-        ajv$1.addMetaSchema(additionalMetaSchemas);
-        formerMetaSchema = additionalMetaSchemas;
-      } // 注册自定义的 formats - 没有变更只会注册一次 - 否则重新创建实例
+          case 'exclusiveMinimum':
+            out = '';
+            cond = `${e.params.comparison} ${e.params.limit}`;
+            out += `应当为 ${cond}`;
+            break;
 
+          case 'false schema':
+            out = '布尔模式出错';
+            break;
 
-      if (customFormats && hasNewFormats && isObject(customFormats)) {
-        Object.keys(customFormats).forEach(formatName => {
-          ajv$1.addFormat(formatName, customFormats[formatName]);
-        });
-        formerCustomFormats = customFormats;
-      }
+          case 'format':
+            out = `应当匹配格式 "${e.params.format}"`;
+            break;
 
-      let validationError = null;
+          case 'formatExclusiveMaximum':
+            out = 'formatExclusiveMaximum 应当是布尔值';
+            break;
 
-      try {
-        ajv$1.validate(schema, formData);
-      } catch (err) {
-        validationError = err;
-      } // ajv 默认多语言处理
+          case 'formatExclusiveMinimum':
+            out = 'formatExclusiveMinimum 应当是布尔值';
+            break;
 
+          case 'formatMaximum':
+            out = '';
+            cond = `${e.params.comparison} ${e.params.limit}`;
+            out += `应当是 ${cond}`;
+            break;
 
-      i18n.getCurrentLocalize()(ajv$1.errors);
-      let errors = transformAjvErrors(ajv$1.errors); // 清除错误
+          case 'formatMinimum':
+            out = '';
+            cond = `${e.params.comparison} ${e.params.limit}`;
+            out += `应当是 ${cond}`;
+            break;
 
-      ajv$1.errors = null; // 处理异常
+          case 'if':
+            out = `应当匹配模式 "${e.params.failingKeyword}" `;
+            break;
 
-      const noProperMetaSchema = validationError && validationError.message && typeof validationError.message === 'string' && validationError.message.includes('no schema with key or ref ');
+          case 'maximum':
+            out = '';
+            cond = `${e.params.comparison} ${e.params.limit}`;
+            out += `应当为 ${cond}`;
+            break;
 
-      if (noProperMetaSchema) {
-        errors = [...errors, {
-          stack: validationError.message
-        }];
-      } // 转换错误, 如传入自定义的错误
+          case 'maxItems':
+            out = '';
+            n = e.params.limit;
+            out += `不应多于 ${n} 个项`;
+            break;
 
+          case 'maxLength':
+            out = '';
+            n = e.params.limit;
+            out += `不应多于 ${n} 个字符`;
+            break;
 
-      if (typeof transformErrors === 'function') {
-        errors = transformErrors(errors);
-      }
+          case 'maxProperties':
+            out = '';
+            n = e.params.limit;
+            out += `不应有多于 ${n} 个属性`;
+            break;
 
-      return {
-        errors
-      };
-    } // 校验formData 并转换错误信息
+          case 'minimum':
+            out = '';
+            cond = `${e.params.comparison} ${e.params.limit}`;
+            out += `应当为 ${cond}`;
+            break;
 
-    function validateFormDataAndTransformMsg({
-      formData,
-      schema,
-      uiSchema,
-      transformErrors,
-      additionalMetaSchemas = [],
-      customFormats = {},
-      errorSchema = {},
-      required = false,
-      propPath = '',
-      isOnlyFirstError = true // 只取第一条错误信息
+          case 'minItems':
+            out = '';
+            n = e.params.limit;
+            out += `不应少于 ${n} 个项`;
+            break;
 
-    } = {}) {
-      // 如果数组类型针对配置了 format 的特殊处理
+          case 'minLength':
+            out = '';
+            n = e.params.limit;
+            out += `不应少于 ${n} 个字符`;
+            break;
 
-      const emptyArray = schema.type === 'array' && Array.isArray(formData) && formData.length === 0;
-      const isEmpty = formData === undefined || emptyArray;
+          case 'minProperties':
+            out = '';
+            n = e.params.limit;
+            out += `不应有少于 ${n} 个属性`;
+            break;
 
-      if (required) {
-        if (isEmpty) {
-          const requireErrObj = {
-            keyword: 'required',
-            params: {
-              missingProperty: propPath
-            }
-          }; // 用户设置校验信息
+          case 'multipleOf':
+            out = `应当是 ${e.params.multipleOf} 的整数倍`;
+            break;
 
-          const errSchemaMsg = getUserErrOptions({
-            schema,
-            uiSchema,
-            errorSchema
-          }).required;
+          case 'not':
+            out = '不应当匹配 "not" schema';
+            break;
 
-          if (errSchemaMsg) {
-            requireErrObj.message = errSchemaMsg;
-          } else {
-            // 处理多语言require提示信息 （ajv 修改原引用）
-            i18n.getCurrentLocalize()([requireErrObj]);
-          }
+          case 'oneOf':
+            out = '只能匹配一个 "oneOf" 中的 schema';
+            break;
 
-          return [requireErrObj];
+          case 'pattern':
+            out = `应当匹配模式 "${e.params.pattern}"`;
+            break;
+
+          case 'patternRequired':
+            out = `应当有属性匹配模式 ${e.params.missingPattern}`;
+            break;
+
+          case 'propertyNames':
+            out = `属性名 '${e.params.propertyName}' 无效`;
+            break;
+
+          case 'required':
+            out = `应当有必需属性 ${e.params.missingProperty}`;
+            break;
+
+          case 'switch':
+            out = `由于 ${e.params.caseIndex} 失败，未通过 "switch" 校验, `;
+            break;
+
+          case 'type':
+            out = `应当是 ${e.params.type} 类型`;
+            break;
+
+          case 'uniqueItems':
+            out = `不应当含有重复项 (第 ${e.params.j} 项与第 ${e.params.i} 项是重复的)`;
+            break;
+
+          default:
+            // eslint-disable-next-line no-continue
+            continue;
         }
-      } else if (isEmpty && !emptyArray) {
-        // 非required 为空 校验通过
-        return [];
-      } // 校验ajv错误信息
 
-
-      let ajvErrors = ajvValidateFormData({
-        formData,
-        schema,
-        transformErrors,
-        additionalMetaSchemas,
-        customFormats
-      }).errors; // 过滤顶级错误
-
-      {
-        ajvErrors = ajvErrors.filter(item => item.property === '' && !item.schemaPath.includes('#/anyOf/') && !item.schemaPath.includes('#/oneOf/') || item.name === 'additionalProperties');
+        e.message = out;
       }
-
-      const userErrOptions = getUserErrOptions({
-        schema,
-        uiSchema,
-        errorSchema
-      });
-      return (isOnlyFirstError && ajvErrors.length > 0 ? [ajvErrors[0]] : ajvErrors).reduce((preErrors, errorItem) => {
-        // 优先获取 errorSchema 配置
-        errorItem.message = userErrOptions[errorItem.name] || errorItem.message;
-        preErrors.push(errorItem);
-        return preErrors;
-      }, []);
-    }
-    /**
-     * 根据模式验证数据，如果数据有效则返回true，否则返回* false。如果模式无效，那么这个函数将返回* false。
-     * @param schema
-     * @param data
-     * @returns {boolean|PromiseLike<any>}
-     */
-
-    function isValid(schema, data) {
-      try {
-        return ajv$1.validate(schema, data);
-      } catch (e) {
-        return false;
-      }
-    } // oneOf anyOf 通过formData的值来找到当前匹配项索引
-
-    function getMatchingOption(formData, options, rootSchema) {
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < options.length; i++) {
-        const option = options[i]; // If the schema describes an object then we need to add slightly more
-        // strict matching to the schema, because unless the schema uses the
-        // "requires" keyword, an object will match the schema as long as it
-        // doesn't have matching keys with a conflicting type. To do this we use an
-        // "anyOf" with an array of requires. This augmentation expresses that the
-        // schema should match if any of the keys in the schema are present on the
-        // object and pass validation.
-
-        if (option.properties) {
-          // Create an "anyOf" schema that requires at least one of the keys in the
-          // "properties" object
-          const requiresAnyOf = {
-            anyOf: Object.keys(option.properties).map(key => ({
-              required: [key]
-            }))
-          };
-          let augmentedSchema; // If the "anyOf" keyword already exists, wrap the augmentation in an "allOf"
-
-          if (option.anyOf) {
-            // Create a shallow clone of the option
-            const { ...shallowClone
-            } = option;
-
-            if (!shallowClone.allOf) {
-              shallowClone.allOf = [];
-            } else {
-              // If "allOf" already exists, shallow clone the array
-              shallowClone.allOf = shallowClone.allOf.slice();
-            }
-
-            shallowClone.allOf.push(requiresAnyOf);
-            augmentedSchema = shallowClone;
-          } else {
-            augmentedSchema = Object.assign({}, option, requiresAnyOf);
-          } // Remove the "required" field as it's likely that not all fields have
-          // been filled in yet, which will mean that the schema is not valid
-
-
-          delete augmentedSchema.required;
-
-          if (isValid(augmentedSchema, formData)) {
-            return i;
-          }
-        } else if (isValid(options[i], formData)) {
-          return i;
-        }
-      }
-
-      return 0;
     }
 
-    var validate$2 = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        ajvValidateFormData: ajvValidateFormData,
-        validateFormDataAndTransformMsg: validateFormDataAndTransformMsg,
-        isValid: isValid,
-        getMatchingOption: getMatchingOption
-    });
-
     /**
-     * Created by Liu.Jun on 2020/4/23 11:24.
+     * Created by Liu.Jun on 2020/4/30 11:22.
      */
-    var Widget = {
-      name: 'Widget',
-      props: {
-        // 是否同步formData的值，默认表单元素都需要
-        // oneOf anyOf 中的select属于formData之外的数据
-        isFormData: {
-          type: Boolean,
-          default: true
-        },
-        // isFormData = false时需要传入当前 value 否则会通过 curNodePath 自动计算
-        curValue: {
-          type: null,
-          default: 0
-        },
-        schema: {
-          type: Object,
-          default: () => ({})
-        },
-        uiSchema: {
-          type: Object,
-          default: () => ({})
-        },
-        errorSchema: {
-          type: Object,
-          default: () => ({})
-        },
-        customFormats: {
-          type: Object,
-          default: () => ({})
-        },
-        // 自定义校验
-        customRule: {
-          type: Function,
-          default: null
-        },
-        widget: {
-          type: [String, Function, Object],
-          default: null
-        },
-        required: {
-          type: Boolean,
-          default: false
-        },
-        // 解决 JSON Schema和实际输入元素中空字符串 required 判定的差异性
-        // 元素输入为 '' 使用 emptyValue 的值
-        emptyValue: {
-          type: null,
-          default: undefined
-        },
-        // 部分场景可能需要格式化值，如vue .number 修饰符
-        formatValue: {
-          type: [Function],
-          default: val => ({
-            update: true,
-            value: val
-          })
-        },
-        rootFormData: {
-          type: null
-        },
-        curNodePath: {
-          type: String,
-          default: ''
-        },
-        label: {
-          type: String,
-          default: ''
-        },
-        // width -> formItem width
-        width: {
-          type: String,
-          default: ''
-        },
-        labelWidth: {
-          type: String,
-          default: ''
-        },
-        description: {
-          type: String,
-          default: ''
-        },
-        // Widget attrs
-        widgetAttrs: {
-          type: Object,
-          default: () => ({})
-        },
-        // Widget className
-        widgetClass: {
-          type: Object,
-          default: () => ({})
-        },
-        // Widget style
-        widgetStyle: {
-          type: Object,
-          default: () => ({})
-        },
-        // Field attrs
-        fieldAttrs: {
-          type: Object,
-          default: () => ({})
-        },
-        // Field className
-        fieldClass: {
-          type: Object,
-          default: () => ({})
-        },
-        // Field style
-        fieldStyle: {
-          type: Object,
-          default: () => ({})
-        },
-        // props
-        uiProps: {
-          type: Object,
-          default: () => ({})
-        },
-        formProps: {
-          type: null
-        },
-        getWidget: {
-          type: null
-        }
-      },
-      computed: {
-        value: {
-          get() {
-            if (this.isFormData) {
-              return getPathVal(this.rootFormData, this.curNodePath);
-            }
+    var i18n = {
+      $$currentLocalizeFn: localizeZh,
 
-            return this.curValue;
-          },
-
-          set(value) {
-            const trueValue = value === '' ? this.emptyValue : value;
-
-            if (this.isFormData) {
-              setPathVal(this.rootFormData, this.curNodePath, trueValue);
-            }
-
-            this.$emit('onChange', trueValue);
-          }
-
-        }
+      getCurrentLocalize() {
+        return this.$$currentLocalizeFn;
       },
 
-      created() {
-        // 枚举类型默认值为第一个选项
-        if (this.uiProps.enumOptions && this.uiProps.enumOptions.length > 0 && this.value === undefined && this.value !== this.uiProps.enumOptions[0]) {
-          // array 渲染为多选框时默认为空数组
-          if (this.schema.items) {
-            this.value = [];
-          } else if (this.required) {
-            this.value = this.uiProps.enumOptions[0].value;
-          }
-        }
-      },
-
-      render(h) {
-        const self = this; // 判断是否为根节点
-
-        const isRootNode = isRootNodePath(this.curNodePath); // labelPosition left/right
-
-        const miniDesModel = self.formProps && self.formProps.labelPosition !== 'top';
-        const descriptionVnode = self.description ? h('p', {
-          domProps: {
-            innerHTML: self.description
-          },
-          class: {
-            genFromWidget_des: true
-          }
-        }) : null;
-        const miniDescriptionVnode = miniDesModel && descriptionVnode ? h('el-popover', {
-          style: {
-            margin: '0 2px',
-            fontSize: '16px',
-            cursor: 'pointer'
-          },
-          props: {
-            placement: 'top',
-            trigger: 'hover'
-          }
-        }, [descriptionVnode, h('i', {
-          slot: 'reference',
-          class: 'el-icon-question'
-        })]) : null; // form-item style
-
-        const formItemStyle = { ...self.fieldStyle,
-          ...(self.width ? {
-            width: self.width,
-            flexBasis: self.width,
-            paddingRight: '10px'
-          } : {})
-        };
-        return h('el-form-item', {
-          class: { ...self.fieldClass,
-            'is-required': self.required
-          },
-          style: formItemStyle,
-          attrs: self.fieldAttrs,
-          props: {
-            label: self.label,
-            labelWidth: self.labelWidth,
-            ...(this.isFormData ? {
-              // 这里对根节点打特殊标志，绕过elementUi无prop属性不校验
-              prop: isRootNode ? '__$$root' : path2prop(self.curNodePath),
-              rules: [{
-                validator(rule, value, callback) {
-                  if (isRootNode) value = self.rootFormData; // 校验是通过对schema逐级展开校验 这里只捕获根节点错误
-
-                  const errors = validateFormDataAndTransformMsg({
-                    formData: value,
-                    schema: self.$props.schema,
-                    uiSchema: self.$props.uiSchema,
-                    customFormats: self.$props.customFormats,
-                    errorSchema: self.errorSchema,
-                    required: self.required,
-                    propPath: path2prop(self.curNodePath)
-                  });
-                  if (errors.length > 0) return callback(errors[0].message); // customRule 如果存在自定义校验
-
-                  const curCustomRule = self.$props.customRule;
-
-                  if (curCustomRule && typeof curCustomRule === 'function') {
-                    return curCustomRule({
-                      field: self.curNodePath,
-                      value,
-                      rootFormData: self.rootFormData,
-                      callback
-                    });
-                  }
-
-                  return callback();
-                },
-
-                trigger: 'blur'
-              }]
-            } : {})
-          },
-          scopedSlots: {
-            // 错误只能显示一行，多余...
-            error: props => props.error ? h('p', {
-              class: {
-                formItemErrorBox: true
-              },
-              attrs: {
-                title: props.error
-              }
-            }, [props.error]) : null
-          }
-        }, [// label slot
-        // mini模式下重置
-        miniDescriptionVnode ? h('template', {
-          slot: 'label'
-        }, [`${self.label || ''}`, miniDescriptionVnode, `${self.formProps.labelSuffix || ''}`]) : null, // description
-        // 非mini模式显示 description
-        !miniDesModel ? descriptionVnode : null, h( // 关键输入组件
-        self.widget, {
-          style: self.widgetStyle,
-          class: self.widgetClass,
-          attrs: { ...self.widgetAttrs,
-            ...self.uiProps,
-            value: this.value // v-model
-
-          },
-          ref: 'widgetRef',
-          on: {
-            'hook:mounted': function widgetMounted() {
-              // 提供一种特殊的配置 允许直接访问到 widget vm
-              if (self.getWidget && typeof self.getWidget === 'function') {
-                self.getWidget.call(null, self.$refs.widgetRef);
-              }
-            },
-
-            input(event) {
-              const formatValue = self.formatValue(event); // 默认用户输入变了都是需要更新form数据保持同步，唯一特例 input number
-              // 为了兼容 number 小数点后0结尾的数据场景
-              // 比如 1. 1.010 这类特殊数据输入是不需要触发 新值的设置，否则会导致schema校验为非数字
-              // 但由于element为了解另外的问题，会在nextTick时强制同步dom的值等于vm的值所以无法通过这种方式来hack，这里旧的这份逻辑依旧保留 不过update一直为true
-
-              if (formatValue.update && self.value !== formatValue.value) {
-                self.value = formatValue.value;
-              }
-            }
-
-          }
-        })]);
+      useLocal(fn) {
+        this.$$currentLocalizeFn = fn;
       }
 
     };
-
-    // $ref 引用
-    function getPathVal$1(obj, pathStr) {
-      const pathArr = pathStr.split('/');
-
-      for (let i = 0; i < pathArr.length; i += 1) {
-        if (obj === undefined) return undefined;
-        obj = pathArr[i] === '' ? obj : obj[pathArr[i]];
-      }
-
-      return obj;
-    } // 找到ref引用的schema
-
-
-    function findSchemaDefinition($ref, rootSchema = {}) {
-      const origRef = $ref;
-
-      if ($ref.startsWith('#')) {
-        // Decode URI fragment representation.
-        $ref = decodeURIComponent($ref.substring(1));
-      } else {
-        throw new Error(`Could not find a definition for ${origRef}.`);
-      }
-
-      const current = getPathVal$1(rootSchema, $ref);
-
-      if (current === undefined) {
-        throw new Error(`Could not find a definition for ${origRef}.`);
-      }
-
-      if (current.hasOwnProperty('$ref')) {
-        return findSchemaDefinition(current.$ref, rootSchema);
-      }
-
-      return current;
-    }
 
     /**
      * Created by Liu.Jun on 2020/4/25 10:53.
@@ -8507,8 +7658,8 @@
         if (typeof data === 'object') {
           return target.fill(null).map(() => JSON.parse(JSON.stringify(data)));
         }
-      } catch (e) {} // nothing ...
-      // 默认返回一个 undefined
+      } catch (e) {// nothing ...
+      } // 默认返回一个 undefined
 
 
       return undefined;
@@ -8938,2132 +8089,71 @@
     }
 
     /**
-     * Created by Liu.Jun on 2020/4/20 9:55 下午.
-     */
-    var SchemaField = {
-      name: 'SchemaField',
-      props: vueProps,
-      functional: true,
-
-      render(h, context) {
-        const props = context.props;
-        const {
-          rootSchema
-        } = props; // 目前不支持schema依赖和additionalProperties 展示不需要传递formData
-        // const schema = retrieveSchema(props.schema, rootSchema, formData);
-
-        const schema = retrieveSchema(props.schema, rootSchema); // 当前参数
-
-        const curProps = { ...props,
-          schema
-        }; // 空数据
-
-        if (Object.keys(schema).length === 0) {
-          return null;
-        } // 获取节点Ui配置渲染field组件
-
-
-        const {
-          field: fieldComponent,
-          fieldProps
-        } = getUiField(curProps); // hidden
-
-        const hiddenWidget = isHiddenWidget({
-          schema,
-          uiSchema: props.uiSchema,
-          curNodePath: props.curNodePath,
-          rootFormData: props.rootFormData
-        });
-        const pathClassName = nodePath2ClassName(props.curNodePath);
-
-        if (schema.anyOf && schema.anyOf.length > 0 && !isSelect(schema)) {
-          // anyOf
-          return h(FIELDS_MAPS.anyOf, {
-            class: {
-              [`${pathClassName}-anyOf`]: true,
-              fieldItem: true,
-              anyOfField: true
-            },
-            props: curProps
-          });
-        }
-
-        if (schema.oneOf && schema.oneOf.length > 0 && !isSelect(schema)) {
-          // oneOf
-          return h(FIELDS_MAPS.oneOf, {
-            class: {
-              [`${pathClassName}-oneOf`]: true,
-              fieldItem: true,
-              oneOfField: true
-            },
-            props: curProps
-          });
-        }
-
-        return fieldComponent && !hiddenWidget ? h(fieldComponent, {
-          props: { ...curProps,
-            fieldProps
-          },
-          class: { ...context.data.class,
-            [lowerCase(fieldComponent.name) || fieldComponent]: true,
-            hiddenWidget,
-            fieldItem: true,
-            [pathClassName]: true
-          }
-        }) : null;
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/4/21 9:24.
-     */
-    var ObjectField = {
-      name: 'ObjectField',
-      functional: true,
-      props: vueProps,
-
-      render(h, context) {
-        const {
-          schema,
-          uiSchema,
-          errorSchema,
-          needValidFieldGroup,
-          curNodePath,
-          rootFormData
-        } = context.props; // required
-
-        const isRequired = name => Array.isArray(schema.required) && !!~schema.required.indexOf(name); // 存在 dependencies 配置，需要当前属性是否存在依赖关系 和当前属性是否正在被依赖
-        // tip: 判断依赖关系需要使用了 formData 的值来做判断，所以当用户输入的时候会触发整个对象树重新渲染
-        // TODO: 每个属性都需要单独来遍历 dependencies 属性可以优化一点点点点点（可通过 key value 反转值加个缓存来计算）
-
-
-        const isDependOn = name => {
-          let isDependency = false; // 是否是一个被依赖项
-
-          let curDependent = false; // 当前是否触发依赖
-
-          if (isObject(schema.dependencies)) {
-            curDependent = Object.entries(schema.dependencies).some(([key, value]) => {
-              // 是否和当前属性存在依赖关系
-              const tempDependency = !!(Array.isArray(value) && ~value.indexOf(name)); // 是否是一个被依赖项
-
-              isDependency = isDependency || tempDependency; // 当前需要依赖
-
-              return tempDependency && getPathVal(rootFormData, curNodePath)[key] !== undefined;
-            });
-          }
-
-          return {
-            isDependency,
-            curDependent
-          };
-        };
-
-        const {
-          title,
-          description,
-          showTitle,
-          showDescription,
-          order,
-          fieldClass,
-          fieldAttrs,
-          fieldStyle,
-          onlyShowIfDependent
-        } = getUiOptions({
-          schema,
-          uiSchema,
-          curNodePath,
-          rootFormData
-        });
-        const properties = Object.keys(schema.properties || {});
-        const orderedProperties = orderProperties(properties, order); // 递归参数
-
-        const propertiesVNodeList = orderedProperties.map(name => {
-          const required = isRequired(name);
-          const {
-            isDependency,
-            curDependent
-          } = isDependOn(name);
-          return h( // onlyShowWhenDependent 只渲染被依赖的属性
-          isDependency && onlyShowIfDependent && !curDependent ? null : SchemaField, {
-            key: name,
-            props: { ...context.props,
-              schema: schema.properties[name],
-              uiSchema: uiSchema[name],
-              errorSchema: errorSchema[name],
-              required: required || curDependent,
-              curNodePath: computedCurPath(curNodePath, name)
-            }
-          });
-        });
-        return h(__vue_component__, {
-          props: {
-            title,
-            description,
-            showTitle,
-            showDescription
-          },
-          class: { ...context.data.class,
-            ...fieldClass
-          },
-          attrs: fieldAttrs,
-          style: fieldStyle
-        }, [h('template', {
-          slot: 'default'
-        }, [...propertiesVNodeList, // 插入一个Widget，校验 object组 - minProperties. maxProperties. oneOf 等需要外层校验的数据
-        needValidFieldGroup ? h(Widget, {
-          key: 'validateWidget-object',
-          class: {
-            validateWidget: true,
-            'validateWidget-object': true
-          },
-          props: {
-            schema: Object.entries(schema).reduce((preVal, [key, value]) => {
-              if (schema.additionalProperties === false || !['properties', 'id', '$id'].includes(key)) preVal[key] = value;
-              return preVal;
-            }, {}),
-            uiSchema,
-            errorSchema,
-            curNodePath,
-            rootFormData
-          }
-        }) : null])]);
-      }
-
-    };
-
-    //
-    //
-    //
-    //
-    //
-    //
-    var script$1 = {
-      name: 'CheckboxesWidget',
-      props: {
-        value: {
-          default: () => [],
-          type: [Array]
-        },
-        enumOptions: {
-          default: () => [],
-          type: [Array]
-        }
-      },
-      computed: {
-        checkList: {
-          get() {
-            return this.value;
-          },
-
-          set(value) {
-            this.$emit('input', value);
-          }
-
-        }
-      }
-    };
-
-    /* script */
-    const __vue_script__$1 = script$1;
-
-    /* template */
-    var __vue_render__$1 = function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c(
-        "el-checkbox-group",
-        _vm._b(
-          {
-            model: {
-              value: _vm.checkList,
-              callback: function($$v) {
-                _vm.checkList = $$v;
-              },
-              expression: "checkList"
-            }
-          },
-          "el-checkbox-group",
-          _vm.$attrs,
-          false
-        ),
-        _vm._l(_vm.enumOptions, function(item, index) {
-          return _c("el-checkbox", { key: index, attrs: { label: item.value } }, [
-            _vm._v(_vm._s(item.label))
-          ])
-        }),
-        1
-      )
-    };
-    var __vue_staticRenderFns__$1 = [];
-    __vue_render__$1._withStripped = true;
-
-      /* style */
-      const __vue_inject_styles__$1 = undefined;
-      /* scoped */
-      const __vue_scope_id__$1 = undefined;
-      /* module identifier */
-      const __vue_module_identifier__$1 = undefined;
-      /* functional template */
-      const __vue_is_functional_template__$1 = false;
-      /* style inject */
-      
-      /* style inject SSR */
-      
-      /* style inject shadow dom */
-      
-
-      
-      const __vue_component__$1 = /*#__PURE__*/normalizeComponent(
-        { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
-        __vue_inject_styles__$1,
-        __vue_script__$1,
-        __vue_scope_id__$1,
-        __vue_is_functional_template__$1,
-        __vue_module_identifier__$1,
-        false,
-        undefined,
-        undefined,
-        undefined
-      );
-
-    //
-    //
-    //
-    //
-    //
-    //
-    var script$2 = {
-      name: 'RadioWidget',
-      props: {
-        value: {
-          default: () => '',
-          type: [String, Number, Boolean]
-        },
-        enumOptions: {
-          default: () => [],
-          type: [Array]
-        }
-      },
-      computed: {
-        checkList: {
-          get() {
-            return this.value;
-          },
-
-          set(value) {
-            this.$emit('input', value);
-          }
-
-        }
-      }
-    };
-
-    /* script */
-    const __vue_script__$2 = script$2;
-
-    /* template */
-    var __vue_render__$2 = function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c(
-        "el-radio-group",
-        _vm._b(
-          {
-            model: {
-              value: _vm.checkList,
-              callback: function($$v) {
-                _vm.checkList = $$v;
-              },
-              expression: "checkList"
-            }
-          },
-          "el-radio-group",
-          _vm.$attrs,
-          false
-        ),
-        _vm._l(_vm.enumOptions, function(item, index) {
-          return _c("el-radio", { key: index, attrs: { label: item.value } }, [
-            _vm._v(_vm._s(item.label))
-          ])
-        }),
-        1
-      )
-    };
-    var __vue_staticRenderFns__$2 = [];
-    __vue_render__$2._withStripped = true;
-
-      /* style */
-      const __vue_inject_styles__$2 = undefined;
-      /* scoped */
-      const __vue_scope_id__$2 = undefined;
-      /* module identifier */
-      const __vue_module_identifier__$2 = undefined;
-      /* functional template */
-      const __vue_is_functional_template__$2 = false;
-      /* style inject */
-      
-      /* style inject SSR */
-      
-      /* style inject shadow dom */
-      
-
-      
-      const __vue_component__$2 = /*#__PURE__*/normalizeComponent(
-        { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
-        __vue_inject_styles__$2,
-        __vue_script__$2,
-        __vue_scope_id__$2,
-        __vue_is_functional_template__$2,
-        __vue_module_identifier__$2,
-        false,
-        undefined,
-        undefined,
-        undefined
-      );
-
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    var script$3 = {
-      name: 'SelectWidget',
-      props: {
-        value: {
-          default: null,
-          type: null
-        },
-        enumOptions: {
-          default: () => [],
-          type: [Array]
-        }
-      },
-      computed: {
-        selectList: {
-          get() {
-            return this.value;
-          },
-
-          set(value) {
-            this.$emit('input', value);
-          }
-
-        }
-      }
-    };
-
-    /* script */
-    const __vue_script__$3 = script$3;
-
-    /* template */
-    var __vue_render__$3 = function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c(
-        "el-select",
-        _vm._b(
-          {
-            model: {
-              value: _vm.selectList,
-              callback: function($$v) {
-                _vm.selectList = $$v;
-              },
-              expression: "selectList"
-            }
-          },
-          "el-select",
-          _vm.$attrs,
-          false
-        ),
-        _vm._l(_vm.enumOptions, function(item, index) {
-          return _c("el-option", {
-            key: index,
-            attrs: { label: item.label, value: item.value }
-          })
-        }),
-        1
-      )
-    };
-    var __vue_staticRenderFns__$3 = [];
-    __vue_render__$3._withStripped = true;
-
-      /* style */
-      const __vue_inject_styles__$3 = undefined;
-      /* scoped */
-      const __vue_scope_id__$3 = undefined;
-      /* module identifier */
-      const __vue_module_identifier__$3 = undefined;
-      /* functional template */
-      const __vue_is_functional_template__$3 = false;
-      /* style inject */
-      
-      /* style inject SSR */
-      
-      /* style inject shadow dom */
-      
-
-      
-      const __vue_component__$3 = /*#__PURE__*/normalizeComponent(
-        { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
-        __vue_inject_styles__$3,
-        __vue_script__$3,
-        __vue_scope_id__$3,
-        __vue_is_functional_template__$3,
-        __vue_module_identifier__$3,
-        false,
-        undefined,
-        undefined,
-        undefined
-      );
-
-    /**
-     * Created by Liu.Jun on 2020/7/22 13:21.
-     */
-    var DatePickerWidget = {
-      name: 'DatePickerWidget',
-      functional: true,
-
-      render(h, context) {
-        const {
-          isNumberValue,
-          isRange,
-          ...otherProps
-        } = context.data.attrs || {};
-        context.data.attrs = {
-          type: isRange ? 'daterange' : 'date',
-          'value-format': isNumberValue ? 'timestamp' : 'yyyy-MM-dd',
-          ...otherProps
-        };
-        const oldInputCall = context.data.on.input;
-        context.data.on = { ...context.data.on,
-
-          input(val) {
-            const trueVal = val === null ? isRange ? [] : undefined : val;
-            oldInputCall.apply(context.data.on, [trueVal]);
-          }
-
-        };
-        return h('el-date-picker', context.data, context.children);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/7/22 13:21.
-     */
-    var DateTimePickerWidget = {
-      name: 'DateTimePickerWidget',
-      functional: true,
-
-      render(h, context) {
-        const {
-          isNumberValue,
-          isRange,
-          ...otherProps
-        } = context.data.attrs || {};
-        context.data.attrs = {
-          type: isRange ? 'datetimerange' : 'datetime',
-          ...otherProps
-        }; // 字符串为 0 时区ISO标准时间
-
-        const oldInputCall = context.data.on.input;
-        context.data.on = { ...context.data.on,
-
-          input(val) {
-            let trueVal;
-
-            if (isRange) {
-              trueVal = val === null ? [] : val.map(item => new Date(item)[isNumberValue ? 'valueOf' : 'toISOString']());
-            } else {
-              trueVal = val === null ? undefined : new Date(val)[isNumberValue ? 'valueOf' : 'toISOString']();
-            }
-
-            oldInputCall.apply(context.data.on, [trueVal]);
-          }
-
-        };
-        return h('el-date-picker', context.data, context.children);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/7/22 13:22.
-     */
-    var TimePickerWidget = {
-      name: 'TimePickerWidget',
-      functional: true,
-
-      render(h, context) {
-        context.data.attrs = {
-          'value-format': 'HH:mm:ss',
-          ...(context.data.attrs || {})
-        };
-        const oldInputCall = context.data.on.input;
-        context.data.on = { ...context.data.on,
-
-          input(val) {
-            oldInputCall.apply(context.data.on, [val === null ? undefined : val]);
-          }
-
-        };
-        return h('el-time-picker', context.data, context.children);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/11/26 10:01 下午.
-     */
-    // mock
-    // https://run.mocky.io/v3/518d7af7-204f-45ab-9628-a6e121dab8ca
-    var UploadWidget = {
-      name: 'UploadWidget',
-      props: {
-        value: {
-          default: null,
-          type: [String, Array]
-        },
-        responseFileUrl: {
-          default: res => res ? res.url || res.data && res.data.url : '',
-          type: [Function]
-        },
-        btnText: {
-          type: String,
-          default: '点击上传'
-        },
-        // 传入 VNode
-        slots: {
-          type: null,
-          default: null
-        }
-      },
-
-      data() {
-        // 设置默认 fileList
-        const value = this.value;
-        const isArrayValue = Array.isArray(value);
-        let fileList = this.$attrs.fileList || [];
-
-        if (isArrayValue) {
-          fileList = value.map((item, index) => ({
-            name: `已上传文件（${index + 1}）`,
-            url: item
-          }));
-        } else if (value) {
-          fileList.push({
-            name: '已上传文件',
-            url: value
-          });
-        }
-
-        return {
-          isArrayValue,
-          fileList
-        };
-      },
-
-      methods: {
-        emitValue(fileList) {
-          // v-model
-          let value;
-
-          const geUrl = fileItem => fileItem && (fileItem.response && this.responseFileUrl(fileItem.response) || fileItem.url) || '';
-
-          if (this.isArrayValue) {
-            value = fileList.length ? fileList.reduce((pre, item) => {
-              const url = geUrl(item);
-              if (url) pre.push(url);
-              return pre;
-            }, []) : [];
-          } else {
-            const fileItem = fileList[fileList.length - 1];
-            value = geUrl(fileItem);
-          }
-
-          this.$emit('input', value);
-        }
-
-      },
-
-      render() {
-        const h = this.$createElement;
-        const attrs = this.$attrs;
-        const {
-          slots
-        } = this.$props;
-        const data = {
-          attrs: {
-            fileList: this.fileList,
-            'on-exceed': () => {
-              if (this.$message) {
-                this.$message.warning('超出文件上传数');
-              }
-            },
-            'on-error': () => {
-              if (this.$message) {
-                this.$message.error('文件上传失败');
-              }
-            },
-            ...attrs,
-            'on-remove': (file, fileList) => {
-              this.emitValue(fileList);
-
-              if (attrs['on-remove']) {
-                attrs['on-remove'](file, fileList);
-              }
-            },
-            'on-success': (response, file, fileList) => {
-              this.emitValue(fileList); // 用户注册的 onSuccess
-
-              if (attrs['on-success']) {
-                attrs['on-success'](response, file, fileList);
-              }
-            }
-          }
-        };
-        if (!this.isArrayValue) data.attrs.limit = 1;
-        const childVNode = [];
-
-        if (slots && slots.default) {
-          childVNode.push(h('template', {
-            slot: 'default'
-          }, [typeof slots.default === 'function' ? slots.default(h) : slots.default]));
-        } else {
-          childVNode.push(h('el-button', {
-            props: {
-              type: 'primary'
-            }
-          }, [this.btnText]));
-        }
-
-        if (slots && slots.tip) {
-          childVNode.push(h('template', {
-            slot: 'tip'
-          }, [typeof slots.tip === 'function' ? slots.tip(h) : slots.tip]));
-        }
-
-        return h('el-upload', data, childVNode);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/5/17 10:41 下午.
-     */
-    // const files = require.context('.', true, /\.js|vue$/);
-    // const widgetComponents = files.keys().reduce((preVal, curKey) => {
-    //     if (curKey !== './index.js') {
-    //         preVal[curKey.replace(/(\.\/|\/index\.(js|vue))/g, '')] = files(curKey).default;
-    //     }
-    //     return preVal;
-    // }, {});
-
-    const widgetComponents = {
-      CheckboxesWidget: __vue_component__$1,
-      RadioWidget: __vue_component__$2,
-      SelectWidget: __vue_component__$3,
-      TimePickerWidget,
-      DatePickerWidget,
-      DateTimePickerWidget,
-      UploadWidget
-    }; // 注册组件
-
-    Object.entries(widgetComponents).forEach(([key, value]) => Vue.component(key, value));
-
-    /**
-     * Created by Liu.Jun on 2020/4/21 18:23.
-     */
-    const {
-      CheckboxesWidget,
-      RadioWidget,
-      SelectWidget,
-      TimePickerWidget: TimePickerWidget$1,
-      DatePickerWidget: DatePickerWidget$1,
-      DateTimePickerWidget: DateTimePickerWidget$1
-    } = widgetComponents;
-    var WIDGET_MAP = {
-      types: {
-        boolean: 'el-switch',
-        string: 'el-input',
-        number: 'el-input-number',
-        integer: 'el-input-number' // array: '',
-
-      },
-      formats: {
-        color: 'el-color-picker',
-        time: TimePickerWidget$1,
-        // 20:20:39+00:00
-        date: DatePickerWidget$1,
-        // 2018-11-13
-        'date-time': DateTimePickerWidget$1 // 2018-11-13T20:20:39+00:00
-
-      },
-      common: {
-        select: SelectWidget,
-        radioGroup: RadioWidget,
-        checkboxGroup: CheckboxesWidget
-      }
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/4/21 9:24.
-     */
-    var StringField = {
-      name: 'StringField',
-      props: vueProps,
-      functional: true,
-
-      render(h, context) {
-        const {
-          schema,
-          uiSchema,
-          curNodePath,
-          rootFormData
-        } = context.props; // 可能是枚举数据使用select组件，否则使用 input
-
-        const enumOptions = isSelect(schema) && optionsList(schema, uiSchema, curNodePath, rootFormData);
-        const widgetConfig = getWidgetConfig({
-          schema,
-          uiSchema,
-          curNodePath,
-          rootFormData
-        }, () => {
-          const isNumber = schema.type === 'number' || schema.type === 'integer';
-          return {
-            widget: enumOptions ? WIDGET_MAP.common.select : WIDGET_MAP.formats[schema.format] || (isNumber ? WIDGET_MAP.types.number : WIDGET_MAP.types.string)
-          };
-        }); // 存在枚举数据列表 传入 enumOptions
-
-        if (enumOptions && !widgetConfig.uiProps.enumOptions) {
-          widgetConfig.uiProps.enumOptions = enumOptions;
-        }
-
-        return h(Widget, { ...context.data,
-          props: { ...context.props,
-            ...widgetConfig
-          }
-        });
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/4/21 9:24.
-     * NumberField 复用StringField
-     */
-    var NumberField = {
-      name: 'NumberField',
-      props: vueProps,
-      functional: true,
-
-      render(h, context) {
-        return h(StringField, context.data);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/4/21 9:24.
-     * IntegerField 复用StringField
-     */
-    var IntegerField = {
-      name: 'IntegerField',
-      props: vueProps,
-      functional: true,
-
-      render(h, context) {
-        return h(StringField, context.data);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/4/23 10:50.
-     */
-    var BooleanField = {
-      name: 'BooleanField',
-      props: vueProps,
-      functional: true,
-
-      render(h, context) {
-        const {
-          schema,
-          uiSchema,
-          curNodePath,
-          rootFormData
-        } = context.props; // Bool 会默认传入枚举类型选项 true false
-
-        const enumOptions = optionsList({
-          enumNames: schema.enumNames || ['true', 'false'],
-          enum: schema.enum || [true, false]
-        }, uiSchema, curNodePath, rootFormData);
-        const widgetConfig = getWidgetConfig({
-          schema,
-          uiSchema,
-          curNodePath,
-          rootFormData
-        }, () => ({
-          widget: WIDGET_MAP.types.boolean
-        }));
-        widgetConfig.uiProps.enumOptions = widgetConfig.uiProps.enumOptions || enumOptions;
-        return h(Widget, { ...context.data,
-          props: { ...context.props,
-            ...widgetConfig
-          }
-        });
-      }
-
-    };
-
-    /**
-     * 根据schema计算出formData的初始值
-     * 源码来自：react-jsonschema-form 做了细节调整，重写了allOf实现逻辑
-     * https://github.com/rjsf-team/react-jsonschema-form/blob/master/packages/core/src/utils.js#L283
-     */
-    /**
-     * When merging defaults and form data, we want to merge in this specific way:
-     * - objects are deeply merged
-     * - arrays are merged in such a way that:
-     *   - when the array is set in form data, only array entries set in form data
-     *     are deeply merged; additional entries from the defaults are ignored
-     *   - when the array is not set in form data, the default is copied over
-     * - scalars are overwritten/set by form data
+     * Created by Liu.Jun on 2020/4/25 14:45.
      */
 
-    function mergeDefaultsWithFormData(defaults, formData) {
-      if (Array.isArray(formData)) {
-        if (!Array.isArray(defaults)) {
-          defaults = [];
+    const pathSeparator = '.'; // nodePath 转css类名
+
+    function nodePath2ClassName(path) {
+      const rootPathName = '__pathRoot';
+      return path ? `${rootPathName}.${path}`.replace(/\./g, '_') : rootPathName;
+    } // 是否为根节点
+
+    function isRootNodePath(path) {
+      return path === '';
+    } // 计算当前节点path
+
+    function computedCurPath(prePath, curKey) {
+      return prePath === '' ? curKey : [prePath, curKey].join(pathSeparator);
+    } // 删除当前path值
+
+    function deletePathVal(vueData, name) {
+      Vue__default['default'].delete(vueData, name);
+    } // 设置当前path值
+
+    function setPathVal(obj, path, value) {
+      // Vue.set ?
+      const pathArr = path.split(pathSeparator);
+
+      for (let i = 0; i < pathArr.length; i += 1) {
+        if (pathArr.length - i < 2) {
+          // 倒数第一个数据
+          // obj[pathArr[pathArr.length - 1]] = value;
+          Vue__default['default'].set(obj, pathArr[pathArr.length - 1], value);
+          break;
         }
 
-        return formData.map((value, idx) => {
-          if (defaults[idx]) {
-            return mergeDefaultsWithFormData(defaults[idx], value);
-          }
+        obj = obj[pathArr[i]];
+      }
+    } // 获取当前path值
 
-          return value;
-        });
+    function getPathVal$1(obj, path, leftDeviation = 0) {
+      const pathArr = path.split(pathSeparator);
+
+      for (let i = 0; i < pathArr.length - leftDeviation; i += 1) {
+        // 错误路径或者undefined中断查找
+        if (obj === undefined) return undefined;
+        obj = pathArr[i] === '' ? obj : obj[pathArr[i]];
       }
 
-      if (isObject(formData)) {
-        const acc = Object.assign({}, defaults); // Prevent mutation of source object.
+      return obj;
+    } // path 等于props
 
-        return Object.keys(formData).reduce((preAcc, key) => {
-          preAcc[key] = mergeDefaultsWithFormData(defaults ? defaults[key] : {}, formData[key]);
-          return preAcc;
-        }, acc);
-      }
-
-      return formData;
+    function path2prop(path) {
+      return path;
     }
 
-    function computeDefaults(_schema, parentDefaults, rootSchema, rawFormData = {}, includeUndefinedValues = false) {
-      let schema = isObject(_schema) ? _schema : {};
-      const formData = isObject(rawFormData) ? rawFormData : {}; // allOf 处理合并数据
+    var vueUtils = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        nodePath2ClassName: nodePath2ClassName,
+        isRootNodePath: isRootNodePath,
+        computedCurPath: computedCurPath,
+        deletePathVal: deletePathVal,
+        setPathVal: setPathVal,
+        getPathVal: getPathVal$1,
+        path2prop: path2prop
+    });
 
-      if ('allOf' in schema) {
-        schema = resolveAllOf(schema, rootSchema, formData);
-      } // Compute the defaults recursively: give highest priority to deepest nodes.
-
-
-      let defaults = parentDefaults;
-
-      if (isObject(defaults) && isObject(schema.default)) {
-        // For object defaults, only override parent defaults that are defined in
-        // schema.default.
-        defaults = mergeObjects(defaults, schema.default);
-      } else if ('default' in schema) {
-        // Use schema defaults for this node.
-        defaults = schema.default;
-      } else if ('$ref' in schema) {
-        // Use referenced schema defaults for this node.
-        const refSchema = findSchemaDefinition(schema.$ref, rootSchema);
-        return computeDefaults(refSchema, defaults, rootSchema, formData, includeUndefinedValues);
-      } else if (
-      /* ('dependencies' in schema) {
-      const resolvedSchema = resolveDependencies(schema, rootSchema, formData);
-      return computeDefaults(
-      resolvedSchema,
-      defaults,
-      rootSchema,
-      formData,
-      includeUndefinedValues
-      );
-      } else if */
-      isFixedItems(schema)) {
-        defaults = schema.items.map((itemSchema, idx) => computeDefaults(itemSchema, Array.isArray(parentDefaults) ? parentDefaults[idx] : undefined, rootSchema, formData, includeUndefinedValues));
-      } else if ('oneOf' in schema) {
-        const matchSchema = schema.oneOf[getMatchingOption(formData, schema.oneOf)];
-
-        if (schema.properties && matchSchema.properties) {
-          // 对象 oneOf 需要合并原属性和 oneOf 属性
-          const mergeSchema = mergeObjects(schema, matchSchema);
-          delete mergeSchema.oneOf;
-          schema = mergeSchema;
-        } else {
-          schema = matchSchema;
-        }
-      } else if ('anyOf' in schema) {
-        const matchSchema = schema.anyOf[getMatchingOption(formData, schema.anyOf)];
-
-        if (schema.properties && matchSchema.properties) {
-          // 对象 anyOf 需要合并原属性和 anyOf 属性
-          const mergeSchema = mergeObjects(schema, matchSchema);
-          delete mergeSchema.anyOf;
-          schema = mergeSchema;
-        } else {
-          schema = matchSchema;
-        }
-      } // Not defaults defined for this node, fallback to generic typed ones.
-
-
-      if (typeof defaults === 'undefined') {
-        defaults = schema.default;
-      } // eslint-disable-next-line default-case
-
-
-      switch (getSchemaType(schema)) {
-        case 'null':
-          return null;
-        // We need to recur for object schema inner default values.
-
-        case 'object':
-          return Object.keys(schema.properties || {}).reduce((acc, key) => {
-            // Compute the defaults for this node, with the parent defaults we might
-            // have from a previous run: defaults[key].
-            const computedDefault = computeDefaults(schema.properties[key], (defaults || {})[key], rootSchema, (formData || {})[key], includeUndefinedValues);
-
-            if (includeUndefinedValues || computedDefault !== undefined) {
-              acc[key] = computedDefault;
-            }
-
-            return acc;
-          }, {});
-
-        case 'array':
-          // Inject defaults into existing array defaults
-          if (Array.isArray(defaults)) {
-            defaults = defaults.map((item, idx) => computeDefaults(schema.items[idx] || schema.additionalItems || {}, item, rootSchema, {}, includeUndefinedValues));
-          } // Deeply inject defaults into already existing form data
-
-
-          if (Array.isArray(rawFormData)) {
-            defaults = rawFormData.map((item, idx) => computeDefaults(schema.items, (defaults || {})[idx], rootSchema, item, {}));
-          }
-
-          if (schema.minItems) {
-            if (!isMultiSelect(schema, rootSchema)) {
-              const defaultsLength = defaults ? defaults.length : 0;
-
-              if (schema.minItems > defaultsLength) {
-                const defaultEntries = defaults || []; // populate the array with the defaults
-
-                const fillerSchema = Array.isArray(schema.items) ? schema.additionalItems : schema.items;
-                const fillerEntries = fillObj(new Array(schema.minItems - defaultsLength), computeDefaults(fillerSchema, fillerSchema.defaults, rootSchema, {}, includeUndefinedValues));
-                return defaultEntries.concat(fillerEntries);
-              }
-            } else {
-              return defaults || [];
-            }
-          } // undefined 默认一个空数组
-
-
-          defaults = defaults === undefined ? [] : defaults;
-      }
-
-      return defaults;
-    } // 获取默认form data
-
-
-    function getDefaultFormState(_schema, formData, rootSchema = {}, includeUndefinedValues = true) {
-      if (!isObject(_schema)) {
-        throw new Error(`Invalid schema: ${_schema}`);
-      }
-
-      const schema = retrieveSchema(_schema, rootSchema, formData);
-      const defaults = computeDefaults(schema, _schema.default, rootSchema, formData, includeUndefinedValues);
-
-      if (typeof formData === 'undefined') {
-        // No form data? Use schema defaults.
-        return defaults;
-      } // 传入formData时，合并传入数据
-
-
-      if (isObject(formData) || Array.isArray(formData)) {
-        return mergeDefaultsWithFormData(defaults, formData);
-      }
-
-      if (formData === 0 || formData === false || formData === '') {
-        return formData;
-      }
-
-      return formData || defaults;
-    }
-
-    /**
-     * Created by Liu.Jun on 2020/4/24 16:47.
-     */
-    // 支持数字排序 ，新增 ，删除等操作
-    var ArrayOrderList = {
-      name: 'ArrayOrderList',
-      props: {
-        // 需要被排序的VNode list
-        vNodeList: {
-          type: Array,
-          default: []
-        },
-        // tuple类型的数组，需要固定前值
-        tupleItemsLength: {
-          type: Number,
-          default: 0
-        },
-        addable: {
-          // 是否启用添加
-          type: Boolean,
-          default: true
-        },
-        showIndexNumber: {
-          // 是否显示当前序号
-          type: Boolean,
-          default: false
-        },
-        sortable: {
-          // 是否可排序
-          type: Boolean,
-          default: true
-        },
-        removable: {
-          // 是否可移除
-          type: Boolean,
-          default: true
-        },
-        maxItems: {// 最多添加个数
-        },
-        minItems: {// 最少添加个数
-        }
-      },
-      computed: {
-        canAdd() {
-          const {
-            addable,
-            maxItems,
-            vNodeList
-          } = this.$props; // 配置不可添加
-
-          if (!addable) return false; // 配置了最大个数
-
-          if (maxItems !== undefined) {
-            return vNodeList.length < maxItems;
-          }
-
-          return true;
-        },
-
-        canRemove() {
-          const {
-            removable,
-            minItems,
-            vNodeList
-          } = this.$props; // 配置不可添加
-
-          if (!removable) return false;
-
-          if (minItems !== undefined) {
-            return vNodeList.length > minItems;
-          }
-
-          return true;
-        }
-
-      },
-
-      render(h) {
-        // 没有数据，且不能添加不渲染该组件
-        if (this.vNodeList <= 0 && !this.addable) return null; // 是否可继续添加元素
-
-        return h('div', {
-          class: {
-            arrayOrderList: true
-          }
-        }, this.vNodeList.map(({
-          key,
-          vNode: VnodeItem
-        }, index) => {
-          const trueIndex = this.tupleItemsLength + index;
-          const indexNumber = index + 1;
-          return h('div', {
-            key,
-            class: {
-              arrayOrderList_item: true
-            }
-          }, [this.showIndexNumber ? h('div', {
-            class: {
-              arrayListItem_index: true
-            }
-          }, indexNumber) : null, h('div', {
-            class: {
-              arrayListItem_operateTool: true
-            }
-          }, [h('button', {
-            // 配置不可排序不显示排序按钮
-            style: { ...(!this.sortable ? {
-                display: 'none'
-              } : {})
-            },
-            attrs: {
-              type: 'button',
-              disabled: !this.sortable || index === 0
-            },
-            class: {
-              arrayListItem_btn: true,
-              'arrayListItem_orderBtn-top': true,
-              'el-icon-caret-top': true
-            },
-            on: {
-              click: () => {
-                this.$emit('onArrayOperate', {
-                  command: 'moveUp',
-                  data: {
-                    index: trueIndex
-                  }
-                });
-              }
-            }
-          }), h('button', {
-            // 配置不可排序不显示排序按钮
-            style: { ...(!this.sortable ? {
-                display: 'none'
-              } : {})
-            },
-            attrs: {
-              type: 'button',
-              disabled: !this.sortable || index === this.vNodeList.length - 1
-            },
-            class: {
-              arrayListItem_btn: true,
-              'arrayListItem_orderBtn-bottom': true,
-              'el-icon-caret-bottom': true
-            },
-            on: {
-              click: () => {
-                this.$emit('onArrayOperate', {
-                  command: 'moveDown',
-                  data: {
-                    index: trueIndex
-                  }
-                });
-              }
-            }
-          }), h('button', {
-            // 配置不可移除不显示移除按钮
-            style: { ...(!this.removable ? {
-                display: 'none'
-              } : {})
-            },
-            attrs: {
-              type: 'button',
-              disabled: !this.canRemove
-            },
-            class: {
-              arrayListItem_btn: true,
-              'arrayListItem_btn-delete': true,
-              'el-icon-close': true
-            },
-            on: {
-              click: () => {
-                this.$emit('onArrayOperate', {
-                  command: 'remove',
-                  data: {
-                    index: trueIndex
-                  }
-                });
-              }
-            }
-          })]), h('div', {
-            class: {
-              arrayListItem_content: true
-            }
-          }, [VnodeItem])]);
-        }).concat([h('p', {
-          style: { ...(!this.canAdd ? {
-              display: 'none'
-            } : {})
-          },
-          class: {
-            arrayOrderList_bottomAddBtn: true
-          }
-        }, [h('button', {
-          attrs: {
-            type: 'button'
-          },
-          class: {
-            bottomAddBtn: true,
-            'is-plain': true,
-            genFormBtn: true
-          },
-          on: {
-            click: () => {
-              this.$emit('onArrayOperate', {
-                command: 'add'
-              });
-            }
-          }
-        }, [h('i', {
-          class: 'el-icon-plus',
-          style: {
-            marginRight: '5px'
-          }
-        }), this.maxItems ? `( ${this.vNodeList.length} / ${this.maxItems} )` : ''])])]));
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/4/24 11:56.
-     */
-    var ArrayFieldNormal = {
-      name: 'ArrayFieldNormal',
-      functional: true,
-      props: { ...vueProps,
-        itemsFormData: {
-          type: Array // default: () => []
-
-        }
-      },
-
-      render(h, context) {
-        const {
-          schema,
-          uiSchema,
-          curNodePath,
-          rootFormData,
-          itemsFormData,
-          errorSchema
-        } = context.props;
-        const {
-          title,
-          description,
-          addable,
-          showIndexNumber,
-          sortable,
-          removable,
-          showTitle,
-          showDescription,
-          fieldClass,
-          fieldAttrs,
-          fieldStyle
-        } = getUiOptions({
-          schema,
-          uiSchema,
-          curNodePath,
-          rootFormData
-        });
-        const arrayItemsVNodeList = itemsFormData.map((item, index) => {
-          const tempUiSchema = replaceArrayIndex({
-            schema: schema.items,
-            uiSchema: uiSchema.items
-          }, index);
-          return {
-            key: item.key,
-            vNode: h(SchemaField, {
-              key: item.key,
-              props: { ...context.props,
-                schema: schema.items,
-                required: ![].concat(schema.items.type).includes('null'),
-                uiSchema: { ...uiSchema.items,
-                  ...tempUiSchema // 处理过 $index 的标识
-
-                },
-                errorSchema: errorSchema.items,
-                curNodePath: computedCurPath(curNodePath, index)
-              }
-            })
-          };
-        });
-        return h(__vue_component__, {
-          props: {
-            title,
-            description,
-            showTitle,
-            showDescription
-          },
-          class: { ...context.data.class,
-            ...fieldClass
-          },
-          attrs: fieldAttrs,
-          style: fieldStyle
-        }, [h(ArrayOrderList, {
-          props: {
-            vNodeList: arrayItemsVNodeList,
-            showIndexNumber,
-            addable,
-            sortable,
-            removable,
-            maxItems: schema.maxItems,
-            minItems: schema.minItems
-          },
-          on: context.listeners
-        })]);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/4/24 11:56.
-     */
-    var ArrayFieldMultiSelect = {
-      name: 'ArrayFieldMultiSelect',
-      functional: true,
-      props: { ...vueProps
-      },
-
-      render(h, context) {
-        const {
-          schema,
-          rootSchema,
-          uiSchema,
-          curNodePath,
-          rootFormData
-        } = context.props; // 这里需要索引当前节点，通过到schemaField组件的会统一处理
-
-        const itemsSchema = retrieveSchema(schema.items, rootSchema);
-        const enumOptions = optionsList(itemsSchema, uiSchema, curNodePath, rootFormData);
-        const widgetConfig = getWidgetConfig({
-          schema,
-          uiSchema,
-          curNodePath,
-          rootFormData
-        }, () => ({
-          widget: WIDGET_MAP.common.checkboxGroup
-        })); // 存在枚举数据列表 传入 enumOptions
-
-        widgetConfig.uiProps.multiple = true;
-
-        if (enumOptions && !widgetConfig.uiProps.enumOptions) {
-          widgetConfig.uiProps.enumOptions = enumOptions;
-        }
-
-        return h(Widget, { ...context.data,
-          props: { ...context.props,
-            ...widgetConfig
-          }
-        });
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/4/24 11:56.
-     */
-    var ArrayFieldTuple = {
-      name: 'ArrayFieldTuple',
-      props: { ...vueProps,
-        itemsFormData: {
-          type: Array,
-          default: () => []
-        }
-      },
-
-      created() {
-        this.fixItemsFormData();
-      },
-
-      methods: {
-        // 兼容数据 长度不足的的场景
-        fixItemsFormData() {
-          const isNoArray = !Array.isArray(this.itemsFormData);
-
-          if (isNoArray || this.itemsFormData.length < this.schema.items.length) {
-            // 这里需要补齐默认数据，计算出需要的数据
-            const curSchemaState = getDefaultFormState(this.schema, undefined, this.rootSchema);
-
-            if (isNoArray) {
-              // 数据修复 - 重置一个新的值
-              this.$emit('onArrayOperate', {
-                command: 'setNewTarget',
-                data: {
-                  newTarget: curSchemaState
-                }
-              });
-            } else {
-              // 修复数据 - 追加不足的数据
-              this.$emit('onArrayOperate', {
-                command: 'batchPush',
-                data: {
-                  pushArray: curSchemaState.slice(this.itemsFormData.length)
-                }
-              });
-            }
-          }
-        }
-
-      },
-
-      render(h) {
-        if (!Array.isArray(this.itemsFormData)) return false;
-        const {
-          schema,
-          uiSchema,
-          errorSchema,
-          curNodePath
-        } = this.$props;
-        const {
-          title,
-          description,
-          addable,
-          showIndexNumber,
-          sortable,
-          removable,
-          showTitle,
-          showDescription,
-          fieldClass,
-          fieldAttrs,
-          fieldStyle
-        } = getUiOptions({
-          schema,
-          uiSchema,
-          curNodePath,
-          rootFormData: this.rootFormData
-        }); // 拆分为 tuple 和 additional
-
-        const cutOfArr = cutOff(this.itemsFormData, this.schema.items.length - 1);
-        const tupleVnodeArr = cutOfArr[0].map((item, index) => h(SchemaField, {
-          key: item.key,
-          props: { ...this.$props,
-            required: ![].concat(schema.items[index].type).includes('null'),
-            schema: schema.items[index],
-            uiSchema: uiSchema.items ? uiSchema.items[index] : {},
-            errorSchema: errorSchema.items ? errorSchema.items[index] : {},
-            curNodePath: computedCurPath(curNodePath, index)
-          }
-        })); // 通过order组件做可排序处理
-
-        const additionalVnodeArr = cutOfArr[1].map((item, index) => {
-          const tempUiSchema = replaceArrayIndex({
-            schema: schema.additionalItems,
-            uiSchema: uiSchema.additionalItems
-          }, index);
-          return {
-            key: item.key,
-            vNode: h(SchemaField, {
-              key: item.key,
-              props: { ...this.$props,
-                schema: schema.additionalItems,
-                required: ![].concat(schema.additionalItems.type).includes('null'),
-                uiSchema: { ...uiSchema.additionalItems,
-                  ...tempUiSchema
-                },
-                errorSchema: errorSchema.additionalItems,
-                curNodePath: computedCurPath(this.curNodePath, index + schema.items.length)
-              }
-            })
-          };
-        }); // 是否可添加同时受限于 additionalItems 属性
-
-        const trueAddable = (addable === undefined ? true : addable) && allowAdditionalItems(this.schema); // 默认循环固定配置的数据 长度外的使用ArrayOrderList渲染
-
-        return h(__vue_component__, {
-          props: {
-            title,
-            description,
-            showTitle,
-            showDescription
-          },
-          class: fieldClass,
-          attrs: fieldAttrs,
-          style: fieldStyle
-        }, [// 先显示Tuple固定项
-        ...tupleVnodeArr, // additional items
-        h(ArrayOrderList, {
-          props: {
-            vNodeList: additionalVnodeArr,
-            tupleItemsLength: schema.items.length,
-            addable: trueAddable,
-            showIndexNumber,
-            sortable,
-            removable,
-            maxItems: schema.maxItems,
-            minItems: schema.minItems
-          },
-          on: this.$listeners
-        })]);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/9/16 10:25.
-     */
-    var ArrayFieldSpecialFormat = {
-      name: 'ArrayFieldSpecialFormat',
-      props: vueProps,
-      functional: true,
-
-      render(h, context) {
-        const {
-          schema,
-          uiSchema,
-          curNodePath,
-          rootFormData
-        } = context.props;
-        const widgetConfig = getWidgetConfig({
-          schema: {
-            'ui:widget': WIDGET_MAP.formats[schema.format],
-            ...schema
-          },
-          uiSchema,
-          curNodePath,
-          rootFormData
-        });
-        return h(Widget, { ...context.data,
-          props: { ...context.props,
-            ...widgetConfig
-          }
-        });
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/4/24 11:23.
-     */
-    var ArrayField = {
-      name: 'ArrayField',
-      props: vueProps,
-
-      data() {
-        return {
-          // 通过维护一份key，一份值 来解决list key的问题
-          formKeys: this.getCuFormData().map(() => genId())
-        };
-      },
-
-      computed: {
-        itemsFormData() {
-          const formKeys = this.$data.formKeys;
-          return this.curFormData.map((item, index) => ({
-            key: formKeys[index],
-            value: item
-          }));
-        },
-
-        curFormData() {
-          return this.getCuFormData();
-        }
-
-      },
-      watch: {
-        curFormData(newVal, oldVal) {
-          // 引用类型，当值不相等，说明是被重新赋值
-          if (newVal !== oldVal && Array.isArray(newVal)) {
-            this.formKeys = newVal.map(() => genId());
-          }
-        }
-
-      },
-      methods: {
-        // 获取当前的值
-        getCuFormData() {
-          const {
-            rootFormData,
-            curNodePath
-          } = this.$props;
-          const value = getPathVal(rootFormData, curNodePath);
-          if (Array.isArray(value)) return value;
-          console.error('error: type array，值必须为 array 类型');
-          return [];
-        },
-
-        // 获取一个新item
-        getNewFormDataRow() {
-          const {
-            schema,
-            rootSchema
-          } = this.$props;
-          let itemSchema = schema.items; // https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation
-          // 数组为项的集合搭配additionalItems属性需要特殊处理
-
-          if (isFixedItems(this.schema) && allowAdditionalItems(this.schema)) {
-            itemSchema = schema.additionalItems;
-          }
-
-          return getDefaultFormState(itemSchema, undefined, rootSchema);
-        },
-
-        // 数组排序相关操作
-        handleArrayOperate({
-          command,
-          data
-        }) {
-          // 统一处理数组数据的 新增，删除，排序等变更
-          const strategyMap = {
-            moveUp(target, {
-              index
-            }) {
-              moveUpAt(target, index);
-            },
-
-            moveDown(target, {
-              index
-            }) {
-              moveDownAt(target, index);
-            },
-
-            remove(target, {
-              index
-            }) {
-              removeAt(target, index);
-            },
-
-            add(target, {
-              newRowData
-            }) {
-              target.push(newRowData);
-            },
-
-            batchPush(target, {
-              pushArray
-            }) {
-              pushArray.forEach(item => {
-                target.push(item);
-              });
-            },
-
-            setNewTarget(target, {
-              formData,
-              nodePath,
-              newTarget
-            }) {
-              setPathVal(formData, nodePath, newTarget);
-            }
-
-          };
-          const curStrategy = strategyMap[command];
-
-          if (curStrategy) {
-            let formDataPrams = data;
-            let keysParams = data;
-
-            if (command === 'add') {
-              // 单个添加
-              formDataPrams = {
-                newRowData: this.getNewFormDataRow()
-              };
-              keysParams = {
-                newRowData: genId()
-              };
-            } else if (command === 'batchPush') {
-              // 批量添加
-              keysParams = {
-                pushArray: formDataPrams.pushArray.map(item => genId())
-              };
-            } else if (command === 'setNewTarget') {
-              // 设置
-              formDataPrams = {
-                formData: this.rootFormData,
-                nodePath: this.curNodePath,
-                newTarget: formDataPrams.newTarget
-              };
-              keysParams = {
-                formData: this.$data,
-                nodePath: 'formKeys',
-                newTarget: formDataPrams.newTarget.map(item => genId())
-              };
-            } // 同步修改 formData keys
-
-
-            curStrategy.apply(this, [this.$data.formKeys, keysParams]); // 修改formData数据
-
-            curStrategy.apply(this, [this.curFormData, formDataPrams]);
-          } else {
-            throw new Error(`错误 - 未知的操作：[${command}]`);
-          }
-        }
-
-      },
-
-      render(h) {
-        const self = this;
-        const {
-          schema,
-          uiSchema,
-          rootSchema,
-          rootFormData,
-          curNodePath
-        } = this.$props;
-
-        if (!schema.hasOwnProperty('items')) {
-          throw new Error(`[${schema}] 请先定义 items属性`);
-        } // 多选类型
-
-
-        if (isMultiSelect(schema, rootSchema)) {
-          // item 为枚举固定值
-          return h(ArrayFieldMultiSelect, {
-            props: this.$props,
-            class: {
-              [lowerCase(ArrayFieldMultiSelect.name)]: true
-            }
-          });
-        } // 特殊处理 date datetime time url-upload
-        // array 支持配置 ui:widget
-        // 时间日期区间 或者 ui:widget 特殊配置
-
-
-        if (schema.format || schema['ui:widget'] || uiSchema['ui:widget']) {
-          return h(ArrayFieldSpecialFormat, {
-            props: this.$props,
-            class: {
-              [lowerCase(ArrayFieldSpecialFormat.name)]: true
-            }
-          });
-        } // https://json-schema.org/understanding-json-schema/reference/array.html#list-validation
-        // https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation
-
-
-        const CurrentField = isFixedItems(schema) ? ArrayFieldTuple : ArrayFieldNormal;
-        return h('div', [h(CurrentField, {
-          props: {
-            itemsFormData: this.itemsFormData,
-            ...this.$props
-          },
-          class: {
-            [lowerCase(CurrentField.name)]: true
-          },
-          on: {
-            onArrayOperate: this.handleArrayOperate
-          }
-        }), // 插入一个Widget，校验 array - maxItems. minItems. uniqueItems 等items外的属性校验
-        this.needValidFieldGroup ? h(Widget, {
-          key: 'validateWidget-array',
-          class: {
-            validateWidget: true,
-            'validateWidget-array': true
-          },
-          props: {
-            schema: Object.entries(self.$props.schema).reduce((preVal, [key, value]) => {
-              if (key !== 'items') preVal[key] = value;
-              return preVal;
-            }, {}),
-            uiSchema,
-            errorSchema: this.errorSchema,
-            curNodePath,
-            rootFormData
-          }
-        }) : null]);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/5/19 10:15 下午.
-     */
-    var SelectLinkageField = {
-      name: 'SelectLinkageField',
-      props: { ...vueProps,
-        combiningType: {
-          type: String,
-          default: 'anyOf' // anyOf oneOf
-
-        },
-        selectList: {
-          type: Array,
-          require: true
-        }
-      },
-
-      data() {
-        const curSelectIndex = this.computedCurSelectIndexByFormData(getPathVal(this.rootFormData, this.curNodePath));
-        return {
-          curSelectIndex
-        };
-      },
-
-      methods: {
-        computedCurSelectIndexByFormData(formData) {
-          const index = getMatchingOption(formData, this.selectList, this.rootSchema);
-          if (index !== 0) return index; // 找不到默认等于原本的值
-
-          return this.curSelectIndex || 0;
-        },
-
-        // 下拉选项 VNode
-        getSelectBoxVNode() {
-          // 下拉选项参数
-          const selectWidgetConfig = getWidgetConfig({
-            schema: this.schema[`${this.combiningType}Select`] || {},
-            // 扩展 oneOfSelect,anyOfSelect字段
-            uiSchema: this.uiSchema[`${this.combiningType}Select`] || {},
-            // 通过 uiSchema['oneOf'] 配置ui信息
-            curNodePath: this.curNodePath,
-            rootFormData: this.rootFormData
-          }, () => ({
-            // 枚举参数
-            widget: 'SelectWidget'
-          })); // title description 回退到 schema 配置，但这里不使用 uiSchema配置
-          // select ui配置需要使用 (oneOf|anyOf)Select
-
-          selectWidgetConfig.label = selectWidgetConfig.label || this.schema.title;
-          selectWidgetConfig.description = selectWidgetConfig.description || this.schema.description; // 下拉列表枚举值
-
-          if (!selectWidgetConfig.uiProps.enumOptions) {
-            const uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
-            selectWidgetConfig.uiProps.enumOptions = this.selectList.map((option, index) => {
-              const curUiOptions = getUiOptions({
-                schema: option,
-                uiSchema: uiSchemaSelectList[index],
-                containsSpec: false // curNodePath: this.curNodePath,
-                // rootFormData: this.rootFormData,
-
-              });
-              return {
-                label: curUiOptions.title || `选项 ${index + 1}`,
-                value: index
-              };
-            });
-          } // oneOf option 渲染
-          // 选择框 VNode
-
-
-          return this.$createElement(Widget, {
-            key: `fieldSelect_${this.combiningType}`,
-            class: {
-              [`fieldSelect_${this.combiningType}`]: true
-            },
-            props: {
-              isFormData: false,
-              curValue: this.curSelectIndex,
-              ...selectWidgetConfig
-            },
-            on: {
-              onChange: event => {
-                this.curSelectIndex = event;
-              }
-            }
-          });
-        }
-
-      },
-      watch: {
-        // 对象 切换了select
-        // 如果object 类型 option有添加属性 这里做移除
-        // 对新option计算默认值
-        curSelectIndex(newVal, oldVal) {
-          const curFormData = getPathVal(this.rootFormData, this.curNodePath); // 计算出 新选项默认值
-
-          const newOptionData = getDefaultFormState(this.selectList[newVal], undefined, this.rootSchema);
-          const hasOwn = Object.prototype.hasOwnProperty; // 移除旧key
-
-          if (isObject(curFormData)) {
-            const oldSelectSchema = retrieveSchema(this.selectList[oldVal], this.rootSchema);
-
-            if (getSchemaType(oldSelectSchema) === 'object') {
-              // 移除旧schema添加的属性
-              // Object.keys(oldSelectSchema.properties)
-              for (const key in oldSelectSchema.properties) {
-                if (hasOwn.call(oldSelectSchema.properties, key) && !hasOwn.call(newOptionData, key)) {
-                  deletePathVal(curFormData, key); // delete curFormData[key];
-                }
-              }
-            }
-          } // 设置新值
-
-
-          if (isObject(newOptionData)) {
-            Object.entries(newOptionData).forEach(([key, value]) => {
-              if (value !== undefined) {
-                setPathVal(curFormData, key, value);
-              }
-            });
-          } else {
-            setPathVal(this.rootFormData, this.curNodePath, newOptionData || curFormData);
-          }
-        }
-
-      },
-
-      render(h) {
-        const {
-          curNodePath
-        } = this.$props;
-        const pathClassName = nodePath2ClassName(curNodePath); // object 需要保持原有属性，如果存在原有属性这里单独渲染
-
-        let originVNode = null;
-        const isTypeObject = this.schema.type === 'object' || this.schema.properties;
-
-        if (isTypeObject && !isEmptyObject(this.schema.properties)) {
-          const origSchema = Object.assign({}, this.schema);
-          delete origSchema[this.combiningType];
-          originVNode = h(SchemaField, {
-            key: `origin_${this.combiningType}`,
-            class: {
-              [`${this.combiningType}_originBox`]: true,
-              [`${pathClassName}-originBox`]: true
-            },
-            props: { ...this.$props,
-              schema: origSchema // needValidFieldGroup: false // 单独校验，这里无需处理
-
-            }
-          });
-        } // 选择附加的节点
-
-
-        const childrenVNodeList = [this.getSelectBoxVNode()]; // 当前选中的 oneOf 附加的节点
-
-        let curSelectSchema = this.selectList[this.curSelectIndex];
-
-        if (curSelectSchema) {
-          // 覆盖父级的属性
-          const {
-            // eslint-disable-next-line no-unused-vars
-            properties,
-            // eslint-disable-next-line no-unused-vars
-            [this.combiningType]: combiningType,
-            // eslint-disable-next-line no-unused-vars
-            [`${this.combiningType}Select`]: combiningTypeSelect,
-            ...parentSchema
-          } = this.schema;
-          curSelectSchema = Object.assign({}, parentSchema, curSelectSchema); // 当前节点的ui err配置，用来支持所有选项的统一配置
-          // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
-
-          const userUiOptions = filterObject(getUiOptions({
-            schema: this.schema,
-            uiSchema: this.uiSchema,
-            containsSpec: false,
-            curNodePath,
-            rootFormData: this.rootFormData
-          }), key => key === this.combiningType ? undefined : `ui:${key}`);
-          const userErrOptions = filterObject(getUserErrOptions({
-            schema: this.schema,
-            uiSchema: this.uiSchema,
-            errorSchema: this.errorSchema
-          }), key => key === this.combiningType ? undefined : `err:${key}`);
-          childrenVNodeList.push(h(SchemaField, {
-            key: `appendSchema_${this.combiningType}`,
-            props: { ...this.$props,
-              schema: {
-                'ui:showTitle': false,
-                // 默认不显示title
-                'ui:showDescription': false,
-                // 默认不显示描述
-                ...curSelectSchema
-              },
-              required: this.required,
-              uiSchema: { ...userUiOptions,
-                // 合并oneOf 级的配置
-                ...(this.uiSchema[this.combiningType] || [])[this.curSelectIndex]
-              },
-              errorSchema: { ...userErrOptions,
-                // 合并oneOf 级的配置
-                ...(this.errorSchema[this.combiningType] || [])[this.curSelectIndex]
-              } // needValidFieldGroup: false // 单独校验，这里无需处理
-
-            }
-          }));
-        } // oneOf 校验 VNode
-
-
-        childrenVNodeList.push(h(Widget, {
-          key: `validateWidget-${this.combiningType}`,
-          class: {
-            validateWidget: true,
-            [`validateWidget-${this.combiningType}`]: true
-          },
-          props: {
-            schema: this.schema,
-            uiSchema: this.uiSchema,
-            errorSchema: this.errorSchema,
-            curNodePath: this.curNodePath,
-            rootFormData: this.rootFormData
-          }
-        }));
-        return h('div', [originVNode, h('div', {
-          key: `appendBox_${this.combiningType}`,
-          class: {
-            appendCombining_box: true,
-            [`${this.combiningType}_appendBox`]: true,
-            [`${pathClassName}-appendBox`]: true
-          }
-        }, childrenVNodeList)]);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/5/19 9:49 下午.
-     */
-    var AnyOfField = {
-      name: 'AnyOfField',
-      functional: true,
-
-      render(h, context) {
-        const {
-          props,
-          ...otherData
-        } = context.data;
-        return h(SelectLinkageField, { ...otherData,
-          props: { ...props,
-            combiningType: 'anyOf',
-            selectList: props.schema.anyOf
-          }
-        }, context.children);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/5/19 9:49 下午.
-     */
-    var OneOfField = {
-      name: 'oneOfField',
-      functional: true,
-
-      render(h, context) {
-        const {
-          props,
-          ...otherData
-        } = context.data;
-        return h(SelectLinkageField, { ...otherData,
-          props: { ...props,
-            combiningType: 'oneOf',
-            selectList: props.schema.oneOf
-          }
-        }, context.children);
-      }
-
-    };
-
-    /**
-     * Created by Liu.Jun on 2020/4/20 9:55 下午.
-     */
-
-    const FIELDS_MAPS = {
-      array: ArrayField,
-      boolean: BooleanField,
-      integer: IntegerField,
-      number: NumberField,
-      object: ObjectField,
-      string: StringField,
-      null: {
-        render() {
-          return null;
-        }
-
-      },
-      anyOf: AnyOfField,
-      oneOf: OneOfField
-    };
-
-    // eslint-disable-next-line import/no-cycle
     // 这里打破 JSON Schema 规范
 
     const regExpression = /{{(.*)}}/;
@@ -11082,7 +8172,7 @@
         const code = matchExpression[1].trim(); // eslint-disable-next-line no-new-func
 
         const fn = new Function('parentFormData', 'rootFormData', `return ${code}`);
-        return fn(getPathVal(rootFormData, curNodePath, 1), rootFormData);
+        return fn(getPathVal$1(rootFormData, curNodePath, 1), rootFormData);
       } // 回退
 
 
@@ -11119,7 +8209,7 @@
       return widget === 'HiddenWidget' || widget === 'hidden' || !!handleExpression(rootFormData, curNodePath, hiddenExpression, () => {
         // 配置了函数 function
         if (typeof hiddenExpression === 'function') {
-          return hiddenExpression(getPathVal(rootFormData, curNodePath, 1), rootFormData);
+          return hiddenExpression(getPathVal$1(rootFormData, curNodePath, 1), rootFormData);
         } // 配置了常量 ？？
 
 
@@ -11127,7 +8217,7 @@
       });
     } // 解析当前节点 ui field
 
-    function getUiField({
+    function getUiField(FIELDS_MAP, {
       schema = {},
       uiSchema = {}
     }) {
@@ -11142,7 +8232,7 @@
       } // 类型默认 field
 
 
-      const fieldCtor = FIELDS_MAPS[getSchemaType(schema)];
+      const fieldCtor = FIELDS_MAP[getSchemaType(schema)];
 
       if (fieldCtor) {
         return {
@@ -11485,10 +8575,466 @@
         optionsList: optionsList
     });
 
+    let ajv$1 = createAjvInstance();
+    let formerCustomFormats = null;
+    let formerMetaSchema = null; // 创建实例
+
+    function createAjvInstance() {
+      const ajvInstance = new ajv({
+        errorDataPath: 'property',
+        allErrors: true,
+        multipleOfPrecision: 8,
+        schemaId: 'auto',
+        unknownFormats: 'ignore'
+      }); // 添加base-64 format
+
+      ajvInstance.addFormat('data-url', /^data:([a-z]+\/[a-z0-9-+.]+)?;(?:name=(.*);)?base64,(.*)$/); // 添加color format
+
+      ajvInstance.addFormat('color', // eslint-disable-next-line max-len
+      /^(#?([0-9A-Fa-f]{3}){1,2}\b|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow|(rgb\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*\))|(rgb\(\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*\)))$/);
+      return ajvInstance;
+    }
+    /**
+     * 将错误输出从ajv转换为jsonschema使用的格式
+     * At some point, components should be updated to support ajv.
+     */
+
+
+    function transformAjvErrors(errors = []) {
+      if (errors === null) {
+        return [];
+      }
+
+      return errors.map(e => {
+        const {
+          dataPath,
+          keyword,
+          message,
+          params,
+          schemaPath
+        } = e;
+        const property = `${dataPath}`; // put data in expected format
+
+        return {
+          name: keyword,
+          property,
+          message,
+          params,
+          // specific to ajv
+          stack: `${property} ${message}`.trim(),
+          schemaPath
+        };
+      });
+    }
+    /**
+     * 通过 schema校验formData并返回错误信息
+     * @param formData 校验的数据
+     * @param schema
+     * @param transformErrors function - 转换错误, 如个性化的配置
+     * @param additionalMetaSchemas 数组 添加 ajv metaSchema
+     * @param customFormats 添加 ajv 自定义 formats
+     * @returns {{errors: ([]|{stack: string, schemaPath: *, name: *, property: string, message: *, params: *}[])}}
+     */
+
+
+    function ajvValidateFormData({
+      formData,
+      schema,
+      transformErrors,
+      additionalMetaSchemas = [],
+      customFormats = {}
+    } = {}) {
+      const hasNewMetaSchemas = !deepEquals(formerMetaSchema, additionalMetaSchemas);
+      const hasNewFormats = !deepEquals(formerCustomFormats, customFormats); // 变更了 Meta或者调整了format配置重置新的实例
+
+      if (hasNewMetaSchemas || hasNewFormats) {
+        ajv$1 = createAjvInstance();
+      } // 添加更多要验证的模式
+
+
+      if (additionalMetaSchemas && hasNewMetaSchemas && Array.isArray(additionalMetaSchemas)) {
+        ajv$1.addMetaSchema(additionalMetaSchemas);
+        formerMetaSchema = additionalMetaSchemas;
+      } // 注册自定义的 formats - 没有变更只会注册一次 - 否则重新创建实例
+
+
+      if (customFormats && hasNewFormats && isObject(customFormats)) {
+        Object.keys(customFormats).forEach(formatName => {
+          ajv$1.addFormat(formatName, customFormats[formatName]);
+        });
+        formerCustomFormats = customFormats;
+      }
+
+      let validationError = null;
+
+      try {
+        ajv$1.validate(schema, formData);
+      } catch (err) {
+        validationError = err;
+      } // ajv 默认多语言处理
+
+
+      i18n.getCurrentLocalize()(ajv$1.errors);
+      let errors = transformAjvErrors(ajv$1.errors); // 清除错误
+
+      ajv$1.errors = null; // 处理异常
+
+      const noProperMetaSchema = validationError && validationError.message && typeof validationError.message === 'string' && validationError.message.includes('no schema with key or ref ');
+
+      if (noProperMetaSchema) {
+        errors = [...errors, {
+          stack: validationError.message
+        }];
+      } // 转换错误, 如传入自定义的错误
+
+
+      if (typeof transformErrors === 'function') {
+        errors = transformErrors(errors);
+      }
+
+      return {
+        errors
+      };
+    } // 校验formData 并转换错误信息
+
+    function validateFormDataAndTransformMsg({
+      formData,
+      schema,
+      uiSchema,
+      transformErrors,
+      additionalMetaSchemas = [],
+      customFormats = {},
+      errorSchema = {},
+      required = false,
+      propPath = '',
+      isOnlyFirstError = true // 只取第一条错误信息
+
+    } = {}) {
+      // 如果数组类型针对配置了 format 的特殊处理
+
+      const emptyArray = schema.type === 'array' && Array.isArray(formData) && formData.length === 0;
+      const isEmpty = formData === undefined || emptyArray;
+
+      if (required) {
+        if (isEmpty) {
+          const requireErrObj = {
+            keyword: 'required',
+            params: {
+              missingProperty: propPath
+            }
+          }; // 用户设置校验信息
+
+          const errSchemaMsg = getUserErrOptions({
+            schema,
+            uiSchema,
+            errorSchema
+          }).required;
+
+          if (errSchemaMsg) {
+            requireErrObj.message = errSchemaMsg;
+          } else {
+            // 处理多语言require提示信息 （ajv 修改原引用）
+            i18n.getCurrentLocalize()([requireErrObj]);
+          }
+
+          return [requireErrObj];
+        }
+      } else if (isEmpty && !emptyArray) {
+        // 非required 为空 校验通过
+        return [];
+      } // 校验ajv错误信息
+
+
+      let ajvErrors = ajvValidateFormData({
+        formData,
+        schema,
+        transformErrors,
+        additionalMetaSchemas,
+        customFormats
+      }).errors; // 过滤顶级错误
+
+      {
+        ajvErrors = ajvErrors.filter(item => item.property === '' && !item.schemaPath.includes('#/anyOf/') && !item.schemaPath.includes('#/oneOf/') || item.name === 'additionalProperties');
+      }
+
+      const userErrOptions = getUserErrOptions({
+        schema,
+        uiSchema,
+        errorSchema
+      });
+      return (isOnlyFirstError && ajvErrors.length > 0 ? [ajvErrors[0]] : ajvErrors).reduce((preErrors, errorItem) => {
+        // 优先获取 errorSchema 配置
+        errorItem.message = userErrOptions[errorItem.name] !== undefined ? userErrOptions[errorItem.name] : errorItem.message;
+        preErrors.push(errorItem);
+        return preErrors;
+      }, []);
+    }
+    /**
+     * 根据模式验证数据，如果数据有效则返回true，否则返回* false。如果模式无效，那么这个函数将返回* false。
+     * @param schema
+     * @param data
+     * @returns {boolean|PromiseLike<any>}
+     */
+
+    function isValid(schema, data) {
+      try {
+        return ajv$1.validate(schema, data);
+      } catch (e) {
+        return false;
+      }
+    } // oneOf anyOf 通过formData的值来找到当前匹配项索引
+
+    function getMatchingOption(formData, options, rootSchema) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < options.length; i++) {
+        const option = options[i]; // If the schema describes an object then we need to add slightly more
+        // strict matching to the schema, because unless the schema uses the
+        // "requires" keyword, an object will match the schema as long as it
+        // doesn't have matching keys with a conflicting type. To do this we use an
+        // "anyOf" with an array of requires. This augmentation expresses that the
+        // schema should match if any of the keys in the schema are present on the
+        // object and pass validation.
+
+        if (option.properties) {
+          // Create an "anyOf" schema that requires at least one of the keys in the
+          // "properties" object
+          const requiresAnyOf = {
+            anyOf: Object.keys(option.properties).map(key => ({
+              required: [key]
+            }))
+          };
+          let augmentedSchema; // If the "anyOf" keyword already exists, wrap the augmentation in an "allOf"
+
+          if (option.anyOf) {
+            // Create a shallow clone of the option
+            const { ...shallowClone
+            } = option;
+
+            if (!shallowClone.allOf) {
+              shallowClone.allOf = [];
+            } else {
+              // If "allOf" already exists, shallow clone the array
+              shallowClone.allOf = shallowClone.allOf.slice();
+            }
+
+            shallowClone.allOf.push(requiresAnyOf);
+            augmentedSchema = shallowClone;
+          } else {
+            augmentedSchema = Object.assign({}, option, requiresAnyOf);
+          } // Remove the "required" field as it's likely that not all fields have
+          // been filled in yet, which will mean that the schema is not valid
+
+
+          delete augmentedSchema.required;
+
+          if (isValid(augmentedSchema, formData)) {
+            return i;
+          }
+        } else if (isValid(options[i], formData)) {
+          return i;
+        }
+      }
+
+      return 0;
+    }
+
+    var validate$2 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        ajvValidateFormData: ajvValidateFormData,
+        validateFormDataAndTransformMsg: validateFormDataAndTransformMsg,
+        isValid: isValid,
+        getMatchingOption: getMatchingOption
+    });
+
+    /**
+     * 根据schema计算出formData的初始值
+     * 源码来自：react-jsonschema-form 做了细节调整，重写了allOf实现逻辑
+     * https://github.com/rjsf-team/react-jsonschema-form/blob/master/packages/core/src/utils.js#L283
+     */
+    /**
+     * When merging defaults and form data, we want to merge in this specific way:
+     * - objects are deeply merged
+     * - arrays are merged in such a way that:
+     *   - when the array is set in form data, only array entries set in form data
+     *     are deeply merged; additional entries from the defaults are ignored
+     *   - when the array is not set in form data, the default is copied over
+     * - scalars are overwritten/set by form data
+     */
+
+    function mergeDefaultsWithFormData(defaults, formData) {
+      if (Array.isArray(formData)) {
+        if (!Array.isArray(defaults)) {
+          defaults = [];
+        }
+
+        return formData.map((value, idx) => {
+          if (defaults[idx]) {
+            return mergeDefaultsWithFormData(defaults[idx], value);
+          }
+
+          return value;
+        });
+      }
+
+      if (isObject(formData)) {
+        const acc = Object.assign({}, defaults); // Prevent mutation of source object.
+
+        return Object.keys(formData).reduce((preAcc, key) => {
+          preAcc[key] = mergeDefaultsWithFormData(defaults ? defaults[key] : {}, formData[key]);
+          return preAcc;
+        }, acc);
+      }
+
+      return formData;
+    }
+
+    function computeDefaults(_schema, parentDefaults, rootSchema, rawFormData = {}, includeUndefinedValues = false) {
+      let schema = isObject(_schema) ? _schema : {};
+      const formData = isObject(rawFormData) ? rawFormData : {}; // allOf 处理合并数据
+
+      if ('allOf' in schema) {
+        schema = resolveAllOf(schema, rootSchema, formData);
+      } // Compute the defaults recursively: give highest priority to deepest nodes.
+
+
+      let defaults = parentDefaults;
+
+      if (isObject(defaults) && isObject(schema.default)) {
+        // For object defaults, only override parent defaults that are defined in
+        // schema.default.
+        defaults = mergeObjects(defaults, schema.default);
+      } else if ('default' in schema) {
+        // Use schema defaults for this node.
+        defaults = schema.default;
+      } else if ('$ref' in schema) {
+        // Use referenced schema defaults for this node.
+        const refSchema = findSchemaDefinition(schema.$ref, rootSchema);
+        return computeDefaults(refSchema, defaults, rootSchema, formData, includeUndefinedValues);
+      } else if (
+      /* ('dependencies' in schema) {
+      const resolvedSchema = resolveDependencies(schema, rootSchema, formData);
+      return computeDefaults(
+      resolvedSchema,
+      defaults,
+      rootSchema,
+      formData,
+      includeUndefinedValues
+      );
+      } else if */
+      isFixedItems(schema)) {
+        defaults = schema.items.map((itemSchema, idx) => computeDefaults(itemSchema, Array.isArray(parentDefaults) ? parentDefaults[idx] : undefined, rootSchema, formData, includeUndefinedValues));
+      } else if ('oneOf' in schema) {
+        const matchSchema = schema.oneOf[getMatchingOption(formData, schema.oneOf)];
+
+        if (schema.properties && matchSchema.properties) {
+          // 对象 oneOf 需要合并原属性和 oneOf 属性
+          const mergeSchema = mergeObjects(schema, matchSchema);
+          delete mergeSchema.oneOf;
+          schema = mergeSchema;
+        } else {
+          schema = matchSchema;
+        }
+      } else if ('anyOf' in schema) {
+        const matchSchema = schema.anyOf[getMatchingOption(formData, schema.anyOf)];
+
+        if (schema.properties && matchSchema.properties) {
+          // 对象 anyOf 需要合并原属性和 anyOf 属性
+          const mergeSchema = mergeObjects(schema, matchSchema);
+          delete mergeSchema.anyOf;
+          schema = mergeSchema;
+        } else {
+          schema = matchSchema;
+        }
+      } // Not defaults defined for this node, fallback to generic typed ones.
+
+
+      if (typeof defaults === 'undefined') {
+        defaults = schema.default;
+      } // eslint-disable-next-line default-case
+
+
+      switch (getSchemaType(schema)) {
+        case 'null':
+          return null;
+        // We need to recur for object schema inner default values.
+
+        case 'object':
+          return Object.keys(schema.properties || {}).reduce((acc, key) => {
+            // Compute the defaults for this node, with the parent defaults we might
+            // have from a previous run: defaults[key].
+            const computedDefault = computeDefaults(schema.properties[key], (defaults || {})[key], rootSchema, (formData || {})[key], includeUndefinedValues);
+
+            if (includeUndefinedValues || computedDefault !== undefined) {
+              acc[key] = computedDefault;
+            }
+
+            return acc;
+          }, {});
+
+        case 'array':
+          // Inject defaults into existing array defaults
+          if (Array.isArray(defaults)) {
+            defaults = defaults.map((item, idx) => computeDefaults(schema.items[idx] || schema.additionalItems || {}, item, rootSchema, {}, includeUndefinedValues));
+          } // Deeply inject defaults into already existing form data
+
+
+          if (Array.isArray(rawFormData)) {
+            defaults = rawFormData.map((item, idx) => computeDefaults(schema.items, (defaults || {})[idx], rootSchema, item, {}));
+          }
+
+          if (schema.minItems) {
+            if (!isMultiSelect(schema, rootSchema)) {
+              const defaultsLength = defaults ? defaults.length : 0;
+
+              if (schema.minItems > defaultsLength) {
+                const defaultEntries = defaults || []; // populate the array with the defaults
+
+                const fillerSchema = Array.isArray(schema.items) ? schema.additionalItems : schema.items;
+                const fillerEntries = fillObj(new Array(schema.minItems - defaultsLength), computeDefaults(fillerSchema, fillerSchema.defaults, rootSchema, {}, includeUndefinedValues));
+                return defaultEntries.concat(fillerEntries);
+              }
+            } else {
+              return defaults || [];
+            }
+          } // undefined 默认一个空数组
+
+
+          defaults = defaults === undefined ? [] : defaults;
+      }
+
+      return defaults;
+    } // 获取默认form data
+
+
+    function getDefaultFormState(_schema, formData, rootSchema = {}, includeUndefinedValues = true) {
+      if (!isObject(_schema)) {
+        throw new Error(`Invalid schema: ${_schema}`);
+      }
+
+      const schema = retrieveSchema(_schema, rootSchema, formData);
+      const defaults = computeDefaults(schema, _schema.default, rootSchema, formData, includeUndefinedValues);
+
+      if (typeof formData === 'undefined') {
+        // No form data? Use schema defaults.
+        return defaults;
+      } // 传入formData时，合并传入数据
+
+
+      if (isObject(formData) || Array.isArray(formData)) {
+        return mergeDefaultsWithFormData(defaults, formData);
+      }
+
+      if (formData === 0 || formData === false || formData === '') {
+        return formData;
+      }
+
+      return formData || defaults;
+    }
+
     /**
      * Created by Liu.Jun on 2020/4/16 10:47 下午.
      */
-    var vueProps$1 = {
+    var vueProps = {
       formFooter: {
         type: Object,
         default: () => ({
@@ -11533,14 +9079,10 @@
       }
     };
 
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    var script$4 = {
+    /**
+     * Created by Liu.Jun on 2020/12/27 9:53 下午.
+     */
+    var FormFooter = {
       name: 'FormFooter',
       props: {
         okBtn: {
@@ -11550,61 +9092,275 @@
         cancelBtn: {
           type: String,
           default: '取消'
+        },
+        globalOptions: null
+      },
+
+      render(h) {
+        const self = this;
+        const {
+          okBtn,
+          cancelBtn,
+          globalOptions: {
+            COMPONENT_MAP
+          }
+        } = this.$props;
+        return h(COMPONENT_MAP.formItem, {
+          class: {
+            formFooter_item: true
+          }
+        }, [h(COMPONENT_MAP.button, {
+          on: {
+            click() {
+              self.$emit('onCancel');
+            }
+
+          }
+        }, cancelBtn), h(COMPONENT_MAP.button, {
+          style: {
+            marginLeft: '10px'
+          },
+          props: {
+            type: 'primary'
+          },
+          on: {
+            click() {
+              self.$emit('onSubmit');
+            }
+
+          }
+        }, okBtn)]);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/22 18:58.
+     */
+    // 递归参数，统一props
+    var vueProps$1 = {
+      formProps: {
+        type: null
+      },
+      // 全局的配置，用于 初始化差异，适配不同的ui框架
+      globalOptions: {
+        type: null
+      },
+      // 当前节点schema
+      schema: {
+        type: Object,
+        default: () => ({})
+      },
+      // 当前节点Ui Schema
+      uiSchema: {
+        type: Object,
+        default: () => ({})
+      },
+      // 当前节点Error Schema
+      errorSchema: {
+        type: Object,
+        default: () => ({})
+      },
+      // 自定义校验
+      customRule: {
+        type: Function,
+        default: null
+      },
+      // 自定义校验规则
+      customFormats: {
+        type: Object,
+        default: () => ({})
+      },
+      // 根节点 Schema
+      rootSchema: {
+        type: Object,
+        default: () => ({})
+      },
+      // 根节点的数据
+      rootFormData: {
+        type: null,
+        default: () => ({})
+      },
+      // 当前节点路径
+      curNodePath: {
+        type: String,
+        default: ''
+      },
+      // 是否必填
+      required: {
+        type: Boolean,
+        default: false
+      },
+      // 是否需要校验数据组
+      // object array 类型默认会最后追加一个校验组件校验整体数据
+      needValidFieldGroup: {
+        type: Boolean,
+        default: true
+      }
+    };
+
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    var script = {
+      name: 'FieldGroupWrap',
+      props: {
+        showTitle: {
+          type: Boolean,
+          default: true
+        },
+        showDescription: {
+          type: Boolean,
+          default: true
+        },
+        title: {
+          type: String,
+          default: ''
+        },
+        description: {
+          type: String,
+          default: ''
         }
       }
     };
 
+    function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+        if (typeof shadowMode !== 'boolean') {
+            createInjectorSSR = createInjector;
+            createInjector = shadowMode;
+            shadowMode = false;
+        }
+        // Vue.extend constructor export interop.
+        const options = typeof script === 'function' ? script.options : script;
+        // render functions
+        if (template && template.render) {
+            options.render = template.render;
+            options.staticRenderFns = template.staticRenderFns;
+            options._compiled = true;
+            // functional template
+            if (isFunctionalTemplate) {
+                options.functional = true;
+            }
+        }
+        // scopedId
+        if (scopeId) {
+            options._scopeId = scopeId;
+        }
+        let hook;
+        if (moduleIdentifier) {
+            // server build
+            hook = function (context) {
+                // 2.3 injection
+                context =
+                    context || // cached call
+                        (this.$vnode && this.$vnode.ssrContext) || // stateful
+                        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
+                // 2.2 with runInNewContext: true
+                if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+                    context = __VUE_SSR_CONTEXT__;
+                }
+                // inject component styles
+                if (style) {
+                    style.call(this, createInjectorSSR(context));
+                }
+                // register component module identifier for async chunk inference
+                if (context && context._registeredComponents) {
+                    context._registeredComponents.add(moduleIdentifier);
+                }
+            };
+            // used by ssr in case component is cached and beforeCreate
+            // never gets called
+            options._ssrRegister = hook;
+        }
+        else if (style) {
+            hook = shadowMode
+                ? function (context) {
+                    style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
+                }
+                : function (context) {
+                    style.call(this, createInjector(context));
+                };
+        }
+        if (hook) {
+            if (options.functional) {
+                // register for functional component in vue file
+                const originalRender = options.render;
+                options.render = function renderWithStyleInjection(h, context) {
+                    hook.call(context);
+                    return originalRender(h, context);
+                };
+            }
+            else {
+                // inject component registration as beforeCreate hook
+                const existing = options.beforeCreate;
+                options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+            }
+        }
+        return script;
+    }
+
     /* script */
-    const __vue_script__$4 = script$4;
+    const __vue_script__ = script;
 
     /* template */
-    var __vue_render__$4 = function() {
+    var __vue_render__ = function() {
       var _vm = this;
       var _h = _vm.$createElement;
       var _c = _vm._self._c || _h;
       return _c(
-        "el-form-item",
-        { staticClass: "formFooter_item" },
+        "div",
+        { staticClass: "fieldGroupWrap" },
         [
-          _c(
-            "el-button",
-            {
-              on: {
-                click: function($event) {
-                  return _vm.$emit("onCancel")
-                }
-              }
-            },
-            [_vm._v(_vm._s(_vm.cancelBtn))]
-          ),
+          [
+            _vm.showTitle && _vm.title
+              ? _c("h3", { staticClass: "fieldGroupWrap_title" }, [
+                  _vm._v("\n            " + _vm._s(_vm.title) + "\n        ")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.showDescription && _vm.description
+              ? _c("p", {
+                  staticClass: "fieldGroupWrap_des",
+                  domProps: { innerHTML: _vm._s(_vm.description) }
+                })
+              : _vm._e()
+          ],
           _vm._v(" "),
-          _c(
-            "el-button",
-            {
-              attrs: { type: "primary" },
-              on: {
-                click: function($event) {
-                  return _vm.$emit("onSubmit")
-                }
-              }
-            },
-            [_vm._v(_vm._s(_vm.okBtn))]
-          )
+          _c("div", { staticClass: "fieldGroupWrap_box" }, [_vm._t("default")], 2)
         ],
-        1
+        2
       )
     };
-    var __vue_staticRenderFns__$4 = [];
-    __vue_render__$4._withStripped = true;
+    var __vue_staticRenderFns__ = [];
+    __vue_render__._withStripped = true;
 
       /* style */
-      const __vue_inject_styles__$4 = undefined;
+      const __vue_inject_styles__ = undefined;
       /* scoped */
-      const __vue_scope_id__$4 = undefined;
+      const __vue_scope_id__ = undefined;
       /* module identifier */
-      const __vue_module_identifier__$4 = undefined;
+      const __vue_module_identifier__ = undefined;
       /* functional template */
-      const __vue_is_functional_template__$4 = false;
+      const __vue_is_functional_template__ = false;
       /* style inject */
       
       /* style inject SSR */
@@ -11613,18 +9369,1696 @@
       
 
       
-      const __vue_component__$4 = /*#__PURE__*/normalizeComponent(
-        { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
-        __vue_inject_styles__$4,
-        __vue_script__$4,
-        __vue_scope_id__$4,
-        __vue_is_functional_template__$4,
-        __vue_module_identifier__$4,
+      const __vue_component__ = /*#__PURE__*/normalizeComponent(
+        { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
+        __vue_inject_styles__,
+        __vue_script__,
+        __vue_scope_id__,
+        __vue_is_functional_template__,
+        __vue_module_identifier__,
         false,
         undefined,
         undefined,
         undefined
       );
+
+    /**
+     * Created by Liu.Jun on 2020/4/23 11:24.
+     */
+    var Widget = {
+      name: 'Widget',
+      props: {
+        // 是否同步formData的值，默认表单元素都需要
+        // oneOf anyOf 中的select属于formData之外的数据
+        isFormData: {
+          type: Boolean,
+          default: true
+        },
+        // isFormData = false时需要传入当前 value 否则会通过 curNodePath 自动计算
+        curValue: {
+          type: null,
+          default: 0
+        },
+        schema: {
+          type: Object,
+          default: () => ({})
+        },
+        uiSchema: {
+          type: Object,
+          default: () => ({})
+        },
+        errorSchema: {
+          type: Object,
+          default: () => ({})
+        },
+        customFormats: {
+          type: Object,
+          default: () => ({})
+        },
+        // 自定义校验
+        customRule: {
+          type: Function,
+          default: null
+        },
+        widget: {
+          type: [String, Function, Object],
+          default: null
+        },
+        required: {
+          type: Boolean,
+          default: false
+        },
+        // 解决 JSON Schema和实际输入元素中空字符串 required 判定的差异性
+        // 元素输入为 '' 使用 emptyValue 的值
+        emptyValue: {
+          type: null,
+          default: undefined
+        },
+        // 部分场景可能需要格式化值，如vue .number 修饰符
+        formatValue: {
+          type: [Function],
+          default: val => ({
+            update: true,
+            value: val
+          })
+        },
+        rootFormData: {
+          type: null
+        },
+        curNodePath: {
+          type: String,
+          default: ''
+        },
+        label: {
+          type: String,
+          default: ''
+        },
+        // width -> formItem width
+        width: {
+          type: String,
+          default: ''
+        },
+        labelWidth: {
+          type: String,
+          default: ''
+        },
+        description: {
+          type: String,
+          default: ''
+        },
+        // Widget attrs
+        widgetAttrs: {
+          type: Object,
+          default: () => ({})
+        },
+        // Widget className
+        widgetClass: {
+          type: Object,
+          default: () => ({})
+        },
+        // Widget style
+        widgetStyle: {
+          type: Object,
+          default: () => ({})
+        },
+        // Field attrs
+        fieldAttrs: {
+          type: Object,
+          default: () => ({})
+        },
+        // Field className
+        fieldClass: {
+          type: Object,
+          default: () => ({})
+        },
+        // Field style
+        fieldStyle: {
+          type: Object,
+          default: () => ({})
+        },
+        // props
+        uiProps: {
+          type: Object,
+          default: () => ({})
+        },
+        formProps: null,
+        getWidget: null,
+        globalOptions: null // 全局配置
+
+      },
+      computed: {
+        value: {
+          get() {
+            if (this.isFormData) {
+              return getPathVal$1(this.rootFormData, this.curNodePath);
+            }
+
+            return this.curValue;
+          },
+
+          set(value) {
+            // 大多组件删除为空值会重置为null。
+            const trueValue = value === '' || value === null ? this.emptyValue : value;
+
+            if (this.isFormData) {
+              setPathVal(this.rootFormData, this.curNodePath, trueValue);
+            }
+
+            this.$emit('onChange', trueValue);
+          }
+
+        }
+      },
+
+      created() {
+        // 枚举类型默认值为第一个选项
+        if (this.uiProps.enumOptions && this.uiProps.enumOptions.length > 0 && this.value === undefined && this.value !== this.uiProps.enumOptions[0]) {
+          // array 渲染为多选框时默认为空数组
+          if (this.schema.items) {
+            this.value = [];
+          } else if (this.required) {
+            this.value = this.uiProps.enumOptions[0].value;
+          }
+        }
+      },
+
+      render(h) {
+        const self = this; // 判断是否为根节点
+
+        const isRootNode = isRootNodePath(this.curNodePath); // labelPosition left/right
+
+        const miniDesModel = self.formProps && self.formProps.labelPosition !== 'top';
+        const descriptionVNode = self.description ? h('p', {
+          domProps: {
+            innerHTML: self.description
+          },
+          class: {
+            genFromWidget_des: true
+          }
+        }) : null;
+        const {
+          COMPONENT_MAP,
+          ICONS_MAP
+        } = self.globalOptions;
+        const miniDescriptionVNode = miniDesModel && descriptionVNode ? h(COMPONENT_MAP.popover, {
+          style: {
+            margin: '0 2px',
+            fontSize: '16px',
+            cursor: 'pointer'
+          },
+          props: {
+            placement: 'top',
+            trigger: 'hover'
+          }
+        }, [descriptionVNode, h('i', {
+          slot: 'reference',
+          class: ICONS_MAP.question
+        })]) : null; // form-item style
+
+        const formItemStyle = { ...self.fieldStyle,
+          ...(self.width ? {
+            width: self.width,
+            flexBasis: self.width,
+            paddingRight: '10px'
+          } : {})
+        };
+        return h(COMPONENT_MAP.formItem, {
+          class: { ...self.fieldClass,
+            genFormItem: true
+          },
+          style: formItemStyle,
+          attrs: self.fieldAttrs,
+          props: {
+            labelWidth: self.labelWidth,
+            ...(this.isFormData ? {
+              // 这里对根节点打特殊标志，绕过elementUi无prop属性不校验
+              prop: isRootNode ? '__$$root' : path2prop(self.curNodePath),
+              rules: [{
+                validator(rule, value, callback) {
+                  if (isRootNode) value = self.rootFormData; // 校验是通过对schema逐级展开校验 这里只捕获根节点错误
+
+                  const errors = validateFormDataAndTransformMsg({
+                    formData: value,
+                    schema: self.$props.schema,
+                    uiSchema: self.$props.uiSchema,
+                    customFormats: self.$props.customFormats,
+                    errorSchema: self.errorSchema,
+                    required: self.required,
+                    propPath: path2prop(self.curNodePath)
+                  });
+                  if (errors.length > 0) return callback(errors[0].message); // customRule 如果存在自定义校验
+
+                  const curCustomRule = self.$props.customRule;
+
+                  if (curCustomRule && typeof curCustomRule === 'function') {
+                    return curCustomRule({
+                      field: self.curNodePath,
+                      value,
+                      rootFormData: self.rootFormData,
+                      callback
+                    });
+                  }
+
+                  return callback();
+                },
+
+                trigger: 'blur'
+              }]
+            } : {})
+          },
+          scopedSlots: {
+            // 错误只能显示一行，多余...
+            error: props => props.error ? h('p', {
+              class: {
+                formItemErrorBox: true
+              },
+              attrs: {
+                title: props.error
+              }
+            }, [props.error]) : null
+          }
+        }, [self.label ? h('span', {
+          slot: 'label',
+          class: {
+            genFormLabel: true,
+            genFormItemRequired: self.required
+          }
+        }, [`${self.label}`, miniDescriptionVNode, `${self.formProps && self.formProps.labelSuffix || ''}`]) : null, // description
+        // 非mini模式显示 description
+        !miniDesModel ? descriptionVNode : null, h( // 关键输入组件
+        self.widget, {
+          style: self.widgetStyle,
+          class: self.widgetClass,
+          attrs: { ...self.widgetAttrs,
+            ...self.uiProps,
+            value: this.value // v-model
+
+          },
+          ref: 'widgetRef',
+          on: {
+            'hook:mounted': function widgetMounted() {
+              // 提供一种特殊的配置 允许直接访问到 widget vm
+              if (self.getWidget && typeof self.getWidget === 'function') {
+                self.getWidget.call(null, self.$refs.widgetRef);
+              }
+            },
+
+            input(event) {
+              const formatValue = self.formatValue(event); // 默认用户输入变了都是需要更新form数据保持同步，唯一特例 input number
+              // 为了兼容 number 小数点后0结尾的数据场景
+              // 比如 1. 1.010 这类特殊数据输入是不需要触发 新值的设置，否则会导致schema校验为非数字
+              // 但由于element为了解另外的问题，会在nextTick时强制同步dom的值等于vm的值所以无法通过这种方式来hack，这里旧的这份逻辑依旧保留 不过update一直为true
+
+              if (formatValue.update && self.value !== formatValue.value) {
+                self.value = formatValue.value;
+              }
+            }
+
+          }
+        })]);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/21 9:24.
+     */
+    var ObjectField = {
+      name: 'ObjectField',
+      functional: true,
+      props: vueProps$1,
+
+      render(h, context) {
+        const {
+          schema,
+          uiSchema,
+          errorSchema,
+          needValidFieldGroup,
+          curNodePath,
+          rootFormData,
+          globalOptions
+        } = context.props; // required
+
+        const isRequired = name => Array.isArray(schema.required) && !!~schema.required.indexOf(name); // 存在 dependencies 配置，需要当前属性是否存在依赖关系 和当前属性是否正在被依赖
+        // tip: 判断依赖关系需要使用了 formData 的值来做判断，所以当用户输入的时候会触发整个对象树重新渲染
+        // TODO: 每个属性都需要单独来遍历 dependencies 属性可以优化一点点点点点（可通过 key value 反转值加个缓存来计算）
+
+
+        const isDependOn = name => {
+          let isDependency = false; // 是否是一个被依赖项
+
+          let curDependent = false; // 当前是否触发依赖
+
+          if (isObject(schema.dependencies)) {
+            curDependent = Object.entries(schema.dependencies).some(([key, value]) => {
+              // 是否和当前属性存在依赖关系
+              const tempDependency = !!(Array.isArray(value) && ~value.indexOf(name)); // 是否是一个被依赖项
+
+              isDependency = isDependency || tempDependency; // 当前需要依赖
+
+              return tempDependency && getPathVal$1(rootFormData, curNodePath)[key] !== undefined;
+            });
+          }
+
+          return {
+            isDependency,
+            curDependent
+          };
+        };
+
+        const {
+          title,
+          description,
+          showTitle,
+          showDescription,
+          order,
+          fieldClass,
+          fieldAttrs,
+          fieldStyle,
+          onlyShowIfDependent
+        } = getUiOptions({
+          schema,
+          uiSchema,
+          curNodePath,
+          rootFormData
+        });
+        const properties = Object.keys(schema.properties || {});
+        const orderedProperties = orderProperties(properties, order); // 递归参数
+
+        const propertiesVNodeList = orderedProperties.map(name => {
+          const required = isRequired(name);
+          const {
+            isDependency,
+            curDependent
+          } = isDependOn(name);
+          return h( // onlyShowWhenDependent 只渲染被依赖的属性
+          isDependency && onlyShowIfDependent && !curDependent ? null : SchemaField, {
+            key: name,
+            props: { ...context.props,
+              schema: schema.properties[name],
+              uiSchema: uiSchema[name],
+              errorSchema: errorSchema[name],
+              required: required || curDependent,
+              curNodePath: computedCurPath(curNodePath, name)
+            }
+          });
+        });
+        return h(__vue_component__, {
+          props: {
+            title,
+            description,
+            showTitle,
+            showDescription
+          },
+          class: { ...context.data.class,
+            ...fieldClass
+          },
+          attrs: fieldAttrs,
+          style: fieldStyle
+        }, [h('template', {
+          slot: 'default'
+        }, [...propertiesVNodeList, // 插入一个Widget，校验 object组 - minProperties. maxProperties. oneOf 等需要外层校验的数据
+        needValidFieldGroup ? h(Widget, {
+          key: 'validateWidget-object',
+          class: {
+            validateWidget: true,
+            'validateWidget-object': true
+          },
+          props: {
+            schema: Object.entries(schema).reduce((preVal, [key, value]) => {
+              if (schema.additionalProperties === false || !['properties', 'id', '$id'].includes(key)) preVal[key] = value;
+              return preVal;
+            }, {}),
+            uiSchema,
+            errorSchema,
+            curNodePath,
+            rootFormData,
+            globalOptions
+          }
+        }) : null])]);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/21 9:24.
+     */
+    var StringField = {
+      name: 'StringField',
+      props: vueProps$1,
+      functional: true,
+
+      render(h, context) {
+        const {
+          schema,
+          uiSchema,
+          curNodePath,
+          rootFormData,
+          globalOptions: {
+            WIDGET_MAP
+          }
+        } = context.props; // 可能是枚举数据使用select组件，否则使用 input
+
+        const enumOptions = isSelect(schema) && optionsList(schema, uiSchema, curNodePath, rootFormData);
+        const widgetConfig = getWidgetConfig({
+          schema,
+          uiSchema,
+          curNodePath,
+          rootFormData
+        }, () => {
+          const isNumber = schema.type === 'number' || schema.type === 'integer';
+          return {
+            widget: enumOptions ? WIDGET_MAP.common.select : WIDGET_MAP.formats[schema.format] || (isNumber ? WIDGET_MAP.types.number : WIDGET_MAP.types.string)
+          };
+        }); // 存在枚举数据列表 传入 enumOptions
+
+        if (enumOptions && !widgetConfig.uiProps.enumOptions) {
+          widgetConfig.uiProps.enumOptions = enumOptions;
+        }
+
+        return h(Widget, { ...context.data,
+          props: { ...context.props,
+            ...widgetConfig
+          }
+        });
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/21 9:24.
+     * NumberField 复用StringField
+     */
+    var NumberField = {
+      name: 'NumberField',
+      props: vueProps$1,
+      functional: true,
+
+      render(h, context) {
+        return h(StringField, context.data);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/21 9:24.
+     * IntegerField 复用StringField
+     */
+    var IntegerField = {
+      name: 'IntegerField',
+      props: vueProps$1,
+      functional: true,
+
+      render(h, context) {
+        return h(StringField, context.data);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/23 10:50.
+     */
+    var BooleanField = {
+      name: 'BooleanField',
+      props: vueProps$1,
+      functional: true,
+
+      render(h, context) {
+        const {
+          schema,
+          uiSchema,
+          curNodePath,
+          rootFormData,
+          globalOptions
+        } = context.props; // Bool 会默认传入枚举类型选项 true false
+
+        const enumOptions = optionsList({
+          enumNames: schema.enumNames || ['true', 'false'],
+          enum: schema.enum || [true, false]
+        }, uiSchema, curNodePath, rootFormData);
+        const widgetConfig = getWidgetConfig({
+          schema,
+          uiSchema,
+          curNodePath,
+          rootFormData
+        }, () => ({
+          widget: globalOptions.WIDGET_MAP.types.boolean
+        }));
+        widgetConfig.uiProps.enumOptions = widgetConfig.uiProps.enumOptions || enumOptions;
+        return h(Widget, { ...context.data,
+          props: { ...context.props,
+            ...widgetConfig
+          }
+        });
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/24 16:47.
+     */
+    // 支持数字排序 ，新增 ，删除等操作
+    var ArrayOrderList = {
+      name: 'ArrayOrderList',
+      props: {
+        // 需要被排序的VNode list
+        vNodeList: {
+          type: Array,
+          default: []
+        },
+        // tuple类型的数组，需要固定前值
+        tupleItemsLength: {
+          type: Number,
+          default: 0
+        },
+        addable: {
+          // 是否启用添加
+          type: Boolean,
+          default: true
+        },
+        showIndexNumber: {
+          // 是否显示当前序号
+          type: Boolean,
+          default: false
+        },
+        sortable: {
+          // 是否可排序
+          type: Boolean,
+          default: true
+        },
+        removable: {
+          // 是否可移除
+          type: Boolean,
+          default: true
+        },
+        maxItems: {// 最多添加个数
+        },
+        minItems: {// 最少添加个数
+        },
+        globalOptions: null
+      },
+      computed: {
+        canAdd() {
+          const {
+            addable,
+            maxItems,
+            vNodeList
+          } = this.$props; // 配置不可添加
+
+          if (!addable) return false; // 配置了最大个数
+
+          if (maxItems !== undefined) {
+            return vNodeList.length < maxItems;
+          }
+
+          return true;
+        },
+
+        canRemove() {
+          const {
+            removable,
+            minItems,
+            vNodeList
+          } = this.$props; // 配置不可添加
+
+          if (!removable) return false;
+
+          if (minItems !== undefined) {
+            return vNodeList.length > minItems;
+          }
+
+          return true;
+        }
+
+      },
+
+      render(h) {
+        // 没有数据，且不能添加不渲染该组件
+        if (this.vNodeList <= 0 && !this.addable) return null;
+        const {
+          ICONS_MAP
+        } = this.globalOptions; // 是否可继续添加元素
+
+        return h('div', {
+          class: {
+            arrayOrderList: true
+          }
+        }, this.vNodeList.map(({
+          key,
+          vNode: VnodeItem
+        }, index) => {
+          const trueIndex = this.tupleItemsLength + index;
+          const indexNumber = index + 1;
+          return h('div', {
+            key,
+            class: {
+              arrayOrderList_item: true
+            }
+          }, [this.showIndexNumber ? h('div', {
+            class: {
+              arrayListItem_index: true
+            }
+          }, indexNumber) : null, h('div', {
+            class: {
+              arrayListItem_operateTool: true
+            }
+          }, [h('button', {
+            // 配置不可排序不显示排序按钮
+            style: { ...(!this.sortable ? {
+                display: 'none'
+              } : {})
+            },
+            attrs: {
+              type: 'button',
+              disabled: !this.sortable || index === 0
+            },
+            class: {
+              arrayListItem_btn: true,
+              'arrayListItem_orderBtn-top': true,
+              [ICONS_MAP.moveUp]: true
+            },
+            on: {
+              click: () => {
+                this.$emit('onArrayOperate', {
+                  command: 'moveUp',
+                  data: {
+                    index: trueIndex
+                  }
+                });
+              }
+            }
+          }), h('button', {
+            // 配置不可排序不显示排序按钮
+            style: { ...(!this.sortable ? {
+                display: 'none'
+              } : {})
+            },
+            attrs: {
+              type: 'button',
+              disabled: !this.sortable || index === this.vNodeList.length - 1
+            },
+            class: {
+              arrayListItem_btn: true,
+              'arrayListItem_orderBtn-bottom': true,
+              [ICONS_MAP.moveDown]: true
+            },
+            on: {
+              click: () => {
+                this.$emit('onArrayOperate', {
+                  command: 'moveDown',
+                  data: {
+                    index: trueIndex
+                  }
+                });
+              }
+            }
+          }), h('button', {
+            // 配置不可移除不显示移除按钮
+            style: { ...(!this.removable ? {
+                display: 'none'
+              } : {})
+            },
+            attrs: {
+              type: 'button',
+              disabled: !this.canRemove
+            },
+            class: {
+              arrayListItem_btn: true,
+              'arrayListItem_btn-delete': true,
+              [ICONS_MAP.close]: true
+            },
+            on: {
+              click: () => {
+                this.$emit('onArrayOperate', {
+                  command: 'remove',
+                  data: {
+                    index: trueIndex
+                  }
+                });
+              }
+            }
+          })]), h('div', {
+            class: {
+              arrayListItem_content: true
+            }
+          }, [VnodeItem])]);
+        }).concat([h('p', {
+          style: { ...(!this.canAdd ? {
+              display: 'none'
+            } : {})
+          },
+          class: {
+            arrayOrderList_bottomAddBtn: true
+          }
+        }, [h('button', {
+          attrs: {
+            type: 'button'
+          },
+          class: {
+            bottomAddBtn: true,
+            'is-plain': true,
+            genFormBtn: true
+          },
+          on: {
+            click: () => {
+              this.$emit('onArrayOperate', {
+                command: 'add'
+              });
+            }
+          }
+        }, [h('i', {
+          class: [ICONS_MAP.plus],
+          style: {
+            marginRight: '5px'
+          }
+        }), this.maxItems ? `( ${this.vNodeList.length} / ${this.maxItems} )` : ''])])]));
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/24 11:56.
+     */
+    var ArrayFieldNormal = {
+      name: 'ArrayFieldNormal',
+      functional: true,
+      props: { ...vueProps$1,
+        itemsFormData: {
+          type: Array // default: () => []
+
+        }
+      },
+
+      render(h, context) {
+        const {
+          schema,
+          uiSchema,
+          curNodePath,
+          rootFormData,
+          itemsFormData,
+          errorSchema,
+          globalOptions
+        } = context.props;
+        const {
+          title,
+          description,
+          addable,
+          showIndexNumber,
+          sortable,
+          removable,
+          showTitle,
+          showDescription,
+          fieldClass,
+          fieldAttrs,
+          fieldStyle
+        } = getUiOptions({
+          schema,
+          uiSchema,
+          curNodePath,
+          rootFormData
+        });
+        const arrayItemsVNodeList = itemsFormData.map((item, index) => {
+          const tempUiSchema = replaceArrayIndex({
+            schema: schema.items,
+            uiSchema: uiSchema.items
+          }, index);
+          return {
+            key: item.key,
+            vNode: h(SchemaField, {
+              key: item.key,
+              props: { ...context.props,
+                schema: schema.items,
+                required: ![].concat(schema.items.type).includes('null'),
+                uiSchema: { ...uiSchema.items,
+                  ...tempUiSchema // 处理过 $index 的标识
+
+                },
+                errorSchema: errorSchema.items,
+                curNodePath: computedCurPath(curNodePath, index)
+              }
+            })
+          };
+        });
+        return h(__vue_component__, {
+          props: {
+            title,
+            description,
+            showTitle,
+            showDescription
+          },
+          class: { ...context.data.class,
+            ...fieldClass
+          },
+          attrs: fieldAttrs,
+          style: fieldStyle
+        }, [h(ArrayOrderList, {
+          props: {
+            vNodeList: arrayItemsVNodeList,
+            showIndexNumber,
+            addable,
+            sortable,
+            removable,
+            maxItems: schema.maxItems,
+            minItems: schema.minItems,
+            globalOptions
+          },
+          on: context.listeners
+        })]);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/24 11:56.
+     */
+    var ArrayFieldMultiSelect = {
+      name: 'ArrayFieldMultiSelect',
+      functional: true,
+      props: { ...vueProps$1
+      },
+
+      render(h, context) {
+        const {
+          schema,
+          rootSchema,
+          uiSchema,
+          curNodePath,
+          rootFormData,
+          globalOptions
+        } = context.props; // 这里需要索引当前节点，通过到schemaField组件的会统一处理
+
+        const itemsSchema = retrieveSchema(schema.items, rootSchema);
+        const enumOptions = optionsList(itemsSchema, uiSchema, curNodePath, rootFormData);
+        const widgetConfig = getWidgetConfig({
+          schema,
+          uiSchema,
+          curNodePath,
+          rootFormData
+        }, () => ({
+          widget: globalOptions.WIDGET_MAP.common.checkboxGroup
+        })); // 存在枚举数据列表 传入 enumOptions
+
+        widgetConfig.uiProps.multiple = true;
+
+        if (enumOptions && !widgetConfig.uiProps.enumOptions) {
+          widgetConfig.uiProps.enumOptions = enumOptions;
+        }
+
+        return h(Widget, { ...context.data,
+          props: { ...context.props,
+            ...widgetConfig
+          }
+        });
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/24 11:56.
+     */
+    var ArrayFieldTuple = {
+      name: 'ArrayFieldTuple',
+      props: { ...vueProps$1,
+        itemsFormData: {
+          type: Array,
+          default: () => []
+        }
+      },
+
+      created() {
+        this.fixItemsFormData();
+      },
+
+      methods: {
+        // 兼容数据 长度不足的的场景
+        fixItemsFormData() {
+          const isNoArray = !Array.isArray(this.itemsFormData);
+
+          if (isNoArray || this.itemsFormData.length < this.schema.items.length) {
+            // 这里需要补齐默认数据，计算出需要的数据
+            const curSchemaState = getDefaultFormState(this.schema, undefined, this.rootSchema);
+
+            if (isNoArray) {
+              // 数据修复 - 重置一个新的值
+              this.$emit('onArrayOperate', {
+                command: 'setNewTarget',
+                data: {
+                  newTarget: curSchemaState
+                }
+              });
+            } else {
+              // 修复数据 - 追加不足的数据
+              this.$emit('onArrayOperate', {
+                command: 'batchPush',
+                data: {
+                  pushArray: curSchemaState.slice(this.itemsFormData.length)
+                }
+              });
+            }
+          }
+        }
+
+      },
+
+      render(h) {
+        if (!Array.isArray(this.itemsFormData)) return false;
+        const {
+          schema,
+          uiSchema,
+          errorSchema,
+          curNodePath,
+          globalOptions
+        } = this.$props;
+        const {
+          title,
+          description,
+          addable,
+          showIndexNumber,
+          sortable,
+          removable,
+          showTitle,
+          showDescription,
+          fieldClass,
+          fieldAttrs,
+          fieldStyle
+        } = getUiOptions({
+          schema,
+          uiSchema,
+          curNodePath,
+          rootFormData: this.rootFormData
+        }); // 拆分为 tuple 和 additional
+
+        const cutOfArr = cutOff(this.itemsFormData, this.schema.items.length - 1);
+        const tupleVnodeArr = cutOfArr[0].map((item, index) => h(SchemaField, {
+          key: item.key,
+          props: { ...this.$props,
+            required: ![].concat(schema.items[index].type).includes('null'),
+            schema: schema.items[index],
+            uiSchema: uiSchema.items ? uiSchema.items[index] : {},
+            errorSchema: errorSchema.items ? errorSchema.items[index] : {},
+            curNodePath: computedCurPath(curNodePath, index)
+          }
+        })); // 通过order组件做可排序处理
+
+        const additionalVnodeArr = cutOfArr[1].map((item, index) => {
+          const tempUiSchema = replaceArrayIndex({
+            schema: schema.additionalItems,
+            uiSchema: uiSchema.additionalItems
+          }, index);
+          return {
+            key: item.key,
+            vNode: h(SchemaField, {
+              key: item.key,
+              props: { ...this.$props,
+                schema: schema.additionalItems,
+                required: ![].concat(schema.additionalItems.type).includes('null'),
+                uiSchema: { ...uiSchema.additionalItems,
+                  ...tempUiSchema
+                },
+                errorSchema: errorSchema.additionalItems,
+                curNodePath: computedCurPath(this.curNodePath, index + schema.items.length)
+              }
+            })
+          };
+        }); // 是否可添加同时受限于 additionalItems 属性
+
+        const trueAddable = (addable === undefined ? true : addable) && allowAdditionalItems(this.schema); // 默认循环固定配置的数据 长度外的使用ArrayOrderList渲染
+
+        return h(__vue_component__, {
+          props: {
+            title,
+            description,
+            showTitle,
+            showDescription
+          },
+          class: fieldClass,
+          attrs: fieldAttrs,
+          style: fieldStyle
+        }, [// 先显示Tuple固定项
+        ...tupleVnodeArr, // additional items
+        h(ArrayOrderList, {
+          props: {
+            vNodeList: additionalVnodeArr,
+            tupleItemsLength: schema.items.length,
+            addable: trueAddable,
+            showIndexNumber,
+            sortable,
+            removable,
+            maxItems: schema.maxItems,
+            minItems: schema.minItems,
+            globalOptions
+          },
+          on: this.$listeners
+        })]);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/9/16 10:25.
+     */
+    var ArrayFieldSpecialFormat = {
+      name: 'ArrayFieldSpecialFormat',
+      props: vueProps$1,
+      functional: true,
+
+      render(h, context) {
+        const {
+          schema,
+          uiSchema,
+          curNodePath,
+          rootFormData,
+          globalOptions
+        } = context.props;
+        const widgetConfig = getWidgetConfig({
+          schema: {
+            'ui:widget': globalOptions.WIDGET_MAP.formats[schema.format],
+            ...schema
+          },
+          uiSchema,
+          curNodePath,
+          rootFormData
+        });
+        return h(Widget, { ...context.data,
+          props: { ...context.props,
+            ...widgetConfig
+          }
+        });
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/24 11:23.
+     */
+    var ArrayField = {
+      name: 'ArrayField',
+      props: vueProps$1,
+
+      data() {
+        return {
+          // 通过维护一份key，一份值 来解决list key的问题
+          formKeys: this.getCuFormData().map(() => genId())
+        };
+      },
+
+      computed: {
+        itemsFormData() {
+          const formKeys = this.$data.formKeys;
+          return this.curFormData.map((item, index) => ({
+            key: formKeys[index],
+            value: item
+          }));
+        },
+
+        curFormData() {
+          return this.getCuFormData();
+        }
+
+      },
+      watch: {
+        curFormData(newVal, oldVal) {
+          // 引用类型，当值不相等，说明是被重新赋值
+          if (newVal !== oldVal && Array.isArray(newVal)) {
+            this.formKeys = newVal.map(() => genId());
+          }
+        }
+
+      },
+      methods: {
+        // 获取当前的值
+        getCuFormData() {
+          const {
+            rootFormData,
+            curNodePath
+          } = this.$props;
+          const value = getPathVal$1(rootFormData, curNodePath);
+          if (Array.isArray(value)) return value;
+          console.error('error: type array，值必须为 array 类型');
+          return [];
+        },
+
+        // 获取一个新item
+        getNewFormDataRow() {
+          const {
+            schema,
+            rootSchema
+          } = this.$props;
+          let itemSchema = schema.items; // https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation
+          // 数组为项的集合搭配additionalItems属性需要特殊处理
+
+          if (isFixedItems(this.schema) && allowAdditionalItems(this.schema)) {
+            itemSchema = schema.additionalItems;
+          }
+
+          return getDefaultFormState(itemSchema, undefined, rootSchema);
+        },
+
+        // 数组排序相关操作
+        handleArrayOperate({
+          command,
+          data
+        }) {
+          // 统一处理数组数据的 新增，删除，排序等变更
+          const strategyMap = {
+            moveUp(target, {
+              index
+            }) {
+              moveUpAt(target, index);
+            },
+
+            moveDown(target, {
+              index
+            }) {
+              moveDownAt(target, index);
+            },
+
+            remove(target, {
+              index
+            }) {
+              removeAt(target, index);
+            },
+
+            add(target, {
+              newRowData
+            }) {
+              target.push(newRowData);
+            },
+
+            batchPush(target, {
+              pushArray
+            }) {
+              pushArray.forEach(item => {
+                target.push(item);
+              });
+            },
+
+            setNewTarget(target, {
+              formData,
+              nodePath,
+              newTarget
+            }) {
+              setPathVal(formData, nodePath, newTarget);
+            }
+
+          };
+          const curStrategy = strategyMap[command];
+
+          if (curStrategy) {
+            let formDataPrams = data;
+            let keysParams = data;
+
+            if (command === 'add') {
+              // 单个添加
+              formDataPrams = {
+                newRowData: this.getNewFormDataRow()
+              };
+              keysParams = {
+                newRowData: genId()
+              };
+            } else if (command === 'batchPush') {
+              // 批量添加
+              keysParams = {
+                pushArray: formDataPrams.pushArray.map(item => genId())
+              };
+            } else if (command === 'setNewTarget') {
+              // 设置
+              formDataPrams = {
+                formData: this.rootFormData,
+                nodePath: this.curNodePath,
+                newTarget: formDataPrams.newTarget
+              };
+              keysParams = {
+                formData: this.$data,
+                nodePath: 'formKeys',
+                newTarget: formDataPrams.newTarget.map(item => genId())
+              };
+            } // 同步修改 formData keys
+
+
+            curStrategy.apply(this, [this.$data.formKeys, keysParams]); // 修改formData数据
+
+            curStrategy.apply(this, [this.curFormData, formDataPrams]);
+          } else {
+            throw new Error(`错误 - 未知的操作：[${command}]`);
+          }
+        }
+
+      },
+
+      render(h) {
+        const self = this;
+        const {
+          schema,
+          uiSchema,
+          rootSchema,
+          rootFormData,
+          curNodePath,
+          globalOptions
+        } = this.$props;
+
+        if (!schema.hasOwnProperty('items')) {
+          throw new Error(`[${schema}] 请先定义 items属性`);
+        } // 多选类型
+
+
+        if (isMultiSelect(schema, rootSchema)) {
+          // item 为枚举固定值
+          return h(ArrayFieldMultiSelect, {
+            props: this.$props,
+            class: {
+              [lowerCase(ArrayFieldMultiSelect.name)]: true
+            }
+          });
+        } // 特殊处理 date datetime time url-upload
+        // array 支持配置 ui:widget
+        // 时间日期区间 或者 ui:widget 特殊配置
+
+
+        if (schema.format || schema['ui:widget'] || uiSchema['ui:widget']) {
+          return h(ArrayFieldSpecialFormat, {
+            props: this.$props,
+            class: {
+              [lowerCase(ArrayFieldSpecialFormat.name)]: true
+            }
+          });
+        } // https://json-schema.org/understanding-json-schema/reference/array.html#list-validation
+        // https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation
+
+
+        const CurrentField = isFixedItems(schema) ? ArrayFieldTuple : ArrayFieldNormal;
+        return h('div', [h(CurrentField, {
+          props: {
+            itemsFormData: this.itemsFormData,
+            ...this.$props
+          },
+          class: {
+            [lowerCase(CurrentField.name)]: true
+          },
+          on: {
+            onArrayOperate: this.handleArrayOperate
+          }
+        }), // 插入一个Widget，校验 array - maxItems. minItems. uniqueItems 等items外的属性校验
+        this.needValidFieldGroup ? h(Widget, {
+          key: 'validateWidget-array',
+          class: {
+            validateWidget: true,
+            'validateWidget-array': true
+          },
+          props: {
+            schema: Object.entries(self.$props.schema).reduce((preVal, [key, value]) => {
+              if (key !== 'items') preVal[key] = value;
+              return preVal;
+            }, {}),
+            uiSchema,
+            errorSchema: this.errorSchema,
+            curNodePath,
+            rootFormData,
+            globalOptions
+          }
+        }) : null]);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/5/19 10:15 下午.
+     */
+    var SelectLinkageField = {
+      name: 'SelectLinkageField',
+      props: { ...vueProps$1,
+        combiningType: {
+          type: String,
+          default: 'anyOf' // anyOf oneOf
+
+        },
+        selectList: {
+          type: Array,
+          require: true
+        }
+      },
+
+      data() {
+        const curSelectIndex = this.computedCurSelectIndexByFormData(getPathVal$1(this.rootFormData, this.curNodePath));
+        return {
+          curSelectIndex
+        };
+      },
+
+      methods: {
+        computedCurSelectIndexByFormData(formData) {
+          const index = getMatchingOption(formData, this.selectList, this.rootSchema);
+          if (index !== 0) return index; // 找不到默认等于原本的值
+
+          return this.curSelectIndex || 0;
+        },
+
+        // 下拉选项 VNode
+        getSelectBoxVNode() {
+          // 下拉选项参数
+          const selectWidgetConfig = getWidgetConfig({
+            schema: this.schema[`${this.combiningType}Select`] || {},
+            // 扩展 oneOfSelect,anyOfSelect字段
+            uiSchema: this.uiSchema[`${this.combiningType}Select`] || {},
+            // 通过 uiSchema['oneOf'] 配置ui信息
+            curNodePath: this.curNodePath,
+            rootFormData: this.rootFormData
+          }, () => ({
+            // 枚举参数
+            widget: 'SelectWidget'
+          })); // title description 回退到 schema 配置，但这里不使用 uiSchema配置
+          // select ui配置需要使用 (oneOf|anyOf)Select
+
+          selectWidgetConfig.label = selectWidgetConfig.label || this.schema.title;
+          selectWidgetConfig.description = selectWidgetConfig.description || this.schema.description; // 下拉列表枚举值
+
+          if (!selectWidgetConfig.uiProps.enumOptions) {
+            const uiSchemaSelectList = this.uiSchema[this.combiningType] || [];
+            selectWidgetConfig.uiProps.enumOptions = this.selectList.map((option, index) => {
+              const curUiOptions = getUiOptions({
+                schema: option,
+                uiSchema: uiSchemaSelectList[index],
+                containsSpec: false // curNodePath: this.curNodePath,
+                // rootFormData: this.rootFormData,
+
+              });
+              return {
+                label: curUiOptions.title || `选项 ${index + 1}`,
+                value: index
+              };
+            });
+          } // oneOf option 渲染
+          // 选择框 VNode
+
+
+          return this.$createElement(Widget, {
+            key: `fieldSelect_${this.combiningType}`,
+            class: {
+              [`fieldSelect_${this.combiningType}`]: true
+            },
+            props: {
+              isFormData: false,
+              curValue: this.curSelectIndex,
+              globalOptions: this.globalOptions,
+              ...selectWidgetConfig
+            },
+            on: {
+              onChange: event => {
+                this.curSelectIndex = event;
+              }
+            }
+          });
+        }
+
+      },
+      watch: {
+        // 对象 切换了select
+        // 如果object 类型 option有添加属性 这里做移除
+        // 对新option计算默认值
+        curSelectIndex(newVal, oldVal) {
+          const curFormData = getPathVal$1(this.rootFormData, this.curNodePath); // 计算出 新选项默认值
+
+          const newOptionData = getDefaultFormState(this.selectList[newVal], undefined, this.rootSchema);
+          const hasOwn = Object.prototype.hasOwnProperty; // 移除旧key
+
+          if (isObject(curFormData)) {
+            const oldSelectSchema = retrieveSchema(this.selectList[oldVal], this.rootSchema);
+
+            if (getSchemaType(oldSelectSchema) === 'object') {
+              // 移除旧schema添加的属性
+              // Object.keys(oldSelectSchema.properties)
+              for (const key in oldSelectSchema.properties) {
+                if (hasOwn.call(oldSelectSchema.properties, key) && !hasOwn.call(newOptionData, key)) {
+                  deletePathVal(curFormData, key); // delete curFormData[key];
+                }
+              }
+            }
+          } // 设置新值
+
+
+          if (isObject(newOptionData)) {
+            Object.entries(newOptionData).forEach(([key, value]) => {
+              if (value !== undefined) {
+                setPathVal(curFormData, key, value);
+              }
+            });
+          } else {
+            setPathVal(this.rootFormData, this.curNodePath, newOptionData || curFormData);
+          }
+        }
+
+      },
+
+      render(h) {
+        const {
+          curNodePath
+        } = this.$props;
+        const pathClassName = nodePath2ClassName(curNodePath); // object 需要保持原有属性，如果存在原有属性这里单独渲染
+
+        let originVNode = null;
+        const isTypeObject = this.schema.type === 'object' || this.schema.properties;
+
+        if (isTypeObject && !isEmptyObject(this.schema.properties)) {
+          const origSchema = Object.assign({}, this.schema);
+          delete origSchema[this.combiningType];
+          originVNode = h(SchemaField, {
+            key: `origin_${this.combiningType}`,
+            class: {
+              [`${this.combiningType}_originBox`]: true,
+              [`${pathClassName}-originBox`]: true
+            },
+            props: { ...this.$props,
+              schema: origSchema // needValidFieldGroup: false // 单独校验，这里无需处理
+
+            }
+          });
+        } // 选择附加的节点
+
+
+        const childrenVNodeList = [this.getSelectBoxVNode()]; // 当前选中的 oneOf 附加的节点
+
+        let curSelectSchema = this.selectList[this.curSelectIndex];
+
+        if (curSelectSchema) {
+          // 覆盖父级的属性
+          const {
+            // eslint-disable-next-line no-unused-vars
+            properties,
+            // eslint-disable-next-line no-unused-vars
+            [this.combiningType]: combiningType,
+            // eslint-disable-next-line no-unused-vars
+            [`${this.combiningType}Select`]: combiningTypeSelect,
+            ...parentSchema
+          } = this.schema;
+          curSelectSchema = Object.assign({}, parentSchema, curSelectSchema); // 当前节点的ui err配置，用来支持所有选项的统一配置
+          // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
+
+          const userUiOptions = filterObject(getUiOptions({
+            schema: this.schema,
+            uiSchema: this.uiSchema,
+            containsSpec: false,
+            curNodePath,
+            rootFormData: this.rootFormData
+          }), key => key === this.combiningType ? undefined : `ui:${key}`);
+          const userErrOptions = filterObject(getUserErrOptions({
+            schema: this.schema,
+            uiSchema: this.uiSchema,
+            errorSchema: this.errorSchema
+          }), key => key === this.combiningType ? undefined : `err:${key}`);
+          childrenVNodeList.push(h(SchemaField, {
+            key: `appendSchema_${this.combiningType}`,
+            props: { ...this.$props,
+              schema: {
+                'ui:showTitle': false,
+                // 默认不显示title
+                'ui:showDescription': false,
+                // 默认不显示描述
+                ...curSelectSchema
+              },
+              required: this.required,
+              uiSchema: { ...userUiOptions,
+                // 合并oneOf 级的配置
+                ...(this.uiSchema[this.combiningType] || [])[this.curSelectIndex]
+              },
+              errorSchema: { ...userErrOptions,
+                // 合并oneOf 级的配置
+                ...(this.errorSchema[this.combiningType] || [])[this.curSelectIndex]
+              } // needValidFieldGroup: false // 单独校验，这里无需处理
+
+            }
+          }));
+        } // oneOf 校验 VNode
+
+
+        childrenVNodeList.push(h(Widget, {
+          key: `validateWidget-${this.combiningType}`,
+          class: {
+            validateWidget: true,
+            [`validateWidget-${this.combiningType}`]: true
+          },
+          props: {
+            schema: this.schema,
+            uiSchema: this.uiSchema,
+            errorSchema: this.errorSchema,
+            curNodePath: this.curNodePath,
+            rootFormData: this.rootFormData,
+            globalOptions: this.globalOptions
+          }
+        }));
+        return h('div', [originVNode, h('div', {
+          key: `appendBox_${this.combiningType}`,
+          class: {
+            appendCombining_box: true,
+            [`${this.combiningType}_appendBox`]: true,
+            [`${pathClassName}-appendBox`]: true
+          }
+        }, childrenVNodeList)]);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/5/19 9:49 下午.
+     */
+    var AnyOfField = {
+      name: 'AnyOfField',
+      functional: true,
+
+      render(h, context) {
+        const {
+          props,
+          ...otherData
+        } = context.data;
+        return h(SelectLinkageField, { ...otherData,
+          props: { ...props,
+            combiningType: 'anyOf',
+            selectList: props.schema.anyOf
+          }
+        }, context.children);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/5/19 9:49 下午.
+     */
+    var OneOfField = {
+      name: 'oneOfField',
+      functional: true,
+
+      render(h, context) {
+        const {
+          props,
+          ...otherData
+        } = context.data;
+        return h(SelectLinkageField, { ...otherData,
+          props: { ...props,
+            combiningType: 'oneOf',
+            selectList: props.schema.oneOf
+          }
+        }, context.children);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/20 9:55 下午.
+     */
+
+    const FIELDS_MAPS = {
+      array: ArrayField,
+      boolean: BooleanField,
+      integer: IntegerField,
+      number: NumberField,
+      object: ObjectField,
+      string: StringField,
+      null: {
+        render() {
+          return null;
+        }
+
+      },
+      anyOf: AnyOfField,
+      oneOf: OneOfField
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/4/20 9:55 下午.
+     */
+    var SchemaField = {
+      name: 'SchemaField',
+      props: vueProps$1,
+      functional: true,
+
+      render(h, context) {
+        const props = context.props;
+        const {
+          rootSchema
+        } = props; // 目前不支持schema依赖和additionalProperties 展示不需要传递formData
+        // const schema = retrieveSchema(props.schema, rootSchema, formData);
+
+        const schema = retrieveSchema(props.schema, rootSchema); // 当前参数
+
+        const curProps = { ...props,
+          schema
+        }; // 空数据
+
+        if (Object.keys(schema).length === 0) {
+          return null;
+        } // 获取节点Ui配置渲染field组件
+
+
+        const {
+          field: fieldComponent,
+          fieldProps
+        } = getUiField(FIELDS_MAPS, curProps); // hidden
+
+        const hiddenWidget = isHiddenWidget({
+          schema,
+          uiSchema: props.uiSchema,
+          curNodePath: props.curNodePath,
+          rootFormData: props.rootFormData
+        });
+        const pathClassName = nodePath2ClassName(props.curNodePath);
+
+        if (schema.anyOf && schema.anyOf.length > 0 && !isSelect(schema)) {
+          // anyOf
+          return h(FIELDS_MAPS.anyOf, {
+            class: {
+              [`${pathClassName}-anyOf`]: true,
+              fieldItem: true,
+              anyOfField: true
+            },
+            props: curProps
+          });
+        }
+
+        if (schema.oneOf && schema.oneOf.length > 0 && !isSelect(schema)) {
+          // oneOf
+          return h(FIELDS_MAPS.oneOf, {
+            class: {
+              [`${pathClassName}-oneOf`]: true,
+              fieldItem: true,
+              oneOfField: true
+            },
+            props: curProps
+          });
+        }
+
+        return fieldComponent && !hiddenWidget ? h(fieldComponent, {
+          props: { ...curProps,
+            fieldProps
+          },
+          class: { ...context.data.class,
+            [lowerCase(fieldComponent.name) || fieldComponent]: true,
+            hiddenWidget,
+            fieldItem: true,
+            [pathClassName]: true
+          }
+        }) : null;
+      }
+
+    };
 
     function styleInject(css, ref) {
       if ( ref === void 0 ) ref = {};
@@ -11653,164 +11087,922 @@
       }
     }
 
-    var css_248z = ".genFromComponent{line-height:1;word-wrap:break-word;word-break:break-word}.genFromComponent,.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px;padding:0;margin:0}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .fieldGroupWrap+.fieldGroupWrap .fieldGroupWrap_title{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999}.genFromComponent .formItemErrorBox{color:#ff5757;padding-top:2px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:16px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .appendCombining_box{margin-bottom:22px;padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .validateWidget{margin-bottom:0;width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 12px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{padding-top:15px;-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_index,.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px}.genFromComponent .arrayListItem_index{top:6px;line-height:18px;height:18px;padding:0 6px;background-color:rgba(0,0,0,.28);color:#fff;font-size:12px;border-radius:2px}.genFromComponent .arrayListItem_operateTool{width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}.genFromComponent .formFooter_item{text-align:right;border-top:1px solid rgba(0,0,0,.08);padding-top:10px}.genFromComponent.form-inlineFooter>.fieldGroupWrap{display:inline-block;margin-right:10px}.genFromComponent .arrayListItem_content .el-form-item:last-child{margin-bottom:0}.genFromComponent.el-form--label-top .arrayListItem_content{padding-top:8px}.genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent.el-form--inline .validateWidget{margin-right:0}.genFromComponent.el-form--inline .formFooter_item{border-top:none;padding-top:0}.genFromComponent .el-checkbox,.genFromComponent .el-color-picker{vertical-align:top}.layoutColumn .layoutColumn_w100{width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important}.layoutColumn .fieldGroupWrap_box{width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-ms-flex-line-pack:start;align-content:flex-start}.layoutColumn .fieldGroupWrap_box>div{width:100%;-ms-flex-preferred-size:100%;flex-basis:100%}.layoutColumn .fieldGroupWrap_box>.el-form-item{-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;-ms-flex-negative:0;flex-shrink:0;-webkit-box-sizing:border-box;box-sizing:border-box;padding-right:10px}.layoutColumn.layoutColumn-1 .fieldGroupWrap_box>.el-form-item{padding-right:0}.layoutColumn.layoutColumn-2 .fieldGroupWrap_box>.el-form-item{width:50%;-ms-flex-preferred-size:50%;flex-basis:50%}.layoutColumn.layoutColumn-3 .fieldGroupWrap_box>.el-form-item{width:33.333%;-ms-flex-preferred-size:33.333%;flex-basis:33.333%}";
+    var css_248z = ".genFromComponent{font-size:14px;line-height:1;word-wrap:break-word;word-break:break-word;padding:0;margin:0}.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .fieldGroupWrap+.fieldGroupWrap .fieldGroupWrap_title{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{font-size:12px;line-height:20px;margin-bottom:2px;color:#999;text-align:left}.genFromComponent .formItemErrorBox{color:#ff5757;padding-top:2px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:16px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .genFormItemRequired:before{content:\"*\";color:#f56c6c;margin-right:4px}.genFromComponent .appendCombining_box{margin-bottom:22px}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .appendCombining_box{padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .validateWidget{margin-bottom:0;width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 12px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{padding-top:15px;-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_index,.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px}.genFromComponent .arrayListItem_index{top:6px;line-height:18px;height:18px;padding:0 6px;background-color:rgba(0,0,0,.28);color:#fff;font-size:12px;border-radius:2px}.genFromComponent .arrayListItem_operateTool{width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}.genFromComponent .formFooter_item{text-align:right;border-top:1px solid rgba(0,0,0,.08);padding-top:10px}.genFromComponent.formInlineFooter>.fieldGroupWrap{display:inline-block;margin-right:10px}.genFromComponent .arrayListItem_content .genFormItem:last-child{margin-bottom:0}.genFromComponent.formInline .validateWidget{margin-right:0}.genFromComponent.formInline .formFooter_item{border-top:none;padding-top:0}.genFromComponent.formLabel-top .arrayListItem_content{padding-top:8px}.layoutColumn .layoutColumn_w100{width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important}.layoutColumn .fieldGroupWrap_box{width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-ms-flex-line-pack:start;align-content:flex-start}.layoutColumn .fieldGroupWrap_box>div{width:100%;-ms-flex-preferred-size:100%;flex-basis:100%}.layoutColumn .fieldGroupWrap_box>.genFormItem{-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;-ms-flex-negative:0;flex-shrink:0;-webkit-box-sizing:border-box;box-sizing:border-box;padding-right:10px}.layoutColumn.layoutColumn-1 .fieldGroupWrap_box>.genFormItem{padding-right:0}.layoutColumn.layoutColumn-2 .fieldGroupWrap_box>.genFormItem{width:50%;-ms-flex-preferred-size:50%;flex-basis:50%}.layoutColumn.layoutColumn-3 .fieldGroupWrap_box>.genFormItem{width:33.333%;-ms-flex-preferred-size:33.333%;flex-basis:33.333%}";
     styleInject(css_248z);
 
     /**
      * Created by Liu.Jun on 2020/4/16 17:32.
      */
-    var JsonSchemaForm = {
-      name: 'ElementForm',
-      props: vueProps$1,
+    function createForm(globalOptions = {}) {
+      return {
+        name: 'ElementForm',
+        props: vueProps,
+
+        data() {
+          const formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema); // 保持v-model双向数据及时性
+
+          this.emitFormDataChange(formData, this.value);
+          return {
+            formData
+          };
+        },
+
+        computed: {
+          footerParams() {
+            return {
+              show: true,
+              okBtn: '保存',
+              cancelBtn: '取消',
+              ...this.formFooter
+            };
+          }
+
+        },
+        watch: {
+          formData: {
+            handler(newValue, oldValue) {
+              this.emitFormDataChange(newValue, oldValue);
+            },
+
+            deep: true
+          },
+
+          // 用于初始化了formData，监听变更是否重新计算 formData
+          schema(newVal, oldVal) {
+            this.willReceiveProps(newVal, oldVal);
+          },
+
+          value(newVal, oldVal) {
+            this.willReceiveProps(newVal, oldVal);
+          }
+
+        },
+        methods: {
+          emitFormDataChange(newValue, oldValue) {
+            // 支持v-model ，引用类型
+            this.$emit('input', newValue); // change 事件，引用类型修改属性 newValue
+
+            this.$emit('on-change', {
+              newValue,
+              oldValue
+            });
+          },
+
+          // 避免用于双向绑定v-model 可能导致的循环调用
+          willReceiveProps(newVal, oldVal) {
+            if (!deepEquals(newVal, oldVal)) {
+              const formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema);
+
+              if (!deepEquals(this.formData, formData)) {
+                this.formData = formData;
+              }
+            }
+          }
+
+        },
+
+        render(h) {
+          const self = this; // default scoped slot
+
+          const defaultSlot = this.$scopedSlots.default ? this.$scopedSlots.default({
+            formData: self.formData,
+            formRefFn: () => self.$refs.genEditForm
+          }) : this.footerParams.show ? h(FormFooter, {
+            props: {
+              globalOptions,
+              okBtn: self.footerParams.okBtn,
+              cancelBtn: self.footerParams.cancelBtn
+            },
+            on: {
+              onCancel() {
+                self.$emit('on-cancel');
+              },
+
+              onSubmit() {
+                self.$refs.genEditForm.validate((isValid, resData) => {
+                  if (isValid) {
+                    return self.$emit('on-submit', self.formData);
+                  }
+
+                  console.warn(resData);
+                  return self.$emit('on-validation-failed', resData);
+                });
+              }
+
+            }
+          }) : undefined;
+          const {
+            layoutColumn = 1,
+            ...formProps
+          } = self.$props.formProps;
+          const props = {
+            schema: this.schema,
+            uiSchema: this.uiSchema,
+            errorSchema: this.errorSchema,
+            customFormats: this.customFormats,
+            customRule: this.customRule,
+            rootSchema: this.schema,
+            rootFormData: this.formData,
+            // 根节点的数据
+            curNodePath: '',
+            // 当前节点路径
+            globalOptions,
+            // 全局配置，差异化ui框架
+            formProps: {
+              labelPosition: 'top',
+              labelSuffix: '：',
+              ...formProps
+            }
+          };
+          return h(globalOptions.COMPONENT_MAP.form, {
+            class: {
+              genFromComponent: true,
+              [`formLabel-${props.formProps.labelPosition}`]: true,
+              formInlineFooter: formProps.inlineFooter,
+              formInline: formProps.inline,
+              [`genFromComponent_${this.schema.id}Form`]: !!this.schema.id,
+              layoutColumn: !formProps.inline,
+              [`layoutColumn-${layoutColumn}`]: !formProps.inline
+            },
+            ref: 'genEditForm',
+            props: {
+              model: self.formData,
+              ...props.formProps
+            }
+          }, [h(SchemaField, {
+            props
+          }), defaultSlot]);
+        }
+
+      };
+    }
+
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    var script$1 = {
+      name: 'CheckboxesWidget',
+      props: {
+        value: {
+          default: () => [],
+          type: [Array]
+        },
+        enumOptions: {
+          default: () => [],
+          type: [Array]
+        }
+      },
+      computed: {
+        checkList: {
+          get() {
+            return this.value;
+          },
+
+          set(value) {
+            this.$emit('input', value);
+          }
+
+        }
+      }
+    };
+
+    /* script */
+    const __vue_script__$1 = script$1;
+
+    /* template */
+    var __vue_render__$1 = function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c(
+        "checkbox-group",
+        _vm._b(
+          {
+            model: {
+              value: _vm.checkList,
+              callback: function($$v) {
+                _vm.checkList = $$v;
+              },
+              expression: "checkList"
+            }
+          },
+          "checkbox-group",
+          _vm.$attrs,
+          false
+        ),
+        _vm._l(_vm.enumOptions, function(item, index) {
+          return _c("checkbox", { key: index, attrs: { label: item.value } }, [
+            _vm._v("\n        " + _vm._s(item.label) + "\n    ")
+          ])
+        }),
+        1
+      )
+    };
+    var __vue_staticRenderFns__$1 = [];
+    __vue_render__$1._withStripped = true;
+
+      /* style */
+      const __vue_inject_styles__$1 = undefined;
+      /* scoped */
+      const __vue_scope_id__$1 = undefined;
+      /* module identifier */
+      const __vue_module_identifier__$1 = undefined;
+      /* functional template */
+      const __vue_is_functional_template__$1 = false;
+      /* style inject */
+      
+      /* style inject SSR */
+      
+      /* style inject shadow dom */
+      
+
+      
+      const __vue_component__$1 = /*#__PURE__*/normalizeComponent(
+        { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
+        __vue_inject_styles__$1,
+        __vue_script__$1,
+        __vue_scope_id__$1,
+        __vue_is_functional_template__$1,
+        __vue_module_identifier__$1,
+        false,
+        undefined,
+        undefined,
+        undefined
+      );
+
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    var script$2 = {
+      name: 'RadioWidget',
+      props: {
+        value: {
+          default: () => '',
+          type: [String, Number, Boolean]
+        },
+        enumOptions: {
+          default: () => [],
+          type: [Array]
+        }
+      },
+      computed: {
+        checkList: {
+          get() {
+            return this.value;
+          },
+
+          set(value) {
+            this.$emit('input', value);
+          }
+
+        }
+      }
+    };
+
+    /* script */
+    const __vue_script__$2 = script$2;
+
+    /* template */
+    var __vue_render__$2 = function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c(
+        "radio-group",
+        _vm._b(
+          {
+            model: {
+              value: _vm.checkList,
+              callback: function($$v) {
+                _vm.checkList = $$v;
+              },
+              expression: "checkList"
+            }
+          },
+          "radio-group",
+          _vm.$attrs,
+          false
+        ),
+        _vm._l(_vm.enumOptions, function(item, index) {
+          return _c("radio", { key: index, attrs: { label: item.value } }, [
+            _vm._v("\n        " + _vm._s(item.label) + "\n    ")
+          ])
+        }),
+        1
+      )
+    };
+    var __vue_staticRenderFns__$2 = [];
+    __vue_render__$2._withStripped = true;
+
+      /* style */
+      const __vue_inject_styles__$2 = undefined;
+      /* scoped */
+      const __vue_scope_id__$2 = undefined;
+      /* module identifier */
+      const __vue_module_identifier__$2 = undefined;
+      /* functional template */
+      const __vue_is_functional_template__$2 = false;
+      /* style inject */
+      
+      /* style inject SSR */
+      
+      /* style inject shadow dom */
+      
+
+      
+      const __vue_component__$2 = /*#__PURE__*/normalizeComponent(
+        { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
+        __vue_inject_styles__$2,
+        __vue_script__$2,
+        __vue_scope_id__$2,
+        __vue_is_functional_template__$2,
+        __vue_module_identifier__$2,
+        false,
+        undefined,
+        undefined,
+        undefined
+      );
+
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    var script$3 = {
+      name: 'SelectWidget',
+      props: {
+        value: {
+          default: null,
+          type: null
+        },
+        enumOptions: {
+          default: () => [],
+          type: [Array]
+        }
+      },
+      computed: {
+        selectList: {
+          get() {
+            return this.value;
+          },
+
+          set(value) {
+            this.$emit('input', value);
+          }
+
+        }
+      }
+    };
+
+    /* script */
+    const __vue_script__$3 = script$3;
+
+    /* template */
+    var __vue_render__$3 = function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c(
+        "i-select",
+        _vm._b(
+          {
+            model: {
+              value: _vm.selectList,
+              callback: function($$v) {
+                _vm.selectList = $$v;
+              },
+              expression: "selectList"
+            }
+          },
+          "i-select",
+          _vm.$attrs,
+          false
+        ),
+        _vm._l(_vm.enumOptions, function(item, index) {
+          return _c("i-option", { key: index, attrs: { value: item.value } }, [
+            _vm._v("\n        " + _vm._s(item.label) + "\n    ")
+          ])
+        }),
+        1
+      )
+    };
+    var __vue_staticRenderFns__$3 = [];
+    __vue_render__$3._withStripped = true;
+
+      /* style */
+      const __vue_inject_styles__$3 = undefined;
+      /* scoped */
+      const __vue_scope_id__$3 = undefined;
+      /* module identifier */
+      const __vue_module_identifier__$3 = undefined;
+      /* functional template */
+      const __vue_is_functional_template__$3 = false;
+      /* style inject */
+      
+      /* style inject SSR */
+      
+      /* style inject shadow dom */
+      
+
+      
+      const __vue_component__$3 = /*#__PURE__*/normalizeComponent(
+        { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
+        __vue_inject_styles__$3,
+        __vue_script__$3,
+        __vue_scope_id__$3,
+        __vue_is_functional_template__$3,
+        __vue_module_identifier__$3,
+        false,
+        undefined,
+        undefined,
+        undefined
+      );
+
+    /**
+     * Created by Liu.Jun on 2020/7/22 13:21.
+     */
+    const f = s => `0${s}`.substr(-2);
+
+    function formatDateStr(date, isDatetime) {
+      if (!date) return '';
+      const dateObj = new Date(date);
+      if (isDatetime) return dateObj.toISOString();
+      const {
+        year,
+        month,
+        day
+      } = {
+        year: dateObj.getFullYear(),
+        month: dateObj.getMonth() + 1,
+        day: dateObj.getDate()
+      };
+      return `${year}-${f(month)}-${f(day)}`;
+    }
+
+    const toDateObj = value => Array.isArray(value) ? value.map(item => value && new Date(item)) : value && new Date(value);
+
+    function isEmptyValue(value) {
+      return value === null || value === '' || Array.isArray(value) && value.every(item => item === '');
+    }
+
+    var DatePickerWidget = {
+      name: 'DatePickerWidget',
+      props: {
+        value: {
+          type: null
+        },
+        isNumberValue: {
+          type: Boolean,
+          default: false
+        },
+        isDatetime: {
+          type: Boolean,
+          default: false
+        },
+        isRange: {
+          type: Boolean,
+          default: false
+        }
+      },
 
       data() {
-        const formData = this.getStateFromData(this.$props.schema, this.$props.value); // 保持v-model双向数据及时性
-
-        this.handlerFormDataChange(formData, this.value);
         return {
-          formData
+          originValue: toDateObj(this.value),
+          formatValue: this.formatDate(this.value)
         };
       },
 
-      computed: {
-        footerParams() {
-          return {
-            show: true,
-            okBtn: '保存',
-            cancelBtn: '取消',
-            ...this.formFooter
-          };
+      watch: {
+        value(newVal) {
+          // 兼容 iview 绑定字符串类型值会导致无限循环的问题
+          debugger;
+
+          if (newVal === this.formatValue) ; else {
+            // 外部更新值
+            this.originValue = toDateObj(newVal);
+          }
         }
 
       },
-      watch: {
-        formData: {
-          handler(newValue, oldValue) {
-            this.handlerFormDataChange(newValue, oldValue);
-          },
-
-          deep: true
-        },
-
-        // 用于初始化了formData，监听变更是否重新计算 formData
-        schema(newVal, oldVal) {
-          this.willReceiveProps(newVal, oldVal);
-        },
-
-        value(newVal, oldVal) {
-          this.willReceiveProps(newVal, oldVal);
+      computed: {
+        type() {
+          return this.isDatetime ? this.isRange ? 'datetimerange' : 'datetime' : this.isRange ? 'daterange' : 'date';
         }
 
       },
       methods: {
-        handlerFormDataChange(newValue, oldValue) {
-          // 支持v-model ，引用类型
-          this.$emit('input', newValue); // change 事件，引用类型修改属性 newValue
+        formatDate(val) {
+          const {
+            isRange,
+            isNumberValue,
+            isDatetime
+          } = this.$props;
+          let trueVal;
 
-          this.$emit('on-change', {
-            newValue,
-            oldValue
-          });
-        },
-
-        // 避免用于双向绑定v-model 可能导致的循环调用
-        willReceiveProps(newVal, oldVal) {
-          if (!deepEquals(newVal, oldVal)) {
-            const formData = this.getStateFromData(this.$props.schema, this.$props.value);
-
-            if (!deepEquals(this.formData, formData)) {
-              this.formData = formData;
-            }
+          if (isRange) {
+            trueVal = isEmptyValue(val) ? [] : val.map(item => isNumberValue ? new Date(item).valueOf() : formatDateStr(item, isDatetime));
+          } else {
+            trueVal = isEmptyValue(val) ? undefined : isNumberValue ? new Date(val).valueOf() : formatDateStr(val, isDatetime);
           }
-        },
 
-        getStateFromData(schema, inputFormData) {
-          // 通过schema，默认数据，rootSchema 计算出 formData 默认值
-          return getDefaultFormState(schema, inputFormData, schema);
+          return trueVal;
         }
 
       },
 
       render(h) {
-        const self = this; // default scoped slot
-
-        const defaultSlot = this.$scopedSlots.default ? this.$scopedSlots.default({
-          formData: self.formData,
-          formRefFn: () => self.$refs.genEditForm
-        }) : this.footerParams.show ? h(__vue_component__$4, {
-          props: {
-            okBtn: self.footerParams.okBtn,
-            cancelBtn: self.footerParams.cancelBtn
+        const self = this;
+        return h('date-picker', {
+          attrs: {
+            type: this.type,
+            value: this.originValue,
+            ...this.$attrs
           },
-          on: {
-            onCancel() {
-              self.$emit('on-cancel');
-            },
+          on: { ...this.$listeners,
 
-            onSubmit() {
-              self.$refs.genEditForm.validate((isValid, resData) => {
-                if (isValid) {
-                  return self.$emit('on-submit', self.formData);
-                }
-
-                return self.$emit('on-validation-failed', resData);
-              });
+            input(val) {
+              debugger;
+              self.originValue = val;
+              self.formatValue = self.formatDate(val);
+              self.$emit('input', self.formatValue);
             }
 
           }
-        }) : undefined;
-        const {
-          layoutColumn = 1,
-          ...formProps
-        } = self.$props.formProps;
-        const props = {
-          schema: this.schema,
-          uiSchema: this.uiSchema,
-          errorSchema: this.errorSchema,
-          customFormats: this.customFormats,
-          customRule: this.customRule,
-          rootSchema: this.schema,
-          rootFormData: this.formData,
-          // 根节点的数据
-          curNodePath: '',
-          // 当前节点路径
-          formProps: {
-            labelPosition: 'top',
-            labelSuffix: '：',
-            ...formProps
-          }
-        };
-        return h('el-form', {
-          class: {
-            genFromComponent: true,
-            'form-inlineFooter': formProps.inlineFooter,
-            [`genFromComponent_${this.schema.id}Form`]: !!this.schema.id,
-            layoutColumn: !formProps.inline,
-            [`layoutColumn-${layoutColumn}`]: !formProps.inline
-          },
-          ref: 'genEditForm',
-          props: {
-            model: self.formData,
-            ...props.formProps
-          }
-        }, [h(SchemaField, {
-          props
-        }), defaultSlot]);
+        });
       }
 
     };
 
     /**
+     * Created by Liu.Jun on 2020/7/22 13:21.
+     */
+    var DateTimePickerWidget = {
+      name: 'DateTimePickerWidget',
+      functional: true,
+
+      render(h, context) {
+        context.data.attrs.isDatetime = true;
+        return h(DatePickerWidget, context.data, context.children);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/7/22 13:22.
+     */
+    var TimePickerWidget = {
+      name: 'TimePickerWidget',
+      functional: true,
+
+      render(h, context) {
+        const oldInputCall = context.data.on.input;
+        context.data.on = { ...context.data.on,
+
+          input(val) {
+            oldInputCall.apply(context.data.on, [val === null ? undefined : val]);
+          }
+
+        };
+        return h('time-picker', context.data, context.children);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/11/26 10:01 下午.
+     */
+    // mock
+    // https://run.mocky.io/v3/518d7af7-204f-45ab-9628-a6e121dab8ca
+    var UploadWidget = {
+      name: 'UploadWidget',
+      props: {
+        value: {
+          default: null,
+          type: [String, Array]
+        },
+        responseFileUrl: {
+          default: res => res ? res.url || res.data && res.data.url : '',
+          type: [Function]
+        },
+        btnText: {
+          type: String,
+          default: '点击上传'
+        },
+        // 传入 VNode
+        slots: {
+          type: null,
+          default: null
+        }
+      },
+
+      data() {
+        // 设置默认 fileList
+        const value = this.value;
+        const isArrayValue = Array.isArray(value);
+        let fileList = [];
+
+        if (isArrayValue) {
+          fileList = value.map((item, index) => ({
+            name: `已上传文件（${index + 1}）`,
+            url: item
+          }));
+        } else if (value) {
+          fileList.push({
+            name: '已上传文件',
+            url: value
+          });
+        }
+
+        return {
+          isArrayValue,
+          fileList
+        };
+      },
+
+      methods: {
+        emitValue(fileList) {
+          // v-model
+          let value;
+
+          const geUrl = fileItem => fileItem && (fileItem.response && this.responseFileUrl(fileItem.response) || fileItem.url) || '';
+
+          if (this.isArrayValue) {
+            value = fileList.length ? fileList.reduce((pre, item) => {
+              const url = geUrl(item);
+              if (url) pre.push(url);
+              return pre;
+            }, []) : [];
+          } else {
+            const fileItem = fileList[fileList.length - 1];
+            value = geUrl(fileItem);
+          }
+
+          this.$emit('input', value);
+        }
+
+      },
+
+      render() {
+        const h = this.$createElement;
+        const attrs = this.$attrs;
+        const {
+          slots
+        } = this.$props;
+        const data = {
+          attrs: {
+            defaultFileList: this.fileList,
+            'on-error': () => {
+              if (this.$message) {
+                this.$message.error('文件上传失败');
+              }
+            },
+            ...attrs,
+            'on-remove': (file, fileList) => {
+              this.emitValue(fileList);
+
+              if (attrs['on-remove']) {
+                attrs['on-remove'](file, fileList);
+              }
+            },
+            'on-success': (response, file, fileList) => {
+              this.emitValue(fileList); // 用户注册的 onSuccess
+
+              if (attrs['on-success']) {
+                attrs['on-success'](response, file, fileList);
+              }
+            }
+          }
+        };
+        if (!this.isArrayValue) data.attrs.limit = 1;
+        const childVNode = [];
+
+        if (slots && slots.default) {
+          childVNode.push(h('template', {
+            slot: 'default'
+          }, [typeof slots.default === 'function' ? slots.default(h) : slots.default]));
+        } else {
+          childVNode.push(h('i-button', {
+            props: {
+              type: 'primary'
+            }
+          }, [this.btnText]));
+        }
+
+        if (slots && slots.tip) {
+          childVNode.push(h('template', {
+            slot: 'tip'
+          }, [typeof slots.tip === 'function' ? slots.tip(h) : slots.tip]));
+        }
+
+        return h('upload', data, childVNode);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2021/1/2 10:53 下午.
+     */
+    var SwitchWidget = {
+      name: 'SwitchWidget',
+      functional: true,
+
+      render(h, context) {
+        const {
+          activeText,
+          inactiveText
+        } = context.props; // 转换elementUi activeText inactiveText 支持 iview slot
+
+        const childNode = Object.entries({
+          open: activeText,
+          close: inactiveText
+        }).reduce((preVal, [slot, value]) => {
+          if (value !== undefined) {
+            preVal.push(h('span', {
+              slot
+            }, [value]));
+          }
+
+          return preVal;
+        }, []);
+        return h('i-switch', context.data, childNode);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2021/1/2 10:56 下午.
+     */
+    var InputNumberWidget = {
+      name: 'SwitchWidget',
+      functional: true,
+
+      render(h, context) {
+        // iview3 input number undefined 会默认为 1，需要抹平差异
+        // 实际的数据为 undefined 保持和jsonSchema 一致
+        // 传递给 iview 时转换为 null，兼容iview3清空场景
+        if (context.data.attrs.value === undefined) context.data.attrs.value = null;
+        return h('input-number', context.data, context.children);
+      }
+
+    };
+
+    /**
+     * Created by Liu.Jun on 2020/5/17 10:41 下午.
+     */
+    const widgetComponents = {
+      CheckboxesWidget: __vue_component__$1,
+      RadioWidget: __vue_component__$2,
+      SelectWidget: __vue_component__$3,
+      TimePickerWidget,
+      DatePickerWidget,
+      DateTimePickerWidget,
+      UploadWidget,
+      SwitchWidget,
+      InputNumberWidget
+    }; // 注册组件
+
+    Object.entries(widgetComponents).forEach(([key, value]) => Vue__default['default'].component(key, value));
+
+    /**
+     * Created by Liu.Jun on 2020/4/21 18:23.
+     */
+    const {
+      CheckboxesWidget,
+      RadioWidget,
+      SelectWidget,
+      TimePickerWidget: TimePickerWidget$1,
+      DatePickerWidget: DatePickerWidget$1,
+      DateTimePickerWidget: DateTimePickerWidget$1,
+      SwitchWidget: SwitchWidget$1,
+      InputNumberWidget: InputNumberWidget$1
+    } = widgetComponents;
+    var WIDGET_MAP = {
+      types: {
+        boolean: SwitchWidget$1,
+        string: 'i-input',
+        number: InputNumberWidget$1,
+        integer: InputNumberWidget$1
+      },
+      formats: {
+        color: 'color-picker',
+        time: TimePickerWidget$1,
+        // 20:20:39+00:00
+        date: DatePickerWidget$1,
+        // 2018-11-13
+        'date-time': DateTimePickerWidget$1 // 2018-11-13T20:20:39+00:00
+
+      },
+      common: {
+        select: SelectWidget,
+        radioGroup: RadioWidget,
+        checkboxGroup: CheckboxesWidget
+      }
+    };
+
+    var css_248z$1 = ".genFromComponent.formLabel-top .ivu-form-item-label{line-height:26px;padding-bottom:6px}.genFromComponent .ivu-form-item-error-tip{padding-top:2px;position:absolute;display:-webkit-box!important;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;text-align:left;line-height:1.2}.genFromComponent .validateWidget .ivu-form-item-error-tip{padding:5px 0;position:relative}";
+    styleInject(css_248z$1);
+
+    /**
      * Created by Liu.Jun on 2019/11/29 11:25.
      */
+    const JsonSchemaFormIview3 = createForm(Object.freeze({
+      WIDGET_MAP: Object.freeze(WIDGET_MAP),
+      COMPONENT_MAP: Object.freeze({
+        form: {
+          functional: true,
+
+          render(h, context) {
+            context.data.props = { ...context.data.props,
+              labelWidth: context.data.props.labelPosition === 'top' || !context.data.props.labelWidth ? undefined : parseFloat(String(context.data.props.labelWidth))
+            };
+            return h('i-form', context.data, context.children);
+          }
+
+        },
+        formItem: {
+          functional: true,
+
+          render(h, context) {
+            context.data.props = { ...context.data.props,
+              labelWidth: context.data.props && context.data.props.labelWidth ? parseFloat(String(context.data.props.labelWidth)) : undefined
+            }; // https://github.com/vuejs/vue/issues/8380
+            // 具名插槽需要重新显示的指定，无法直接透传 Orz...
+
+            return h('form-item', context.data, Object.entries(context.slots()).map(([slotName, VNode]) => h('template', {
+              slot: slotName
+            }, VNode)));
+          }
+
+        },
+        button: 'i-button',
+        popover: {
+          functional: true,
+
+          render(h, context) {
+            const {
+              default: content,
+              reference: defaults
+            } = context.slots(); // 交互slot
+
+            return h('poptip', context.data, [h('template', {
+              slot: 'default'
+            }, defaults), h('template', {
+              slot: 'content'
+            }, content)]);
+          }
+
+        }
+      }),
+      ICONS_MAP: Object.freeze({
+        question: 'ivu-icon ivu-icon-md-help-circle',
+        moveUp: 'ivu-icon ivu-icon-md-arrow-round-up',
+        moveDown: 'ivu-icon ivu-icon-md-arrow-round-down',
+        close: 'ivu-icon ivu-icon-md-close',
+        plus: 'ivu-icon ivu-icon-md-add'
+      })
+    })); // 存在Vue 全局变量默认注册 VueForm 组件
 
     if (typeof window !== 'undefined' && window.Vue) {
-      window.Vue.component('VueForm', JsonSchemaForm);
+      window.Vue.component('VueFormIview3', JsonSchemaFormIview3);
     }
 
     exports.SchemaField = SchemaField;
-    exports.default = JsonSchemaForm;
-    exports.fieldProps = vueProps;
+    exports.default = JsonSchemaFormIview3;
+    exports.fieldProps = vueProps$1;
     exports.formUtils = formUtils;
     exports.getDefaultFormState = getDefaultFormState;
     exports.i18n = i18n;

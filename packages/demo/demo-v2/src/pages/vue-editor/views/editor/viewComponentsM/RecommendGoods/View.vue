@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style module>
-    @import 'variable.css';
+    @import 'demo-common/css/variable.css';
     .box {
         padding: 10px;
         background: #FFFFFF;

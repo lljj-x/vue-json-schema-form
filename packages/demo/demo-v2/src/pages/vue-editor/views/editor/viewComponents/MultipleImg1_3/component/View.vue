@@ -129,7 +129,7 @@ export default {
 </script>
 
 <style module>
-    @import 'variable.css';
+    @import 'demo-common/css/variable.css';
     /* 空壳 */
     .emptyBox {
         .imgItem {

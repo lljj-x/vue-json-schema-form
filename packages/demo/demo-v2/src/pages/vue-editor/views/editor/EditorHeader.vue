@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import BaseEditorHeader from '@/_common/components/EditorHeader.vue';
+import BaseEditorHeader from 'demo-common/components/EditorHeader.vue';
 
 export default {
     name: 'EditorHeader',
@@ -109,7 +109,7 @@ export default {
 </script>
 
 <style module>
-    @import "variable.css";
+    @import "demo-common/css/variable.css";
     .box {
         padding: 10px 2%;
         height: auto;

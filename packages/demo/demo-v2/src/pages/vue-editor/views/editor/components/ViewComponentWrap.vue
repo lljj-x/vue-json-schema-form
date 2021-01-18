@@ -130,7 +130,7 @@ export default {
 </script>
 
 <style module>
-    @import "variable.css";
+    @import "demo-common/css/variable.css";
     .viewBox {
         /*width: 1190px;*/
         margin: 0 auto;

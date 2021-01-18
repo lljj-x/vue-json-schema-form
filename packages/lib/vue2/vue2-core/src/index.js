@@ -12,8 +12,14 @@ import vueProps from './props';
 import FormFooter from './components/FormFooter.js';
 
 import SchemaField from './fields/SchemaField';
+import fieldProps from './fields/props';
 
 import './index.css';
+
+export {
+    fieldProps,
+    SchemaField
+};
 
 export default function createForm(globalOptions = {}) {
     return {

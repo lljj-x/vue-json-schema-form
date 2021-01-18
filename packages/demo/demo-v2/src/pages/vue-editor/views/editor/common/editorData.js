@@ -3,7 +3,7 @@
  */
 
 import { getDefaultFormState } from '@lljj/vue-json-schema-form';
-import { genId } from '@/_common/utils/id';
+import { genId } from 'demo-common/utils/id';
 
 function isEmptyObject(obj) {
     for (const key in obj) {

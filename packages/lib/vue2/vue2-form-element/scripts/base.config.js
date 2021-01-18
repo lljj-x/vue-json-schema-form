@@ -81,7 +81,8 @@ module.exports = ({
             }),
             eslint(),
             babel({
-                exclude: /node_modules/
+                exclude: /node_modules\/(?!(@lljj)\/).*/,
+                include: '**/**'
             }),
             postcss({
                 extract: config.extractcss

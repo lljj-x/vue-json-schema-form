@@ -2,8 +2,8 @@
     "name": "@lljj/vue2-form-iview3",
     "version": "0.5.0",
     "description": "基于 Vue 、iView3、JsonSchema快速构建一个带完整校验的form表单",
-    "main": "dist/vueJsonSchemaForm.umd.min.js",
-    "module": "dist/vueJsonSchemaForm.esm.min.js",
+    "main": "dist/vue2FormIview3.umd.min.js",
+    "module": "dist/vue2FormIview3.esm.min.js",
     "scripts": {
         "watch": "node scripts/watch.js",
         "build": "node scripts/build.js"

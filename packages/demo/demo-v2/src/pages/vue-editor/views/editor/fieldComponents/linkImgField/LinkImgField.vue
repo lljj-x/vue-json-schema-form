@@ -164,7 +164,7 @@ export default {
 </script>
 
 <style module>
-    @import 'variable.css';
+    @import 'demo-common/css/variable.css';
     .box {
         :global {
             .el-form-item.is-error {

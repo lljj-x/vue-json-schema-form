@@ -2,7 +2,7 @@
  * Created by Liu.Jun on 2019/11/28 18:37.
  */
 
-import { genId } from '@/_common/utils/id';
+import { genId } from 'demo-common/utils/id';
 
 
 export function deepFreeze(obj) {

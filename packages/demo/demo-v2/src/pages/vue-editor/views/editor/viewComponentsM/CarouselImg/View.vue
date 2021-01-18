@@ -72,7 +72,7 @@ export default {
 </script>
 
 <style module>
-    @import 'variable.css';
+    @import 'demo-common/css/variable.css';
     .box {
         background-color: #FFFFFF;
         width: 100%;

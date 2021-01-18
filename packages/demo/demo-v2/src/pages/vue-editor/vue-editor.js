@@ -3,9 +3,9 @@
  */
 
 // bootstrap
-import '@/_common/bootstrap.js';
+import 'demo-common/bootstrap.js';
 import Vue from 'vue';
-import elementUI from '@/_common/components/ElementUi/index.js';
+import elementUI from 'demo-common/components/ElementUi/index.js';
 
 import './vue-editor.css';
 import router from './router';

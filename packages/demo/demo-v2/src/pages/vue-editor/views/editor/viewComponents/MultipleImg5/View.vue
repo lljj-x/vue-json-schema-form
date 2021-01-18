@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style module>
-    @import 'variable.css';
+    @import 'demo-common/css/variable.css';
     .content {
         height: 269px;
         display: flex;
