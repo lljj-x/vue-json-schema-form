@@ -2,7 +2,7 @@
  * Created by Liu.Jun on 2019/11/28 18:37.
  */
 
-// import { genId } from '@/_common/utils/id';
+// import { genId } from 'demo-common/utils/id';
 
 export function isObject(obj) {
     return (Object.prototype.toString.call(obj) === '[object Object]');

@@ -4,7 +4,8 @@ stats.html
 
 packages/lib/vue2-form-element/stats.html
 /packages/docs/docs/.vuepress/dist/
-/packages/demo/dist
+/packages/demo/demo-v2/dist
+/packages/demo/demo-v3/dist
 
 # local env files
 .env.local

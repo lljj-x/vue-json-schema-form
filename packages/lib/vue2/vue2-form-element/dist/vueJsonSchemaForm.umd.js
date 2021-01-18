@@ -11975,7 +11975,7 @@
   /**
    * Created by Liu.Jun on 2019/11/29 11:25.
    */
-  var JsonSchemaForm = createForm(Object.freeze({
+  var globalOptions = Object.freeze({
     WIDGET_MAP: Object.freeze(WIDGET_MAP),
     COMPONENT_MAP: Object.freeze({
       form: 'el-form',
@@ -11990,7 +11990,8 @@
       close: 'el-icon-close',
       plus: 'el-icon-plus'
     })
-  })); // 存在Vue 全局变量默认注册 VueForm 组件
+  });
+  var JsonSchemaForm = createForm(globalOptions); // 存在Vue 全局变量默认注册 VueForm 组件
 
   if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.component('VueForm', JsonSchemaForm);
@@ -12001,6 +12002,7 @@
   exports.fieldProps = vueProps$1;
   exports.formUtils = formUtils;
   exports.getDefaultFormState = getDefaultFormState;
+  exports.globalOptions = globalOptions;
   exports.i18n = i18n;
   exports.schemaValidate = validate$2;
   exports.vueUtils = vueUtils;

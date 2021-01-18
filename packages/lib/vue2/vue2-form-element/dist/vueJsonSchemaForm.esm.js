@@ -11967,7 +11967,7 @@ styleInject(css_248z$1);
 /**
  * Created by Liu.Jun on 2019/11/29 11:25.
  */
-var JsonSchemaForm = createForm(Object.freeze({
+var globalOptions = Object.freeze({
   WIDGET_MAP: Object.freeze(WIDGET_MAP),
   COMPONENT_MAP: Object.freeze({
     form: 'el-form',
@@ -11982,11 +11982,12 @@ var JsonSchemaForm = createForm(Object.freeze({
     close: 'el-icon-close',
     plus: 'el-icon-plus'
   })
-})); // 存在Vue 全局变量默认注册 VueForm 组件
+});
+var JsonSchemaForm = createForm(globalOptions); // 存在Vue 全局变量默认注册 VueForm 组件
 
 if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.component('VueForm', JsonSchemaForm);
 }
 
 export default JsonSchemaForm;
-export { SchemaField, vueProps$1 as fieldProps, formUtils, getDefaultFormState, i18n, validate$2 as schemaValidate, vueUtils };
+export { SchemaField, vueProps$1 as fieldProps, formUtils, getDefaultFormState, globalOptions, i18n, validate$2 as schemaValidate, vueUtils };

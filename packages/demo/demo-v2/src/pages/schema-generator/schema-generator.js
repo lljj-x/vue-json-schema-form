@@ -2,10 +2,10 @@
  * Created by Liu.Jun on 2020/10/24 9:21 下午.
  */
 
-import '@/_common/bootstrap.js';
+import 'demo-common/bootstrap.js';
 
 import Vue from 'vue';
-import elementUI from '@/_common/components/ElementUi/index.js';
+import elementUI from 'demo-common/components/ElementUi/index.js';
 import router from './router';
 import App from './App';
 

@@ -12094,7 +12094,7 @@ var WIDGET_MAP = {
 var css_248z$1 = ".genFromComponent.formLabel-top .ivu-form-item-label{line-height:26px;padding-bottom:6px}.genFromComponent .ivu-form-item-error-tip{padding-top:2px;position:absolute;display:-webkit-box!important;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;text-align:left;line-height:1.2}.genFromComponent .validateWidget .ivu-form-item-error-tip{padding:5px 0;position:relative}";
 styleInject(css_248z$1);
 
-var JsonSchemaFormIview3 = createForm(Object.freeze({
+var globalOptions = Object.freeze({
   WIDGET_MAP: Object.freeze(WIDGET_MAP),
   COMPONENT_MAP: Object.freeze({
     form: {
@@ -12149,11 +12149,12 @@ var JsonSchemaFormIview3 = createForm(Object.freeze({
     close: 'ivu-icon ivu-icon-md-close',
     plus: 'ivu-icon ivu-icon-md-add'
   })
-})); // 存在Vue 全局变量默认注册 VueForm 组件
+});
+var JsonSchemaFormIview3 = createForm(globalOptions); // 存在Vue 全局变量默认注册 VueForm 组件
 
 if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.component('VueFormIview3', JsonSchemaFormIview3);
 }
 
 export default JsonSchemaFormIview3;
-export { SchemaField, vueProps$1 as fieldProps, formUtils, getDefaultFormState, i18n, validate$2 as schemaValidate, vueUtils };
+export { SchemaField, vueProps$1 as fieldProps, formUtils, getDefaultFormState, globalOptions, i18n, validate$2 as schemaValidate, vueUtils };

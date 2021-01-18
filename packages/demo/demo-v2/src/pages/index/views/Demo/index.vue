@@ -153,6 +153,7 @@
                                     placeholder="ui"
                                     size="mini"
                                     style="margin-left: 10px;width: 130px;"
+                                    @change="handleUiChange"
                                 >
                                     <el-option
                                         v-for="item in formComponents"
@@ -291,6 +292,23 @@ export default {
         this.initData();
     },
     methods: {
+        handleUiChange(value) {
+            const formatStr = jsonCode => JSON.stringify(JSON.parse(jsonCode));
+
+            this.$router.replace({
+                query: {
+                    ...this.$route.query,
+                    ui: value,
+                    schema: formatStr(this.curSchemaCode),
+                    formData: formatStr(this.curFormDataCode),
+                    uiSchema: formatStr(this.curUiSchemaCode),
+                    errorSchema: formatStr(this.curErrorSchemaCode),
+                    formFooter: formatStr(JSON.stringify(this.trueFormFooter)),
+                    formProps: formatStr(JSON.stringify(this.trueFormProps)),
+                }
+            });
+            window.location.reload();
+        },
         sliderFormat(value) {
             return value ? `${value * 4}px` : undefined;
         },

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import JsonPrettyPrint from '@/_common/components/JsonPerttyPrint.vue';
+import JsonPrettyPrint from 'demo-common/components/JsonPerttyPrint.vue';
 
 export default {
     name: 'ExportSchemaView',

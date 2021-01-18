@@ -62,8 +62,8 @@
 </template>
 
 <script>
-import { SchemaField } from '@lljj/vue-json-schema-form';
-import emitter from '@/pages/schema-generator/mixins/emitter.js';
+import { SchemaField, globalOptions } from '@lljj/vue-json-schema-form';
+import emitter from '../../../mixins/emitter.js';
 import NestedEditor from './NestedEditor';
 import { editorItem2SchemaFieldProps } from '../common/editorData';
 
@@ -100,6 +100,7 @@ export default {
         attrs() {
             return {
                 formProps: this.formProps,
+                globalOptions,
                 ...editorItem2SchemaFieldProps(this.editorItem, this.formData)
             };
         }
@@ -157,7 +158,7 @@ export default {
 </script>
 
 <style module>
-    @import "variable.css";
+    @import "demo-common/css/variable.css";
     .viewBox {
         position: relative;
         margin-bottom: 10px;

@@ -14,7 +14,7 @@ import WIDGET_MAP from './config/widgets/WIDGET_MAP.js';
 
 import './style.css';
 
-const JsonSchemaForm = createVue2Core(Object.freeze({
+const globalOptions = Object.freeze({
     WIDGET_MAP: Object.freeze(WIDGET_MAP),
     COMPONENT_MAP: Object.freeze({
         form: 'el-form',
@@ -29,7 +29,9 @@ const JsonSchemaForm = createVue2Core(Object.freeze({
         close: 'el-icon-close',
         plus: 'el-icon-plus'
     })
-}));
+});
+
+const JsonSchemaForm = createVue2Core(globalOptions);
 
 // 存在Vue 全局变量默认注册 VueForm 组件
 if (typeof window !== 'undefined' && window.Vue) {
@@ -39,6 +41,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default JsonSchemaForm;
 
 export {
+    globalOptions,
     SchemaField,
     getDefaultFormState,
     fieldProps,

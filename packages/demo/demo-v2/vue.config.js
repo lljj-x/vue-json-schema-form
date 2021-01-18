@@ -62,8 +62,8 @@ module.exports = {
         };
         config.resolve.alias = {
             ...config.resolve.alias,
-            '@lljj/vue-json-schema-form': '@lljj/vue-json-schema-form/src/index',
-            '@lljj/vue2-form-iview3': '@lljj/vue2-form-iview3/src/index',
+            // '@lljj/vue-json-schema-form': '@lljj/vue-json-schema-form/src/index',
+            // '@lljj/vue2-form-iview3': '@lljj/vue2-form-iview3/src/index',
         };
     },
 

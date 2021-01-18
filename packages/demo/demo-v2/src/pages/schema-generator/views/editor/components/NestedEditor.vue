@@ -37,7 +37,7 @@
 
 <script>
 import Draggable from 'vuedraggable';
-import * as arrayMethods from '@/_common/utils/array';
+import * as arrayMethods from 'demo-common/utils/array';
 import { generateEditorItem } from '../common/editorData';
 
 // 避免循环依赖导致undefined
@@ -125,7 +125,7 @@ export default {
 </script>
 
 <style module>
-    @import 'variable.css';
+    @import 'demo-common/css/variable.css';
     :global {
         .ghostItem {
             opacity: 0.6;

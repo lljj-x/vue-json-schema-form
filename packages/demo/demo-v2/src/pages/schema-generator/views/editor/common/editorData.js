@@ -3,7 +3,7 @@
  */
 
 import { getDefaultFormState } from '@lljj/vue-json-schema-form';
-import { genId } from '@/_common/utils/id';
+import { genId } from 'demo-common/utils/id';
 import { isObject, isEmptyObject } from './utils';
 
 // 生成一个新的editor item

@@ -136,10 +136,10 @@
 
 <script>
 import VueJsonFrom from '@lljj/vue-json-schema-form';
-import componentWithDialog from '@/_common/components/component-with-dialog';
-import { openNewPage } from '@/_common/utils/url.js';
+import componentWithDialog from 'demo-common/components/component-with-dialog';
+import { openNewPage } from 'demo-common/utils/url.js';
 
-import EditorHeader from '@/_common/components/EditorHeader.vue';
+import EditorHeader from 'demo-common/components/EditorHeader.vue';
 import FormConfSchema from './viewComponents/FormConf';
 import EditorToolBar from './EditorToolBar.vue';
 import ExportSchemaView from './components/ExportSchemaView.vue';
@@ -149,8 +149,6 @@ import ImportSchemaView from './components/ImportSchemaView.vue';
 import { deepFreeze } from './common/utils';
 
 import configTools from './config/tools';
-
-import './common/registerExtraElementComponent';
 
 import NestedEditor from './components/NestedEditor';
 import { componentList2JsonSchema, formatFormLabelWidth } from './common/editorData';
@@ -363,7 +361,7 @@ export default {
     }
 </style>
 <style module>
-    @import 'variable.css';
+    @import 'demo-common/css/variable.css';
     :root {
         --site-top-height: 80px;
         --tool-bar-width: 260px;
