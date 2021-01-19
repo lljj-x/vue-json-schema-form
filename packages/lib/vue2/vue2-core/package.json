@@ -11,6 +11,9 @@
         "jsonSchema"
     ],
     "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
     "dependencies": {
         "@lljj/vjsf-utils": "0.6.0"
     },
