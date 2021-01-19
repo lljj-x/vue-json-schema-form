@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.5.0...v0.6.0) (2021-01-19)
+
+
+### Bug Fixes
+
+* **lib:** 修复 anyOf 类型，编辑时不能匹配正确选项 ([d747722](https://github.com/lljj-x/vue-json-schema-form/commit/d7477227d004e47c2b186c3eb956e4c83d7077ad)), closes [#31](https://github.com/lljj-x/vue-json-schema-form/issues/31)
+* **lib:** 解决打包后包含es6代码问题 ([f03352e](https://github.com/lljj-x/vue-json-schema-form/commit/f03352eb129c45963ad41e3e91eebe102c303913)), closes [#29](https://github.com/lljj-x/vue-json-schema-form/issues/29)
+
+
+### Features
+
+* **iview3:** 适配iview3 footer btn ([b734ae0](https://github.com/lljj-x/vue-json-schema-form/commit/b734ae062bb21e82cfec59739de6de843d752b4c))
+* 添加初始化 iview ([f8b59ce](https://github.com/lljj-x/vue-json-schema-form/commit/f8b59ce6bcc3830c051f1aa823ad9c5d06cae61d))
+* **demo:** demo页面添加ui 框架切换 ([c3f76f7](https://github.com/lljj-x/vue-json-schema-form/commit/c3f76f7272be6f8132e467b130d6f230a048fb9b))
+* **iview:** 添加iview i-switch 组件转换 ([8fae70c](https://github.com/lljj-x/vue-json-schema-form/commit/8fae70cb28f7fd02073d6d4318861b7f08f6199b))
+* **iview3:** 适配 iview ([c969d97](https://github.com/lljj-x/vue-json-schema-form/commit/c969d97b6d908eabe8c1f60b8c3625b41fbb661a))
+* 适配iview3 upload 组件 ([16060af](https://github.com/lljj-x/vue-json-schema-form/commit/16060af6743c678b4c64e98d58f9503b817d3921))
+* **vue2-iview3:** 完成iview3时间选择和样式优化 ([27e310e](https://github.com/lljj-x/vue-json-schema-form/commit/27e310e298498ee5a2466f4d6c7d4153ad8b9777))
+* **vue2-iview3:** 适配 iview3 ([0120d2b](https://github.com/lljj-x/vue-json-schema-form/commit/0120d2b9a265cf0bffee099c2d4974c883c08a25)), closes [#27](https://github.com/lljj-x/vue-json-schema-form/issues/27)
+* **vue3:** init vue3 core ([df2c1fe](https://github.com/lljj-x/vue-json-schema-form/commit/df2c1fe9873a5e13eeafff924f7d9ab369824fbd))
+* **vue3:** 完成 vue3 form组件 ([1c5deba](https://github.com/lljj-x/vue-json-schema-form/commit/1c5debae4cb92f3f54de64d8f38c98396022a344))
+* **vue3:** 更新vue3 form 组件 ([ab481d6](https://github.com/lljj-x/vue-json-schema-form/commit/ab481d675c4b84a29aa689b99d9d2f8f17fae86d))
+* **vue3-core:** 初始化vue3-core ([f22a51c](https://github.com/lljj-x/vue-json-schema-form/commit/f22a51cd732c21a244b770cbcae0f9ceb0156c57))
+* 适配 iview3 ([d4ee166](https://github.com/lljj-x/vue-json-schema-form/commit/d4ee166a7dd71bb9a840525f4eb15c4fdc97f11d))
+* 适配 iview3 ([2df6957](https://github.com/lljj-x/vue-json-schema-form/commit/2df69575b4ad2650c2e75863ffcf0c306e42f21e))
+* 适配iview 时间日期 ([0baa3cd](https://github.com/lljj-x/vue-json-schema-form/commit/0baa3cdfd22ac19191dfc8adddd7f0bdc3520bf0))
+
+
+
+
+
 # [0.5.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.4.1...v0.5.0) (2020-12-25)
 
 

@@ -1,6 +1,6 @@
 {
     "name": "@lljj/vue2-form-iview3",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "description": "基于 Vue 、iView3、JsonSchema快速构建一个带完整校验的form表单",
     "main": "dist/vue2FormIview3.umd.min.js",
     "module": "dist/vue2FormIview3.esm.min.js",
@@ -16,8 +16,8 @@
         "iView3"
     ],
     "dependencies": {
-        "@lljj/vjsf-utils": "0.5.0",
-        "@lljj/vue2-form-core": "0.5.0"
+        "@lljj/vjsf-utils": "0.6.0",
+        "@lljj/vue2-form-core": "0.6.0"
     },
     "typings": "types/index.d.ts",
     "files": [
@@ -36,8 +36,8 @@
         "babel-eslint": "^10.0.3",
         "cssnano": "^4.1.10",
         "eslint": "^5.16.0",
-        "eslint-plugin-vue": "^5.0.0",
         "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-vue": "^5.0.0",
         "postcss-color-mod-function": "^3.0.3",
         "postcss-cssnext": "^3.1.0",
         "postcss-import": "^12.0.1",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.5.0...v0.6.0) (2021-01-19)
+
+
+### Features
+
+* **vue3:** init vue3 core ([df2c1fe](https://github.com/lljj-x/vue-json-schema-form/commit/df2c1fe9873a5e13eeafff924f7d9ab369824fbd))
+
+
+
+
+
 # [0.5.0](https://github.com/lljj-x/vue-json-schema-form/compare/v0.4.1...v0.5.0) (2020-12-25)
 
 
