@@ -1,6 +1,6 @@
 {
     "name": "demo-v3",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "private": true,
     "license": "Apache-2.0",
     "scripts": {
@@ -10,7 +10,7 @@
     },
     "dependencies": {
         "@lljj/polyfill": "^0.1.0",
-        "@lljj/vue3-form-element": "0.6.0",
+        "@lljj/vue3-form-element": "0.6.1",
         "ajv-i18n": "^3.5.0",
         "demo-common": "0.6.0",
         "vue": "^3.0.0",
