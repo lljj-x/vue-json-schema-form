@@ -82,6 +82,12 @@ export default {
                 'ui:showTitle': true,
                 title: 'First method of identification',
                 properties: {
+                    type: {
+                        'ui:hidden': true,
+                        type: 'string',
+                        default: 'userName',
+                        const: 'userName'
+                    },
                     firstName: {
                         type: 'string',
                         title: 'First name',
@@ -97,6 +103,12 @@ export default {
                 'ui:showTitle': true,
                 title: 'Second method of identification',
                 properties: {
+                    type: {
+                        'ui:hidden': true,
+                        type: 'string',
+                        default: 'id',
+                        const: 'id'
+                    },
                     firstName: {
                         type: 'string',
                         title: 'First name'

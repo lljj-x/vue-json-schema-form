@@ -9047,6 +9047,8 @@
   } // oneOf anyOf 通过formData的值来找到当前匹配项索引
 
   function getMatchingOption(formData, options, rootSchema) {
+    var haveAllFields = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
     // eslint-disable-next-line no-plusplus
     for (var i = 0; i < options.length; i++) {
       var option = options[i]; // If the schema describes an object then we need to add slightly more
@@ -9086,9 +9088,10 @@
           augmentedSchema = Object.assign({}, option, requiresAnyOf);
         } // Remove the "required" field as it's likely that not all fields have
         // been filled in yet, which will mean that the schema is not valid
+        // 如果编辑回填数据的场景 可直接使用 required 判断
 
 
-        delete augmentedSchema.required;
+        if (!haveAllFields) delete augmentedSchema.required;
 
         if (isValid(augmentedSchema, formData)) {
           return i;
@@ -9191,7 +9194,7 @@
         return computeDefaults(itemSchema, Array.isArray(parentDefaults) ? parentDefaults[idx] : undefined, rootSchema, formData, includeUndefinedValues);
       });
     } else if ('oneOf' in schema) {
-      var matchSchema = schema.oneOf[getMatchingOption(formData, schema.oneOf)];
+      var matchSchema = schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)];
 
       if (schema.properties && matchSchema.properties) {
         // 对象 oneOf 需要合并原属性和 oneOf 属性
@@ -9202,7 +9205,7 @@
         schema = matchSchema;
       }
     } else if ('anyOf' in schema) {
-      var _matchSchema = schema.anyOf[getMatchingOption(formData, schema.anyOf)];
+      var _matchSchema = schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema)];
 
       if (schema.properties && _matchSchema.properties) {
         // 对象 anyOf 需要合并原属性和 anyOf 属性
@@ -10919,7 +10922,7 @@
     },
     methods: {
       computedCurSelectIndexByFormData: function computedCurSelectIndexByFormData(formData) {
-        var index = getMatchingOption(formData, this.selectList, this.rootSchema);
+        var index = getMatchingOption(formData, this.selectList, this.rootSchema, true);
         if (index !== 0) return index; // 找不到默认等于原本的值
 
         return this.curSelectIndex || 0;

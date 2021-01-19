@@ -42,7 +42,7 @@ export default {
     },
     methods: {
         computedCurSelectIndexByFormData(formData) {
-            const index = getMatchingOption(formData, this.selectList, this.rootSchema);
+            const index = getMatchingOption(formData, this.selectList, this.rootSchema, true);
             if (index !== 0) return index;
 
             // 找不到默认等于原本的值

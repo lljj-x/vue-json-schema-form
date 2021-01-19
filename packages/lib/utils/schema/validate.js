@@ -242,7 +242,7 @@ export function isValid(schema, data) {
 }
 
 // oneOf anyOf 通过formData的值来找到当前匹配项索引
-export function getMatchingOption(formData, options, rootSchema) {
+export function getMatchingOption(formData, options, rootSchema, haveAllFields = false) {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < options.length; i++) {
         const option = options[i];
@@ -286,7 +286,9 @@ export function getMatchingOption(formData, options, rootSchema) {
 
             // Remove the "required" field as it's likely that not all fields have
             // been filled in yet, which will mean that the schema is not valid
-            delete augmentedSchema.required;
+
+            // 如果编辑回填数据的场景 可直接使用 required 判断
+            if (!haveAllFields) delete augmentedSchema.required;
 
             if (isValid(augmentedSchema, formData)) {
                 return i;
