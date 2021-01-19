@@ -8,11 +8,14 @@
     "properties": {
         "txt": {
             "title": "文字",
-            "type": "string"
+            "type": "string",
+            "ui:placeholder": "输入你的内容",
+            "err:required": "必须输入标题文字内容"
         },
         "txtColor": {
             "title": "选择文字颜色",
             "type": "string",
+            "format": "color",
             "default": "#ff0132"
         }
     }

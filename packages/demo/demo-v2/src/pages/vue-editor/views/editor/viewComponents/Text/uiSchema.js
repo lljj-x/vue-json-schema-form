@@ -4,14 +4,10 @@
 
 export default {
     txt: {
-        'ui:placeholder': '输入你的内容',
         'ui:options': {
             getWidget(widgetVm) {
                 console.log(widgetVm);
             }
         }
-    },
-    txtColor: {
-        'ui:widget': 'el-color-picker'
     }
 };

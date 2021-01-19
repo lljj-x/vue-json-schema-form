@@ -55,6 +55,5 @@ export function getComponentsAndInitToolsConfig(configTools) {
 
     // 冻结配置数据
     Object.freeze(configTools);
-    window.configTools = configTools;
     return data;
 }

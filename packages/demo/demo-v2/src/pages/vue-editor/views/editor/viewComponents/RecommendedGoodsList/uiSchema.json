@@ -1,10 +1,7 @@
 {
   "show": {
     "ui:options": {
-      "title": "添加推荐商品",
-      "description": "推荐商品模块不可编辑，系统自动基于大数据做商品推荐",
-      "label": true,
-      "disabled": true
+
     }
   }
 }

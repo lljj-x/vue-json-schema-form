@@ -243,7 +243,7 @@ export default {
         }
         :global {
             .fieldGroupWrap_box {
-                display: none;
+                display: none !important;
             }
             .emptyBox {
                 min-height: 350px;

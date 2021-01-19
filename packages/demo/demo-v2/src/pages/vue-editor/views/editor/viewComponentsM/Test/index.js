@@ -8,5 +8,5 @@ import View from './View';
 export default {
     View,
     Form, // 自定义Form
-    id: 'MTestModule' // 自定义Form 需要在这里返回一个唯一id
+    id: 'MTestModule' // 如果使用自定义Form 需要在这里配置一个唯一id
 };

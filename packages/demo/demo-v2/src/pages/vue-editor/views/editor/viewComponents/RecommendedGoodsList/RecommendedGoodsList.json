@@ -4,8 +4,12 @@
     "type": "object",
     "properties": {
         "show": {
+            "title": "添加推荐商品",
+            "description": "推荐商品模块不可编辑，系统自动基于大数据做商品推荐",
             "type": "boolean",
-            "default": true
+            "default": true,
+            "ui:label": true,
+            "ui:disabled": true
         }
     },
     "required": [

@@ -3,12 +3,10 @@
  */
 
 import propsSchema from './AllGoodsList.json';
-import uiSchema from './uiSchema.json';
 
 const View = () => import('./component/View.vue');
 
 export default {
     View,
-    propsSchema,
-    uiSchema
+    propsSchema
 };
