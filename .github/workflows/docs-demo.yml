@@ -37,4 +37,4 @@ jobs:
 
     - name: Deploy demo
       # 发布demo
-      run: ossutil cp -rf ./packages/demo/dist/ oss://form-buhuida/
+      run: ossutil cp -rf ./packages/demo/demo-v2/dist/ oss://form-buhuida/
