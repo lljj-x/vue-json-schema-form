@@ -2,33 +2,31 @@
  * Created by Liu.Jun on 2020/7/22 13:21.
  */
 
+import { h } from 'vue';
+import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
+
 export default {
     name: 'DateTimePickerWidget',
-    functional: true,
-    render(h, context) {
-        const { isNumberValue, isRange, ...otherProps } = context.data.attrs || {};
+    inheritAttrs: false,
+    setup(props, { attrs, slots }) {
+        return () => {
+            const { isNumberValue, isRange, ...otherProps } = attrs || {};
 
-        context.data.attrs = {
-            type: isRange ? 'datetimerange' : 'datetime',
-            ...otherProps
-        };
+            return h(resolveComponent('el-date-picker'), {
+                type: isRange ? 'datetimerange' : 'datetime',
+                ...otherProps,
 
-        // 字符串为 0 时区ISO标准时间
-        const oldInputCall = context.data.on.input;
-        context.data.on = {
-            ...context.data.on,
-            input(val) {
-                let trueVal;
-                if (isRange) {
-                    trueVal = (val === null) ? [] : val.map(item => (new Date(item))[isNumberValue ? 'valueOf' : 'toISOString']());
-                } else {
-                    trueVal = (val === null) ? undefined : (new Date(val))[isNumberValue ? 'valueOf' : 'toISOString']();
+                'onUpdate:modelValue': (val) => {
+                    let trueVal;
+                    if (isRange) {
+                        trueVal = (val === null) ? [] : val.map(item => (new Date(item))[isNumberValue ? 'valueOf' : 'toISOString']());
+                    } else {
+                        trueVal = (val === null) ? undefined : (new Date(val))[isNumberValue ? 'valueOf' : 'toISOString']();
+                    }
+
+                    attrs['onUpdate:modelValue'].apply(attrs, [trueVal]);
                 }
-
-                oldInputCall.apply(context.data.on, [trueVal]);
-            }
+            }, slots);
         };
-
-        return h('el-date-picker', context.data, context.children);
     }
 };

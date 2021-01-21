@@ -11,7 +11,7 @@
     <title>Vue JSON Schema form editor - VJSF</title>
     <meta name="description" content="vue-json-schema-form - 基于JSON Schema动态创建表单在线演示编辑器" />
     <link rel="icon" href="https://vue-json-schema-form.lljj.me/icons/ico.png">
-    <link rel="stylesheet" href="https://unpkg.com/element-plus/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus/lib/theme-chalk/index.css">
     <link rel="apple-touch-icon" href="https://vue-json-schema-form.lljj.me/icons/ico.png">
 </head>
 <body>
@@ -24,6 +24,23 @@
     <script src="//cdn.jsdelivr.net/npm/monaco-editor@0.20.0/min/vs/loader.js"></script>
     <script>
         require.config({ paths: { 'vs': '//cdn.jsdelivr.net/npm/monaco-editor@0.20.0/min/vs' }});
+
+        try {
+            window.MonacoEnvironment = {
+                getWorkerUrl: function(workerId, label) {
+                    const code = encodeURIComponent(`
+                    self.MonacoEnvironment = {
+                      baseUrl: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.20.0/min/'
+                    };
+                    importScripts('https://cdn.jsdelivr.net/npm/monaco-editor@0.20.0/min/vs/base/worker/workerMain.js');
+                `);
+
+                    return 'data:text/javascript;charset=utf-8,' + code;
+                }
+            };
+        } catch (e) {
+            // nothing ....
+        }
     </script>
 </body>
 </html>

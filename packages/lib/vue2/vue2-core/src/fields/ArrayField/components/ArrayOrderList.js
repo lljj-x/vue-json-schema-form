@@ -70,7 +70,7 @@ export default {
     },
     render(h) {
         // 没有数据，且不能添加不渲染该组件
-        if (this.vNodeList <= 0 && !this.addable) return null;
+        if (this.vNodeList.length <= 0 && !this.addable) return null;
 
         const { ICONS_MAP } = this.globalOptions;
 

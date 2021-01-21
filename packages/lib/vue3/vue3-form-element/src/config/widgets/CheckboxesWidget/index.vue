@@ -1,6 +1,5 @@
 <template>
     <el-checkbox-group
-        v-model="checkList"
         v-bind="$attrs"
     >
         <el-checkbox
@@ -17,23 +16,9 @@
 export default {
     name: 'CheckboxesWidget',
     props: {
-        value: {
-            default: () => [],
-            type: [Array]
-        },
         enumOptions: {
             default: () => [],
             type: [Array]
-        }
-    },
-    computed: {
-        checkList: {
-            get() {
-                return this.value;
-            },
-            set(value) {
-                this.$emit('input', value);
-            }
         }
     }
 };

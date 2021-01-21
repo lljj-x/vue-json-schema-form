@@ -21,7 +21,7 @@ module.exports = {
     extractcss: false,
     output: {
         path: resolve('dist/'),
-        file: 'vueJsonSchemaForm', // 导出文件名，自动拼接 format
+        file: 'vue2-form-element', // 导出文件名，自动拼接 format
         name: 'vueJsonSchemaForm', // umd 注册的全局变量名称
         format: ['esm', 'umd']
     }

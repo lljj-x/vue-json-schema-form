@@ -2,13 +2,16 @@
  * Created by Liu.Jun on 2020/11/26 10:01 下午.
  */
 
+import { h, ref, getCurrentInstance } from 'vue';
+import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
+
 // mock
 // https://run.mocky.io/v3/518d7af7-204f-45ab-9628-a6e121dab8ca
 
 export default {
     name: 'UploadWidget',
     props: {
-        value: {
+        modelValue: {
             default: null,
             type: [String, Array]
         },
@@ -26,116 +29,103 @@ export default {
             default: null
         }
     },
-    data() {
+    setup(props, { attrs, slots, emit }) {
         // 设置默认 fileList
-        const value = this.value;
+        const value = props.modelValue;
         const isArrayValue = Array.isArray(value);
 
-        let fileList = this.$attrs.fileList || [];
+        let defaultFileList = attrs.fileList || [];
 
         if (isArrayValue) {
-            fileList = value.map((item, index) => ({
+            defaultFileList = value.map((item, index) => ({
                 name: `已上传文件（${index + 1}）`,
                 url: item
             }));
         } else if (value) {
-            fileList.push({
+            defaultFileList.push({
                 name: '已上传文件',
                 url: value
             });
         }
 
-        return {
-            isArrayValue,
-            fileList
-        };
-    },
-    methods: {
-        emitValue(fileList) {
+        // fileList
+        const fileListRef = ref(defaultFileList);
+
+        const emitValue = (emitFileList) => {
             // v-model
-            let value;
+            let curValue;
 
             const geUrl = fileItem => (
                 fileItem
-                && ((fileItem.response && this.responseFileUrl(fileItem.response)) || fileItem.url))
+                && ((fileItem.response && props.responseFileUrl(fileItem.response)) || fileItem.url))
                 || '';
 
-            if (this.isArrayValue) {
-                value = fileList.length ? fileList.reduce((pre, item) => {
+            if (isArrayValue) {
+                curValue = emitFileList.length ? emitFileList.reduce((pre, item) => {
                     const url = geUrl(item);
                     if (url) pre.push(url);
                     return pre;
                 }, []) : [];
             } else {
-                const fileItem = fileList[fileList.length - 1];
-                value = geUrl(fileItem);
+                const fileItem = emitFileList[emitFileList.length - 1];
+                curValue = geUrl(fileItem);
             }
 
-            this.$emit('input', value);
-        }
-    },
-    render() {
-        const h = this.$createElement;
-        const attrs = this.$attrs;
+            emit('update:modelValue', curValue);
+        };
 
-        const {
-            slots,
-        } = this.$props;
+        const globalProperties = getCurrentInstance().appContext.config.globalProperties;
 
-        const data = {
-            attrs: {
-                fileList: this.fileList,
+        return () => {
+            const data = {
+                fileList: fileListRef.value,
                 'on-exceed': () => {
-                    if (this.$message) {
-                        this.$message.warning('超出文件上传数');
+                    if (globalProperties.$message) {
+                        globalProperties.$message.warning('超出文件上传数');
                     }
                 },
                 'on-error': () => {
-                    if (this.$message) {
-                        this.$message.error('文件上传失败');
+                    if (globalProperties.$message) {
+                        globalProperties.$message.error('文件上传失败');
                     }
                 },
                 ...attrs,
                 'on-remove': (file, fileList) => {
-                    this.emitValue(fileList);
-
+                    emitValue(fileList);
                     if (attrs['on-remove']) {
                         attrs['on-remove'](file, fileList);
                     }
                 },
                 'on-success': (response, file, fileList) => {
-                    this.emitValue(fileList);
-
+                    emitValue(fileList);
                     // 用户注册的 onSuccess
                     if (attrs['on-success']) {
                         attrs['on-success'](response, file, fileList);
                     }
                 }
+            };
+
+            if (!isArrayValue) data.limit = 1;
+
+            const childVNode = {};
+
+            if (slots && slots.default) {
+                // nothing...
+            } else {
+                childVNode.default = () => h(
+                    resolveComponent('el-button'),
+                    {
+                        props: {
+                            type: 'primary'
+                        },
+                    },
+                    {
+                        default: () => props.btnText
+                    }
+                );
             }
+
+            return h(resolveComponent('el-upload'), data, childVNode);
         };
-
-        if (!this.isArrayValue) data.attrs.limit = 1;
-
-        const childVNode = [];
-
-        if (slots && slots.default) {
-            childVNode.push(h('template', {
-                slot: 'default',
-            }, [typeof slots.default === 'function' ? slots.default(h) : slots.default]));
-        } else {
-            childVNode.push(h('el-button', {
-                props: {
-                    type: 'primary'
-                },
-            }, [this.btnText]));
-        }
-
-        if (slots && slots.tip) {
-            childVNode.push(h('template', {
-                slot: 'tip',
-            }, [typeof slots.tip === 'function' ? slots.tip(h) : slots.tip]));
-        }
-
-        return h('el-upload', data, childVNode);
     }
 };

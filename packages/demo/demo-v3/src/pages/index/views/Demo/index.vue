@@ -2,40 +2,24 @@
     <div :class="$style.container">
         <EditorHeader default-active="2">
             <div :class="$style.btns">
-                <el-select
-                    v-model="formProps.ui"
-                    placeholder="ui"
-                    size="small"
-                    style="margin-right: 6px;width: 104px;"
-                    @change="handleChangeUi"
-                >
-                    <el-option
-                        value="element"
-                        label="element"
-                    ></el-option>
-                    <el-option
-                        value="iview3"
-                        label="iview3"
-                    ></el-option>
-                </el-select>
                 <span style="font-size: 13px;">标签：</span>
                 <el-slider
                     v-model="formProps.labelWidth"
-                    style="width: 80px; margin-right: 6px;"
-                    size="small"
+                    style="width: 70px; margin-right: 6px;"
+                    size="mini"
                     :format-tooltip="sliderFormat"
                 ></el-slider>
                 <el-checkbox
                     v-model="formProps.inline"
                     style="margin-right: 6px;"
-                    size="small"
+                    size="mini"
                 >
                     Inline
                 </el-checkbox>
                 <el-checkbox
                     v-model="formFooter.show"
                     style="margin-right: 6px;"
-                    size="small"
+                    size="mini"
                 >
                     底部
                 </el-checkbox>
@@ -43,7 +27,7 @@
                     v-model="formProps.layoutColumn"
                     placeholder="布局"
                     size="small"
-                    style="margin-right: 6px;width: 104px;"
+                    style="margin-right: 6px;width: 100px;"
                 >
                     <el-option
                         :value="1"
@@ -62,19 +46,19 @@
                     v-model="formProps.labelPosition"
                     placeholder="对其"
                     size="small"
-                    style="margin-right: 6px;width: 104px;"
+                    style="margin-right: 6px;width: 96px;"
                 >
                     <el-option
                         value="top"
-                        label="Label top"
+                        label="Label上"
                     ></el-option>
                     <el-option
                         value="left"
-                        label="Label left"
+                        label="Label左"
                     ></el-option>
                     <el-option
                         value="right"
-                        label="Label right"
+                        label="Label右"
                     ></el-option>
                 </el-select>
                 <el-button
@@ -92,7 +76,7 @@
                 <router-link
                     v-for="item in typeItems"
                     :key="item"
-                    v-slot="{ navigate }"
+                    v-slot="{ href, route, navigate, isActive, isExactActive }"
                     :class="{
                         [$style.linkItem]: true,
                         [$style.active]: item === curType
@@ -158,13 +142,32 @@
                         shadow="hover"
                         :class="[$style.card, $style.formBox]"
                     >
-                        <div
-                            slot="header"
-                            class="clearfix"
-                        >
-                            <span>生成表单：</span>
-                        </div>
-                        <VueElementForm
+                        <template #header>
+                            <div
+                                class="clearfix"
+                            >
+                                <span>
+                                    生成表单Ui库：
+                                    <el-select
+                                        v-model="curVueForm"
+                                        placeholder="ui"
+                                        size="mini"
+                                        style="margin-left: 10px;width: 130px;"
+                                        @change="handleUiChange"
+                                    >
+                                        <el-option
+                                            v-for="item in formComponents"
+                                            :key="item.name"
+                                            :value="item.component"
+                                            :label="item.name"
+                                        ></el-option>
+                                    </el-select>
+                                </span>
+                            </div>
+                        </template>
+                        <component
+                            :is="curVueForm"
+                            :key="pageKey"
                             v-model="formData"
                             :schema="schema"
                             :ui-schema="uiSchema"
@@ -176,7 +179,7 @@
                             @on-cancel="handleCancel"
                             @on-submit="handleSubmit"
                         >
-                        </VueElementForm>
+                        </component>
                     </el-card>
                 </el-col>
             </el-row>
@@ -185,16 +188,21 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue';
 import EditorHeader from 'demo-common/components/EditorHeader.vue';
-import { getUrlQuery } from 'demo-common/utils/url';
-import schemaTypes from 'demo-common/schemaTypes';
 import CodeEditor from 'demo-common/components/CodeEditor';
+import schemaTypes from 'demo-common/schemaTypes';
 
-import VueElementForm from '@lljj/vue3-form-element/src/index';
+const VueElementForm = defineAsyncComponent(() => import('@lljj/vue3-form-element'));
 
-const urlQuery = getUrlQuery();
-const curUi = urlQuery.ui || 'element';
-
+// const VueAntForm = async () => {
+//     const [iview, ivewForm] = await Promise.all([
+//         import('demo-common/components/iView/index.js'),
+//         import('@lljj/vue2-form-iview3')
+//     ]);
+//
+//     return ivewForm;
+// };
 
 const typeItems = Object.keys(schemaTypes);
 
@@ -208,7 +216,15 @@ export default {
     data() {
         return {
             typeItems,
+            curVueForm: this.$route.query.ui || 'VueElementForm',
             ...this.getDefaultSchemaMap(),
+            formComponents: [{
+                name: 'ElementUi',
+                component: 'VueElementForm'
+            }, /* {
+                name: 'Iview3',
+                component: 'VueIview3Form'
+            } */],
             customFormats: {
                 price(value) {
                     return value !== '' && /^[0-9]\d*$|^\d+(\.\d{1,2})$/.test(value) && value >= 0 && value <= 999999.99;
@@ -217,6 +233,9 @@ export default {
         };
     },
     computed: {
+        pageKey() {
+            return this.$route.query.type;
+        },
         trueFormProps() {
             if (!this.formProps) return {};
             return {
@@ -273,14 +292,22 @@ export default {
         this.initData();
     },
     methods: {
-        handleChangeUi(value) {
-            const { origin, pathname, hash } = window.location;
-            const qs = Object.entries({
-                ...urlQuery,
-                ui: value
-            }).map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join('&');
+        handleUiChange(value) {
+            const formatStr = jsonCode => JSON.stringify(JSON.parse(jsonCode));
 
-            window.location.href = `${origin}${pathname}?${qs}${hash}`;
+            this.$router.replace({
+                query: {
+                    ...this.$route.query,
+                    ui: value,
+                    schema: formatStr(this.curSchemaCode),
+                    formData: formatStr(this.curFormDataCode),
+                    uiSchema: formatStr(this.curUiSchemaCode),
+                    errorSchema: formatStr(this.curErrorSchemaCode),
+                    formFooter: formatStr(JSON.stringify(this.trueFormFooter)),
+                    formProps: formatStr(JSON.stringify(this.trueFormProps)),
+                }
+            });
+            window.location.reload();
         },
         sliderFormat(value) {
             return value ? `${value * 4}px` : undefined;
@@ -295,7 +322,6 @@ export default {
                     show: true
                 },
                 formProps: {
-                    ui: curUi,
                     labelWidth: 25,
                     inline: false,
                     labelPosition: 'top',
@@ -321,7 +347,7 @@ export default {
         },
         initData() {
             // eslint-disable-next-line no-unused-vars
-            const { type, ...queryParams } = this.$route.query;
+            const { type, ui, ...queryParams } = this.$route.query;
 
             let queryParamsObj = {};
             try {
@@ -396,46 +422,48 @@ export default {
 </script>
 
 <style module lang="postcss">
-    .btns {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .box {
-        padding: 0 15px;
-    }
-    .typeList {
-        padding: 15px 0 20px;
-    }
-    .linkItem {
-        display: inline-block;
-        vertical-align: top;
-        margin-right: 8px;
-        margin-bottom: 8px;
-        margin-left: auto !important;
-    }
-    .middleBox {
-        :global {
-            .el-card {
-                border-top: none;
-                overflow: visible;
-            }
-            .el-card__header {
-                border-top: 1px solid #EBEEF5;
-                padding: 10px 20px;
-                font-size: 14px;
-                font-weight: bold;
-                background: #FFFFFF;
-                z-index: 3;
-            }
+.btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.box {
+    padding: 0 15px;
+}
+.typeList {
+    padding: 15px 0 20px;
+}
+.linkItem {
+    margin-right: 8px;
+    margin-top: 8px;
+    margin-left: auto !important;
+}
+.middleBox {
+    :global {
+        .el-card {
+            border-top: none;
+            overflow: visible;
+        }
+        .el-card__header {
+            border-top: 1px solid #EBEEF5;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            background: #FFFFFF;
+            z-index: 3;
         }
     }
-    .middleBox_form {
+}
+.middleBox_form {
+    position: sticky;
+    top: 0;
+}
+.formBox {
+    max-height: calc(100vh - 40px);
+    overflow: auto !important;
+    :global .el-card__header{
         position: sticky;
         top: 0;
     }
-    .formBox {
-        max-height: calc(100vh - 40px);
-        overflow: auto !important;
-    }
+}
 </style>

@@ -2,22 +2,19 @@
  * Created by Liu.Jun on 2019/11/29 11:25.
  */
 
-import createVue3Core from '@lljj/vue3-form-core';
+import createVue3Core, { fieldProps, SchemaField } from '@lljj/vue3-form-core';
 
+
+import i18n from '@lljj/vjsf-utils/i18n';
+import * as vueUtils from '@lljj/vjsf-utils/vue3Utils';
+import * as formUtils from '@lljj/vjsf-utils/formUtils';
+import * as schemaValidate from '@lljj/vjsf-utils/schema/validate';
+import getDefaultFormState from '@lljj/vjsf-utils/schema/getDefaultFormState';
 import WIDGET_MAP from './config/widgets/WIDGET_MAP.js';
-
-// import i18n from '@lljj/vjsf-utils/i18n';
-// import * as vueUtils from '@lljj/vjsf-utils/vueUtils';
-// import * as formUtils from '@lljj/vjsf-utils/formUtils';
-// import * as schemaValidate from '@lljj/vjsf-utils/schema/validate';
-// import getDefaultFormState from '@lljj/vjsf-utils/schema/getDefaultFormState';
-
-// import fieldProps from '@lljj/vue2-form-core/JsonSchemaForm/fields/props';
-// import SchemaField from './JsonSchemaForm/fields/SchemaField';
 
 import './style.css';
 
-const JsonSchemaForm = createVue3Core({
+const globalOptions = {
     WIDGET_MAP,
     COMPONENT_MAP: {
         form: 'el-form',
@@ -32,22 +29,24 @@ const JsonSchemaForm = createVue3Core({
         close: 'el-icon-close',
         plus: 'el-icon-plus'
     }
-});
+};
 
-export default JsonSchemaForm;
+const JsonSchemaForm = createVue3Core(globalOptions);
 
 // 存在Vue 全局变量默认注册 VueForm 组件
 // if (typeof window !== 'undefined' && window.Vue) {
-//     window.Vue.component('VueForm', JsonSchemaForm);
+//     window.Vue.component('VueForm', src);
 // }
 
-// export {
-//     SchemaField,
-//     fieldProps,
-//
-//     getDefaultFormState,
-//     vueUtils,
-//     formUtils,
-//     schemaValidate,
-//     i18n
-// };
+export default JsonSchemaForm;
+
+export {
+    globalOptions,
+    SchemaField,
+    getDefaultFormState,
+    fieldProps,
+    vueUtils,
+    formUtils,
+    schemaValidate,
+    i18n
+};

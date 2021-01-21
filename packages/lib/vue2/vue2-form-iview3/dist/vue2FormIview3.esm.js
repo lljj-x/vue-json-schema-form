@@ -9532,144 +9532,140 @@ var script = {
   }
 };
 
-function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
-    if (typeof shadowMode !== 'boolean') {
-        createInjectorSSR = createInjector;
-        createInjector = shadowMode;
-        shadowMode = false;
+function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier
+/* server only */
+, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+  if (typeof shadowMode !== 'boolean') {
+    createInjectorSSR = createInjector;
+    createInjector = shadowMode;
+    shadowMode = false;
+  } // Vue.extend constructor export interop.
+
+
+  var options = typeof script === 'function' ? script.options : script; // render functions
+
+  if (template && template.render) {
+    options.render = template.render;
+    options.staticRenderFns = template.staticRenderFns;
+    options._compiled = true; // functional template
+
+    if (isFunctionalTemplate) {
+      options.functional = true;
     }
-    // Vue.extend constructor export interop.
-    const options = typeof script === 'function' ? script.options : script;
-    // render functions
-    if (template && template.render) {
-        options.render = template.render;
-        options.staticRenderFns = template.staticRenderFns;
-        options._compiled = true;
-        // functional template
-        if (isFunctionalTemplate) {
-            options.functional = true;
-        }
+  } // scopedId
+
+
+  if (scopeId) {
+    options._scopeId = scopeId;
+  }
+
+  var hook;
+
+  if (moduleIdentifier) {
+    // server build
+    hook = function hook(context) {
+      // 2.3 injection
+      context = context || // cached call
+      this.$vnode && this.$vnode.ssrContext || // stateful
+      this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext; // functional
+      // 2.2 with runInNewContext: true
+
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__;
+      } // inject component styles
+
+
+      if (style) {
+        style.call(this, createInjectorSSR(context));
+      } // register component module identifier for async chunk inference
+
+
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier);
+      }
+    }; // used by ssr in case component is cached and beforeCreate
+    // never gets called
+
+
+    options._ssrRegister = hook;
+  } else if (style) {
+    hook = shadowMode ? function (context) {
+      style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
+    } : function (context) {
+      style.call(this, createInjector(context));
+    };
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // register for functional component in vue file
+      var originalRender = options.render;
+
+      options.render = function renderWithStyleInjection(h, context) {
+        hook.call(context);
+        return originalRender(h, context);
+      };
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate;
+      options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
     }
-    // scopedId
-    if (scopeId) {
-        options._scopeId = scopeId;
-    }
-    let hook;
-    if (moduleIdentifier) {
-        // server build
-        hook = function (context) {
-            // 2.3 injection
-            context =
-                context || // cached call
-                    (this.$vnode && this.$vnode.ssrContext) || // stateful
-                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
-            // 2.2 with runInNewContext: true
-            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-                context = __VUE_SSR_CONTEXT__;
-            }
-            // inject component styles
-            if (style) {
-                style.call(this, createInjectorSSR(context));
-            }
-            // register component module identifier for async chunk inference
-            if (context && context._registeredComponents) {
-                context._registeredComponents.add(moduleIdentifier);
-            }
-        };
-        // used by ssr in case component is cached and beforeCreate
-        // never gets called
-        options._ssrRegister = hook;
-    }
-    else if (style) {
-        hook = shadowMode
-            ? function (context) {
-                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
-            }
-            : function (context) {
-                style.call(this, createInjector(context));
-            };
-    }
-    if (hook) {
-        if (options.functional) {
-            // register for functional component in vue file
-            const originalRender = options.render;
-            options.render = function renderWithStyleInjection(h, context) {
-                hook.call(context);
-                return originalRender(h, context);
-            };
-        }
-        else {
-            // inject component registration as beforeCreate hook
-            const existing = options.beforeCreate;
-            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
-        }
-    }
-    return script;
+  }
+
+  return script;
 }
 
-/* script */
-const __vue_script__ = script;
+var normalizeComponent_1 = normalizeComponent;
 
+/* script */
+var __vue_script__ = script;
 /* template */
-var __vue_render__ = function() {
+
+var __vue_render__ = function __vue_render__() {
   var _vm = this;
+
   var _h = _vm.$createElement;
+
   var _c = _vm._self._c || _h;
-  return _c(
-    "div",
-    { staticClass: "fieldGroupWrap" },
-    [
-      [
-        _vm.showTitle && _vm.title
-          ? _c("h3", { staticClass: "fieldGroupWrap_title" }, [
-              _vm._v("\n            " + _vm._s(_vm.title) + "\n        ")
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.showDescription && _vm.description
-          ? _c("p", {
-              staticClass: "fieldGroupWrap_des",
-              domProps: { innerHTML: _vm._s(_vm.description) }
-            })
-          : _vm._e()
-      ],
-      _vm._v(" "),
-      _c("div", { staticClass: "fieldGroupWrap_box" }, [_vm._t("default")], 2)
-    ],
-    2
-  )
+
+  return _c("div", {
+    staticClass: "fieldGroupWrap"
+  }, [[_vm.showTitle && _vm.title ? _c("h3", {
+    staticClass: "fieldGroupWrap_title"
+  }, [_vm._v("\n            " + _vm._s(_vm.title) + "\n        ")]) : _vm._e(), _vm._v(" "), _vm.showDescription && _vm.description ? _c("p", {
+    staticClass: "fieldGroupWrap_des",
+    domProps: {
+      innerHTML: _vm._s(_vm.description)
+    }
+  }) : _vm._e()], _vm._v(" "), _c("div", {
+    staticClass: "fieldGroupWrap_box"
+  }, [_vm._t("default")], 2)], 2);
 };
+
 var __vue_staticRenderFns__ = [];
 __vue_render__._withStripped = true;
+/* style */
 
-  /* style */
-  const __vue_inject_styles__ = undefined;
-  /* scoped */
-  const __vue_scope_id__ = undefined;
-  /* module identifier */
-  const __vue_module_identifier__ = undefined;
-  /* functional template */
-  const __vue_is_functional_template__ = false;
-  /* style inject */
-  
-  /* style inject SSR */
-  
-  /* style inject shadow dom */
-  
+var __vue_inject_styles__ = undefined;
+/* scoped */
 
-  
-  const __vue_component__ = /*#__PURE__*/normalizeComponent(
-    { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
-    __vue_inject_styles__,
-    __vue_script__,
-    __vue_scope_id__,
-    __vue_is_functional_template__,
-    __vue_module_identifier__,
-    false,
-    undefined,
-    undefined,
-    undefined
-  );
+var __vue_scope_id__ = undefined;
+/* module identifier */
+
+var __vue_module_identifier__ = undefined;
+/* functional template */
+
+var __vue_is_functional_template__ = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+var __vue_component__ = /*#__PURE__*/normalizeComponent_1({
+  render: __vue_render__,
+  staticRenderFns: __vue_staticRenderFns__
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
 
 var Widget = {
   name: 'Widget',
@@ -10051,10 +10047,10 @@ var ObjectField = {
 
       var _isDependOn = isDependOn(name),
           isDependency = _isDependOn.isDependency,
-          curDependent = _isDependOn.curDependent;
+          curDependent = _isDependOn.curDependent; // onlyShowWhenDependent 只渲染被依赖的属性
 
-      return h( // onlyShowWhenDependent 只渲染被依赖的属性
-      isDependency && onlyShowIfDependent && !curDependent ? null : SchemaField, {
+
+      return isDependency && onlyShowIfDependent && !curDependent ? null : h(SchemaField, {
         key: name,
         props: _objectSpread2(_objectSpread2({}, context.props), {}, {
           schema: schema.properties[name],
@@ -10274,7 +10270,7 @@ var ArrayOrderList = {
     var _this = this;
 
     // 没有数据，且不能添加不渲染该组件
-    if (this.vNodeList <= 0 && !this.addable) return null;
+    if (this.vNodeList.length <= 0 && !this.addable) return null;
     var ICONS_MAP = this.globalOptions.ICONS_MAP; // 是否可继续添加元素
 
     return h('div', {
@@ -10570,7 +10566,7 @@ var ArrayFieldTuple = {
   render: function render(h) {
     var _this = this;
 
-    if (!Array.isArray(this.itemsFormData)) return false;
+    if (!Array.isArray(this.itemsFormData)) return null;
     var _this$$props = this.$props,
         schema = _this$$props.schema,
         uiSchema = _this$$props.uiSchema,
@@ -11416,94 +11412,60 @@ function createForm() {
 var script$1 = {
   name: 'CheckboxesWidget',
   props: {
-    value: {
-      default: function _default() {
-        return [];
-      },
-      type: [Array]
-    },
     enumOptions: {
       default: function _default() {
         return [];
       },
       type: [Array]
     }
-  },
-  computed: {
-    checkList: {
-      get: function get() {
-        return this.value;
-      },
-      set: function set(value) {
-        this.$emit('input', value);
-      }
-    }
   }
 };
 
 /* script */
-const __vue_script__$1 = script$1;
-
+var __vue_script__$1 = script$1;
 /* template */
-var __vue_render__$1 = function() {
+
+var __vue_render__$1 = function __vue_render__() {
   var _vm = this;
+
   var _h = _vm.$createElement;
+
   var _c = _vm._self._c || _h;
-  return _c(
-    "checkbox-group",
-    _vm._b(
-      {
-        model: {
-          value: _vm.checkList,
-          callback: function($$v) {
-            _vm.checkList = $$v;
-          },
-          expression: "checkList"
-        }
-      },
-      "checkbox-group",
-      _vm.$attrs,
-      false
-    ),
-    _vm._l(_vm.enumOptions, function(item, index) {
-      return _c("checkbox", { key: index, attrs: { label: item.value } }, [
-        _vm._v("\n        " + _vm._s(item.label) + "\n    ")
-      ])
-    }),
-    1
-  )
+
+  return _c("checkbox-group", _vm._g(_vm._b({}, "checkbox-group", _vm.$attrs, false), _vm.$listeners), _vm._l(_vm.enumOptions, function (item, index) {
+    return _c("checkbox", {
+      key: index,
+      attrs: {
+        label: item.value
+      }
+    }, [_vm._v("\n        " + _vm._s(item.label) + "\n    ")]);
+  }), 1);
 };
+
 var __vue_staticRenderFns__$1 = [];
 __vue_render__$1._withStripped = true;
+/* style */
 
-  /* style */
-  const __vue_inject_styles__$1 = undefined;
-  /* scoped */
-  const __vue_scope_id__$1 = undefined;
-  /* module identifier */
-  const __vue_module_identifier__$1 = undefined;
-  /* functional template */
-  const __vue_is_functional_template__$1 = false;
-  /* style inject */
-  
-  /* style inject SSR */
-  
-  /* style inject shadow dom */
-  
+var __vue_inject_styles__$1 = undefined;
+/* scoped */
 
-  
-  const __vue_component__$1 = /*#__PURE__*/normalizeComponent(
-    { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
-    __vue_inject_styles__$1,
-    __vue_script__$1,
-    __vue_scope_id__$1,
-    __vue_is_functional_template__$1,
-    __vue_module_identifier__$1,
-    false,
-    undefined,
-    undefined,
-    undefined
-  );
+var __vue_scope_id__$1 = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$1 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$1 = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+var __vue_component__$1 = /*#__PURE__*/normalizeComponent_1({
+  render: __vue_render__$1,
+  staticRenderFns: __vue_staticRenderFns__$1
+}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
 
 //
 //
@@ -11523,94 +11485,60 @@ __vue_render__$1._withStripped = true;
 var script$2 = {
   name: 'RadioWidget',
   props: {
-    value: {
-      default: function _default() {
-        return '';
-      },
-      type: [String, Number, Boolean]
-    },
     enumOptions: {
       default: function _default() {
         return [];
       },
       type: [Array]
     }
-  },
-  computed: {
-    checkList: {
-      get: function get() {
-        return this.value;
-      },
-      set: function set(value) {
-        this.$emit('input', value);
-      }
-    }
   }
 };
 
 /* script */
-const __vue_script__$2 = script$2;
-
+var __vue_script__$2 = script$2;
 /* template */
-var __vue_render__$2 = function() {
+
+var __vue_render__$2 = function __vue_render__() {
   var _vm = this;
+
   var _h = _vm.$createElement;
+
   var _c = _vm._self._c || _h;
-  return _c(
-    "radio-group",
-    _vm._b(
-      {
-        model: {
-          value: _vm.checkList,
-          callback: function($$v) {
-            _vm.checkList = $$v;
-          },
-          expression: "checkList"
-        }
-      },
-      "radio-group",
-      _vm.$attrs,
-      false
-    ),
-    _vm._l(_vm.enumOptions, function(item, index) {
-      return _c("radio", { key: index, attrs: { label: item.value } }, [
-        _vm._v("\n        " + _vm._s(item.label) + "\n    ")
-      ])
-    }),
-    1
-  )
+
+  return _c("radio-group", _vm._g(_vm._b({}, "radio-group", _vm.$attrs, false), _vm.$listeners), _vm._l(_vm.enumOptions, function (item, index) {
+    return _c("radio", {
+      key: index,
+      attrs: {
+        label: item.value
+      }
+    }, [_vm._v("\n        " + _vm._s(item.label) + "\n    ")]);
+  }), 1);
 };
+
 var __vue_staticRenderFns__$2 = [];
 __vue_render__$2._withStripped = true;
+/* style */
 
-  /* style */
-  const __vue_inject_styles__$2 = undefined;
-  /* scoped */
-  const __vue_scope_id__$2 = undefined;
-  /* module identifier */
-  const __vue_module_identifier__$2 = undefined;
-  /* functional template */
-  const __vue_is_functional_template__$2 = false;
-  /* style inject */
-  
-  /* style inject SSR */
-  
-  /* style inject shadow dom */
-  
+var __vue_inject_styles__$2 = undefined;
+/* scoped */
 
-  
-  const __vue_component__$2 = /*#__PURE__*/normalizeComponent(
-    { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
-    __vue_inject_styles__$2,
-    __vue_script__$2,
-    __vue_scope_id__$2,
-    __vue_is_functional_template__$2,
-    __vue_module_identifier__$2,
-    false,
-    undefined,
-    undefined,
-    undefined
-  );
+var __vue_scope_id__$2 = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$2 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$2 = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+var __vue_component__$2 = /*#__PURE__*/normalizeComponent_1({
+  render: __vue_render__$2,
+  staticRenderFns: __vue_staticRenderFns__$2
+}, __vue_inject_styles__$2, __vue_script__$2, __vue_scope_id__$2, __vue_is_functional_template__$2, __vue_module_identifier__$2, false, undefined, undefined, undefined);
 
 //
 //
@@ -11630,92 +11558,60 @@ __vue_render__$2._withStripped = true;
 var script$3 = {
   name: 'SelectWidget',
   props: {
-    value: {
-      default: null,
-      type: null
-    },
     enumOptions: {
       default: function _default() {
         return [];
       },
       type: [Array]
     }
-  },
-  computed: {
-    selectList: {
-      get: function get() {
-        return this.value;
-      },
-      set: function set(value) {
-        this.$emit('input', value);
-      }
-    }
   }
 };
 
 /* script */
-const __vue_script__$3 = script$3;
-
+var __vue_script__$3 = script$3;
 /* template */
-var __vue_render__$3 = function() {
+
+var __vue_render__$3 = function __vue_render__() {
   var _vm = this;
+
   var _h = _vm.$createElement;
+
   var _c = _vm._self._c || _h;
-  return _c(
-    "i-select",
-    _vm._b(
-      {
-        model: {
-          value: _vm.selectList,
-          callback: function($$v) {
-            _vm.selectList = $$v;
-          },
-          expression: "selectList"
-        }
-      },
-      "i-select",
-      _vm.$attrs,
-      false
-    ),
-    _vm._l(_vm.enumOptions, function(item, index) {
-      return _c("i-option", { key: index, attrs: { value: item.value } }, [
-        _vm._v("\n        " + _vm._s(item.label) + "\n    ")
-      ])
-    }),
-    1
-  )
+
+  return _c("i-select", _vm._g(_vm._b({}, "i-select", _vm.$attrs, false), _vm.$listeners), _vm._l(_vm.enumOptions, function (item, index) {
+    return _c("i-option", {
+      key: index,
+      attrs: {
+        value: item.value
+      }
+    }, [_vm._v("\n        " + _vm._s(item.label) + "\n    ")]);
+  }), 1);
 };
+
 var __vue_staticRenderFns__$3 = [];
 __vue_render__$3._withStripped = true;
+/* style */
 
-  /* style */
-  const __vue_inject_styles__$3 = undefined;
-  /* scoped */
-  const __vue_scope_id__$3 = undefined;
-  /* module identifier */
-  const __vue_module_identifier__$3 = undefined;
-  /* functional template */
-  const __vue_is_functional_template__$3 = false;
-  /* style inject */
-  
-  /* style inject SSR */
-  
-  /* style inject shadow dom */
-  
+var __vue_inject_styles__$3 = undefined;
+/* scoped */
 
-  
-  const __vue_component__$3 = /*#__PURE__*/normalizeComponent(
-    { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
-    __vue_inject_styles__$3,
-    __vue_script__$3,
-    __vue_scope_id__$3,
-    __vue_is_functional_template__$3,
-    __vue_module_identifier__$3,
-    false,
-    undefined,
-    undefined,
-    undefined
-  );
+var __vue_scope_id__$3 = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$3 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$3 = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+var __vue_component__$3 = /*#__PURE__*/normalizeComponent_1({
+  render: __vue_render__$3,
+  staticRenderFns: __vue_staticRenderFns__$3
+}, __vue_inject_styles__$3, __vue_script__$3, __vue_scope_id__$3, __vue_is_functional_template__$3, __vue_module_identifier__$3, false, undefined, undefined, undefined);
 
 /**
  * Created by Liu.Jun on 2020/7/22 13:21.
@@ -11779,8 +11675,6 @@ var DatePickerWidget = {
   watch: {
     value: function value(newVal) {
       // 兼容 iview 绑定字符串类型值会导致无限循环的问题
-      debugger;
-
       if (newVal === this.formatValue) ; else {
         // 外部更新值
         this.originValue = toDateObj(newVal);
@@ -11820,7 +11714,6 @@ var DatePickerWidget = {
       }, this.$attrs),
       on: _objectSpread2(_objectSpread2({}, this.$listeners), {}, {
         input: function input(val) {
-          debugger;
           self.originValue = val;
           self.formatValue = self.formatDate(val);
           self.$emit('input', self.formatValue);
