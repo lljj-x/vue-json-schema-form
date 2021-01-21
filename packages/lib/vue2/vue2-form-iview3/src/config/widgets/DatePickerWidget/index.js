@@ -53,8 +53,6 @@ export default {
     watch: {
         value(newVal) {
             // 兼容 iview 绑定字符串类型值会导致无限循环的问题
-
-            debugger;
             if (newVal === this.formatValue) {
                 // 内部date-picker选择框更新
             } else {
@@ -100,7 +98,6 @@ export default {
             on: {
                 ...this.$listeners,
                 input(val) {
-                    debugger;
                     self.originValue = val;
                     self.formatValue = self.formatDate(val);
 

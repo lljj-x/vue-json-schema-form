@@ -10,7 +10,6 @@
         "form",
         "jsonSchema"
     ],
-    "private": false,
     "publishConfig": {
         "access": "public"
     },

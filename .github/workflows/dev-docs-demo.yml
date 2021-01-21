@@ -1,0 +1,43 @@
+name: Deploy docs
+
+on:
+  push:
+    branches: [ master-dev ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout # checkout
+      uses: actions/checkout@v2
+
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: "12.x"
+
+    - name: Install yarn
+      run: npm install -g yarn
+
+    - name: Build
+      run: |
+        yarn install
+        yarn run demo:build
+        yarn run demo3:build
+
+    - name: Setup aliyun oss
+      # 设置阿里云OSS配置
+      uses: manyuanrong/setup-ossutil@v2.0
+      with:
+        endpoint: "oss-cn-hongkong.aliyuncs.com"
+        access-key-id: ${{ secrets.OSS_ACCESSKEYID }}
+        access-key-secret: ${{ secrets.OSS_ACCESSKEYSECRET }}
+
+    - name: Deploy demo-v2
+      # 发布demo-v2
+      run: ossutil cp -rf ./packages/demo/demo-v2/dist/ oss://dev-form/
+
+    - name: Deploy demo-v3
+      # 发布demo-v3
+      run: ossutil cp -rf ./packages/demo/demo-v3/dist/v3 oss://dev-form/v3

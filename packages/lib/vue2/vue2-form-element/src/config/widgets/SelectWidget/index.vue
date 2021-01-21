@@ -1,7 +1,7 @@
 <template>
     <el-select
-        v-model="selectList"
         v-bind="$attrs"
+        v-on="$listeners"
     >
         <el-option
             v-for="(item, index) in enumOptions"
@@ -16,23 +16,9 @@
 export default {
     name: 'SelectWidget',
     props: {
-        value: {
-            default: null,
-            type: null
-        },
         enumOptions: {
             default: () => [],
             type: [Array]
-        }
-    },
-    computed: {
-        selectList: {
-            get() {
-                return this.value;
-            },
-            set(value) {
-                this.$emit('input', value);
-            }
         }
     }
 };

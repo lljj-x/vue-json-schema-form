@@ -22,6 +22,24 @@
     <script src="//cdn.jsdelivr.net/npm/monaco-editor@0.20.0/min/vs/loader.js"></script>
     <script>
         require.config({ paths: { 'vs': '//cdn.jsdelivr.net/npm/monaco-editor@0.20.0/min/vs' }});
+
+        try {
+            // https://github.com/microsoft/monaco-editor/blob/master/docs/integrate-amd-cross.md
+            window.MonacoEnvironment = {
+                getWorkerUrl: function(workerId, label) {
+                    const code = encodeURIComponent(`
+                    self.MonacoEnvironment = {
+                      baseUrl: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.20.0/min/'
+                    };
+                    importScripts('https://cdn.jsdelivr.net/npm/monaco-editor@0.20.0/min/vs/base/worker/workerMain.js');
+                `);
+
+                    return 'data:text/javascript;charset=utf-8,' + code;
+                }
+            };
+        } catch (e) {
+            // nothing ....
+        }
     </script>
 </body>
 </html>

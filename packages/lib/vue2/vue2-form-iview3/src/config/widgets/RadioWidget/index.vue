@@ -1,7 +1,7 @@
 <template>
     <radio-group
-        v-model="checkList"
         v-bind="$attrs"
+        v-on="$listeners"
     >
         <radio
             v-for="(item, index) in enumOptions"
@@ -17,23 +17,9 @@
 export default {
     name: 'RadioWidget',
     props: {
-        value: {
-            default: () => '',
-            type: [String, Number, Boolean]
-        },
         enumOptions: {
             default: () => [],
             type: [Array]
-        }
-    },
-    computed: {
-        checkList: {
-            get() {
-                return this.value;
-            },
-            set(value) {
-                this.$emit('input', value);
-            }
         }
     }
 };

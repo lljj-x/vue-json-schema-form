@@ -2,33 +2,32 @@
  * Created by Liu.Jun on 2020/7/22 13:21.
  */
 
+import { h } from 'vue';
+import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
+
 export default {
     name: 'DateTimePickerWidget',
-    functional: true,
-    render(h, context) {
-        const { isNumberValue, isRange, ...otherProps } = context.data.attrs || {};
-
-        context.data.attrs = {
-            type: isRange ? 'datetimerange' : 'datetime',
-            ...otherProps
-        };
-
-        // 字符串为 0 时区ISO标准时间
-        const oldInputCall = context.data.on.input;
-        context.data.on = {
-            ...context.data.on,
-            input(val) {
-                let trueVal;
-                if (isRange) {
-                    trueVal = (val === null) ? [] : val.map(item => (new Date(item))[isNumberValue ? 'valueOf' : 'toISOString']());
-                } else {
-                    trueVal = (val === null) ? undefined : (new Date(val))[isNumberValue ? 'valueOf' : 'toISOString']();
-                }
-
-                oldInputCall.apply(context.data.on, [trueVal]);
+    inheritAttrs: false,
+    setup(props, { attrs, slots }) {
+        const trueValue = (isRange, isNumberValue, val) => {
+            if (isRange) {
+                return (val === null) ? [] : val.map(item => (new Date(item))[isNumberValue ? 'valueOf' : 'toISOString']());
             }
+            return (val === null) ? undefined : (new Date(val))[isNumberValue ? 'valueOf' : 'toISOString']();
         };
 
-        return h('el-date-picker', context.data, context.children);
+        return () => {
+            const { isNumberValue, isRange, ...otherProps } = attrs || {};
+            return h(resolveComponent('el-date-picker'), {
+                type: isRange ? 'datetimerange' : 'datetime',
+                ...otherProps,
+
+                'onUpdate:modelValue': (val) => {
+                    const trueVal = trueValue(isRange, isNumberValue, val);
+
+                    attrs['onUpdate:modelValue'].apply(attrs, [trueVal]);
+                }
+            }, slots);
+        };
     }
 };

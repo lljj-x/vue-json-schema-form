@@ -1,9 +1,50 @@
 # 介绍
 
+## 准备
+开始之前请务必先了解 [Vue](https://cn.vuejs.org/) 和 [JsonSchema](https://json-schema.org/understanding-json-schema/index.html)
+
 ## 体验
 * [Playground 演示](https://form.lljj.me/ "Vue JSON Schema Form Playground")
 * [Vue可视化活动编辑器](https://form.lljj.me/vue-editor.html)
 * [可视化表单Schema生成器](https://form.lljj.me/schema-generator.html "Vue JSON Schema Form 可视化表单Schema生成器")
+
+## 多版本选择
+支持如下Vue版本和Ui框架，结合你的项目框架选择版本。
+
+**各版本api和使用形式99%一致，仅有如下差异：**
+::: warning 各版本差异
+* vue3 emit事件都会去掉on前缀，详细看这里 [事件 Emit Event](/zh/guide/basic-config.html#事件-emit-event)
+:::
+
+### @lljj/vue-json-schema-form
+* 适配ui库：`Vue2` `ElementUi`
+* package name: `@lljj/vue-json-schema-form`
+* umd cdn地址：[@lljj/vue-json-schema-form cdn](https://cdn.jsdelivr.net/npm/@lljj/vue-json-schema-form/dist/vueJsonSchemaForm.umd.min.js)
+* umd script 标签形式引入暴露全局变量 `window.vueJsonSchemaForm`
+
+### @lljj/vue2-form-iview3
+* 适配ui库：`Vue2` `iview3`
+* package name: `@lljj/vue2-form-iview3`
+* umd cdn地址：[@lljj/vue2-form-iview3 cdn](https://cdn.jsdelivr.net/npm/@lljj/vue2-form-iview3/dist/vue2-form-iview3.umd.min.js)
+* umd script 标签形式引入暴露全局变量 `window.vue2FormIview3`
+
+### @lljj/vue3-form-element
+* 适配ui库：`Vue3` `ElementPlus`
+* package name : `@lljj/vue3-form-element`
+* umd cdn地址：[@lljj/vue2-form-iview3 cdn](https://cdn.jsdelivr.net/npm/@lljj/vue3-form-element/dist/vue3-form-element.umd.min.js)
+* umd script 标签形式引入暴露全局变量 `window.vue3FormElement`
+
+### @lljj/vue3-form-ant
+* 适配ui库：`Vue3` `antdv`
+* package name : `@lljj/vue3-form-ant`
+* umd cdn地址：[@lljj/vue3-form-ant cdn](https://cdn.jsdelivr.net/npm/@lljj/vue3-form-ant/dist/vue3-form-ant.umd.min.js)
+* umd script 标签形式引入暴露全局变量 `window.vue3FormAnt`
+* >todo，还未发布
+
+::: tip
+后续的文档都以 `@lljj/vue-json-schema-form` 为例
+:::
+
 
 ## 快速开始
 
@@ -31,11 +72,6 @@ Vue.component('VueForm', VueForm);
 # script引入
 <script src="//cdn.jsdelivr.net/npm/@lljj/vue-json-schema-form/dist/vueJsonSchemaForm.umd.min.js"></script>
 ```
-
-::: tip
-* 会注册全局组件 `VueForm`
-* 暴露全局变量 `window.vueJsonSchemaForm`
-:::
 
 ## DEMO
 演示渲染用户信息的表单，点击显示代码可查看源代码或者在codepen运行

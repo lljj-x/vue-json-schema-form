@@ -235,6 +235,7 @@ export function filterObject(obj, filterFn) {
     }, {});
 }
 
+const f = s => `0${s}`.substr(-2);
 export function parseDateString(dateString, includeTime = true) {
     if (!dateString) {
         return {
@@ -252,11 +253,11 @@ export function parseDateString(dateString, includeTime = true) {
     }
     return {
         year: date.getUTCFullYear(),
-        month: date.getUTCMonth() + 1, // oh you, javascript.
-        day: date.getUTCDate(),
-        hour: includeTime ? date.getUTCHours() : 0,
-        minute: includeTime ? date.getUTCMinutes() : 0,
-        second: includeTime ? date.getUTCSeconds() : 0,
+        month: f(date.getUTCMonth() + 1), // oh you, javascript.
+        day: f(date.getUTCDate()),
+        hour: f(includeTime ? date.getUTCHours() : 0),
+        minute: f(includeTime ? date.getUTCMinutes() : 0),
+        second: f(includeTime ? date.getUTCSeconds() : 0),
     };
 }
 

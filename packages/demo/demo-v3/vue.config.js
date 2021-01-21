@@ -31,11 +31,11 @@ log({
 const isProduction = process.env.NODE_ENV === 'production';
 
 // config var
-const outputDir = path.resolve(__dirname, './dist');
+const outputDir = isProduction ? path.resolve(__dirname, './dist/v3') : path.resolve(__dirname, './dist');
 
 module.exports = {
     // cdn
-    publicPath: isProduction ? '/' : '/',
+    publicPath: isProduction ? '/v3' : '/',
 
     // 资源目录
     outputDir,
@@ -62,8 +62,7 @@ module.exports = {
         };
         config.resolve.alias = {
             ...config.resolve.alias,
-            '@lljj/vue-json-schema-form': '@lljj/vue-json-schema-form/src/index'
-            // '@lljj/vue-json-schema-form': path.resolve(__dirname, '../lib/dist/vueJsonSchemaForm.esm.js')
+            // '@lljj/vue3-form-element': '@lljj/vue3-form-element/src/index'
         };
     },
 

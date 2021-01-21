@@ -508,7 +508,7 @@ function getCjsExportFromNamespace (n) {
 }
 
 var uri_all = createCommonjsModule(function (module, exports) {
-/** @license URI.js v4.4.0 (c) 2011 Gary Court. License: http://github.com/garycourt/uri-js */
+/** @license URI.js v4.4.1 (c) 2011 Gary Court. License: http://github.com/garycourt/uri-js */
 (function (global, factory) {
 	 factory(exports) ;
 }(commonjsGlobal, (function (exports) {
@@ -564,10 +564,10 @@ function buildExps(isIRI) {
         //subset, excludes bidi control characters
     IPRIVATE$$ = isIRI ? "[\\uE000-\\uF8FF]" : "[]",
         //subset
-    UNRESERVED$$ = merge(ALPHA$$, DIGIT$$, "[\\-\\.\\_\\~]", UCSCHAR$$),
-        SCHEME$ = subexp(ALPHA$$ + merge(ALPHA$$, DIGIT$$, "[\\+\\-\\.]") + "*"),
-        USERINFO$ = subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:]")) + "*"),
-        DEC_OCTET_RELAXED$ = subexp(subexp("25[0-5]") + "|" + subexp("2[0-4]" + DIGIT$$) + "|" + subexp("1" + DIGIT$$ + DIGIT$$) + "|" + subexp("0?[1-9]" + DIGIT$$) + "|0?0?" + DIGIT$$),
+    UNRESERVED$$ = merge(ALPHA$$, DIGIT$$, "[\\-\\.\\_\\~]", UCSCHAR$$);
+        subexp(ALPHA$$ + merge(ALPHA$$, DIGIT$$, "[\\+\\-\\.]") + "*");
+        subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:]")) + "*");
+        var DEC_OCTET_RELAXED$ = subexp(subexp("25[0-5]") + "|" + subexp("2[0-4]" + DIGIT$$) + "|" + subexp("1" + DIGIT$$ + DIGIT$$) + "|" + subexp("0?[1-9]" + DIGIT$$) + "|0?0?" + DIGIT$$),
         //relaxed parsing rules
     IPV4ADDRESS$ = subexp(DEC_OCTET_RELAXED$ + "\\." + DEC_OCTET_RELAXED$ + "\\." + DEC_OCTET_RELAXED$ + "\\." + DEC_OCTET_RELAXED$),
         H16$ = subexp(HEXDIG$$ + "{1,4}"),
@@ -591,14 +591,14 @@ function buildExps(isIRI) {
     IPV6ADDRESS9$ = subexp(subexp(subexp(H16$ + "\\:") + "{0,6}" + H16$) + "?\\:\\:"),
         //[ *6( h16 ":" ) h16 ] "::"
     IPV6ADDRESS$ = subexp([IPV6ADDRESS1$, IPV6ADDRESS2$, IPV6ADDRESS3$, IPV6ADDRESS4$, IPV6ADDRESS5$, IPV6ADDRESS6$, IPV6ADDRESS7$, IPV6ADDRESS8$, IPV6ADDRESS9$].join("|")),
-        ZONEID$ = subexp(subexp(UNRESERVED$$ + "|" + PCT_ENCODED$) + "+"),
+        ZONEID$ = subexp(subexp(UNRESERVED$$ + "|" + PCT_ENCODED$) + "+");
         //RFC 6874, with relaxed parsing rules
-    IPVFUTURE$ = subexp("[vV]" + HEXDIG$$ + "+\\." + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:]") + "+"),
+    subexp("[vV]" + HEXDIG$$ + "+\\." + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:]") + "+");
         //RFC 6874
-    REG_NAME$ = subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$)) + "*"),
-        PCHAR$ = subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:\\@]")),
-        SEGMENT_NZ_NC$ = subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\@]")) + "+"),
-        QUERY$ = subexp(subexp(PCHAR$ + "|" + merge("[\\/\\?]", IPRIVATE$$)) + "*");
+    subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$)) + "*");
+        var PCHAR$ = subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\:\\@]"));
+        subexp(subexp(PCT_ENCODED$ + "|" + merge(UNRESERVED$$, SUB_DELIMS$$, "[\\@]")) + "+");
+        subexp(subexp(PCHAR$ + "|" + merge("[\\/\\?]", IPRIVATE$$)) + "*");
     return {
         NOT_SCHEME: new RegExp(merge("[^]", ALPHA$$, DIGIT$$, "[\\+\\-\\.]"), "g"),
         NOT_USERINFO: new RegExp(merge("[^\\%\\:]", UNRESERVED$$, SUB_DELIMS$$), "g"),
@@ -3935,7 +3935,7 @@ var comment = function generate_comment(it, $keyword, $ruleType) {
   var out = ' ';
   var $schema = it.schema[$keyword];
   var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
-  var $breakOnError = !it.opts.allErrors;
+  !it.opts.allErrors;
   var $comment = it.util.toQuotedString($schema);
   if (it.opts.$comment === true) {
     out += ' console.log(' + ($comment) + ');';
@@ -8069,8 +8069,8 @@ function resolveReference(schema, rootSchema, formData) {
   var $refSchema = findSchemaDefinition(schema.$ref, rootSchema); // Drop the $ref property of the source schema.
   // eslint-disable-next-line no-unused-vars
 
-  var $ref = schema.$ref,
-      localSchema = _objectWithoutProperties(schema, ["$ref"]); // Update referenced schema definition with local schema properties.
+  schema.$ref;
+      var localSchema = _objectWithoutProperties(schema, ["$ref"]); // Update referenced schema definition with local schema properties.
 
 
   return retrieveSchema(_objectSpread2(_objectSpread2({}, $refSchema), localSchema), rootSchema, formData);
@@ -8210,8 +8210,8 @@ function resolveAllOf(schema, rootSchema, formData) {
   } catch (e) {
     console.warn("\u65E0\u6CD5\u5408\u5E76allOf\uFF0C\u4E22\u5F03allOf\u914D\u7F6E\u7EE7\u7EED\u6E32\u67D3: \n".concat(e)); // eslint-disable-next-line no-unused-vars
 
-    var errAllOf = resolvedAllOfRefSchema.allOf,
-        resolvedSchemaWithoutAllOf = _objectWithoutProperties(resolvedAllOfRefSchema, ["allOf"]);
+    resolvedAllOfRefSchema.allOf;
+        var resolvedSchemaWithoutAllOf = _objectWithoutProperties(resolvedAllOfRefSchema, ["allOf"]);
 
     return resolvedSchemaWithoutAllOf;
   }
@@ -10047,10 +10047,10 @@ var ObjectField = {
 
       var _isDependOn = isDependOn(name),
           isDependency = _isDependOn.isDependency,
-          curDependent = _isDependOn.curDependent;
+          curDependent = _isDependOn.curDependent; // onlyShowWhenDependent 只渲染被依赖的属性
 
-      return h( // onlyShowWhenDependent 只渲染被依赖的属性
-      isDependency && onlyShowIfDependent && !curDependent ? null : SchemaField, {
+
+      return isDependency && onlyShowIfDependent && !curDependent ? null : h(SchemaField, {
         key: name,
         props: _objectSpread2(_objectSpread2({}, context.props), {}, {
           schema: schema.properties[name],
@@ -10270,7 +10270,7 @@ var ArrayOrderList = {
     var _this = this;
 
     // 没有数据，且不能添加不渲染该组件
-    if (this.vNodeList <= 0 && !this.addable) return null;
+    if (this.vNodeList.length <= 0 && !this.addable) return null;
     var ICONS_MAP = this.globalOptions.ICONS_MAP; // 是否可继续添加元素
 
     return h('div', {
@@ -10566,7 +10566,7 @@ var ArrayFieldTuple = {
   render: function render(h) {
     var _this = this;
 
-    if (!Array.isArray(this.itemsFormData)) return false;
+    if (!Array.isArray(this.itemsFormData)) return null;
     var _this$$props = this.$props,
         schema = _this$$props.schema,
         uiSchema = _this$$props.uiSchema,
@@ -11051,11 +11051,11 @@ var SelectLinkageField = {
       // 覆盖父级的属性
       var _this$schema = this.schema,
           _this$combiningType = this.combiningType,
-          _ref3 = "".concat(this.combiningType, "Select"),
-          properties = _this$schema.properties,
-          combiningType = _this$schema[_this$combiningType],
-          combiningTypeSelect = _this$schema[_ref3],
-          parentSchema = _objectWithoutProperties(_this$schema, ["properties", _this$combiningType, _ref3].map(_toPropertyKey));
+          _ref3 = "".concat(this.combiningType, "Select");
+          _this$schema.properties;
+          _this$schema[_this$combiningType];
+          _this$schema[_ref3];
+          var parentSchema = _objectWithoutProperties(_this$schema, ["properties", _this$combiningType, _ref3].map(_toPropertyKey));
 
       curSelectSchema = Object.assign({}, parentSchema, curSelectSchema); // 当前节点的ui err配置，用来支持所有选项的统一配置
       // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
@@ -11267,6 +11267,18 @@ styleInject(css_248z);
 
 function createForm() {
   var globalOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  // global components
+  if (globalOptions.WIDGET_MAP.widgetComponents) {
+    Object.entries(globalOptions.WIDGET_MAP.widgetComponents).forEach(function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+          key = _ref2[0],
+          value = _ref2[1];
+
+      return Vue.component(key, value);
+    });
+  }
+
   return {
     name: 'ElementForm',
     props: vueProps,
@@ -11412,27 +11424,11 @@ function createForm() {
 var script$1 = {
   name: 'CheckboxesWidget',
   props: {
-    value: {
-      default: function _default() {
-        return [];
-      },
-      type: [Array]
-    },
     enumOptions: {
       default: function _default() {
         return [];
       },
       type: [Array]
-    }
-  },
-  computed: {
-    checkList: {
-      get: function get() {
-        return this.value;
-      },
-      set: function set(value) {
-        this.$emit('input', value);
-      }
     }
   }
 };
@@ -11448,15 +11444,7 @@ var __vue_render__$1 = function __vue_render__() {
 
   var _c = _vm._self._c || _h;
 
-  return _c("el-checkbox-group", _vm._b({
-    model: {
-      value: _vm.checkList,
-      callback: function callback($$v) {
-        _vm.checkList = $$v;
-      },
-      expression: "checkList"
-    }
-  }, "el-checkbox-group", _vm.$attrs, false), _vm._l(_vm.enumOptions, function (item, index) {
+  return _c("el-checkbox-group", _vm._g(_vm._b({}, "el-checkbox-group", _vm.$attrs, false), _vm.$listeners), _vm._l(_vm.enumOptions, function (item, index) {
     return _c("el-checkbox", {
       key: index,
       attrs: {
@@ -11509,27 +11497,11 @@ var __vue_component__$1 = /*#__PURE__*/normalizeComponent_1({
 var script$2 = {
   name: 'RadioWidget',
   props: {
-    value: {
-      default: function _default() {
-        return '';
-      },
-      type: [String, Number, Boolean]
-    },
     enumOptions: {
       default: function _default() {
         return [];
       },
       type: [Array]
-    }
-  },
-  computed: {
-    checkList: {
-      get: function get() {
-        return this.value;
-      },
-      set: function set(value) {
-        this.$emit('input', value);
-      }
     }
   }
 };
@@ -11545,15 +11517,7 @@ var __vue_render__$2 = function __vue_render__() {
 
   var _c = _vm._self._c || _h;
 
-  return _c("el-radio-group", _vm._b({
-    model: {
-      value: _vm.checkList,
-      callback: function callback($$v) {
-        _vm.checkList = $$v;
-      },
-      expression: "checkList"
-    }
-  }, "el-radio-group", _vm.$attrs, false), _vm._l(_vm.enumOptions, function (item, index) {
+  return _c("el-radio-group", _vm._g(_vm._b({}, "el-radio-group", _vm.$attrs, false), _vm.$listeners), _vm._l(_vm.enumOptions, function (item, index) {
     return _c("el-radio", {
       key: index,
       attrs: {
@@ -11605,25 +11569,11 @@ var __vue_component__$2 = /*#__PURE__*/normalizeComponent_1({
 var script$3 = {
   name: 'SelectWidget',
   props: {
-    value: {
-      default: null,
-      type: null
-    },
     enumOptions: {
       default: function _default() {
         return [];
       },
       type: [Array]
-    }
-  },
-  computed: {
-    selectList: {
-      get: function get() {
-        return this.value;
-      },
-      set: function set(value) {
-        this.$emit('input', value);
-      }
     }
   }
 };
@@ -11639,15 +11589,7 @@ var __vue_render__$3 = function __vue_render__() {
 
   var _c = _vm._self._c || _h;
 
-  return _c("el-select", _vm._b({
-    model: {
-      value: _vm.selectList,
-      callback: function callback($$v) {
-        _vm.selectList = $$v;
-      },
-      expression: "selectList"
-    }
-  }, "el-select", _vm.$attrs, false), _vm._l(_vm.enumOptions, function (item, index) {
+  return _c("el-select", _vm._g(_vm._b({}, "el-select", _vm.$attrs, false), _vm.$listeners), _vm._l(_vm.enumOptions, function (item, index) {
     return _c("el-option", {
       key: index,
       attrs: {
@@ -11906,6 +11848,9 @@ var UploadWidget = {
   }
 };
 
+/**
+ * Created by Liu.Jun on 2020/5/17 10:41 下午.
+ */
 // const files = require.context('.', true, /\.js|vue$/);
 // const widgetComponents = files.keys().reduce((preVal, curKey) => {
 //     if (curKey !== './index.js') {
@@ -11922,15 +11867,7 @@ var widgetComponents = {
   DatePickerWidget: DatePickerWidget,
   DateTimePickerWidget: DateTimePickerWidget,
   UploadWidget: UploadWidget
-}; // 注册组件
-
-Object.entries(widgetComponents).forEach(function (_ref) {
-  var _ref2 = _slicedToArray(_ref, 2),
-      key = _ref2[0],
-      value = _ref2[1];
-
-  return Vue.component(key, value);
-});
+};
 
 /**
  * Created by Liu.Jun on 2020/4/21 18:23.
@@ -11961,7 +11898,8 @@ var WIDGET_MAP = {
     select: SelectWidget,
     radioGroup: RadioWidget,
     checkboxGroup: CheckboxesWidget
-  }
+  },
+  widgetComponents: widgetComponents
 };
 
 var css_248z$1 = ".genFromComponent.formLabel-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .el-checkbox,.genFromComponent .el-color-picker{vertical-align:top}";

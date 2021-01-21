@@ -74,9 +74,9 @@ export default {
             const required = isRequired(name);
             const { isDependency, curDependent } = isDependOn(name);
 
-            return h(
-                // onlyShowWhenDependent 只渲染被依赖的属性
-                (isDependency && onlyShowIfDependent && !curDependent) ? null : SchemaField,
+            // onlyShowWhenDependent 只渲染被依赖的属性
+            return (isDependency && onlyShowIfDependent && !curDependent) ? null : h(
+                SchemaField,
                 {
                     key: name,
                     props: {

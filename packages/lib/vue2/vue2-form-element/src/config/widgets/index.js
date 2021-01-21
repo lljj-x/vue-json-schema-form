@@ -2,8 +2,6 @@
  * Created by Liu.Jun on 2020/5/17 10:41 下午.
  */
 
-import Vue from 'vue';
-
 import CheckboxesWidget from './CheckboxesWidget';
 import RadioWidget from './RadioWidget';
 import SelectWidget from './SelectWidget';
@@ -31,8 +29,5 @@ const widgetComponents = {
     DateTimePickerWidget,
     UploadWidget
 };
-
-// 注册组件
-Object.entries(widgetComponents).forEach(([key, value]) => Vue.component(key, value));
 
 export default widgetComponents;

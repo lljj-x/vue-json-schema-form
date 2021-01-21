@@ -698,12 +698,20 @@ export default {
 ### on-submit
 * 参数(formData)
 
+::: warning
+vue3的版本中为 `submit`，去掉 `on` 前缀
+:::
+
 点击提交按钮，且表单通过校验
 
 > 事件只有在配置了显示默认底部才会触发，[props form-footer](#form-footer)
 
 ### on-validation-failed
 * 参数(errorObj)
+
+::: warning
+vue3的版本中为 `validation-failed`，去掉 `on` 前缀
+:::
 
 点击提交按钮，且表单不通过，可以在这里获取到错误信息
 
@@ -713,11 +721,19 @@ export default {
 ### on-cancel
 * 参数(无)
 
+::: warning
+vue3的版本中为 `cancel`，去掉 `on` 前缀
+:::
+
 点击取消按钮
 > 事件只有在配置了显示默认底部才会触发，[props form-footer](#form-footer)
 
 ### on-change
 * 参数(newVal, oldVal)
+
+::: warning
+vue3的版本中为 `change`，去掉 `on` 前缀
+:::
 
 表单的值发生改变
 > 引用类型，只有重新对对象赋值，否则newVal 等于 oldVal 参见 [vue watch](https://cn.vuejs.org/v2/api/#vm-watch)

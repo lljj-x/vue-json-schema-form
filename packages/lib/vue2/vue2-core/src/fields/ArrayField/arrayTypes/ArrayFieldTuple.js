@@ -52,7 +52,7 @@ export default {
         }
     },
     render(h) {
-        if (!Array.isArray(this.itemsFormData)) return false;
+        if (!Array.isArray(this.itemsFormData)) return null;
 
         const {
             schema, uiSchema, errorSchema, curNodePath, globalOptions

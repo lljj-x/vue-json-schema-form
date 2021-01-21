@@ -12,10 +12,13 @@
     "scripts": {
         "docs:dev": "yarn workspace docs dev",
         "docs:build": "yarn workspace docs build",
-        "lib:watch": "yarn workspace @lljj/vue-json-schema-form watch",
-        "lib:build": "yarn workspace @lljj/vue-json-schema-form build",
+        "lib:build": "yarn lib-element:build && yarn lib-iview3:build && yarn lib3-element:build",
+        "lib-element:watch": "yarn workspace @lljj/vue-json-schema-form watch",
+        "lib-element:build": "yarn workspace @lljj/vue-json-schema-form build",
         "lib-iview3:watch": "yarn workspace @lljj/vue2-form-iview3 watch",
         "lib-iview3:build": "yarn workspace @lljj/vue2-form-iview3 build",
+        "lib3-element:watch": "yarn workspace @lljj/vue3-form-element watch",
+        "lib3-element:build": "yarn workspace @lljj/vue3-form-element build",
         "demo:dev": "yarn workspace demo dev",
         "demo:build": "yarn workspace demo build",
         "demo3:dev": "yarn workspace demo-v3 dev",
@@ -44,11 +47,12 @@
     "devDependencies": {
         "@commitlint/cli": "^8.3.5",
         "@commitlint/config-conventional": "^8.3.4",
+        "@vue/compiler-sfc": "^3.0.0",
         "commitizen": "^4.1.2",
-        "cz-conventional-changelog": "^3.2.0",
         "conventional-changelog-cli": "^2.0.34",
+        "cz-conventional-changelog": "^3.2.0",
         "husky": "^4.2.5",
-        "lerna": "^3.22.1",
-        "@vue/compiler-sfc": "^3.0.0"
-    }
+        "lerna": "^3.22.1"
+    },
+    "version": "0.0.0"
 }

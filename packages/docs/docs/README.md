@@ -3,7 +3,7 @@ home: true
 pageClass: custom-page-home
 heroImage: /logo.png
 heroText: Vue JSON Schema Form
-tagline: 基于 Vue 、JSON Schema 快速构建一个带完整校验的form表单
+tagline: 基于 Vue 、JSON Schema 构建form表单，支持Vue3和多Ui框架
 footer: Apache2.0 Licensed | Copyright © 2020-2020 Jun
 actionText: 快速开始 →
 actionLink: /zh/guide/
@@ -16,6 +16,7 @@ actionLink: /zh/guide/
 
 ``` bash
 # 安装
+# vue2+elementUi 版本
 npm install --save @lljj/vue-json-schema-form
 
 # 或者：
@@ -145,8 +146,7 @@ export default {
 
 ## 相关资料
 [JSON Schema](https://json-schema.org/understanding-json-schema/index.html) |
-[Vue](https://cn.vuejs.org/) |
-[Element Ui](https://element.eleme.io/)
+[Vue](https://cn.vuejs.org/)
 
 ## 为何开发
 在做前端可视化编辑时，为了解决数据配置表单的通用性，所以使用 `JSON Schema` 描述数据结构，动态生成表单。

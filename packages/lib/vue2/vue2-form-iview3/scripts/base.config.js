@@ -80,17 +80,18 @@ module.exports = ({
                 browser: true
             }),
             eslint(),
+            vue({
+                normalizer: '~vue-runtime-helpers/dist/normalize-component.js'
+            }),
             babel({
-                exclude: /node_modules/
+                exclude: /node_modules\/(?!(@lljj)\/).*/,
+                extensions: ['.js', '.vue'],
             }),
             postcss({
                 extract: config.extractcss
             }),
             commonjs({
                 include: /node_modules/,
-            }),
-            vue({
-                //
             }),
             filesize(),
 

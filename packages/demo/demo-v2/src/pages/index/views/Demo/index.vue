@@ -1,6 +1,9 @@
 <template>
     <div :class="$style.container">
-        <EditorHeader default-active="2">
+        <EditorHeader
+            :show-version="true"
+            default-active="2"
+        >
             <div :class="$style.btns">
                 <span style="font-size: 13px;">标签：</span>
                 <el-slider
