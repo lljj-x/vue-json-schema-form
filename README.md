@@ -7,7 +7,7 @@
 ## ui框架支持
 * [vue2 ElementUi](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/lib/vue2/vue2-form-element)
 * [vue2 Iview3](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/lib/vue2/vue2-form-iview3)
-* vue3 Element Plus (todo)
+* [vue3 Element Plus](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/lib/vue3/vue3-form-element)
 * vue3 Antdv (todo)
 
 ![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vue-json-schema-form.gif)

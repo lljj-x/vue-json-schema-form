@@ -175,9 +175,10 @@
                             :custom-formats="customFormats"
                             :form-footer="trueFormFooter"
                             :form-props="trueFormProps"
-                            @on-change="handleDataChange"
-                            @on-cancel="handleCancel"
-                            @on-submit="handleSubmit"
+                            @change="handleDataChange"
+                            @cancel="handleCancel"
+                            @submit="handleSubmit"
+                            @validation-failed="handleValidationFailed"
                         >
                         </component>
                     </el-card>
@@ -396,7 +397,12 @@ export default {
             this.$message.info(value);
             return false;
         },
-        handleCancel() {},
+        handleCancel() {
+            console.log('cancel');
+        },
+        handleValidationFailed(errorObj) {
+            console.warn(errorObj);
+        },
         handlePreview() {
             const formatStr = jsonCode => JSON.stringify(JSON.parse(jsonCode));
 
