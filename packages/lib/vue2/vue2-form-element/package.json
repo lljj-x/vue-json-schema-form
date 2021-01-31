@@ -1,6 +1,6 @@
 {
     "name": "@lljj/vue-json-schema-form",
-    "version": "0.6.1",
+    "version": "1.0.0",
     "description": "基于 Vue 、ElementUi、JsonSchema快速构建一个带完整校验的form表单",
     "main": "dist/vue2-form-element.umd.min.js",
     "module": "dist/vue2-form-element.esm.min.js",
@@ -15,8 +15,8 @@
         "jsonSchema"
     ],
     "dependencies": {
-        "@lljj/vjsf-utils": "0.6.1",
-        "@lljj/vue2-form-core": "0.6.1"
+        "@lljj/vjsf-utils": "1.0.0",
+        "@lljj/vue2-form-core": "1.0.0"
     },
     "typings": "types/index.d.ts",
     "files": [
