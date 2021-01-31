@@ -22,6 +22,7 @@ jobs:
         yarn install
         yarn run docs:build
         yarn run demo:build
+        yarn run demo3:build
 
     - name: Setup aliyun oss
       # 设置阿里云OSS配置
@@ -38,3 +39,7 @@ jobs:
     - name: Deploy demo
       # 发布demo
       run: ossutil cp -rf ./packages/demo/demo-v2/dist/ oss://form-buhuida/
+
+    - name: Deploy demo-v3
+        # 发布demo-v3
+      run: ossutil cp -rf ./packages/demo/demo-v3/dist/v3 oss://dev-form/v3

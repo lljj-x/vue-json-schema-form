@@ -35,6 +35,6 @@ jobs:
       # 发布demo-v2
       run: ossutil cp -rf ./packages/demo/demo-v2/dist/ oss://dev-form/
 
-    - name: Deploy demo-v2
+    - name: Deploy demo-v3
       # 发布demo-v3
       run: ossutil cp -rf ./packages/demo/demo-v3/dist/v3 oss://dev-form/v3
