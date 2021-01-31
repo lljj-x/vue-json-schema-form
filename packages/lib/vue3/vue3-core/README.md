@@ -1,9 +1,9 @@
 # @lljj/vue3-form-core
 vue3 版本核心，可以基于此适配不同的 vue3 ui库。
 
-适配的核心就是对应类型为自己的组件库，且处理默认 `props` 。和自己组件库 props 之间的转换
+适配的核心就是对应类型为自己的组件库，且处理默认 `props` 与自己组件库 props 之间的转换
 
-> 适配方案可参见 [@lljj/vue3-form-element](https://github.com/lljj-x/vue-json-schema-form/tree/master-dev/packages/lib/vue3/vue3-form-element) 、[@lljj/vue3-form-ant](https://github.com/lljj-x/vue-json-schema-form/tree/master-dev/packages/lib/vue3/vue3-form-ant)
+> 适配方案可参见 [@lljj/vue3-form-element](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/lib/vue3/vue3-form-element) 、[@lljj/vue3-form-ant](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/lib/vue3/vue3-form-ant)
 
 
 ## 兼容性

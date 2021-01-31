@@ -31,7 +31,7 @@ isValid(...args);
 ```
 
 ## @lljj/vjsf-utils/arrayUtils
-数据相关的工具类
+数组相关的工具类
 
 ## @lljj/vjsf-utils/formUtils
 表单相关的工具类
