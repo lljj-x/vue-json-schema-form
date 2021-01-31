@@ -12,6 +12,9 @@ import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
 import getDefaultFormState from '@lljj/vjsf-utils/schema/getDefaultFormState';
 import { deepEquals } from '@lljj/vjsf-utils/utils';
 
+// 基础公共样式
+import '@lljj/vjsf-utils/style/baseForm.css';
+
 import vueProps from './props';
 
 // 默认表单底部
@@ -19,8 +22,6 @@ import FormFooter from './components/FormFooter.js';
 
 import SchemaField from './fields/SchemaField';
 import fieldProps from './fields/props';
-
-import './index.css';
 
 export {
     fieldProps,

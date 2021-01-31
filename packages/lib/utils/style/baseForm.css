@@ -69,14 +69,16 @@
         color: rgb(153, 153, 153);
     }
     .genFromWidget_des {
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 2px;
         font-size: 12px;
         line-height: 20px;
-        /*margin-top: -10px;*/
-        margin-bottom: 2px;
         color: #999;
         text-align: left;
     }
     .formItemErrorBox {
+        margin: 0 auto;
         color: #ff5757;
         padding-top: 2px;
         position: absolute;

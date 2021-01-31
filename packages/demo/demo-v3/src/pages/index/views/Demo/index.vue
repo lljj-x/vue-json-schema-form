@@ -441,9 +441,11 @@ export default {
     padding: 0 15px;
 }
 .typeList {
-    padding: 15px 0 20px;
+    padding: 10px 0 20px;
+    font-size: 0;
 }
 .linkItem {
+    display: inline-block;
     margin-right: 8px;
     margin-top: 8px;
     margin-left: auto !important;
