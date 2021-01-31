@@ -124,7 +124,5 @@ const mySchemaForm = createVue2Core(globalOptions);
 
 适配一个新的ui框架只需要适配如上的组件即可
 
-为了方便适配组件的后续调用，你也可以把这些适配过的widget组件注册为全局组件，如 [全局注册组件](https://vue-json-schema-form.lljj.me/zh/guide/components.html)
-
 ## License
 Apache-2.0
