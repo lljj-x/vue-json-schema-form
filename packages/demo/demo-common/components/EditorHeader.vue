@@ -15,10 +15,29 @@
             </h1>
             <Menu
                 :class="$style.menu"
+                :version="version"
                 v-bind="$attrs"
             ></Menu>
         </div>
         <div :class="$style.btns">
+            <el-select
+                v-if="showVersion"
+                :model-value="version"
+                :value="version"
+                placeholder="版本"
+                size="small"
+                style="margin-right: 6px;width: 84px;"
+                @change="handleVersionChange"
+            >
+                <el-option
+                    value="vue2"
+                    label="vue2"
+                ></el-option>
+                <el-option
+                    value="vue3"
+                    label="vue3"
+                ></el-option>
+            </el-select>
             <slot></slot>
         </div>
     </div>
@@ -31,12 +50,35 @@ export default {
     name: 'EditorHeader',
     components: {
         Menu
+    },
+    props: {
+        version: {
+            default: 'vue2',
+            type: String
+        },
+        showVersion: {
+            default: false,
+            type: Boolean
+        }
+    },
+    methods: {
+        handleVersionChange(val) {
+            window.location.href = window.location.href.replace(
+                `${window.location.origin}${val === 'vue3' ? '' : '/v3'}`,
+                `${window.location.origin}${val === 'vue3' ? '/v3' : ''}`
+            );
+        },
     }
 };
 </script>
 
 <style module>
     @import "../css/variable.css";
+    .btns {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     .box {
         position: relative;
         margin: 0 auto;

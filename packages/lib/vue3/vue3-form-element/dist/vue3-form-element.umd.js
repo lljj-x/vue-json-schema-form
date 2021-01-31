@@ -11451,6 +11451,17 @@
     setup: function setup(props, _ref) {
       var attrs = _ref.attrs,
           slots = _ref.slots;
+
+      var trueValue = function trueValue(isRange, isNumberValue, val) {
+        if (isRange) {
+          return val === null ? [] : val.map(function (item) {
+            return new Date(item)[isNumberValue ? 'valueOf' : 'toISOString']();
+          });
+        }
+
+        return val === null ? undefined : new Date(val)[isNumberValue ? 'valueOf' : 'toISOString']();
+      };
+
       return function () {
         var _ref2 = attrs || {},
             isNumberValue = _ref2.isNumberValue,
@@ -11461,16 +11472,7 @@
           type: isRange ? 'datetimerange' : 'datetime'
         }, otherProps), {}, {
           'onUpdate:modelValue': function onUpdateModelValue(val) {
-            var trueVal;
-
-            if (isRange) {
-              trueVal = val === null ? [] : val.map(function (item) {
-                return new Date(item)[isNumberValue ? 'valueOf' : 'toISOString']();
-              });
-            } else {
-              trueVal = val === null ? undefined : new Date(val)[isNumberValue ? 'valueOf' : 'toISOString']();
-            }
-
+            var trueVal = trueValue(isRange, isNumberValue, val);
             attrs['onUpdate:modelValue'].apply(attrs, [trueVal]);
           }
         }), slots);

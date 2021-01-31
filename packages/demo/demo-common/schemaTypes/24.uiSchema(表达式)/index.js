@@ -19,7 +19,7 @@ export default {
                 type: 'string',
                 title: 'Bio',
                 minLength: 10,
-                'ui:type': '{{ parentFormData.bio && parentFormData.bio.length ?  "textarea" : "" }}'
+                'ui:type': '{{ parentFormData.bio && parentFormData.bio.length ?  "textarea" : undefined }}'
             },
             selectWidgetOptions: {
                 title: 'Custom select widget with options',

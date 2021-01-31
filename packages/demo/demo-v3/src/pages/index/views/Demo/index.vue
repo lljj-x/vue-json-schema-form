@@ -1,6 +1,10 @@
 <template>
     <div :class="$style.container">
-        <EditorHeader default-active="2">
+        <EditorHeader
+            default-active="2"
+            version="vue3"
+            :show-version="true"
+        >
             <div :class="$style.btns">
                 <span style="font-size: 13px;">标签：</span>
                 <el-slider
@@ -135,12 +139,12 @@
                     </el-row>
                 </el-col>
                 <el-col
-                    :class="[$style.middleBox, $style.middleBox_form]"
+                    :class="[$style.middleBox]"
                     :span="8"
                 >
                     <el-card
                         shadow="hover"
-                        :class="[$style.card, $style.formBox]"
+                        :class="[$style.card, $style.middleBox_form, $style.formBox]"
                     >
                         <template #header>
                             <div
@@ -220,7 +224,7 @@ export default {
             curVueForm: this.$route.query.ui || 'VueElementForm',
             ...this.getDefaultSchemaMap(),
             formComponents: [{
-                name: 'ElementUi',
+                name: 'ElementPlus',
                 component: 'VueElementForm'
             }, /* {
                 name: 'Iview3',
