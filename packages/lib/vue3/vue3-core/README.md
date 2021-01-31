@@ -33,7 +33,7 @@ yarn add @lljj/vue3-form-core
 按如下格式，配置对应组件在当前组件库中的映射关系，可以直接配置全局组件名或者组件构造函数，`默认组件 props 为elementUi格式，如果props格式不同需要中间组件来做转换`；
 
 ```js
-import createVue2Core from '@lljj/vue2-form-core';
+import createVue2Core from '@lljj/vue3-form-core';
 
 const globalOptions = {
     // widget组件和现有组件库映射关系
@@ -81,7 +81,6 @@ const globalOptions = {
         },
 
         // 这里配置一些 为当前ui库适配过的组件，会在运行时自动注册为全局组件，不注册为全局也可不配置
-
         // Vue3 只有在组件内才能获取到当前的app，所以注册时机是在 form组件setup中，且只会注册一次。
         widgetComponents: {
             CheckboxesWidget,
