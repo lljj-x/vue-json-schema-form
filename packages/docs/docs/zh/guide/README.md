@@ -1,9 +1,43 @@
 # 介绍
 
+## 准备
+开始之前请务必先了解 [Vue](https://cn.vuejs.org/) 和 [JsonSchema](https://json-schema.org/understanding-json-schema/index.html)
+
 ## 体验
 * [Playground 演示](https://form.lljj.me/ "Vue JSON Schema Form Playground")
 * [Vue可视化活动编辑器](https://form.lljj.me/vue-editor.html)
 * [可视化表单Schema生成器](https://form.lljj.me/schema-generator.html "Vue JSON Schema Form 可视化表单Schema生成器")
+
+## 多版本选择
+支持如下Vue版本和Ui框架，结合你的项目框架选择版本。
+
+**各版本api和使用形式99%一致，仅有如下差异：**
+::: warning 各版本差异
+* vue3 emit事件都会去掉on前缀，详细看这里 [事件 Emit Event](/zh/guide/basic-config.html#事件-emit-event)
+:::
+
+### @lljj/vue-json-schema-form
+* 适配ui库：`Vue2` `ElementUi`
+* package name: `@lljj/vue-json-schema-form`
+
+### @lljj/vue2-form-iview3
+* 适配ui库：`Vue2` `iview3`
+* package name: `@lljj/vue2-form-iview3`
+
+### @lljj/vue3-form-element
+* 适配ui库：`Vue3` `ElementPlus`
+* package name : `@lljj/vue3-form-element`
+
+
+### @lljj/vue3-form-ant
+* 适配ui库：`Vue3` `antdv`
+* package name : `@lljj/vue3-form-ant`
+* >todo，还未发布
+
+::: tip
+后续的文档都以 `@lljj/vue-json-schema-form` 为例
+:::
+
 
 ## 快速开始
 
