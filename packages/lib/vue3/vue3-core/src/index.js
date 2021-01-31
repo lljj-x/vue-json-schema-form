@@ -33,11 +33,16 @@ export default function createForm(globalOptions = {}) {
         props: vueProps,
         emits: ['update:modelValue', 'change', 'cancel', 'submit', 'validation-failed'],
         setup(props, { slots, emit }) {
-            // 注册组件
-            const internalInstance = getCurrentInstance();
-            Object.entries(globalOptions.WIDGET_MAP.widgetComponents).forEach(
-                ([componentName, component]) => internalInstance.appContext.app.component(componentName, component)
-            );
+            if (!Form.installed && globalOptions.WIDGET_MAP.widgetComponents) {
+                // global components
+                const internalInstance = getCurrentInstance();
+                Object.entries(globalOptions.WIDGET_MAP.widgetComponents).forEach(
+                    ([componentName, component]) => internalInstance.appContext.app.component(componentName, component)
+                );
+
+                // 只注册一次
+                Form.installed = true;
+            }
 
             // rootFormData
             const rootFormData = ref(getDefaultFormState(props.schema, props.modelValue, props.schema));

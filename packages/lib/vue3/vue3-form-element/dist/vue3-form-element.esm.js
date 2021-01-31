@@ -11094,15 +11094,21 @@ function createForm() {
     setup: function setup(props, _ref) {
       var slots = _ref.slots,
           emit = _ref.emit;
-      // 注册组件
-      var internalInstance = getCurrentInstance();
-      Object.entries(globalOptions.WIDGET_MAP.widgetComponents).forEach(function (_ref2) {
-        var _ref3 = _slicedToArray(_ref2, 2),
-            componentName = _ref3[0],
-            component = _ref3[1];
 
-        return internalInstance.appContext.app.component(componentName, component);
-      }); // rootFormData
+      if (!Form.installed && globalOptions.WIDGET_MAP.widgetComponents) {
+        // global components
+        var internalInstance = getCurrentInstance();
+        Object.entries(globalOptions.WIDGET_MAP.widgetComponents).forEach(function (_ref2) {
+          var _ref3 = _slicedToArray(_ref2, 2),
+              componentName = _ref3[0],
+              component = _ref3[1];
+
+          return internalInstance.appContext.app.component(componentName, component);
+        }); // 只注册一次
+
+        Form.installed = true;
+      } // rootFormData
+
 
       var rootFormData = ref$1(getDefaultFormState(props.schema, props.modelValue, props.schema));
       var footerParams = computed(function () {

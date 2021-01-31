@@ -1,6 +1,6 @@
 # @lljj/vue2-form-iview3
 
-基于 [Element Ui](https://element.eleme.io/) 、Vue2、 [JSON Schema](https://json-schema.org/understanding-json-schema/index.html) 生成表单
+基于 [iview3](http://iview.talkingdata.com) 、Vue2、 [JSON Schema](https://json-schema.org/understanding-json-schema/index.html) 生成表单
 
 > 通过 [@lljj/vue2-form-core](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/lib/vue2/vue2-core) 适配 iview3 库
 

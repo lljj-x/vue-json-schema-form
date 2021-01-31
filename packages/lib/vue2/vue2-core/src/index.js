@@ -2,6 +2,9 @@
  * Created by Liu.Jun on 2020/4/16 17:32.
  */
 
+
+import Vue from 'vue';
+
 // 生成form表单默认数据
 import getDefaultFormState from '@lljj/vjsf-utils/schema/getDefaultFormState';
 import { deepEquals } from '@lljj/vjsf-utils/utils';
@@ -22,6 +25,11 @@ export {
 };
 
 export default function createForm(globalOptions = {}) {
+    // global components
+    if (globalOptions.WIDGET_MAP.widgetComponents) {
+        Object.entries(globalOptions.WIDGET_MAP.widgetComponents).forEach(([key, value]) => Vue.component(key, value));
+    }
+
     return {
         name: 'ElementForm',
         props: vueProps,

@@ -11267,6 +11267,18 @@ styleInject(css_248z);
 
 function createForm() {
   var globalOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  // global components
+  if (globalOptions.WIDGET_MAP.widgetComponents) {
+    Object.entries(globalOptions.WIDGET_MAP.widgetComponents).forEach(function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+          key = _ref2[0],
+          value = _ref2[1];
+
+      return Vue.component(key, value);
+    });
+  }
+
   return {
     name: 'ElementForm',
     props: vueProps,
@@ -11933,6 +11945,9 @@ var InputNumberWidget = {
   }
 };
 
+/**
+ * Created by Liu.Jun on 2020/5/17 10:41 下午.
+ */
 var widgetComponents = {
   CheckboxesWidget: __vue_component__$1,
   RadioWidget: __vue_component__$2,
@@ -11943,15 +11958,7 @@ var widgetComponents = {
   UploadWidget: UploadWidget,
   SwitchWidget: SwitchWidget,
   InputNumberWidget: InputNumberWidget
-}; // 注册组件
-
-Object.entries(widgetComponents).forEach(function (_ref) {
-  var _ref2 = _slicedToArray(_ref, 2),
-      key = _ref2[0],
-      value = _ref2[1];
-
-  return Vue.component(key, value);
-});
+};
 
 /**
  * Created by Liu.Jun on 2020/4/21 18:23.
@@ -11984,7 +11991,8 @@ var WIDGET_MAP = {
     select: SelectWidget,
     radioGroup: RadioWidget,
     checkboxGroup: CheckboxesWidget
-  }
+  },
+  widgetComponents: widgetComponents
 };
 
 var css_248z$1 = ".genFromComponent.formLabel-top .ivu-form-item-label{line-height:26px;padding-bottom:6px}.genFromComponent .ivu-form-item-error-tip{padding-top:2px;position:absolute;display:-webkit-box!important;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;text-align:left;line-height:1.2}.genFromComponent .validateWidget .ivu-form-item-error-tip{padding:5px 0;position:relative}";

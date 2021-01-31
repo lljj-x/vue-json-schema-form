@@ -11267,6 +11267,18 @@ styleInject(css_248z);
 
 function createForm() {
   var globalOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  // global components
+  if (globalOptions.WIDGET_MAP.widgetComponents) {
+    Object.entries(globalOptions.WIDGET_MAP.widgetComponents).forEach(function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+          key = _ref2[0],
+          value = _ref2[1];
+
+      return Vue.component(key, value);
+    });
+  }
+
   return {
     name: 'ElementForm',
     props: vueProps,
@@ -11836,6 +11848,9 @@ var UploadWidget = {
   }
 };
 
+/**
+ * Created by Liu.Jun on 2020/5/17 10:41 下午.
+ */
 // const files = require.context('.', true, /\.js|vue$/);
 // const widgetComponents = files.keys().reduce((preVal, curKey) => {
 //     if (curKey !== './index.js') {
@@ -11852,15 +11867,7 @@ var widgetComponents = {
   DatePickerWidget: DatePickerWidget,
   DateTimePickerWidget: DateTimePickerWidget,
   UploadWidget: UploadWidget
-}; // 注册组件
-
-Object.entries(widgetComponents).forEach(function (_ref) {
-  var _ref2 = _slicedToArray(_ref, 2),
-      key = _ref2[0],
-      value = _ref2[1];
-
-  return Vue.component(key, value);
-});
+};
 
 /**
  * Created by Liu.Jun on 2020/4/21 18:23.
@@ -11891,7 +11898,8 @@ var WIDGET_MAP = {
     select: SelectWidget,
     radioGroup: RadioWidget,
     checkboxGroup: CheckboxesWidget
-  }
+  },
+  widgetComponents: widgetComponents
 };
 
 var css_248z$1 = ".genFromComponent.formLabel-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .el-checkbox,.genFromComponent .el-color-picker{vertical-align:top}";
