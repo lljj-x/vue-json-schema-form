@@ -7,6 +7,7 @@ import iView from 'iview';
 
 export default {
     install(Vue) {
+        // debugger;
         Vue.use(iView);
     }
 };

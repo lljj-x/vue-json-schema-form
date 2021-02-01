@@ -106,14 +106,11 @@ const globalOptions = {
         // popover，用在formLable 左右布局时鼠标移入显示description
         popover: 'el-popover'
     },
-
-    // 其它一些icon 图标
-    ICONS_MAP: {
-        question: 'el-icon-question',
-        moveUp: 'el-icon-caret-top',
-        moveDown: 'el-icon-caret-bottom',
-        close: 'el-icon-close',
-        plus: 'el-icon-plus'
+    HELPERS: {
+        // 是否mini显示 description
+        isMiniDes(formProps) {
+            return formProps && ['left', 'right'].includes(formProps.labselPosition);
+        }
     }
 };
 

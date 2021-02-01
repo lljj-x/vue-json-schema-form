@@ -2,6 +2,9 @@
  * Created by Liu.Jun on 2020/4/24 16:47.
  */
 
+import {
+    IconCaretUp, IconCaretDown, IconClose, IconPlus
+} from '@lljj/vjsf-utils/icons';
 import { h, computed } from 'vue';
 
 // 支持数字排序 ，新增 ，删除等操作
@@ -78,8 +81,6 @@ export default {
             // 没有数据，且不能添加不渲染该组件
             if (props.vNodeList.length <= 0 && !props.addable) return null;
 
-            const { ICONS_MAP } = props.globalOptions;
-
             // 是否可继续添加元素
             return h(
                 'div',
@@ -124,8 +125,7 @@ export default {
                                             },
                                             class: {
                                                 arrayListItem_btn: true,
-                                                'arrayListItem_orderBtn-top': true,
-                                                [ICONS_MAP.moveUp]: true,
+                                                'arrayListItem_orderBtn-top': true
                                             },
                                             type: 'button',
                                             disabled: !props.sortable || index === 0,
@@ -137,7 +137,8 @@ export default {
                                                     }
                                                 });
                                             }
-                                        }
+                                        },
+                                        [h(IconCaretUp)]
                                     ),
                                     h(
                                         'button',
@@ -150,8 +151,7 @@ export default {
                                             },
                                             class: {
                                                 arrayListItem_btn: true,
-                                                'arrayListItem_orderBtn-bottom': true,
-                                                [ICONS_MAP.moveDown]: true,
+                                                'arrayListItem_orderBtn-bottom': true
                                             },
 
                                             type: 'button',
@@ -164,7 +164,8 @@ export default {
                                                     }
                                                 });
                                             }
-                                        }
+                                        },
+                                        [h(IconCaretDown)]
                                     ),
                                     h(
                                         'button',
@@ -177,8 +178,7 @@ export default {
                                             },
                                             class: {
                                                 arrayListItem_btn: true,
-                                                'arrayListItem_btn-delete': true,
-                                                [ICONS_MAP.close]: true,
+                                                'arrayListItem_btn-delete': true
                                             },
                                             type: 'button',
                                             disabled: !canRemove.value,
@@ -191,6 +191,7 @@ export default {
                                                 });
                                             }
                                         },
+                                        [h(IconClose)]
                                     )
                                 ]
                             ),
@@ -235,7 +236,9 @@ export default {
                                     }
                                 },
                                 [
-                                    h('i', { class: [ICONS_MAP.plus], style: { marginRight: '5px' } }),
+                                    h(IconPlus, {
+                                        style: { marginRight: '5px' }
+                                    }),
                                     props.maxItems ? `( ${props.vNodeList.length} / ${props.maxItems} )` : ''
                                 ]
                             ),

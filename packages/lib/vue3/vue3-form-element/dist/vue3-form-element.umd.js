@@ -9376,7 +9376,7 @@
     }
   }
 
-  var css_248z = ".genFromComponent{font-size:14px;line-height:1;word-wrap:break-word;word-break:break-word;padding:0;margin:0}.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .fieldGroupWrap+.fieldGroupWrap .fieldGroupWrap_title{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{padding:0;margin-top:0;margin-bottom:2px;font-size:12px;line-height:20px;color:#999;text-align:left}.genFromComponent .formItemErrorBox{margin:0 auto;color:#ff5757;padding-top:2px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:16px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .genFormItemRequired:before{content:\"*\";color:#f56c6c;margin-right:4px}.genFromComponent .appendCombining_box{margin-bottom:22px}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .appendCombining_box{padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .validateWidget{margin-bottom:0;width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField{margin-bottom:22px}.genFromComponent .arrayField .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 12px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{padding-top:15px;-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_index,.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px}.genFromComponent .arrayListItem_index{top:6px;line-height:18px;height:18px;padding:0 6px;background-color:rgba(0,0,0,.28);color:#fff;font-size:12px;border-radius:2px}.genFromComponent .arrayListItem_operateTool{width:75px;right:9px;top:-2px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;width:25px;height:25px;line-height:25px;padding:0;margin:0;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}.genFromComponent .formFooter_item{text-align:right;border-top:1px solid rgba(0,0,0,.08);padding-top:10px}.genFromComponent.formInlineFooter>.fieldGroupWrap{display:inline-block;margin-right:10px}.genFromComponent .arrayListItem_content .genFormItem:last-child{margin-bottom:0}.genFromComponent.formInline .validateWidget{margin-right:0}.genFromComponent.formInline .formFooter_item{border-top:none;padding-top:0}.genFromComponent.formLabel-top .arrayListItem_content{padding-top:8px}.layoutColumn .layoutColumn_w100{width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important}.layoutColumn .fieldGroupWrap_box{width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-ms-flex-line-pack:start;align-content:flex-start}.layoutColumn .fieldGroupWrap_box>div{width:100%;-ms-flex-preferred-size:100%;flex-basis:100%}.layoutColumn .fieldGroupWrap_box>.genFormItem{-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;-ms-flex-negative:0;flex-shrink:0;-webkit-box-sizing:border-box;box-sizing:border-box;padding-right:10px}.layoutColumn.layoutColumn-1 .fieldGroupWrap_box>.genFormItem{padding-right:0}.layoutColumn.layoutColumn-2 .fieldGroupWrap_box>.genFormItem{width:50%;-ms-flex-preferred-size:50%;flex-basis:50%}.layoutColumn.layoutColumn-3 .fieldGroupWrap_box>.genFormItem{width:33.333%;-ms-flex-preferred-size:33.333%;flex-basis:33.333%}";
+  var css_248z = ".genFromComponent{font-size:14px;line-height:1;word-wrap:break-word;word-break:break-word;padding:0;margin:0}.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px}.genFromComponent .genFormIcon{width:12px;height:12px;vertical-align:top}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .fieldGroupWrap+.fieldGroupWrap .fieldGroupWrap_title{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{padding:0;margin-top:0;margin-bottom:2px;font-size:12px;line-height:20px;color:#999;text-align:left}.genFromComponent .formItemErrorBox{margin:0 auto;color:#ff5757;padding-top:2px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:16px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .genFormIcon-qs{fill:#606266;vertical-align:middle;display:inline-block;width:16px;height:16px;margin-left:2px;margin-top:-2px;cursor:pointer}.genFromComponent .genFormItemRequired:before{content:\"*\";color:#f56c6c;margin-right:4px}.genFromComponent .appendCombining_box{margin-bottom:22px}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .appendCombining_box{padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .validateWidget{margin-bottom:0!important;width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important;padding:0!important}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField:not(.genFormItem){margin-bottom:22px}.genFromComponent .arrayField:not(.genFormItem) .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 12px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{padding-top:15px;-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_index,.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px}.genFromComponent .arrayListItem_index{top:6px;line-height:18px;height:18px;padding:0 6px;background-color:rgba(0,0,0,.28);color:#fff;font-size:12px;border-radius:2px}.genFromComponent .arrayListItem_operateTool{width:75px;right:9px;top:-1px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;padding:6px;margin:0;font-size:0;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}.genFromComponent .formFooter_item{text-align:right;border-top:1px solid rgba(0,0,0,.08);padding-top:10px}.genFromComponent.formInlineFooter>.fieldGroupWrap{display:inline-block;margin-right:10px}.genFromComponent.formInline .genFormItem{display:inline-block;margin-right:10px;vertical-align:top}.genFromComponent.formInline .validateWidget{margin-right:0}.genFromComponent.formInline .formFooter_item{border-top:none;padding-top:0}.layoutColumn .layoutColumn_w100{width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important}.layoutColumn .fieldGroupWrap_box{width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-ms-flex-line-pack:start;align-content:flex-start}.layoutColumn .fieldGroupWrap_box>div{width:100%;-ms-flex-preferred-size:100%;flex-basis:100%}.layoutColumn .fieldGroupWrap_box>.genFormItem{-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;-ms-flex-negative:0;flex-shrink:0;-webkit-box-sizing:border-box;box-sizing:border-box;padding-right:10px}.layoutColumn.layoutColumn-1 .fieldGroupWrap_box>.genFormItem{padding-right:0}.layoutColumn.layoutColumn-2 .fieldGroupWrap_box>.genFormItem{width:50%;-ms-flex-preferred-size:50%;flex-basis:50%}.layoutColumn.layoutColumn-3 .fieldGroupWrap_box>.genFormItem{width:33.333%;-ms-flex-preferred-size:33.333%;flex-basis:33.333%}";
   styleInject(css_248z);
 
   /**
@@ -9625,6 +9625,120 @@
   script.render = render;
   script.__file = "vue3-core/src/components/FieldGroupWrap.vue";
 
+  var _hoisted_1$1 = {
+    class: "genFormIcon genFormIcon-down",
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 1024 1024"
+  };
+
+  var _hoisted_2$1 = /*#__PURE__*/Vue.createVNode("path", {
+    d: "M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+  }, null, -1
+  /* HOISTED */
+  );
+
+  function render$1(_ctx, _cache) {
+    return Vue.openBlock(), Vue.createBlock("svg", _hoisted_1$1, [_hoisted_2$1]);
+  }
+
+  var script$1 = {};
+  script$1.render = render$1;
+  script$1.__file = "utils/icons/IconCaretDown.vue";
+
+  var _hoisted_1$2 = {
+    class: "genFormIcon genFormIcon-up",
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 1024 1024"
+  };
+
+  var _hoisted_2$2 = /*#__PURE__*/Vue.createVNode("path", {
+    d: "M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+  }, null, -1
+  /* HOISTED */
+  );
+
+  function render$2(_ctx, _cache) {
+    return Vue.openBlock(), Vue.createBlock("svg", _hoisted_1$2, [_hoisted_2$2]);
+  }
+
+  var script$2 = {};
+  script$2.render = render$2;
+  script$2.__file = "utils/icons/IconCaretUp.vue";
+
+  var _hoisted_1$3 = {
+    class: "genFormIcon genFormIcon-close",
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 1024 1024"
+  };
+
+  var _hoisted_2$3 = /*#__PURE__*/Vue.createVNode("path", {
+    d: "M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1\n            191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0\n            0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"
+  }, null, -1
+  /* HOISTED */
+  );
+
+  function render$3(_ctx, _cache) {
+    return Vue.openBlock(), Vue.createBlock("svg", _hoisted_1$3, [_hoisted_2$3]);
+  }
+
+  var script$3 = {};
+  script$3.render = render$3;
+  script$3.__file = "utils/icons/IconClose.vue";
+
+  var _hoisted_1$4 = {
+    class: "genFormIcon genFormIcon-plus",
+    t: "1551322312294",
+    viewBox: "0 0 1024 1024",
+    version: "1.1",
+    xmlns: "http://www.w3.org/2000/svg",
+    "p-id": "10297",
+    "xmlns:xlink": "http://www.w3.org/1999/xlink",
+    width: "200",
+    height: "200"
+  };
+
+  var _hoisted_2$4 = /*#__PURE__*/Vue.createVNode("path", {
+    d: "M474 152m8 0l60 0q8 0 8 8l0 704q0 8-8 8l-60 0q-8 0-8-8l0-704q0-8 8-8Z",
+    "p-id": "10298"
+  }, null, -1
+  /* HOISTED */
+  );
+
+  var _hoisted_3$1 = /*#__PURE__*/Vue.createVNode("path", {
+    d: "M168 474m8 0l672 0q8 0 8 8l0 60q0 8-8 8l-672 0q-8 0-8-8l0-60q0-8 8-8Z",
+    "p-id": "10299"
+  }, null, -1
+  /* HOISTED */
+  );
+
+  function render$4(_ctx, _cache) {
+    return Vue.openBlock(), Vue.createBlock("svg", _hoisted_1$4, [_hoisted_2$4, _hoisted_3$1]);
+  }
+
+  var script$4 = {};
+  script$4.render = render$4;
+  script$4.__file = "utils/icons/IconPlus.vue";
+
+  var _hoisted_1$5 = {
+    class: "genFormIcon genFormIcon-qs",
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 1024 1024"
+  };
+
+  var _hoisted_2$5 = /*#__PURE__*/Vue.createVNode("path", {
+    d: "M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 708c-22.1\n            0-40-17.9-40-40s17.9-40 40-40 40 17.9 40 40-17.9 40-40 40zm62.9-219.5a48.3 48.3 0 0\n            0-30.9 44.8V620c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8v-21.5c0-23.1 6.7-45.9 19.9-64.9 12.9-18.6 30.9-32.8\n            52.1-40.9 34-13.1 56-41.6 56-72.7 0-44.1-43.1-80-96-80s-96 35.9-96 80v7.6c0 4.4-3.6\n            8-8 8h-48c-4.4 0-8-3.6-8-8V420c0-39.3 17.2-76 48.4-103.3C430.4 290.4 470 276 512 276s81.6 14.5 111.6\n            40.7C654.8 344 672 380.7 672 420c0 57.8-38.1 109.8-97.1 132.5z"
+  }, null, -1
+  /* HOISTED */
+  );
+
+  function render$5(_ctx, _cache) {
+    return Vue.openBlock(), Vue.createBlock("svg", _hoisted_1$5, [_hoisted_2$5]);
+  }
+
+  var script$5 = {};
+  script$5.render = render$5;
+  script$5.__file = "utils/icons/IconQuestion.vue";
+
   var Widget = {
     name: 'Widget',
     props: {
@@ -9761,6 +9875,7 @@
 
     },
     emits: ['change'],
+    inheritAttrs: true,
     setup: function setup(props, _ref) {
       var emit = _ref.emit;
       var widgetValue = Vue.computed({
@@ -9787,12 +9902,12 @@
         } else if (props.required) {
           widgetValue.value = props.uiProps.enumOptions[0].value;
         }
-      } // 获取到子组件实例
+      } // 获取到widget组件实例
 
 
       var widgetRef = Vue.ref(null); // 提供一种特殊的配置 允许直接访问到 widget vm
 
-      if (props.getWidget && typeof props.getWidget === 'function') {
+      if (typeof props.getWidget === 'function') {
         Vue.watch(widgetRef, function () {
           props.getWidget.call(null, widgetRef.value);
         });
@@ -9800,18 +9915,15 @@
 
       return function () {
         // 判断是否为根节点
-        var isRootNode = isRootNodePath(props.curNodePath); // labelPosition left/right
-
-        var miniDesModel = props.formProps && props.formProps.labelPosition !== 'top';
-        var descriptionVNode = props.description ? Vue.h('p', {
+        var isRootNode = isRootNodePath(props.curNodePath);
+        var miniDesModel = props.globalOptions.HELPERS.isMiniDes(props.formProps);
+        var descriptionVNode = props.description ? Vue.h('div', {
           innerHTML: props.description,
           class: {
             genFromWidget_des: true
           }
         }) : null;
-        var _props$globalOptions = props.globalOptions,
-            COMPONENT_MAP = _props$globalOptions.COMPONENT_MAP,
-            ICONS_MAP = _props$globalOptions.ICONS_MAP;
+        var COMPONENT_MAP = props.globalOptions.COMPONENT_MAP;
         var miniDescriptionVNode = miniDesModel && descriptionVNode ? Vue.h(resolveComponent(COMPONENT_MAP.popover), {
           style: {
             margin: '0 2px',
@@ -9820,10 +9932,14 @@
           },
           placement: 'top',
           trigger: 'hover'
-        }, [descriptionVNode, Vue.h('i', {
-          slot: 'reference',
-          class: ICONS_MAP.question
-        })]) : null; // form-item style
+        }, {
+          default: function _default() {
+            return descriptionVNode;
+          },
+          reference: function reference() {
+            return Vue.h(script$5);
+          }
+        }) : null; // form-item style
 
         var formItemStyle = _objectSpread2(_objectSpread2({}, props.fieldStyle), props.width ? {
           width: props.width,
@@ -9831,14 +9947,14 @@
           paddingRight: '10px'
         } : {});
 
-        return Vue.h(resolveComponent(COMPONENT_MAP.formItem), _objectSpread2(_objectSpread2({
+        return Vue.h(resolveComponent(COMPONENT_MAP.formItem), _objectSpread2(_objectSpread2(_objectSpread2({
           class: _objectSpread2(_objectSpread2({}, props.fieldClass), {}, {
             genFormItem: true
           }),
           style: formItemStyle
-        }, props.fieldAttrs), {}, {
+        }, props.fieldAttrs), props.labelWidth ? {
           labelWidth: props.labelWidth
-        }, props.isFormData ? {
+        } : {}), props.isFormData ? {
           // 这里对根节点打特殊标志，绕过elementUi无prop属性不校验
           prop: isRootNode ? '__$$root' : path2prop(props.curNodePath),
           rules: [{
@@ -9853,8 +9969,13 @@
                 errorSchema: props.errorSchema,
                 required: props.required,
                 propPath: path2prop(props.curNodePath)
-              });
-              if (errors.length > 0) return callback(errors[0].message); // customRule 如果存在自定义校验
+              }); // 存在校验不通过字段
+
+              if (errors.length > 0) {
+                if (callback) return callback(errors[0].message);
+                return Promise.reject(errors[0].message);
+              } // customRule 如果存在自定义校验
+
 
               var curCustomRule = props.customRule;
 
@@ -9865,16 +9986,18 @@
                   rootFormData: props.rootFormData,
                   callback: callback
                 });
-              }
+              } // 校验成功
 
-              return callback();
+
+              if (callback) return callback();
+              return Promise.resolve();
             },
             trigger: 'blur'
           }]
         } : {}), _objectSpread2(_objectSpread2({
           // 错误只能显示一行，多余...
           error: function error(slotProps) {
-            return slotProps.error ? Vue.h('p', {
+            return slotProps.error ? Vue.h('div', {
               class: {
                 formItemErrorBox: true
               },
@@ -9892,7 +10015,7 @@
           }
         } : {}), {}, {
           // default
-          default: function _default() {
+          default: function _default(otherAttrs) {
             return [].concat(_toConsumableArray(!miniDesModel && descriptionVNode ? [descriptionVNode] : []), _toConsumableArray(props.widget ? [Vue.h( // 关键输入组件
             resolveComponent(props.widget), _objectSpread2(_objectSpread2(_objectSpread2({
               style: props.widgetStyle,
@@ -9904,7 +10027,7 @@
               'onUpdate:modelValue': function updateModelValue(event) {
                 widgetValue.value = event;
               }
-            }))] : []));
+            }, otherAttrs))] : []));
           }
         }));
       };
@@ -10180,8 +10303,7 @@
       });
       return function () {
         // 没有数据，且不能添加不渲染该组件
-        if (props.vNodeList.length <= 0 && !props.addable) return null;
-        var ICONS_MAP = props.globalOptions.ICONS_MAP; // 是否可继续添加元素
+        if (props.vNodeList.length <= 0 && !props.addable) return null; // 是否可继续添加元素
 
         return Vue.h('div', {
           class: {
@@ -10210,10 +10332,10 @@
             style: _objectSpread2({}, !props.sortable ? {
               display: 'none'
             } : {}),
-            class: _defineProperty({
+            class: {
               arrayListItem_btn: true,
               'arrayListItem_orderBtn-top': true
-            }, ICONS_MAP.moveUp, true),
+            },
             type: 'button',
             disabled: !props.sortable || index === 0,
             onClick: function onClick() {
@@ -10224,15 +10346,15 @@
                 }
               });
             }
-          }), Vue.h('button', {
+          }, [Vue.h(script$2)]), Vue.h('button', {
             // 配置不可排序不显示排序按钮
             style: _objectSpread2({}, !props.sortable ? {
               display: 'none'
             } : {}),
-            class: _defineProperty({
+            class: {
               arrayListItem_btn: true,
               'arrayListItem_orderBtn-bottom': true
-            }, ICONS_MAP.moveDown, true),
+            },
             type: 'button',
             disabled: !props.sortable || index === props.vNodeList.length - 1,
             onClick: function onClick() {
@@ -10243,15 +10365,15 @@
                 }
               });
             }
-          }), Vue.h('button', {
+          }, [Vue.h(script$1)]), Vue.h('button', {
             // 配置不可移除不显示移除按钮
             style: _objectSpread2({}, !props.removable ? {
               display: 'none'
             } : {}),
-            class: _defineProperty({
+            class: {
               arrayListItem_btn: true,
               'arrayListItem_btn-delete': true
-            }, ICONS_MAP.close, true),
+            },
             type: 'button',
             disabled: !canRemove.value,
             onClick: function onClick() {
@@ -10262,7 +10384,7 @@
                 }
               });
             }
-          })]), Vue.h('div', {
+          }, [Vue.h(script$3)])]), Vue.h('div', {
             class: {
               arrayListItem_content: true
             }
@@ -10286,8 +10408,7 @@
               command: 'add'
             });
           }
-        }, [Vue.h('i', {
-          class: [ICONS_MAP.plus],
+        }, [Vue.h(script$4, {
           style: {
             marginRight: '5px'
           }
@@ -11094,7 +11215,7 @@
     var Form = {
       name: 'VueElementForm',
       props: vueProps,
-      emits: ['update:modelValue', 'change', 'cancel', 'submit', 'validation-failed'],
+      emits: ['update:modelValue', 'change', 'cancel', 'submit', 'validation-failed', 'form-mounted'],
       setup: function setup(props, _ref) {
         var slots = _ref.slots,
             emit = _ref.emit;
@@ -11121,8 +11242,9 @@
             okBtn: '保存',
             cancelBtn: '取消'
           }, props.formFooter);
-        });
-        var formRef = Vue.ref(null); // 更新formData
+        }); // form组件实例，不需要响应式
+
+        var formRef = null; // 更新formData
 
         var emitFormDataChange = function emitFormDataChange(newValue, oldValue) {
           // 支持v-model ，引用类型
@@ -11171,7 +11293,7 @@
             return slots.default({
               formData: rootFormData,
               formRefFn: function formRefFn() {
-                return formRef.value;
+                return formRef;
               }
             });
           }
@@ -11185,7 +11307,8 @@
                 emit('cancel');
               },
               onSubmit: function onSubmit() {
-                formRef.value.validate(function (isValid, resData) {
+                // 优先获取组件 $$validate 方法，方便对 validate方法转换
+                (formRef.$$validate || formRef.validate)(function (isValid, resData) {
                   if (isValid) {
                     return emit('submit', rootFormData);
                   }
@@ -11200,11 +11323,15 @@
           return [];
         };
 
-        var childProps = Vue.computed(function () {
+        return function () {
+          var _class;
+
           var _props$formProps = props.formProps,
               _props$formProps$layo = _props$formProps.layoutColumn,
               layoutColumn = _props$formProps$layo === void 0 ? 1 : _props$formProps$layo,
-              formProps = _objectWithoutProperties(_props$formProps, ["layoutColumn"]);
+              inlineFooter = _props$formProps.inlineFooter,
+              inline = _props$formProps.inline,
+              otherFormProps = _objectWithoutProperties(_props$formProps, ["layoutColumn", "inlineFooter", "inline"]);
 
           var schemaProps = {
             schema: props.schema,
@@ -11220,27 +11347,24 @@
             globalOptions: globalOptions,
             // 全局配置，差异化ui框架
             formProps: _objectSpread2({
-              labelPosition: 'top',
-              labelSuffix: '：'
-            }, formProps)
+              labelSuffix: '：',
+              labelPosition: 'top'
+            }, otherFormProps)
           };
-          return {
-            layoutColumn: layoutColumn,
-            schemaProps: schemaProps
-          };
-        });
-        return function () {
-          var _class;
-
           return Vue.h(resolveComponent(globalOptions.COMPONENT_MAP.form), _objectSpread2({
             class: (_class = {
-              genFromComponent: true
-            }, _defineProperty(_class, "formLabel-".concat(childProps.value.schemaProps.formProps.labelPosition), true), _defineProperty(_class, "formInlineFooter", childProps.value.schemaProps.formProps.inlineFooter), _defineProperty(_class, "formInline", childProps.value.schemaProps.inline), _defineProperty(_class, "genFromComponent_".concat(props.schema.id, "Form"), !!props.schema.id), _defineProperty(_class, "layoutColumn", !childProps.value.schemaProps.inline), _defineProperty(_class, "layoutColumn-".concat(childProps.value.layoutColumn), !childProps.value.schemaProps.inline), _class),
-            ref: formRef,
+              genFromComponent: true,
+              formInlineFooter: inlineFooter,
+              formInline: inline
+            }, _defineProperty(_class, "genFromComponent_".concat(props.schema.id, "Form"), !!props.schema.id), _defineProperty(_class, "layoutColumn", !inline), _defineProperty(_class, "layoutColumn-".concat(layoutColumn), !inline), _class),
+            setFormRef: function setFormRef(form) {
+              formRef = form;
+              emit('form-mounted', form);
+            },
             model: rootFormData
-          }, childProps.value.schemaProps.formProps), {
+          }, schemaProps.formProps), {
             default: function _default() {
-              return [Vue.h(SchemaField, _objectSpread2({}, childProps.value.schemaProps)), getDefaultSlot()];
+              return [Vue.h(SchemaField, schemaProps), getDefaultSlot()];
             }
           });
         };
@@ -11255,7 +11379,7 @@
     return Form;
   }
 
-  var script$1 = {
+  var script$6 = {
     name: 'CheckboxesWidget',
     props: {
       enumOptions: {
@@ -11267,7 +11391,7 @@
     }
   };
 
-  function render$1(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$6(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_checkbox = Vue.resolveComponent("el-checkbox");
 
     var _component_el_checkbox_group = Vue.resolveComponent("el-checkbox-group");
@@ -11302,10 +11426,10 @@
     );
   }
 
-  script$1.render = render$1;
-  script$1.__file = "src/config/widgets/CheckboxesWidget/index.vue";
+  script$6.render = render$6;
+  script$6.__file = "src/config/widgets/CheckboxesWidget/index.vue";
 
-  var script$2 = {
+  var script$7 = {
     name: 'RadioWidget',
     props: {
       enumOptions: {
@@ -11317,7 +11441,7 @@
     }
   };
 
-  function render$2(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$7(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_radio = Vue.resolveComponent("el-radio");
 
     var _component_el_radio_group = Vue.resolveComponent("el-radio-group");
@@ -11352,10 +11476,10 @@
     );
   }
 
-  script$2.render = render$2;
-  script$2.__file = "src/config/widgets/RadioWidget/index.vue";
+  script$7.render = render$7;
+  script$7.__file = "src/config/widgets/RadioWidget/index.vue";
 
-  var script$3 = {
+  var script$8 = {
     name: 'SelectWidget',
     props: {
       enumOptions: {
@@ -11367,7 +11491,7 @@
     }
   };
 
-  function render$3(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$8(_ctx, _cache, $props, $setup, $data, $options) {
     var _component_el_option = Vue.resolveComponent("el-option");
 
     var _component_el_select = Vue.resolveComponent("el-select");
@@ -11394,8 +11518,8 @@
     );
   }
 
-  script$3.render = render$3;
-  script$3.__file = "src/config/widgets/SelectWidget/index.vue";
+  script$8.render = render$8;
+  script$8.__file = "src/config/widgets/SelectWidget/index.vue";
 
   function isEmptyValue(value) {
     return value === null || value === '' || Array.isArray(value) && value.every(function (item) {
@@ -11563,8 +11687,10 @@
         type: [String, Array]
       },
       responseFileUrl: {
-        default: function _default(res) {
-          return res ? res.url || res.data && res.data.url : '';
+        default: function _default() {
+          return function (res) {
+            return res ? res.url || res.data && res.data.url : '';
+          };
         },
         type: [Function]
       },
@@ -11580,25 +11706,22 @@
     },
     setup: function setup(props, _ref) {
       var attrs = _ref.attrs,
-          slots = _ref.slots,
           emit = _ref.emit;
       // 设置默认 fileList
-      var value = props.modelValue;
-      var isArrayValue = Array.isArray(value);
-      var defaultFileList = attrs.fileList || [];
+      var curModelValue = props.modelValue;
+      var isArrayValue = Array.isArray(curModelValue);
+      var defaultFileList = attrs.fileList; // 优先使用 fileList 参数，否则使用 value 计算
 
-      if (isArrayValue) {
-        defaultFileList = value.map(function (item, index) {
+      if (!defaultFileList || defaultFileList.length === 0) {
+        defaultFileList = isArrayValue ? curModelValue.map(function (item, index) {
           return {
             name: "\u5DF2\u4E0A\u4F20\u6587\u4EF6\uFF08".concat(index + 1, "\uFF09"),
             url: item
           };
-        });
-      } else if (value) {
-        defaultFileList.push({
+        }) : [{
           name: '已上传文件',
-          url: value
-        });
+          url: curModelValue
+        }];
       } // fileList
 
 
@@ -11658,21 +11781,18 @@
         });
 
         if (!isArrayValue) data.limit = 1;
-        var childVNode = {};
 
-        if (slots && slots.default) ; else {
-          childVNode.default = function () {
+        var childVNode = _objectSpread2({
+          default: function _default() {
             return Vue.h(resolveComponent('el-button'), {
-              props: {
-                type: 'primary'
-              }
+              type: 'primary'
             }, {
               default: function _default() {
                 return props.btnText;
               }
             });
-          };
-        }
+          }
+        }, props.slots || {});
 
         return Vue.h(resolveComponent('el-upload'), data, childVNode);
       };
@@ -11683,9 +11803,9 @@
    * Created by Liu.Jun on 2020/5/17 10:41 下午.
    */
   var widgetComponents = {
-    CheckboxesWidget: script$1,
-    RadioWidget: script$2,
-    SelectWidget: script$3,
+    CheckboxesWidget: script$6,
+    RadioWidget: script$7,
+    SelectWidget: script$8,
     TimePickerWidget: TimePickerWidget,
     DatePickerWidget: DatePickerWidget,
     DateTimePickerWidget: DateTimePickerWidget,
@@ -11725,29 +11845,48 @@
     widgetComponents: widgetComponents
   };
 
-  var css_248z$1 = ".genFromComponent.formLabel-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .el-checkbox,.genFromComponent .el-color-picker{vertical-align:top}";
+  var css_248z$1 = ".genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .el-checkbox,.genFromComponent .el-color-picker{vertical-align:top}";
   styleInject(css_248z$1);
 
-  /**
-   * Created by Liu.Jun on 2019/11/29 11:25.
-   */
   var globalOptions = {
     WIDGET_MAP: WIDGET_MAP,
     COMPONENT_MAP: {
-      form: 'el-form',
+      form: Vue.defineComponent({
+        inheritAttrs: false,
+        setup: function setup(props, _ref) {
+          var attrs = _ref.attrs,
+              slots = _ref.slots;
+          var formRef = Vue.ref(null);
+
+          if (attrs.setFormRef) {
+            Vue.onMounted(function () {
+              attrs.setFormRef(formRef.value);
+            });
+          }
+
+          return function () {
+            // eslint-disable-next-line no-unused-vars
+            attrs.setFormRef;
+                var otherAttrs = _objectWithoutProperties(attrs, ["setFormRef"]);
+
+            return Vue.h(resolveComponent('el-form'), _objectSpread2({
+              ref: formRef
+            }, otherAttrs), slots);
+          };
+        }
+      }),
       formItem: 'el-form-item',
       button: 'el-button',
       popover: 'el-popover'
     },
-    ICONS_MAP: {
-      question: 'el-icon-question',
-      moveUp: 'el-icon-caret-top',
-      moveDown: 'el-icon-caret-bottom',
-      close: 'el-icon-close',
-      plus: 'el-icon-plus'
+    HELPERS: {
+      // 是否mini显示 description
+      isMiniDes: function isMiniDes(formProps) {
+        return formProps && ['left', 'right'].includes(formProps.labelPosition);
+      }
     }
   };
-  var JsonSchemaForm = createForm(globalOptions); // 存在Vue 全局变量默认注册 VueForm 组件
+  var JsonSchemaForm = createForm(globalOptions);
 
   exports.SchemaField = SchemaField;
   exports.default = JsonSchemaForm;

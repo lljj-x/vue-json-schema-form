@@ -1,0 +1,32 @@
+/* element plus 重置样式*/
+.genFromComponent {
+    &.ant-form-vertical {
+        .ant-form-item-label {
+            line-height: 26px;
+            padding-bottom: 6px;
+            font-size: 14px;
+        }
+    }
+    .ant-form-item {
+        margin-bottom: 22px;
+        &.ant-form-item-with-help {
+            margin-bottom: 2px;
+        }
+    }
+    .ant-form-explain {
+        padding-top: 2px;
+        display: -webkit-box!important;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        white-space: normal;
+        text-align: left;
+        line-height: 1.2;
+        font-size: 12px;
+    }
+    .validateWidget .ant-form-explain {
+        padding: 5px 0;
+        position: relative;
+    }
+}

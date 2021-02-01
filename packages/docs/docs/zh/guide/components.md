@@ -1,6 +1,8 @@
-# 全局注册组件
+# 全局Widget组件
 
-`vjsf` 在运行中会自动注册如下全局组件，这些组件都是在渲染 `Widget` 所使用
+`Widget` 组件，需要支持v-model双向绑定，通常可以直接使用ui库的输入组件，如 `el-input`，针对一些不能直接使用的场景场景提供如下的内置Widget组件：
+
+> 如下组件在运行时也会在内部直接使用。
 
 * [CheckboxesWidget](#checkboxeswidget)
 * [RadioWidget](#radiowidget)
@@ -9,7 +11,15 @@
 * [TimePickerWidget](#timepickerwidget)
 * [DatePickerWidget](#datepickerwidget)
 * [DateTimePickerWidget](#datetimepickerwidget)
+* [UploadWidget](#uploadwidget)
+* [vue3 ant 特有的](#vue3-ant-特有的)
 
+
+:::tip
+* `vjsf` 在运行中会自动注册如下全局Widget组件。
+* vue3 版本使用 v-model使用 `model: modelValue`
+* [自定义Widget组件参见](/zh/guide/adv-config.html#自定义widget)
+:::
 
 ## CheckboxesWidget
 复选框组，内部使用 elementUi `el-checkbox-group` 组件
@@ -132,12 +142,24 @@ export default {
 :::
 
 ## TimePickerWidget
-> 内部做时间日期选择使用，一般不要配置自定义 `widget` 中使用
+> 内部使用 `timPick` 组件，支持参数透传
 
 ## DatePickerWidget
-> 内部做时间日期选择使用，一般不要配置自定义 `widget` 中使用
+> 内部使用 `DatePicker / DateTimePicker` 组件，支持参数透传
 
 ## DateTimePickerWidget
-> 内部做时间日期选择使用，一般不要配置自定义 `widget` 中使用
+> 内部使用 `DatePicker / DateTimePicker` 组件，支持参数透传
 
+## vue3 ant 特有的全局组件
+> 内部使用 `DatePicker / DateTimePicker` 组件，支持参数透
+
+vue3 ant 由于v-model不使用 `model: modelValue`，所以对常用的组件做了转换，如下：
+
+| 组件名      | 对应ant组件 |
+| ----------- | ----------- |
+| InputWidget      | a-input       |
+| InputNumberWidget   | a-input-number        |
+| AutoCompleteWidget   | a-auto-complete        |
+| SliderWidget   | a-slider        |
+| SwitchWidget   | a-switch        |
 

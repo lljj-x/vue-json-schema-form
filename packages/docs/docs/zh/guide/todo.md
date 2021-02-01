@@ -25,6 +25,6 @@
 - [x] 支持属性依赖 [属性依赖](https://json-schema.org/understanding-json-schema/reference/object.html#property-dependencies)
 - [x] 支持 ui:hidden 使用 mustache 表达式
 - [x] 支持 所有ui配置使用 mustache 表达式
+- [x] 支持Vue3
+- [x] 适配elementUi、iView、Ant vue 等常用ui组件
 - [ ] 添加代码测试
-- [ ] 支持Vue3
-- [ ] 适配elementUi、iView、Ant vue 等常用ui组件

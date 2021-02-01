@@ -157,7 +157,8 @@ uiSchema = {
     // https://vue-json-schema-form.lljj.me/zh/guide/adv-config.html#%E8%87%AA%E5%AE%9A%E4%B9%89widget
     'ui:widget': 'el-slider',
 
-    // form item label宽度
+    // 传给formItem 组件 labelWidth，优先级更高（antdv formItem 没有该参数，可使用fieldAttrs配置labelCol控制label宽度）
+    // 也可在 fieldAttrs 中配置 labelWidth': '50px'
     'ui:labelWidth': '50px',
 
     'ui:options': {
@@ -621,17 +622,30 @@ formFooter = {
 
 ### form-props
 * 类型：`object`
+`form-props` 支持如下两部分参数：
 
-使用elementUi `el-form` [https://element.eleme.cn/2.13/#/zh-CN/component/form#form-attributes](https://element.eleme.cn/2.13/#/zh-CN/component/form#form-attributes)
+* 固定参数部分
 
+和当前使用的ui库无关
 ```js
 // 默认值
 formProps = {
     layoutColumn: 1, // 1 2 3 ，支持 1 2 3 列布局，如果使用inline表单这里配置无效
-    labelPosition: 'top', // 表单域标签的位置
-    labelSuffix: '：', //
     inline: false, // 行内表单模式
     inlineFooter: false, // 如果想要保存按钮和表单元素一行显示，需要配置 true
+    labelSuffix: '：', // label后缀
+    labelPosition: 'top', // 表单域标签的位置
+}
+```
+
+* 当前ui库form组件的参数
+如上固定参数以外的参数，都会传给当前ui库的form组件，比如elementUi el-form、IView i-form ...
+```js
+formProps = {
+    layoutColumn: 2, // 1 2 3 ，支持 1 2 3 列布局，如果使用inline表单这里配置无效
+
+    // 如下为form组件参数
+    // 如elementUi el-form labelWidth
     labelWidth: 'auto', // 表单域标签的宽度，例如 '50px'
 }
 ```
@@ -737,6 +751,15 @@ vue3的版本中为 `change`，去掉 `on` 前缀
 
 表单的值发生改变
 > 引用类型，只有重新对对象赋值，否则newVal 等于 oldVal 参见 [vue watch](https://cn.vuejs.org/v2/api/#vm-watch)
+
+### on-form-mounted
+* 参数(formRef)
+
+通过该方法可以获取到当前ui框架的form组件实例，可用来执行form组件的一些方法，如(`validate`)
+
+::: warning
+vue3的版本中为 `form-mounted`，去掉 `on` 前缀
+:::
 
 ## 方法 Methods
 -- 无

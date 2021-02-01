@@ -16,7 +16,7 @@ export default {
             type: [String, Array]
         },
         responseFileUrl: {
-            default: res => (res ? (res.url || (res.data && res.data.url)) : ''),
+            default: () => res => (res ? (res.url || (res.data && res.data.url)) : ''),
             type: [Function]
         },
         btnText: {
@@ -29,24 +29,23 @@ export default {
             default: null
         }
     },
-    setup(props, { attrs, slots, emit }) {
+    setup(props, { attrs, emit }) {
         // 设置默认 fileList
-        const value = props.modelValue;
-        const isArrayValue = Array.isArray(value);
+        const curModelValue = props.modelValue;
+        const isArrayValue = Array.isArray(curModelValue);
 
-        let defaultFileList = attrs.fileList || [];
-
-        if (isArrayValue) {
-            defaultFileList = value.map((item, index) => ({
+        let defaultFileList = attrs.fileList;
+        // 优先使用 fileList 参数，否则使用 value 计算
+        if (!defaultFileList || defaultFileList.length === 0) {
+            defaultFileList = isArrayValue ? curModelValue.map((item, index) => ({
                 name: `已上传文件（${index + 1}）`,
                 url: item
-            }));
-        } else if (value) {
-            defaultFileList.push({
+            })) : [{
                 name: '已上传文件',
-                url: value
-            });
+                url: curModelValue
+            }];
         }
+
 
         // fileList
         const fileListRef = ref(defaultFileList);
@@ -107,23 +106,18 @@ export default {
 
             if (!isArrayValue) data.limit = 1;
 
-            const childVNode = {};
-
-            if (slots && slots.default) {
-                // nothing...
-            } else {
-                childVNode.default = () => h(
+            const childVNode = {
+                default: () => h(
                     resolveComponent('el-button'),
                     {
-                        props: {
-                            type: 'primary'
-                        },
+                        type: 'primary'
                     },
                     {
                         default: () => props.btnText
                     }
-                );
-            }
+                ),
+                ...(props.slots || {}),
+            };
 
             return h(resolveComponent('el-upload'), data, childVNode);
         };

@@ -50,7 +50,7 @@ yarn run demo:dev --dir=vue-editor
 
 ### 说明
 * 遵循 `JSON Schema` 规范，只需要给定 `JSON Schema`，即可生成对应的form表单
-* 快速配置个性化ui视图和校验错误信息，可适配常用的ui库，目前的版本默认视图依赖 `elementUi`
+* 快速配置个性化ui视图和校验错误信息，可适配常用的ui库
 * 表单schema校验使用  [ajv](https://github.com/epoberezkin/ajv)
 * 设计思想和对schema解析索引参考 [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form)
 

@@ -1,5 +1,5 @@
 .genFromComponent {
-    &.formLabel-top {
+    &.ivu-form-label-top {
         .ivu-form-item-label {
             line-height: 26px;
             padding-bottom: 6px;

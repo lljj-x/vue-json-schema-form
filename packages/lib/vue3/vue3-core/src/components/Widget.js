@@ -6,6 +6,8 @@ import {
     computed, h, ref, watch
 } from 'vue';
 
+import { IconQuestion } from '@lljj/vjsf-utils/icons';
+
 import { validateFormDataAndTransformMsg } from '@lljj/vjsf-utils/schema/validate';
 import {
     isRootNodePath, path2prop, getPathVal, setPathVal, resolveComponent
@@ -124,6 +126,7 @@ export default {
         globalOptions: null // 全局配置
     },
     emits: ['change'],
+    inheritAttrs: true,
     setup(props, { emit }) {
         const widgetValue = computed({
             get() {
@@ -155,10 +158,10 @@ export default {
             }
         }
 
-        // 获取到子组件实例
+        // 获取到widget组件实例
         const widgetRef = ref(null);
         // 提供一种特殊的配置 允许直接访问到 widget vm
-        if (props.getWidget && typeof props.getWidget === 'function') {
+        if (typeof props.getWidget === 'function') {
             watch(widgetRef, () => {
                 props.getWidget.call(null, widgetRef.value);
             });
@@ -168,11 +171,10 @@ export default {
             // 判断是否为根节点
             const isRootNode = isRootNodePath(props.curNodePath);
 
-            // labelPosition left/right
-            const miniDesModel = props.formProps && props.formProps.labelPosition !== 'top';
+            const miniDesModel = props.globalOptions.HELPERS.isMiniDes(props.formProps);
 
             const descriptionVNode = (props.description) ? h(
-                'p',
+                'div',
                 {
                     innerHTML: props.description,
                     class: {
@@ -181,7 +183,7 @@ export default {
                 },
             ) : null;
 
-            const { COMPONENT_MAP, ICONS_MAP } = props.globalOptions;
+            const { COMPONENT_MAP } = props.globalOptions;
             const miniDescriptionVNode = (miniDesModel && descriptionVNode) ? h(resolveComponent(COMPONENT_MAP.popover), {
                 style: {
                     margin: '0 2px',
@@ -190,13 +192,10 @@ export default {
                 },
                 placement: 'top',
                 trigger: 'hover'
-            }, [
-                descriptionVNode,
-                h('i', {
-                    slot: 'reference',
-                    class: ICONS_MAP.question
-                })
-            ]) : null;
+            }, {
+                default: () => descriptionVNode,
+                reference: () => h(IconQuestion)
+            }) : null;
 
             // form-item style
             const formItemStyle = {
@@ -218,7 +217,7 @@ export default {
                     style: formItemStyle,
                     ...props.fieldAttrs,
 
-                    labelWidth: props.labelWidth,
+                    ...props.labelWidth ? { labelWidth: props.labelWidth } : {},
                     ...props.isFormData ? {
                         // 这里对根节点打特殊标志，绕过elementUi无prop属性不校验
                         prop: isRootNode ? '__$$root' : path2prop(props.curNodePath),
@@ -237,7 +236,12 @@ export default {
                                         required: props.required,
                                         propPath: path2prop(props.curNodePath)
                                     });
-                                    if (errors.length > 0) return callback(errors[0].message);
+
+                                    // 存在校验不通过字段
+                                    if (errors.length > 0) {
+                                        if (callback) return callback(errors[0].message);
+                                        return Promise.reject(errors[0].message);
+                                    }
 
                                     // customRule 如果存在自定义校验
                                     const curCustomRule = props.customRule;
@@ -250,7 +254,9 @@ export default {
                                         });
                                     }
 
-                                    return callback();
+                                    // 校验成功
+                                    if (callback) return callback();
+                                    return Promise.resolve();
                                 },
                                 trigger: 'blur'
                             }
@@ -259,7 +265,7 @@ export default {
                 },
                 {
                     // 错误只能显示一行，多余...
-                    error: slotProps => (slotProps.error ? h('p', {
+                    error: slotProps => (slotProps.error ? h('div', {
                         class: {
                             formItemErrorBox: true
                         },
@@ -285,7 +291,7 @@ export default {
                     } : {},
 
                     // default
-                    default: () => [
+                    default: otherAttrs => [
                         // description
                         // 非mini模式显示 description
                         ...(!miniDesModel && descriptionVNode) ? [descriptionVNode] : [],
@@ -303,7 +309,8 @@ export default {
                                     ref: widgetRef,
                                     'onUpdate:modelValue': function updateModelValue(event) {
                                         widgetValue.value = event;
-                                    }
+                                    },
+                                    ...otherAttrs
                                 }
                             )
                         ] : []

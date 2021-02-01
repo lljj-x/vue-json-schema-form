@@ -88,6 +88,7 @@
                     :to="{
                         name: 'demo',
                         query: {
+                            ui: curVueForm,
                             type: item
                         }
                     }"
@@ -179,6 +180,7 @@
                             :custom-formats="customFormats"
                             :form-footer="trueFormFooter"
                             :form-props="trueFormProps"
+                            @form-mounted="handleFormMounted"
                             @change="handleDataChange"
                             @cancel="handleCancel"
                             @submit="handleSubmit"
@@ -193,21 +195,37 @@
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, getCurrentInstance, h } from 'vue';
 import EditorHeader from 'demo-common/components/EditorHeader.vue';
 import CodeEditor from 'demo-common/components/CodeEditor';
 import schemaTypes from 'demo-common/schemaTypes';
 
-const VueElementForm = defineAsyncComponent(() => import('@lljj/vue3-form-element/src/index'));
+const VueElementForm = defineAsyncComponent(() => import('@lljj/vue3-form-element'));
 
-// const VueAntForm = async () => {
-//     const [iview, ivewForm] = await Promise.all([
-//         import('demo-common/components/iView/index.js'),
-//         import('@lljj/vue2-form-iview3')
-//     ]);
-//
-//     return ivewForm;
-// };
+let installedAntdv = false;
+const VueAntForm = defineAsyncComponent(async () => {
+    // eslint-disable-next-line no-unused-vars
+    const [antdv, antForm] = await Promise.all([
+        import('demo-common/components/Antdv/index.js'),
+        import('@lljj/vue3-form-ant')
+    ]);
+
+    return {
+        name: 'antFormWrap',
+        setup(props, { attrs, slots }) {
+            // hack 动态install antDv，因为我不知其它地方如何获取 vue app
+            if (!installedAntdv) {
+                const instance = getCurrentInstance();
+                instance.appContext.app.use(antdv.default);
+                installedAntdv = true;
+            }
+
+            return () => h(antForm.default, {
+                ...attrs
+            }, slots);
+        }
+    };
+});
 
 const typeItems = Object.keys(schemaTypes);
 
@@ -216,6 +234,7 @@ export default {
     components: {
         CodeEditor,
         VueElementForm,
+        VueAntForm,
         EditorHeader
     },
     data() {
@@ -226,10 +245,10 @@ export default {
             formComponents: [{
                 name: 'ElementPlus',
                 component: 'VueElementForm'
-            }, /* {
-                name: 'Iview3',
-                component: 'VueIview3Form'
-            } */],
+            }, {
+                name: 'antdv',
+                component: 'VueAntForm'
+            }],
             customFormats: {
                 price(value) {
                     return value !== '' && /^[0-9]\d*$|^\d+(\.\d{1,2})$/.test(value) && value >= 0 && value <= 999999.99;
@@ -311,8 +330,9 @@ export default {
                     formFooter: formatStr(JSON.stringify(this.trueFormFooter)),
                     formProps: formatStr(JSON.stringify(this.trueFormProps)),
                 }
+            }).then(() => {
+                window.location.reload();
             });
-            window.location.reload();
         },
         sliderFormat(value) {
             return value ? `${value * 4}px` : undefined;
@@ -379,6 +399,9 @@ export default {
                 formProps
             }));
         },
+        handleFormMounted(formRef) {
+            console.log('Ui form component:', formRef);
+        },
         handleDataChange() {
             console.log('Data change');
         },
@@ -412,6 +435,7 @@ export default {
 
             const genRoute = this.$router.resolve({
                 query: {
+                    ui: this.curVueForm,
                     type: 'Test',
                     schema: formatStr(this.curSchemaCode),
                     formData: formatStr(this.curFormDataCode),

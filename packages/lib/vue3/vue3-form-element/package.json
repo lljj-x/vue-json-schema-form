@@ -1,7 +1,7 @@
 {
     "name": "@lljj/vue3-form-element",
     "version": "1.0.2",
-    "description": "基于 Vue3 、ElementUi、JsonSchema快速构建一个带完整校验的form表单",
+    "description": "基于 Vue3 、ElementPlus、JsonSchema快速构建一个带完整校验的form表单",
     "main": "dist/vue3-form-element.umd.min.js",
     "module": "dist/vue3-form-element.esm.min.js",
     "scripts": {

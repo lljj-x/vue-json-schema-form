@@ -1,0 +1,66 @@
+{
+    "name": "@lljj/vue3-form-ant",
+    "version": "1.0.2",
+    "description": "基于 Vue3 、Antdv、JsonSchema快速构建一个带完整校验的form表单",
+    "main": "dist/vue3-form-ant.umd.min.js",
+    "module": "dist/vue3-form-ant.esm.min.js",
+    "scripts": {
+        "watch": "node scripts/watch.js",
+        "build": "node scripts/build.js"
+    },
+    "keywords": [
+        "vue",
+        "vuejs",
+        "form",
+        "jsonSchema"
+    ],
+    "dependencies": {
+        "@lljj/vjsf-utils": "1.0.2",
+        "@lljj/vue3-form-core": "1.0.2"
+    },
+    "typings": "types/index.d.ts",
+    "files": [
+        "dist/*.js",
+        "types/*.d.ts"
+    ],
+    "repository": "https://github.com/lljj-x/vue-json-schema-form",
+    "homepage": "https://github.com/lljj-x/vue-json-schema-form",
+    "license": "Apache-2.0",
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "@lljj/babel-preset": "^0.1.0",
+        "@lljj/eslint-config": "0.1.0",
+        "babel-eslint": "^10.0.3",
+        "cssnano": "^4.1.10",
+        "eslint": "^5.16.0",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-vue": "^5.0.0",
+        "postcss-color-mod-function": "^3.0.3",
+        "postcss-cssnext": "^3.1.0",
+        "postcss-import": "^12.0.1",
+        "postcss-mixins": "^6.2.0",
+        "postcss-nested": "^4.1.0",
+        "rollup": "^2.12.0",
+        "rollup-plugin-babel": "^4.4.0",
+        "rollup-plugin-buble": "^0.19.8",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-delete": "^1.2.0",
+        "rollup-plugin-eslint": "^7.0.0",
+        "rollup-plugin-filesize": "^9.0.0",
+        "rollup-plugin-json": "^4.0.0",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-postcss": "^3.1.1",
+        "rollup-plugin-terser": "^6.1.0",
+        "rollup-plugin-visualizer": "^4.0.4",
+        "rollup-plugin-vue": "^6.0.0"
+    },
+    "author": "Liu.Jun",
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ],
+    "gitHead": "92795075169c879e1c1fabfe26f1d3c10b861060"
+}

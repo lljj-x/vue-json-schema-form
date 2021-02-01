@@ -56,7 +56,6 @@
                         :class="{
                             layoutColumn: !formProps.inline,
                             [`layoutColumn-${formProps.layoutColumn}`]: !formProps.inline,
-                            [`formLabel-${formProps.labelPosition}`]: true,
                             formInlineFooter: formProps.inlineFooter,
                             formInline: formProps.inline,
                             // [`genFromComponent_${schema.id}Form`]: !!schema.id,

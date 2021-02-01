@@ -1,6 +1,6 @@
 /* elementUi 重置样式*/
 .genFromComponent {
-    &.formLabel-top {
+    &.el-form--label-top {
         .el-form-item__label {
             line-height: 26px;
             padding-bottom: 6px;

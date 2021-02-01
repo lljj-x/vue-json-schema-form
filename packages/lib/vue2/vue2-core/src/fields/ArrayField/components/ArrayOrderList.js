@@ -3,6 +3,11 @@
  */
 
 // 支持数字排序 ，新增 ，删除等操作
+
+import {
+    IconCaretUp, IconCaretDown, IconClose, IconPlus
+} from '@lljj/vjsf-utils/icons';
+
 export default {
     name: 'ArrayOrderList',
     props: {
@@ -72,8 +77,6 @@ export default {
         // 没有数据，且不能添加不渲染该组件
         if (this.vNodeList.length <= 0 && !this.addable) return null;
 
-        const { ICONS_MAP } = this.globalOptions;
-
         // 是否可继续添加元素
         return h(
             'div',
@@ -122,8 +125,7 @@ export default {
                                         },
                                         class: {
                                             arrayListItem_btn: true,
-                                            'arrayListItem_orderBtn-top': true,
-                                            [ICONS_MAP.moveUp]: true,
+                                            'arrayListItem_orderBtn-top': true
                                         },
                                         on: {
                                             click: () => {
@@ -135,7 +137,8 @@ export default {
                                                 });
                                             }
                                         }
-                                    }
+                                    },
+                                    [h(IconCaretUp)]
                                 ),
                                 h(
                                     'button',
@@ -152,8 +155,7 @@ export default {
                                         },
                                         class: {
                                             arrayListItem_btn: true,
-                                            'arrayListItem_orderBtn-bottom': true,
-                                            [ICONS_MAP.moveDown]: true,
+                                            'arrayListItem_orderBtn-bottom': true
                                         },
                                         on: {
                                             click: () => {
@@ -165,7 +167,8 @@ export default {
                                                 });
                                             }
                                         }
-                                    }
+                                    },
+                                    [h(IconCaretDown)]
                                 ),
                                 h(
                                     'button',
@@ -182,8 +185,7 @@ export default {
                                         },
                                         class: {
                                             arrayListItem_btn: true,
-                                            'arrayListItem_btn-delete': true,
-                                            [ICONS_MAP.close]: true,
+                                            'arrayListItem_btn-delete': true
                                         },
                                         on: {
                                             click: () => {
@@ -196,6 +198,7 @@ export default {
                                             }
                                         }
                                     },
+                                    [h(IconClose)]
                                 )
                             ]
                         ),
@@ -244,7 +247,9 @@ export default {
                                 }
                             },
                             [
-                                h('i', { class: [ICONS_MAP.plus], style: { marginRight: '5px' } }),
+                                h(IconPlus, {
+                                    style: { marginRight: '5px' }
+                                }),
                                 this.maxItems ? `( ${this.vNodeList.length} / ${this.maxItems} )` : ''
                             ]
                         ),

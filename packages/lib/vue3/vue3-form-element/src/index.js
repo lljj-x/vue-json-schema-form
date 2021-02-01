@@ -2,6 +2,10 @@
  * Created by Liu.Jun on 2019/11/29 11:25.
  */
 
+import {
+    h, ref, onMounted, defineComponent
+} from 'vue';
+
 import createVue3Core, { fieldProps, SchemaField } from '@lljj/vue3-form-core';
 
 
@@ -17,26 +21,40 @@ import './style.css';
 const globalOptions = {
     WIDGET_MAP,
     COMPONENT_MAP: {
-        form: 'el-form',
+        form: defineComponent({
+            inheritAttrs: false,
+            setup(props, { attrs, slots }) {
+                const formRef = ref(null);
+                if (attrs.setFormRef) {
+                    onMounted(() => {
+                        attrs.setFormRef(formRef.value);
+                    });
+                }
+
+                return () => {
+                    // eslint-disable-next-line no-unused-vars
+                    const { setFormRef, ...otherAttrs } = attrs;
+
+                    return h(vueUtils.resolveComponent('el-form'), {
+                        ref: formRef,
+                        ...otherAttrs
+                    }, slots);
+                };
+            }
+        }),
         formItem: 'el-form-item',
         button: 'el-button',
         popover: 'el-popover'
     },
-    ICONS_MAP: {
-        question: 'el-icon-question',
-        moveUp: 'el-icon-caret-top',
-        moveDown: 'el-icon-caret-bottom',
-        close: 'el-icon-close',
-        plus: 'el-icon-plus'
+    HELPERS: {
+        // 是否mini显示 description
+        isMiniDes(formProps) {
+            return formProps && ['left', 'right'].includes(formProps.labelPosition);
+        }
     }
 };
 
 const JsonSchemaForm = createVue3Core(globalOptions);
-
-// 存在Vue 全局变量默认注册 VueForm 组件
-// if (typeof window !== 'undefined' && window.Vue) {
-//     window.Vue.component('VueForm', src);
-// }
 
 export default JsonSchemaForm;
 

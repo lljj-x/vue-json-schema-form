@@ -55,6 +55,7 @@ module.exports = {
     productionSourceMap: false,
 
     configureWebpack: (config) => {
+        debugger;
         config.externals = {
             vue: 'Vue',
             ElementPlus: 'ElementPlus',
@@ -123,7 +124,12 @@ module.exports = {
     css: {
         requireModuleExtension: true,
         sourceMap: !isProduction,
-        extract: isProduction
+        extract: isProduction,
+        loaderOptions: {
+            postcss: {
+                // exclude: /(node_modules\/ant-design-vue)/,
+            }
+        }
     },
 
     // All options for webpack-dev-server are supported

@@ -1,5 +1,65 @@
 # 常见问题
 
+## select筛选框的值可以动态配置吗
+
+* 基于 JsonSchema 的方案，配置 `enum` 和 `enumNames` 动态更新即可， schema原本也为响应式数据
+* 通过`ui:enumOptions`动态配置下拉列表
+
+如下演示动态配置 `ui:enumOptions`，其它类似场景也可如此操作
+::: demo
+```html
+<template>
+    <vue-form
+        v-model="formData"
+        :schema="schema"
+        :uiSchema="uiSchema"
+    >
+    </vue-form>
+</template>
+
+<script>
+export default {
+    name: 'Demo',
+    methods: {
+        consoleLog(getForm) {
+            console.log(getForm());
+        },
+    },
+    data() {
+        return {
+            formData: {
+               name: ''
+            },
+            schema: {
+                type: 'object',
+                properties: {
+                    name: {
+                        title: '选择你是谁',
+                        type: 'string',
+                    }
+                }
+            },
+            uiSchema: {
+                name: {
+                    'ui:widget': 'SelectWidget',
+                    'ui:enumOptions': [{value: '1',  label: '加载中...'}]
+                }
+            }
+        }
+    },
+    created() {
+        setTimeout(() => {
+            Object.assign(this.uiSchema.name, {
+                'ui:enumOptions': [{value: '2',  label: '小猫'},{value: '3',  label: '小狗'}]
+            })
+        }, 3000);
+    }
+};
+</script>
+```
+
+:::
+
 ## JSON Schema object required
 
 > **背景：**

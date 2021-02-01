@@ -93,6 +93,9 @@ export default function createForm(globalOptions = {}) {
                 }
             },
         },
+        mounted() {
+            this.$emit('on-form-mounted', this.$refs.genEditForm);
+        },
         render(h) {
             const self = this;
             // default scoped slot
@@ -124,7 +127,9 @@ export default function createForm(globalOptions = {}) {
                         }
                     }) : undefined;
 
-            const { layoutColumn = 1, ...formProps } = self.$props.formProps;
+            const {
+                layoutColumn = 1, inlineFooter, inline, ...formProps
+            } = self.$props.formProps;
 
             const props = {
                 schema: this.schema,
@@ -148,12 +153,11 @@ export default function createForm(globalOptions = {}) {
                 {
                     class: {
                         genFromComponent: true,
-                        [`formLabel-${props.formProps.labelPosition}`]: true,
-                        formInlineFooter: formProps.inlineFooter,
-                        formInline: formProps.inline,
+                        formInlineFooter: inlineFooter,
+                        formInline: inline,
                         [`genFromComponent_${this.schema.id}Form`]: !!this.schema.id,
-                        layoutColumn: !formProps.inline,
-                        [`layoutColumn-${layoutColumn}`]: !formProps.inline
+                        layoutColumn: !inline,
+                        [`layoutColumn-${layoutColumn}`]: !inline
                     },
                     ref: 'genEditForm',
                     props: {

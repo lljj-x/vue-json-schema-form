@@ -66,7 +66,7 @@ export default {
             window.location.href = window.location.href.replace(
                 `${window.location.origin}${val === 'vue3' ? '' : '/v3'}`,
                 `${window.location.origin}${val === 'vue3' ? '/v3' : ''}`
-            );
+            ).replace(/&ui=.*?&/, '&');
         },
     }
 };

@@ -15,6 +15,11 @@
     p {
         font-size: 14px;
     }
+    .genFormIcon {
+        width: 12px;
+        height: 12px;
+        vertical-align: top;
+    }
     .genFormBtn {
         display: inline-block;
         line-height: 1;
@@ -94,6 +99,16 @@
         font-size: 12px;
         text-align: left;
     }
+    .genFormIcon-qs {
+        fill: #606266;
+        vertical-align: middle;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-left: 2px;
+        margin-top: -2px;
+        cursor: pointer;
+    }
     .genFormItemRequired {
         &:before {
             content: "*";
@@ -115,9 +130,10 @@
 
     /* validateWidget 单独的校验不属于输入框的*/
     .validateWidget {
-        margin-bottom: 0;
+        margin-bottom: 0 !important;
         width: 100% !important;
         flex-basis: 100% !important;
+        padding: 0 !important;
         .formItemErrorBox {
             padding: 5px 0;
             position: relative;
@@ -125,7 +141,7 @@
     }
 
     /* type array */
-    .arrayField {
+    .arrayField:not(.genFormItem){
         margin-bottom: 22px;
         .arrayField {
             margin-bottom: 10px;
@@ -178,19 +194,16 @@
     .arrayListItem_operateTool {
         width: 75px;
         right: 9px;
-        top: -2px;
+        top: -1px;
         text-align: right;
         font-size: 0;
     }
     .arrayListItem_btn {
         vertical-align: top;
         display: inline-block;
-        width: 25px;
-        height: 25px;
-        line-height: 25px;
-        padding: 0;
+        padding: 6px;
         margin: 0;
-        font-size: 14px;
+        font-size: 0;
         -webkit-appearance: none;
         appearance: none;
         outline: none;
@@ -231,25 +244,23 @@
         }
     }
 
-    .arrayListItem_content .genFormItem {
+    /*.arrayListItem_content .genFormItem {
         &:last-child {
             margin-bottom: 0;
         }
-    }
+    }*/
     &.formInline {
+        .genFormItem {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: top;
+        }
         .validateWidget {
             margin-right: 0;
         }
         .formFooter_item {
             border-top: none;
             padding-top: 0;
-        }
-    }
-
-    /* el-form 重置样式*/
-    &.formLabel-top {
-        .arrayListItem_content {
-            padding-top: 8px;
         }
     }
 }

@@ -40,11 +40,7 @@ const globalOptions = Object.freeze({
                         : undefined
                 };
 
-                // https://github.com/vuejs/vue/issues/8380
-                // 具名插槽需要重新显示的指定，无法直接透传 Orz...
-                return h('form-item', context.data, Object.entries(context.slots()).map(([slotName, VNode]) => h('template', {
-                    slot: slotName
-                }, VNode)));
+                return h('form-item', context.data, context.children);
             }
         },
         button: 'i-button',
@@ -53,7 +49,7 @@ const globalOptions = Object.freeze({
             render(h, context) {
                 const { default: content, reference: defaults } = context.slots();
 
-                // 交互slot
+                // 交换 slot
                 return h('poptip', context.data, [
                     h('template', {
                         slot: 'default'
@@ -65,13 +61,12 @@ const globalOptions = Object.freeze({
             }
         },
     }),
-    ICONS_MAP: Object.freeze({
-        question: 'ivu-icon ivu-icon-md-help-circle',
-        moveUp: 'ivu-icon ivu-icon-md-arrow-round-up',
-        moveDown: 'ivu-icon ivu-icon-md-arrow-round-down',
-        close: 'ivu-icon ivu-icon-md-close',
-        plus: 'ivu-icon ivu-icon-md-add'
-    })
+    HELPERS: {
+        // 是否mini显示 description
+        isMiniDes(formProps) {
+            return formProps && ['left', 'right'].includes(formProps.labelPosition);
+        }
+    }
 });
 
 const JsonSchemaFormIview3 = createVue2Core(globalOptions);
