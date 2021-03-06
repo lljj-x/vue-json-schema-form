@@ -1,6 +1,6 @@
 {
     "name": "demo-v3",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "private": true,
     "license": "Apache-2.0",
     "scripts": {
@@ -9,12 +9,12 @@
         "lint": "vue-cli-service lint"
     },
     "dependencies": {
-        "demo-common": "1.0.0",
         "@lljj/polyfill": "^0.1.0",
-        "@lljj/vue3-form-element": "1.0.2",
-        "@lljj/vue3-form-ant": "1.0.2",
+        "@lljj/vue3-form-ant": "1.1.0",
+        "@lljj/vue3-form-element": "1.1.0",
         "ajv-i18n": "^3.5.0",
         "ant-design-vue": "^2.0.1",
+        "demo-common": "1.1.0",
         "vue": "^3.0.0",
         "vuedraggable": "2.23.2"
     },
