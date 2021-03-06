@@ -12264,8 +12264,18 @@ var globalOptions = Object.freeze({
       render: function render(h, context) {
         context.data.props = _objectSpread2(_objectSpread2({}, context.data.props), {}, {
           labelWidth: context.data.props && context.data.props.labelWidth ? parseFloat(String(context.data.props.labelWidth)) : undefined
-        });
-        return h('form-item', context.data, context.children);
+        }); // https://github.com/vuejs/vue/issues/8380
+        // 具名插槽需要重新显示的指定，无法直接透传 Orz...
+
+        return h('form-item', context.data, Object.entries(context.slots()).map(function (_ref) {
+          var _ref2 = _slicedToArray(_ref, 2),
+              slotName = _ref2[0],
+              VNode = _ref2[1];
+
+          return h('template', {
+            slot: slotName
+          }, VNode);
+        }));
       }
     },
     button: 'i-button',

@@ -40,7 +40,11 @@ const globalOptions = Object.freeze({
                         : undefined
                 };
 
-                return h('form-item', context.data, context.children);
+                // https://github.com/vuejs/vue/issues/8380
+                // 具名插槽需要重新显示的指定，无法直接透传 Orz...
+                return h('form-item', context.data, Object.entries(context.slots()).map(([slotName, VNode]) => h('template', {
+                    slot: slotName
+                }, VNode)));
             }
         },
         button: 'i-button',

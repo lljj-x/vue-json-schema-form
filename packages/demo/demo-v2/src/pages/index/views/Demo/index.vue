@@ -202,7 +202,7 @@ const VueIview3Form = async () => {
     // eslint-disable-next-line
     const [iview, ivewForm] = await Promise.all([
         import('demo-common/components/iView/index.js'),
-        import('@lljj/vue2-form-iview3')
+        import('@lljj/vue2-form-iview3/src/index')
     ]);
 
     return ivewForm;
@@ -412,7 +412,6 @@ export default {
                 query: {
                     ui: this.curVueForm,
                     type: 'Test',
-                    ui: this.curVueForm,
                     schema: formatStr(this.curSchemaCode),
                     formData: formatStr(this.curFormDataCode),
                     uiSchema: formatStr(this.curUiSchemaCode),
