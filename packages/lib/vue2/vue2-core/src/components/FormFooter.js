@@ -13,6 +13,10 @@ export default {
             type: String,
             default: '取消'
         },
+        formItemAttrs: {
+            type: Object,
+            default: () => ({})
+        },
         globalOptions: null
     },
     render(h) {
@@ -22,7 +26,8 @@ export default {
         return h(COMPONENT_MAP.formItem, {
             class: {
                 formFooter_item: true
-            }
+            },
+            ...this.formItemAttrs
         }, [
             h(COMPONENT_MAP.button, {
                 on: {

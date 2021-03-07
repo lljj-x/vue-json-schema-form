@@ -9406,9 +9406,6 @@
     }
   };
 
-  /**
-   * Created by Liu.Jun on 2020/12/27 9:53 下午.
-   */
   var FormFooter = {
     name: 'FormFooter',
     props: {
@@ -9419,6 +9416,12 @@
       cancelBtn: {
         type: String,
         default: '取消'
+      },
+      formItemAttrs: {
+        type: Object,
+        default: function _default() {
+          return {};
+        }
       },
       globalOptions: {
         type: Object,
@@ -9433,11 +9436,11 @@
       // globalOptions 不需要响应式
       var COMPONENT_MAP = props.globalOptions.COMPONENT_MAP;
       return function () {
-        return Vue.h(resolveComponent(COMPONENT_MAP.formItem), {
+        return Vue.h(resolveComponent(COMPONENT_MAP.formItem), _objectSpread2({
           class: {
             formFooter_item: true
           }
-        }, {
+        }, props.formItemAttrs), {
           default: function _default() {
             return [Vue.h(resolveComponent(COMPONENT_MAP.button), {
               onClick: function onClick() {
@@ -11266,8 +11269,9 @@
           if (footerParams.value.show) {
             return Vue.h(FormFooter, {
               globalOptions: globalOptions,
-              okBtn: footerParams.okBtn,
-              cancelBtn: footerParams.cancelBtn,
+              okBtn: footerParams.value.okBtn,
+              cancelBtn: footerParams.value.cancelBtn,
+              formItemAttrs: footerParams.value.formItemAttrs,
               onCancel: function onCancel() {
                 emit('cancel');
               },

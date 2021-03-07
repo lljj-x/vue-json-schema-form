@@ -9407,6 +9407,12 @@ var FormFooter = {
       type: String,
       default: '取消'
     },
+    formItemAttrs: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
     globalOptions: null
   },
   render: function render(h) {
@@ -9415,11 +9421,11 @@ var FormFooter = {
         okBtn = _this$$props.okBtn,
         cancelBtn = _this$$props.cancelBtn,
         COMPONENT_MAP = _this$$props.globalOptions.COMPONENT_MAP;
-    return h(COMPONENT_MAP.formItem, {
+    return h(COMPONENT_MAP.formItem, _objectSpread2({
       class: {
         formFooter_item: true
       }
-    }, [h(COMPONENT_MAP.button, {
+    }, this.formItemAttrs), [h(COMPONENT_MAP.button, {
       on: {
         click: function click() {
           self.$emit('onCancel');
@@ -11594,7 +11600,8 @@ function createForm() {
         props: {
           globalOptions: globalOptions,
           okBtn: self.footerParams.okBtn,
-          cancelBtn: self.footerParams.cancelBtn
+          cancelBtn: self.footerParams.cancelBtn,
+          formItemAttrs: self.footerParams.formItemAttrs
         },
         on: {
           onCancel: function onCancel() {

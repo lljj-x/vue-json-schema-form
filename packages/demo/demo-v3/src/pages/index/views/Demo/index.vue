@@ -20,7 +20,7 @@
                     <span style="font-size: 13px;">labelCol：</span>
                     <el-slider
                         v-model="formProps.labelColSpan"
-                        :min="5"
+                        :min="3"
                         :max="15"
                         style="width: 70px; margin-right: 6px;"
                         size="mini"
@@ -29,7 +29,7 @@
                     <el-slider
                         v-model="formProps.wrapperColSpan"
                         :min="5"
-                        :max="15"
+                        :max="24"
                         style="width: 70px; margin-right: 6px;"
                         size="mini"
                     ></el-slider>
@@ -308,7 +308,19 @@ export default {
             };
         },
         trueFormFooter() {
-            return this.formFooter || {};
+            const {
+                labelColSpan,
+                wrapperColSpan
+            } = this.formProps;
+
+            return this.isUseLabelWidth ? (this.formFooter || {}) : {
+                formItemAttrs: {
+                    wrapperCol: {
+                        span: wrapperColSpan,
+                        offset: labelColSpan
+                    }
+                }
+            };
         },
         curType() {
             return this.$route.query.type || 'Simple';
@@ -394,7 +406,7 @@ export default {
                     labelColSpan: 10,
                     wrapperColSpan: 12,
                     layoutColumn: 1
-                }
+                },
             };
         },
         genCodeStrComputedGetter(vmKey) {

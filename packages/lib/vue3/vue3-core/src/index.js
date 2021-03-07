@@ -110,8 +110,9 @@ export default function createForm(globalOptions = {}) {
                 if (footerParams.value.show) {
                     return h(FormFooter, {
                         globalOptions,
-                        okBtn: footerParams.okBtn,
-                        cancelBtn: footerParams.cancelBtn,
+                        okBtn: footerParams.value.okBtn,
+                        cancelBtn: footerParams.value.cancelBtn,
+                        formItemAttrs: footerParams.value.formItemAttrs,
                         onCancel() {
                             emit('cancel');
                         },

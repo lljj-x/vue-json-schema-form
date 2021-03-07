@@ -17,6 +17,10 @@ export default {
             type: String,
             default: '取消'
         },
+        formItemAttrs: {
+            type: Object,
+            default: () => ({})
+        },
         globalOptions: {
             type: Object,
             default: () => ({})
@@ -30,7 +34,8 @@ export default {
         return () => h(resolveComponent(COMPONENT_MAP.formItem), {
             class: {
                 formFooter_item: true
-            }
+            },
+            ...props.formItemAttrs
         }, {
             default: () => [
                 h(resolveComponent(COMPONENT_MAP.button), {

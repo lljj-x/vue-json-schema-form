@@ -610,7 +610,11 @@ export default {
 formFooter = {
     show: true, // 是否显示默认底部
     okBtn: '保存', // 确认按钮文字
-    cancelBtn: '取消' // 取消按钮文字
+    cancelBtn: '取消', // 取消按钮文字
+
+    // 透传给formFooter 中的formItem组件的参数
+    // 例如 vue3-ant 配置wrapperCol  formItemAttrs = { wrapperCol: { span: 10, offset: 5 }}
+    formItemAttrs: {}
 }
 ```
 

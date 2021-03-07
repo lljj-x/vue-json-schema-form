@@ -110,6 +110,7 @@ export default function createForm(globalOptions = {}) {
                             globalOptions,
                             okBtn: self.footerParams.okBtn,
                             cancelBtn: self.footerParams.cancelBtn,
+                            formItemAttrs: self.footerParams.formItemAttrs,
                         },
                         on: {
                             onCancel() {
