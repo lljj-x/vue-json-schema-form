@@ -30,7 +30,7 @@ export {
 
 export default function createForm(globalOptions = {}) {
     const Form = {
-        name: 'VueElementForm',
+        name: 'VueForm',
         props: vueProps,
         emits: ['update:modelValue', 'change', 'cancel', 'submit', 'validation-failed', 'form-mounted'],
         setup(props, { slots, emit }) {

@@ -29,4 +29,7 @@
         padding: 5px 0;
         position: relative;
     }
+    .ant-form-item-label > label.ant-form-item-no-colon::after {
+        display: none;
+    }
 }

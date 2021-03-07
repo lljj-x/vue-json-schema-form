@@ -11178,7 +11178,7 @@
   function createForm() {
     var globalOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var Form = {
-      name: 'VueElementForm',
+      name: 'VueForm',
       props: vueProps,
       emits: ['update:modelValue', 'change', 'cancel', 'submit', 'validation-failed', 'form-mounted'],
       setup: function setup(props, _ref) {
@@ -11696,6 +11696,7 @@
     InputNumberWidget: modelValueComponent('a-input-number'),
     AutoCompleteWidget: modelValueComponent('a-auto-complete'),
     SliderWidget: modelValueComponent('a-slider'),
+    RateWidget: modelValueComponent('a-rate'),
     SwitchWidget: modelValueComponent('a-switch', {
       model: 'checked'
     })
@@ -11743,7 +11744,7 @@
     widgetComponents: widgetComponents
   };
 
-  var css_248z$1 = ".genFromComponent.ant-form-vertical .ant-form-item-label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .ant-form-item{margin-bottom:22px}.genFromComponent .ant-form-item.ant-form-item-with-help{margin-bottom:2px}.genFromComponent .ant-form-explain{padding-top:2px;display:-webkit-box!important;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;text-align:left;line-height:1.2;font-size:12px}.genFromComponent .validateWidget .ant-form-explain{padding:5px 0;position:relative}";
+  var css_248z$1 = ".genFromComponent.ant-form-vertical .ant-form-item-label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .ant-form-item{margin-bottom:22px}.genFromComponent .ant-form-item.ant-form-item-with-help{margin-bottom:2px}.genFromComponent .ant-form-explain{padding-top:2px;display:-webkit-box!important;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;text-align:left;line-height:1.2;font-size:12px}.genFromComponent .validateWidget .ant-form-explain{padding:5px 0;position:relative}.genFromComponent .ant-form-item-label>label.ant-form-item-no-colon:after{display:none}";
   styleInject(css_248z$1);
 
   var globalOptions = {
@@ -11757,7 +11758,6 @@
           // 处理 labelPosition 参数和layout之间转换
           var labelPositionMap = {
             top: {
-              labelAlign: 'left',
               layout: 'vertical'
             },
             left: {
@@ -11794,10 +11794,12 @@
                 var model = attrs.model,
                 otherAttrs = _objectWithoutProperties(attrs, ["setFormRef", "labelPosition", "labelWidth", "model"]);
 
-            return Vue.h(resolveComponent('a-form'), _objectSpread2(_objectSpread2({
+            return Vue.h(resolveComponent('a-form'), _objectSpread2(_objectSpread2(_objectSpread2({
               ref: formRef,
               model: model.value
-            }, labelPositionMap[labelPosition || 'top']), otherAttrs), slots);
+            }, labelPositionMap[labelPosition || 'top']), otherAttrs), {}, {
+              colon: false
+            }), slots);
           };
         }
       }),

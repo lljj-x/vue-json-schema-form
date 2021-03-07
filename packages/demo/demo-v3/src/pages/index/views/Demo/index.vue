@@ -6,13 +6,35 @@
             :show-version="true"
         >
             <div :class="$style.btns">
-                <span style="font-size: 13px;">标签：</span>
-                <el-slider
-                    v-model="formProps.labelWidth"
-                    style="width: 70px; margin-right: 6px;"
-                    size="mini"
-                    :format-tooltip="sliderFormat"
-                ></el-slider>
+                <template v-if="isUseLabelWidth">
+                    <span style="font-size: 13px;">标签：</span>
+                    <el-slider
+                        v-model="formProps.labelWidth"
+                        style="width: 70px; margin-right: 6px;"
+                        size="mini"
+                        :format-tooltip="sliderFormat"
+                    ></el-slider>
+                </template>
+
+                <template v-else>
+                    <span style="font-size: 13px;">labelCol：</span>
+                    <el-slider
+                        v-model="formProps.labelColSpan"
+                        :min="5"
+                        :max="15"
+                        style="width: 70px; margin-right: 6px;"
+                        size="mini"
+                    ></el-slider>
+                    <span style="font-size: 13px;">wrapperCol：</span>
+                    <el-slider
+                        v-model="formProps.wrapperColSpan"
+                        :min="5"
+                        :max="15"
+                        style="width: 70px; margin-right: 6px;"
+                        size="mini"
+                    ></el-slider>
+                </template>
+
                 <el-checkbox
                     v-model="formProps.inline"
                     style="margin-right: 6px;"
@@ -260,11 +282,29 @@ export default {
         pageKey() {
             return this.$route.query.type;
         },
+        isUseLabelWidth() {
+            return this.curVueForm === 'VueElementForm';
+        },
         trueFormProps() {
             if (!this.formProps) return {};
+            const {
+                labelColSpan,
+                wrapperColSpan,
+                labelWidth,
+                ...otherProps
+            } = this.formProps;
             return {
-                ...this.formProps,
-                labelWidth: this.formProps.labelWidth ? `${this.formProps.labelWidth * 4}px` : undefined
+                ...otherProps,
+                ...this.isUseLabelWidth ? {
+                    labelWidth: labelWidth ? `${labelWidth * 4}px` : undefined
+                } : {
+                    labelCol: {
+                        span: labelColSpan
+                    },
+                    wrapperCol: {
+                        span: wrapperColSpan
+                    }
+                }
             };
         },
         trueFormFooter() {
@@ -351,6 +391,8 @@ export default {
                     inline: false,
                     labelPosition: 'top',
                     inlineFooter: false,
+                    labelColSpan: 10,
+                    wrapperColSpan: 12,
                     layoutColumn: 1
                 }
             };

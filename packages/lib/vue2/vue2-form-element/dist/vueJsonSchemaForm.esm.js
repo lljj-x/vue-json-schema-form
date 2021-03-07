@@ -11522,7 +11522,7 @@ function createForm() {
   }
 
   return {
-    name: 'ElementForm',
+    name: 'VueForm',
     props: vueProps,
     data: function data() {
       var formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema); // 保持v-model双向数据及时性

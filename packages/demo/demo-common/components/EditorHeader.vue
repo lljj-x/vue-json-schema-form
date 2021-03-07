@@ -100,9 +100,10 @@ export default {
             font-size: 26px;
             text-transform: uppercase;
             z-index: 10;
+            margin: 0;
         }
         .logo {
-            vertical-align: top;
+            display: block;
             height: 30px;
         }
     }

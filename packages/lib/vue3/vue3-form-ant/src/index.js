@@ -27,7 +27,6 @@ const globalOptions = {
                 // 处理 labelPosition 参数和layout之间转换
                 const labelPositionMap = {
                     top: {
-                        labelAlign: 'left',
                         layout: 'vertical'
                     },
                     left: {
@@ -66,7 +65,8 @@ const globalOptions = {
                         ref: formRef,
                         model: model.value,
                         ...labelPositionMap[labelPosition || 'top'],
-                        ...otherAttrs
+                        ...otherAttrs,
+                        colon: false
                     }, slots);
                 };
             }

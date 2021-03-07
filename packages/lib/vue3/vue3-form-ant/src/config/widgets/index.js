@@ -24,6 +24,7 @@ const widgetComponents = {
     InputNumberWidget: modelValueComponent('a-input-number'),
     AutoCompleteWidget: modelValueComponent('a-auto-complete'),
     SliderWidget: modelValueComponent('a-slider'),
+    RateWidget: modelValueComponent('a-rate'),
     SwitchWidget: modelValueComponent('a-switch', {
         model: 'checked'
     }),

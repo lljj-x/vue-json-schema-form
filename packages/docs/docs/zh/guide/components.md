@@ -12,7 +12,7 @@
 * [DatePickerWidget](#datepickerwidget)
 * [DateTimePickerWidget](#datetimepickerwidget)
 * [UploadWidget](#uploadwidget)
-* [vue3 ant 特有的](#vue3-ant-特有的)
+* [vue3 ant 特有的](#vue3-ant-特有的全局组件)
 
 
 :::tip
@@ -162,4 +162,6 @@ vue3 ant 由于v-model不使用 `model: modelValue`，所以对常用的组件�
 | AutoCompleteWidget   | a-auto-complete        |
 | SliderWidget   | a-slider        |
 | SwitchWidget   | a-switch        |
+| RateWidget   | a-rate        |
+
 

@@ -32,7 +32,7 @@ export default function createForm(globalOptions = {}) {
     }
 
     return {
-        name: 'ElementForm',
+        name: 'VueForm',
         props: vueProps,
         data() {
             const formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema);

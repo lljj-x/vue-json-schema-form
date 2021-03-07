@@ -200,15 +200,15 @@ Field props配置，如果需要使用 `ui:field` 自定义field 组件，需要
 > 不使用 `ui-schema` `ui:field` 一般不会使用
 
 #### vueUtils
-提供一些内部Vue相关的utils方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/vueUtils.js)
+提供一些内部Vue相关的utils方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/utils/vueUtils.js)
 > 不使用 `ui-schema` `ui:field` 一般不会使用
 
 #### formUtils
-提供一些内部Form相关的utils方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/formUtils.js)
+提供一些内部Form相关的utils方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/utils/formUtils.js)
 > 不使用 `ui-schema` `ui:field` 一般不会使用
 
 #### schemaValidate
-提供一些内部校验schema相关的方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/src/JsonSchemaForm/common/schema/validate.js)
+提供一些内部校验schema相关的方法，详细的可以 [参见源码](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/lib/utils/schema/validate.js)
 > 不使用 `ui-schema` `ui:field` 一般不会使用
 
 ## 说明

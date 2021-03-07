@@ -11213,7 +11213,7 @@
   function createForm() {
     var globalOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var Form = {
-      name: 'VueElementForm',
+      name: 'VueForm',
       props: vueProps,
       emits: ['update:modelValue', 'change', 'cancel', 'submit', 'validation-failed', 'form-mounted'],
       setup: function setup(props, _ref) {
