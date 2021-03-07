@@ -1,6 +1,6 @@
 {
     "name": "demo",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "private": true,
     "license": "Apache-2.0",
     "scripts": {
@@ -10,10 +10,10 @@
     },
     "dependencies": {
         "@lljj/polyfill": "^0.1.0",
-        "@lljj/vue-json-schema-form": "1.1.0",
-        "@lljj/vue2-form-iview3": "1.1.1",
+        "@lljj/vue-json-schema-form": "1.1.2",
+        "@lljj/vue2-form-iview3": "1.1.2",
         "ajv-i18n": "^3.5.0",
-        "demo-common": "1.1.0",
+        "demo-common": "1.1.2",
         "iview": "^3.5.4",
         "vue": "^2.6.10",
         "vuedraggable": "2.23.2"

@@ -1,6 +1,6 @@
 {
     "name": "@lljj/vue2-form-iview3",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "基于 Vue 、iView3、JsonSchema快速构建一个带完整校验的form表单",
     "main": "dist/vue2-form-iview3.umd.min.js",
     "module": "dist/vue2-form-iview3.esm.min.js",
@@ -17,7 +17,7 @@
     ],
     "dependencies": {
         "@lljj/vjsf-utils": "1.1.0",
-        "@lljj/vue2-form-core": "1.1.0"
+        "@lljj/vue2-form-core": "1.1.2"
     },
     "typings": "types/index.d.ts",
     "files": [
