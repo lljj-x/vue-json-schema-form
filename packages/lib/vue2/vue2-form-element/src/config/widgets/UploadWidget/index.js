@@ -5,6 +5,8 @@
 // mock
 // https://run.mocky.io/v3/518d7af7-204f-45ab-9628-a6e121dab8ca
 
+import { openNewPage } from '@lljj/vjsf-utils/utils';
+
 export default {
     name: 'UploadWidget',
     props: {
@@ -31,19 +33,23 @@ export default {
         const value = this.value;
         const isArrayValue = Array.isArray(value);
 
-        let fileList = this.$attrs.fileList || [];
+        const fileList = this.$attrs.fileList || (() => {
+            if (isArrayValue) {
+                return value.map((item, index) => ({
+                    name: `已上传文件（${index + 1}）`,
+                    url: item
+                }));
+            }
+            if (value) {
+                return [{
+                    name: '已上传文件',
+                    url: value
+                }];
+            }
 
-        if (isArrayValue) {
-            fileList = value.map((item, index) => ({
-                name: `已上传文件（${index + 1}）`,
-                url: item
-            }));
-        } else if (value) {
-            fileList.push({
-                name: '已上传文件',
-                url: value
-            });
-        }
+            return [];
+        })();
+
 
         return {
             isArrayValue,
@@ -51,24 +57,25 @@ export default {
         };
     },
     methods: {
+        getUrl(fileItem) {
+            return (
+                fileItem
+                && ((fileItem.response && this.responseFileUrl(fileItem.response)) || fileItem.url))
+                || '';
+        },
         emitValue(fileList) {
             // v-model
             let value;
 
-            const geUrl = fileItem => (
-                fileItem
-                && ((fileItem.response && this.responseFileUrl(fileItem.response)) || fileItem.url))
-                || '';
-
             if (this.isArrayValue) {
                 value = fileList.length ? fileList.reduce((pre, item) => {
-                    const url = geUrl(item);
+                    const url = this.getUrl(item);
                     if (url) pre.push(url);
                     return pre;
                 }, []) : [];
             } else {
                 const fileItem = fileList[fileList.length - 1];
-                value = geUrl(fileItem);
+                value = this.getUrl(fileItem);
             }
 
             this.$emit('input', value);
@@ -94,6 +101,10 @@ export default {
                     if (this.$message) {
                         this.$message.error('文件上传失败');
                     }
+                },
+                'on-preview': (file) => {
+                    const url = this.getUrl(file);
+                    if (url) openNewPage(url);
                 },
                 ...attrs,
                 'on-remove': (file, fileList) => {

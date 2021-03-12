@@ -140,8 +140,9 @@ export function getUiOptions({
 }) {
     const spec = {};
     if (containsSpec) {
+        spec.readonly = !!schema.readOnly;
         if (undefined !== schema.multipleOf) {
-        // 组件计数器步长
+            // 组件计数器步长
             spec.step = schema.multipleOf;
         }
         if (schema.minimum || schema.minimum === 0) {

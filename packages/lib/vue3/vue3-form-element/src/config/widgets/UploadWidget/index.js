@@ -4,6 +4,7 @@
 
 import { h, ref, getCurrentInstance } from 'vue';
 import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
+import { openNewPage } from '@lljj/vjsf-utils/utils';
 
 // mock
 // https://run.mocky.io/v3/518d7af7-204f-45ab-9628-a6e121dab8ca
@@ -34,40 +35,44 @@ export default {
         const curModelValue = props.modelValue;
         const isArrayValue = Array.isArray(curModelValue);
 
-        let defaultFileList = attrs.fileList;
-        // 优先使用 fileList 参数，否则使用 value 计算
-        if (!defaultFileList || defaultFileList.length === 0) {
-            defaultFileList = isArrayValue ? curModelValue.map((item, index) => ({
-                name: `已上传文件（${index + 1}）`,
-                url: item
-            })) : [{
-                name: '已上传文件',
-                url: curModelValue
-            }];
-        }
+        const defaultFileList = attrs.fileList || (() => {
+            if (isArrayValue) {
+                return curModelValue.map((item, index) => ({
+                    name: `已上传文件（${index + 1}）`,
+                    url: item
+                }));
+            }
+            if (curModelValue) {
+                return [{
+                    name: '已上传文件',
+                    url: curModelValue
+                }];
+            }
 
+            return [];
+        })();
 
         // fileList
         const fileListRef = ref(defaultFileList);
+
+        const getUrl = fileItem => (
+            fileItem
+            && ((fileItem.response && props.responseFileUrl(fileItem.response)) || fileItem.url))
+            || '';
 
         const emitValue = (emitFileList) => {
             // v-model
             let curValue;
 
-            const geUrl = fileItem => (
-                fileItem
-                && ((fileItem.response && props.responseFileUrl(fileItem.response)) || fileItem.url))
-                || '';
-
             if (isArrayValue) {
                 curValue = emitFileList.length ? emitFileList.reduce((pre, item) => {
-                    const url = geUrl(item);
+                    const url = getUrl(item);
                     if (url) pre.push(url);
                     return pre;
                 }, []) : [];
             } else {
                 const fileItem = emitFileList[emitFileList.length - 1];
-                curValue = geUrl(fileItem);
+                curValue = getUrl(fileItem);
             }
 
             emit('update:modelValue', curValue);
@@ -87,6 +92,10 @@ export default {
                     if (globalProperties.$message) {
                         globalProperties.$message.error('文件上传失败');
                     }
+                },
+                'on-preview': (file) => {
+                    const url = getUrl(file);
+                    if (url) openNewPage(url);
                 },
                 ...attrs,
                 'on-remove': (file, fileList) => {

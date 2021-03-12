@@ -565,6 +565,17 @@ function gcd(a, b) {
 
 function scm(a, b) {
   return a * b / gcd(a, b);
+} // 打开新页面
+
+function openNewPage(url) {
+  var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '_blank';
+  var a = document.createElement('a');
+  a.style.display = 'none';
+  a.target = target;
+  a.href = url;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 // $ref 引用
@@ -8565,6 +8576,8 @@ function getUiOptions(_ref5) {
   var spec = {};
 
   if (containsSpec) {
+    spec.readonly = !!schema.readOnly;
+
     if (undefined !== schema.multipleOf) {
       // 组件计数器步长
       spec.step = schema.multipleOf;
@@ -11710,40 +11723,47 @@ var UploadWidget = {
     // 设置默认 fileList
     var curModelValue = props.modelValue;
     var isArrayValue = Array.isArray(curModelValue);
-    var defaultFileList = attrs.fileList; // 优先使用 fileList 参数，否则使用 value 计算
 
-    if (!defaultFileList || defaultFileList.length === 0) {
-      defaultFileList = isArrayValue ? curModelValue.map(function (item, index) {
-        return {
-          name: "\u5DF2\u4E0A\u4F20\u6587\u4EF6\uFF08".concat(index + 1, "\uFF09"),
-          url: item
-        };
-      }) : [{
-        name: '已上传文件',
-        url: curModelValue
-      }];
-    } // fileList
+    var defaultFileList = attrs.fileList || function () {
+      if (isArrayValue) {
+        return curModelValue.map(function (item, index) {
+          return {
+            name: "\u5DF2\u4E0A\u4F20\u6587\u4EF6\uFF08".concat(index + 1, "\uFF09"),
+            url: item
+          };
+        });
+      }
+
+      if (curModelValue) {
+        return [{
+          name: '已上传文件',
+          url: curModelValue
+        }];
+      }
+
+      return [];
+    }(); // fileList
 
 
     var fileListRef = ref$1(defaultFileList);
+
+    var getUrl = function getUrl(fileItem) {
+      return fileItem && (fileItem.response && props.responseFileUrl(fileItem.response) || fileItem.url) || '';
+    };
 
     var emitValue = function emitValue(emitFileList) {
       // v-model
       var curValue;
 
-      var geUrl = function geUrl(fileItem) {
-        return fileItem && (fileItem.response && props.responseFileUrl(fileItem.response) || fileItem.url) || '';
-      };
-
       if (isArrayValue) {
         curValue = emitFileList.length ? emitFileList.reduce(function (pre, item) {
-          var url = geUrl(item);
+          var url = getUrl(item);
           if (url) pre.push(url);
           return pre;
         }, []) : [];
       } else {
         var fileItem = emitFileList[emitFileList.length - 1];
-        curValue = geUrl(fileItem);
+        curValue = getUrl(fileItem);
       }
 
       emit('update:modelValue', curValue);
@@ -11762,6 +11782,10 @@ var UploadWidget = {
           if (globalProperties.$message) {
             globalProperties.$message.error('文件上传失败');
           }
+        },
+        'on-preview': function onPreview(file) {
+          var url = getUrl(file);
+          if (url) openNewPage(url);
         }
       }, attrs), {}, {
         'on-remove': function onRemove(file, fileList) {

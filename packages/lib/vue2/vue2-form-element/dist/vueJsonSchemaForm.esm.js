@@ -454,6 +454,17 @@ function gcd(a, b) {
 
 function scm(a, b) {
   return a * b / gcd(a, b);
+} // 打开新页面
+
+function openNewPage(url) {
+  var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '_blank';
+  var a = document.createElement('a');
+  a.style.display = 'none';
+  a.target = target;
+  a.href = url;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 // $ref 引用
@@ -8521,6 +8532,8 @@ function getUiOptions(_ref5) {
   var spec = {};
 
   if (containsSpec) {
+    spec.readonly = !!schema.readOnly;
+
     if (undefined !== schema.multipleOf) {
       // 组件计数器步长
       spec.step = schema.multipleOf;
@@ -11964,11 +11977,6 @@ var TimePickerWidget = {
   }
 };
 
-/**
- * Created by Liu.Jun on 2020/11/26 10:01 下午.
- */
-// mock
-// https://run.mocky.io/v3/518d7af7-204f-45ab-9628-a6e121dab8ca
 var UploadWidget = {
   name: 'UploadWidget',
   props: {
@@ -11996,21 +12004,26 @@ var UploadWidget = {
     // 设置默认 fileList
     var value = this.value;
     var isArrayValue = Array.isArray(value);
-    var fileList = this.$attrs.fileList || [];
 
-    if (isArrayValue) {
-      fileList = value.map(function (item, index) {
-        return {
-          name: "\u5DF2\u4E0A\u4F20\u6587\u4EF6\uFF08".concat(index + 1, "\uFF09"),
-          url: item
-        };
-      });
-    } else if (value) {
-      fileList.push({
-        name: '已上传文件',
-        url: value
-      });
-    }
+    var fileList = this.$attrs.fileList || function () {
+      if (isArrayValue) {
+        return value.map(function (item, index) {
+          return {
+            name: "\u5DF2\u4E0A\u4F20\u6587\u4EF6\uFF08".concat(index + 1, "\uFF09"),
+            url: item
+          };
+        });
+      }
+
+      if (value) {
+        return [{
+          name: '已上传文件',
+          url: value
+        }];
+      }
+
+      return [];
+    }();
 
     return {
       isArrayValue: isArrayValue,
@@ -12018,25 +12031,25 @@ var UploadWidget = {
     };
   },
   methods: {
+    getUrl: function getUrl(fileItem) {
+      return fileItem && (fileItem.response && this.responseFileUrl(fileItem.response) || fileItem.url) || '';
+    },
     emitValue: function emitValue(fileList) {
       var _this = this;
 
       // v-model
       var value;
 
-      var geUrl = function geUrl(fileItem) {
-        return fileItem && (fileItem.response && _this.responseFileUrl(fileItem.response) || fileItem.url) || '';
-      };
-
       if (this.isArrayValue) {
         value = fileList.length ? fileList.reduce(function (pre, item) {
-          var url = geUrl(item);
+          var url = _this.getUrl(item);
+
           if (url) pre.push(url);
           return pre;
         }, []) : [];
       } else {
         var fileItem = fileList[fileList.length - 1];
-        value = geUrl(fileItem);
+        value = this.getUrl(fileItem);
       }
 
       this.$emit('input', value);
@@ -12060,6 +12073,11 @@ var UploadWidget = {
           if (_this2.$message) {
             _this2.$message.error('文件上传失败');
           }
+        },
+        'on-preview': function onPreview(file) {
+          var url = _this2.getUrl(file);
+
+          if (url) openNewPage(url);
         }
       }, attrs), {}, {
         'on-remove': function onRemove(file, fileList) {

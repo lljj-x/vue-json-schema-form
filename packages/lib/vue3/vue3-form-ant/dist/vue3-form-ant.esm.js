@@ -530,7 +530,7 @@ function gcd(a, b) {
 
 function scm(a, b) {
   return a * b / gcd(a, b);
-}
+} // 打开新页面
 
 // $ref 引用
 function getPathVal$1(obj, pathStr) {
@@ -8530,6 +8530,8 @@ function getUiOptions(_ref5) {
   var spec = {};
 
   if (containsSpec) {
+    spec.readonly = !!schema.readOnly;
+
     if (undefined !== schema.multipleOf) {
       // 组件计数器步长
       spec.step = schema.multipleOf;
@@ -11607,45 +11609,63 @@ var UploadWidget = {
     // 设置默认 fileList
     var curModelValue = props.modelValue;
     var isArrayValue = Array.isArray(curModelValue);
-    var defaultFileList = attrs.fileList; // 优先使用 fileList 参数，否则使用 value 计算
 
-    if (!defaultFileList || defaultFileList.length === 0) {
-      defaultFileList = isArrayValue ? curModelValue.map(function (item, index) {
-        return {
-          uid: String(index),
+    var defaultFileList = attrs.fileList || function () {
+      if (isArrayValue) {
+        return curModelValue.map(function (item, index) {
+          return {
+            uid: String(index),
+            status: 'done',
+            name: "\u5DF2\u4E0A\u4F20\u6587\u4EF6\uFF08".concat(index + 1, "\uFF09"),
+            url: item
+          };
+        });
+      }
+
+      if (curModelValue) {
+        return [{
+          uid: '1',
           status: 'done',
-          name: "\u5DF2\u4E0A\u4F20\u6587\u4EF6\uFF08".concat(index + 1, "\uFF09"),
-          url: item
-        };
-      }) : [{
-        uid: '1',
-        status: 'done',
-        name: '已上传文件',
-        url: curModelValue
-      }];
-    } // fileList
+          name: '已上传文件',
+          url: curModelValue
+        }];
+      }
+
+      return [];
+    }(); // fileList
 
 
     var fileListRef = ref$1(defaultFileList);
+
+    var getUrl = function getUrl(fileItem) {
+      return fileItem && (fileItem.response && props.responseFileUrl(fileItem.response) || fileItem.url) || '';
+    };
 
     var emitValue = function emitValue(emitFileList) {
       // v-model
       var curValue;
 
-      var geUrl = function geUrl(fileItem) {
-        return fileItem && (fileItem.response && props.responseFileUrl(fileItem.response) || fileItem.url) || '';
-      };
-
       if (isArrayValue) {
         curValue = emitFileList.length ? emitFileList.reduce(function (pre, item) {
-          var url = geUrl(item);
-          if (url) pre.push(url);
+          var url = getUrl(item);
+
+          if (url) {
+            item.url = url;
+            pre.push(url);
+          }
+
           return pre;
         }, []) : [];
       } else {
         var fileItem = emitFileList[emitFileList.length - 1];
-        curValue = geUrl(fileItem);
-        fileListRef.value = curValue ? [fileItem] : [];
+        curValue = getUrl(fileItem);
+
+        if (fileItem && curValue) {
+          fileItem.url = curValue;
+          fileListRef.value = [fileItem];
+        } else {
+          fileListRef.value = [];
+        }
       }
 
       emit('update:modelValue', curValue);

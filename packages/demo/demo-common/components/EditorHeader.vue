@@ -63,10 +63,10 @@ export default {
     },
     methods: {
         handleVersionChange(val) {
-            window.location.href = window.location.href.replace(
-                `${window.location.origin}${val === 'vue3' ? '' : '/v3'}`,
-                `${window.location.origin}${val === 'vue3' ? '/v3' : ''}`
-            ).replace(/&ui=.*?&/, '&');
+            // eslint-disable-next-line no-unused-vars
+            const { ui, ...query } = this.$route.query;
+            const genRoute = this.$router.resolve({ query });
+            window.location.href = `${(val === 'vue3' ? '/v3/' : '/')}${genRoute.href}`;
         },
     }
 };

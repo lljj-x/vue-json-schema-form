@@ -35,45 +35,58 @@ export default {
         const curModelValue = props.modelValue;
         const isArrayValue = Array.isArray(curModelValue);
 
-        let defaultFileList = attrs.fileList;
-        // 优先使用 fileList 参数，否则使用 value 计算
-        if (!defaultFileList || defaultFileList.length === 0) {
-            defaultFileList = isArrayValue ? curModelValue.map((item, index) => ({
-                uid: String(index),
-                status: 'done',
-                name: `已上传文件（${index + 1}）`,
-                url: item
-            })) : [{
-                uid: '1',
-                status: 'done',
-                name: '已上传文件',
-                url: curModelValue
-            }];
-        }
+        const defaultFileList = attrs.fileList || (() => {
+            if (isArrayValue) {
+                return curModelValue.map((item, index) => ({
+                    uid: String(index),
+                    status: 'done',
+                    name: `已上传文件（${index + 1}）`,
+                    url: item
+                }));
+            }
+            if (curModelValue) {
+                return [{
+                    uid: '1',
+                    status: 'done',
+                    name: '已上传文件',
+                    url: curModelValue
+                }];
+            }
+
+            return [];
+        })();
 
 
         // fileList
         const fileListRef = ref(defaultFileList);
 
+        const getUrl = fileItem => (
+            fileItem
+            && ((fileItem.response && props.responseFileUrl(fileItem.response)) || fileItem.url))
+            || '';
+
         const emitValue = (emitFileList) => {
             // v-model
             let curValue;
 
-            const geUrl = fileItem => (
-                fileItem
-                && ((fileItem.response && props.responseFileUrl(fileItem.response)) || fileItem.url))
-                || '';
-
             if (isArrayValue) {
                 curValue = emitFileList.length ? emitFileList.reduce((pre, item) => {
-                    const url = geUrl(item);
-                    if (url) pre.push(url);
+                    const url = getUrl(item);
+                    if (url) {
+                        item.url = url;
+                        pre.push(url);
+                    }
                     return pre;
                 }, []) : [];
             } else {
                 const fileItem = emitFileList[emitFileList.length - 1];
-                curValue = geUrl(fileItem);
-                fileListRef.value = curValue ? [fileItem] : [];
+                curValue = getUrl(fileItem);
+                if (fileItem && curValue) {
+                    fileItem.url = curValue;
+                    fileListRef.value = [fileItem];
+                } else {
+                    fileListRef.value = [];
+                }
             }
 
             emit('update:modelValue', curValue);
