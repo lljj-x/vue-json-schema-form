@@ -30,8 +30,23 @@ export default {
         color: {
             setup(props, { attrs }) {
                 return () => h(InputWidget, {
-                    type: 'color',
                     ...attrs,
+                    style: {
+                        ...attrs.style || {},
+                        maxWidth: '180px'
+                    }
+                }, {
+                    addonAfter: () => h(InputWidget, {
+                        disabled: attrs.disabled,
+                        readonly: attrs.readonly,
+                        moduleValue: attrs.moduleValue,
+                        'onUpdate:modelValue': attrs['onUpdate:modelValue'],
+                        type: 'color',
+                        style: {
+                            padding: '0',
+                            width: '50px'
+                        }
+                    })
                 });
             }
         },

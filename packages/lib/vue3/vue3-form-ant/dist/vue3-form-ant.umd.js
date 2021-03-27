@@ -8572,7 +8572,9 @@
 
 
     return _objectSpread2(_objectSpread2({
-      title: schema.title,
+      title: schema.title
+      /* || curNodePath.split('.').pop() */
+      ,
       // 默认使用 schema 的配置
       description: schema.description
     }, spec), getUserUiOptions({
@@ -8814,6 +8816,17 @@
       };
     });
   }
+  function fallbackLabel(oriLabel, isFallback, curNodePath) {
+    if (oriLabel) return oriLabel;
+
+    if (isFallback) {
+      var backLabel = curNodePath.split('.').pop(); // 过滤纯数字字符串
+
+      if (backLabel && backLabel !== "".concat(Number(backLabel))) return backLabel;
+    }
+
+    return '';
+  }
 
   var formUtils = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -8831,7 +8844,8 @@
     isFixedItems: isFixedItems,
     isMultiSelect: isMultiSelect,
     allowAdditionalItems: allowAdditionalItems,
-    optionsList: optionsList
+    optionsList: optionsList,
+    fallbackLabel: fallbackLabel
   });
 
   var ajv$1 = createAjvInstance();
@@ -9367,6 +9381,10 @@
       },
       required: true
     },
+    fallbackLabel: {
+      type: Boolean,
+      default: false
+    },
     formProps: {
       type: Object,
       default: function _default() {
@@ -9471,6 +9489,73 @@
     }
   };
 
+  var script = {
+    name: 'FieldGroupWrap',
+    inject: ['genFormProvide'],
+    props: {
+      // 当前节点路径
+      curNodePath: {
+        type: String,
+        default: ''
+      },
+      showTitle: {
+        type: Boolean,
+        default: true
+      },
+      showDescription: {
+        type: Boolean,
+        default: true
+      },
+      title: {
+        type: String,
+        default: ''
+      },
+      description: {
+        type: String,
+        default: ''
+      }
+    },
+    computed: {
+      trueTitle: function trueTitle() {
+        var title = this.title;
+
+        if (title) {
+          return title;
+        }
+
+        var genFormProvide = this.genFormProvide.value || this.genFormProvide;
+        var backTitle = genFormProvide.fallbackLabel && this.curNodePath.split('.').pop();
+        if (backTitle !== "".concat(Number(backTitle))) return backTitle;
+        return '';
+      }
+    }
+  };
+
+  var _hoisted_1 = {
+    class: "fieldGroupWrap"
+  };
+  var _hoisted_2 = {
+    key: 0,
+    class: "fieldGroupWrap_title"
+  };
+  var _hoisted_3 = {
+    class: "fieldGroupWrap_box"
+  };
+  function render(_ctx, _cache, $props, $setup, $data, $options) {
+    return Vue.openBlock(), Vue.createBlock("div", _hoisted_1, [$props.showTitle && $options.trueTitle ? (Vue.openBlock(), Vue.createBlock("h3", _hoisted_2, Vue.toDisplayString($options.trueTitle), 1
+    /* TEXT */
+    )) : Vue.createCommentVNode("v-if", true), $props.showDescription && $props.description ? (Vue.openBlock(), Vue.createBlock("p", {
+      key: 1,
+      class: "fieldGroupWrap_des",
+      innerHTML: $props.description
+    }, null, 8
+    /* PROPS */
+    , ["innerHTML"])) : Vue.createCommentVNode("v-if", true), Vue.createVNode("div", _hoisted_3, [Vue.renderSlot(_ctx.$slots, "default")])]);
+  }
+
+  script.render = render;
+  script.__file = "utils/components/FieldGroupWrap.vue";
+
   /**
    * Created by Liu.Jun on 2020/4/22 18:58.
    */
@@ -9547,53 +9632,6 @@
       default: true
     }
   };
-
-  var script = {
-    name: 'FieldGroupWrap',
-    props: {
-      showTitle: {
-        type: Boolean,
-        default: true
-      },
-      showDescription: {
-        type: Boolean,
-        default: true
-      },
-      title: {
-        type: String,
-        default: ''
-      },
-      description: {
-        type: String,
-        default: ''
-      }
-    }
-  };
-
-  var _hoisted_1 = {
-    class: "fieldGroupWrap"
-  };
-  var _hoisted_2 = {
-    key: 0,
-    class: "fieldGroupWrap_title"
-  };
-  var _hoisted_3 = {
-    class: "fieldGroupWrap_box"
-  };
-  function render(_ctx, _cache, $props, $setup, $data, $options) {
-    return Vue.openBlock(), Vue.createBlock("div", _hoisted_1, [$props.showTitle && $props.title ? (Vue.openBlock(), Vue.createBlock("h3", _hoisted_2, Vue.toDisplayString($props.title), 1
-    /* TEXT */
-    )) : Vue.createCommentVNode("v-if", true), $props.showDescription && $props.description ? (Vue.openBlock(), Vue.createBlock("p", {
-      key: 1,
-      class: "fieldGroupWrap_des",
-      innerHTML: $props.description
-    }, null, 8
-    /* PROPS */
-    , ["innerHTML"])) : Vue.createCommentVNode("v-if", true), Vue.createVNode("div", _hoisted_3, [Vue.renderSlot(_ctx.$slots, "default")])]);
-  }
-
-  script.render = render;
-  script.__file = "vue3-core/src/components/FieldGroupWrap.vue";
 
   var _hoisted_1$1 = {
     class: "genFormIcon genFormIcon-down",
@@ -9848,6 +9886,7 @@
     inheritAttrs: true,
     setup: function setup(props, _ref) {
       var emit = _ref.emit;
+      var genFormProvide = Vue.inject('genFormProvide');
       var widgetValue = Vue.computed({
         get: function get() {
           if (props.isFormData) return getPathVal(props.rootFormData, props.curNodePath);
@@ -9915,7 +9954,10 @@
           width: props.width,
           flexBasis: props.width,
           paddingRight: '10px'
-        } : {});
+        } : {}); // 运行配置回退到 属性名
+
+
+        var _label = fallbackLabel(props.label, props.widget && genFormProvide.value.fallbackLabel, props.curNodePath);
 
         return Vue.h(resolveComponent(COMPONENT_MAP.formItem), _objectSpread2(_objectSpread2(_objectSpread2({
           class: _objectSpread2(_objectSpread2({}, props.fieldClass), {}, {
@@ -9974,14 +10016,14 @@
               title: slotProps.error
             }, [slotProps.error]) : null;
           }
-        }, props.label ? {
+        }, _label ? {
           label: function label() {
             return Vue.h('span', {
               class: {
                 genFormLabel: true,
                 genFormItemRequired: props.required
               }
-            }, ["".concat(props.label)].concat(_toConsumableArray(miniDescriptionVNode ? [miniDescriptionVNode] : []), ["".concat(props.formProps && props.formProps.labelSuffix || '')]));
+            }, ["".concat(_label)].concat(_toConsumableArray(miniDescriptionVNode ? [miniDescriptionVNode] : []), ["".concat(props.formProps && props.formProps.labelSuffix || '')]));
           }
         } : {}), {}, {
           // default
@@ -10043,10 +10085,12 @@
       };
 
       return function () {
+        var curNodePath = props.curNodePath;
+
         var _getUiOptions = getUiOptions({
           schema: props.schema,
           uiSchema: props.uiSchema,
-          curNodePath: props.curNodePath,
+          curNodePath: curNodePath,
           rootFormData: props.rootFormData
         }),
             title = _getUiOptions.title,
@@ -10077,7 +10121,7 @@
             uiSchema: props.uiSchema[name],
             errorSchema: props.errorSchema[name],
             required: required || curDependent,
-            curNodePath: computedCurPath(props.curNodePath, name)
+            curNodePath: computedCurPath(curNodePath, name)
           }));
         });
         return Vue.h(script, _objectSpread2({
@@ -10085,6 +10129,7 @@
           description: description,
           showTitle: showTitle,
           showDescription: showDescription,
+          curNodePath: curNodePath,
           class: _objectSpread2({}, fieldClass),
           style: fieldStyle
         }, fieldAttrs), {
@@ -10105,7 +10150,7 @@
               }, {}),
               uiSchema: props.uiSchema,
               errorSchema: props.errorSchema,
-              curNodePath: props.curNodePath,
+              curNodePath: curNodePath,
               rootFormData: props.rootFormData,
               globalOptions: props.globalOptions
             })] : []));
@@ -10446,6 +10491,7 @@
           description: description,
           showTitle: showTitle,
           showDescription: showDescription,
+          curNodePath: curNodePath,
           class: fieldClass,
           attrs: fieldAttrs,
           style: fieldStyle
@@ -10613,7 +10659,8 @@
           title: title,
           description: description,
           showTitle: showTitle,
-          showDescription: showDescription
+          showDescription: showDescription,
+          curNodePath: curNodePath
         }, fieldAttrs), {}, {
           class: fieldClass,
           style: fieldStyle
@@ -11202,8 +11249,14 @@
           }); // 只注册一次
 
           Form.installed = true;
-        } // rootFormData
+        } // 使用provide 传递跨组件数据
 
+
+        Vue.provide('genFormProvide', Vue.computed(function () {
+          return {
+            fallbackLabel: props.fallbackLabel
+          };
+        })); // rootFormData
 
         var rootFormData = Vue.ref(getDefaultFormState(props.schema, props.modelValue, props.schema));
         var footerParams = Vue.computed(function () {
@@ -11747,9 +11800,25 @@
         setup: function setup(props, _ref) {
           var attrs = _ref.attrs;
           return function () {
-            return Vue.h(InputWidget, _objectSpread2({
-              type: 'color'
-            }, attrs));
+            return Vue.h(InputWidget, _objectSpread2(_objectSpread2({}, attrs), {}, {
+              style: _objectSpread2(_objectSpread2({}, attrs.style || {}), {}, {
+                maxWidth: '180px'
+              })
+            }), {
+              addonAfter: function addonAfter() {
+                return Vue.h(InputWidget, {
+                  disabled: attrs.disabled,
+                  readonly: attrs.readonly,
+                  moduleValue: attrs.moduleValue,
+                  'onUpdate:modelValue': attrs['onUpdate:modelValue'],
+                  type: 'color',
+                  style: {
+                    padding: '0',
+                    width: '50px'
+                  }
+                });
+              }
+            });
           };
         }
       },

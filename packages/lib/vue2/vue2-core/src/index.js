@@ -34,6 +34,11 @@ export default function createForm(globalOptions = {}) {
     return {
         name: 'VueForm',
         props: vueProps,
+        provide() {
+            return {
+                genFormProvide: this.genFormProvide
+            };
+        },
         data() {
             const formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema);
 
@@ -45,6 +50,11 @@ export default function createForm(globalOptions = {}) {
             };
         },
         computed: {
+            genFormProvide() {
+                return {
+                    fallbackLabel: this.fallbackLabel
+                };
+            },
             footerParams() {
                 return {
                     show: true,

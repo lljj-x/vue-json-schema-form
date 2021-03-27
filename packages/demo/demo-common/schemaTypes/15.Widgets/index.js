@@ -112,11 +112,6 @@ export default {
                     }
                 },
             },
-            color: {
-                'ui:options': {
-                    size: 'small'
-                }
-            },
         },
         secret: {
             'ui:widget': 'HiddenWidget',

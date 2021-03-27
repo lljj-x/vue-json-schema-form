@@ -7,8 +7,8 @@ import { h } from 'vue';
 import { orderProperties, getUiOptions } from '@lljj/vjsf-utils/formUtils';
 import { computedCurPath, getPathVal } from '@lljj/vjsf-utils/vue3Utils';
 import { isObject } from '@lljj/vjsf-utils/utils';
+import FieldGroupWrap from '@lljj/vjsf-utils/components/FieldGroupWrap';
 import vueProps from '../props';
-import FieldGroupWrap from '../../components/FieldGroupWrap';
 import Widget from '../../components/Widget';
 
 // eslint-disable-next-line import/no-cycle
@@ -49,12 +49,13 @@ export default {
         };
 
         return () => {
+            const curNodePath = props.curNodePath;
             const {
                 title, description, showTitle, showDescription, order, fieldClass, fieldAttrs, fieldStyle, onlyShowIfDependent
             } = getUiOptions({
                 schema: props.schema,
                 uiSchema: props.uiSchema,
-                curNodePath: props.curNodePath,
+                curNodePath,
                 rootFormData: props.rootFormData
             });
 
@@ -76,7 +77,7 @@ export default {
                         uiSchema: props.uiSchema[name],
                         errorSchema: props.errorSchema[name],
                         required: required || curDependent,
-                        curNodePath: computedCurPath(props.curNodePath, name)
+                        curNodePath: computedCurPath(curNodePath, name)
                     }
                 );
             });
@@ -88,6 +89,7 @@ export default {
                     description,
                     showTitle,
                     showDescription,
+                    curNodePath,
                     class: { ...fieldClass },
                     style: fieldStyle,
                     ...fieldAttrs
@@ -113,7 +115,7 @@ export default {
                                 }, {}),
                                 uiSchema: props.uiSchema,
                                 errorSchema: props.errorSchema,
-                                curNodePath: props.curNodePath,
+                                curNodePath,
                                 rootFormData: props.rootFormData,
                                 globalOptions: props.globalOptions
                             })

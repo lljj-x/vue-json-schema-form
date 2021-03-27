@@ -601,6 +601,12 @@ export default {
 * 自定义校验规则，实现类似 el-form rules validator 的方式校验表单数据
 * [详细查看这里](/zh/guide/validate.html#custom-rule-自定义校验)
 
+### value / v-model
+* 类型：`object`
+* 默认值：`{}`
+
+表单绑定值，`对于不需要双向绑定的值，可以使用 value props`
+
 
 ### form-footer
 * 类型：`object`
@@ -618,11 +624,22 @@ formFooter = {
 }
 ```
 
-### value / v-model
-* 类型：`object`
-* 默认值：`{}`
+### fallback-label
+* 类型：`boolean`
+* default：`false`
 
-表单绑定值，`对于不需要双向绑定的值，可以使用 value props`
+当 `schema` 没有配置 `title`，是否使用当前属性名做为表单 `label`
+
+如：`street_address` 表单项是否显示 `label` 为 `street_address`
+```js
+schema = {
+    properties: {
+        street_address: {
+            type: 'string'
+        }
+    }
+}
+```
 
 ### form-props
 * 类型：`object`

@@ -5,10 +5,10 @@ import { allowAdditionalItems, getUiOptions, replaceArrayIndex } from '@lljj/vjs
 import getDefaultFormState from '@lljj/vjsf-utils/schema/getDefaultFormState';
 import { computedCurPath } from '@lljj/vjsf-utils/vueUtils';
 import { cutOff } from '@lljj/vjsf-utils/arrayUtils';
+import FieldGroupWrap from '@lljj/vjsf-utils/components/FieldGroupWrap';
 import vueProps from '../../props';
 
 import SchemaField from '../../SchemaField';
-import FieldGroupWrap from '../../../components/FieldGroupWrap';
 import ArrayOrderList from '../components/ArrayOrderList';
 
 export default {
@@ -117,7 +117,7 @@ export default {
                                 ...tempUiSchema
                             },
                             errorSchema: errorSchema.additionalItems,
-                            curNodePath: computedCurPath(this.curNodePath, index + schema.items.length)
+                            curNodePath: computedCurPath(curNodePath, index + schema.items.length)
                         }
                     }
                 )
@@ -135,7 +135,8 @@ export default {
                     title,
                     description,
                     showTitle,
-                    showDescription
+                    showDescription,
+                    curNodePath
                 },
                 class: fieldClass,
                 attrs: fieldAttrs,

@@ -20,6 +20,10 @@ export default {
         type: Object,
         default: () => ({}),
     },
+    fallbackLabel: {
+        type: Boolean,
+        default: false,
+    },
     schema: {
         type: Object,
         default: () => ({}),

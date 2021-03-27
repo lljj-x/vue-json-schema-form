@@ -1,5 +1,5 @@
 /** @license @lljj/vue3-form-ant (c) 2020-2021 Liu.Jun License: Apache-2.0 */
-import { resolveComponent as resolveComponent$1, h, openBlock, createBlock, toDisplayString, createCommentVNode, createVNode, renderSlot, computed, ref as ref$1, watch, toRaw, getCurrentInstance, defineComponent, onMounted } from 'vue';
+import { resolveComponent as resolveComponent$1, h, openBlock, createBlock, toDisplayString, createCommentVNode, createVNode, renderSlot, inject, computed, ref as ref$1, watch, toRaw, getCurrentInstance, provide, defineComponent, onMounted } from 'vue';
 
 function _typeof(obj) {
   "@babel/helpers - typeof";
@@ -8568,7 +8568,9 @@ function getUiOptions(_ref5) {
 
 
   return _objectSpread2(_objectSpread2({
-    title: schema.title,
+    title: schema.title
+    /* || curNodePath.split('.').pop() */
+    ,
     // 默认使用 schema 的配置
     description: schema.description
   }, spec), getUserUiOptions({
@@ -8810,6 +8812,17 @@ function optionsList(schema, uiSchema, curNodePath, rootFormData) {
     };
   });
 }
+function fallbackLabel(oriLabel, isFallback, curNodePath) {
+  if (oriLabel) return oriLabel;
+
+  if (isFallback) {
+    var backLabel = curNodePath.split('.').pop(); // 过滤纯数字字符串
+
+    if (backLabel && backLabel !== "".concat(Number(backLabel))) return backLabel;
+  }
+
+  return '';
+}
 
 var formUtils = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -8827,7 +8840,8 @@ var formUtils = /*#__PURE__*/Object.freeze({
   isFixedItems: isFixedItems,
   isMultiSelect: isMultiSelect,
   allowAdditionalItems: allowAdditionalItems,
-  optionsList: optionsList
+  optionsList: optionsList,
+  fallbackLabel: fallbackLabel
 });
 
 var ajv$1 = createAjvInstance();
@@ -9363,6 +9377,10 @@ var vueProps = {
     },
     required: true
   },
+  fallbackLabel: {
+    type: Boolean,
+    default: false
+  },
   formProps: {
     type: Object,
     default: function _default() {
@@ -9467,6 +9485,73 @@ var FormFooter = {
   }
 };
 
+var script = {
+  name: 'FieldGroupWrap',
+  inject: ['genFormProvide'],
+  props: {
+    // 当前节点路径
+    curNodePath: {
+      type: String,
+      default: ''
+    },
+    showTitle: {
+      type: Boolean,
+      default: true
+    },
+    showDescription: {
+      type: Boolean,
+      default: true
+    },
+    title: {
+      type: String,
+      default: ''
+    },
+    description: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    trueTitle: function trueTitle() {
+      var title = this.title;
+
+      if (title) {
+        return title;
+      }
+
+      var genFormProvide = this.genFormProvide.value || this.genFormProvide;
+      var backTitle = genFormProvide.fallbackLabel && this.curNodePath.split('.').pop();
+      if (backTitle !== "".concat(Number(backTitle))) return backTitle;
+      return '';
+    }
+  }
+};
+
+var _hoisted_1 = {
+  class: "fieldGroupWrap"
+};
+var _hoisted_2 = {
+  key: 0,
+  class: "fieldGroupWrap_title"
+};
+var _hoisted_3 = {
+  class: "fieldGroupWrap_box"
+};
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createBlock("div", _hoisted_1, [$props.showTitle && $options.trueTitle ? (openBlock(), createBlock("h3", _hoisted_2, toDisplayString($options.trueTitle), 1
+  /* TEXT */
+  )) : createCommentVNode("v-if", true), $props.showDescription && $props.description ? (openBlock(), createBlock("p", {
+    key: 1,
+    class: "fieldGroupWrap_des",
+    innerHTML: $props.description
+  }, null, 8
+  /* PROPS */
+  , ["innerHTML"])) : createCommentVNode("v-if", true), createVNode("div", _hoisted_3, [renderSlot(_ctx.$slots, "default")])]);
+}
+
+script.render = render;
+script.__file = "utils/components/FieldGroupWrap.vue";
+
 /**
  * Created by Liu.Jun on 2020/4/22 18:58.
  */
@@ -9543,53 +9628,6 @@ var vueProps$1 = {
     default: true
   }
 };
-
-var script = {
-  name: 'FieldGroupWrap',
-  props: {
-    showTitle: {
-      type: Boolean,
-      default: true
-    },
-    showDescription: {
-      type: Boolean,
-      default: true
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    description: {
-      type: String,
-      default: ''
-    }
-  }
-};
-
-var _hoisted_1 = {
-  class: "fieldGroupWrap"
-};
-var _hoisted_2 = {
-  key: 0,
-  class: "fieldGroupWrap_title"
-};
-var _hoisted_3 = {
-  class: "fieldGroupWrap_box"
-};
-function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createBlock("div", _hoisted_1, [$props.showTitle && $props.title ? (openBlock(), createBlock("h3", _hoisted_2, toDisplayString($props.title), 1
-  /* TEXT */
-  )) : createCommentVNode("v-if", true), $props.showDescription && $props.description ? (openBlock(), createBlock("p", {
-    key: 1,
-    class: "fieldGroupWrap_des",
-    innerHTML: $props.description
-  }, null, 8
-  /* PROPS */
-  , ["innerHTML"])) : createCommentVNode("v-if", true), createVNode("div", _hoisted_3, [renderSlot(_ctx.$slots, "default")])]);
-}
-
-script.render = render;
-script.__file = "vue3-core/src/components/FieldGroupWrap.vue";
 
 var _hoisted_1$1 = {
   class: "genFormIcon genFormIcon-down",
@@ -9844,6 +9882,7 @@ var Widget = {
   inheritAttrs: true,
   setup: function setup(props, _ref) {
     var emit = _ref.emit;
+    var genFormProvide = inject('genFormProvide');
     var widgetValue = computed({
       get: function get() {
         if (props.isFormData) return getPathVal(props.rootFormData, props.curNodePath);
@@ -9911,7 +9950,10 @@ var Widget = {
         width: props.width,
         flexBasis: props.width,
         paddingRight: '10px'
-      } : {});
+      } : {}); // 运行配置回退到 属性名
+
+
+      var _label = fallbackLabel(props.label, props.widget && genFormProvide.value.fallbackLabel, props.curNodePath);
 
       return h(resolveComponent(COMPONENT_MAP.formItem), _objectSpread2(_objectSpread2(_objectSpread2({
         class: _objectSpread2(_objectSpread2({}, props.fieldClass), {}, {
@@ -9970,14 +10012,14 @@ var Widget = {
             title: slotProps.error
           }, [slotProps.error]) : null;
         }
-      }, props.label ? {
+      }, _label ? {
         label: function label() {
           return h('span', {
             class: {
               genFormLabel: true,
               genFormItemRequired: props.required
             }
-          }, ["".concat(props.label)].concat(_toConsumableArray(miniDescriptionVNode ? [miniDescriptionVNode] : []), ["".concat(props.formProps && props.formProps.labelSuffix || '')]));
+          }, ["".concat(_label)].concat(_toConsumableArray(miniDescriptionVNode ? [miniDescriptionVNode] : []), ["".concat(props.formProps && props.formProps.labelSuffix || '')]));
         }
       } : {}), {}, {
         // default
@@ -10039,10 +10081,12 @@ var ObjectField = {
     };
 
     return function () {
+      var curNodePath = props.curNodePath;
+
       var _getUiOptions = getUiOptions({
         schema: props.schema,
         uiSchema: props.uiSchema,
-        curNodePath: props.curNodePath,
+        curNodePath: curNodePath,
         rootFormData: props.rootFormData
       }),
           title = _getUiOptions.title,
@@ -10073,7 +10117,7 @@ var ObjectField = {
           uiSchema: props.uiSchema[name],
           errorSchema: props.errorSchema[name],
           required: required || curDependent,
-          curNodePath: computedCurPath(props.curNodePath, name)
+          curNodePath: computedCurPath(curNodePath, name)
         }));
       });
       return h(script, _objectSpread2({
@@ -10081,6 +10125,7 @@ var ObjectField = {
         description: description,
         showTitle: showTitle,
         showDescription: showDescription,
+        curNodePath: curNodePath,
         class: _objectSpread2({}, fieldClass),
         style: fieldStyle
       }, fieldAttrs), {
@@ -10101,7 +10146,7 @@ var ObjectField = {
             }, {}),
             uiSchema: props.uiSchema,
             errorSchema: props.errorSchema,
-            curNodePath: props.curNodePath,
+            curNodePath: curNodePath,
             rootFormData: props.rootFormData,
             globalOptions: props.globalOptions
           })] : []));
@@ -10442,6 +10487,7 @@ var ArrayFieldNormal = {
         description: description,
         showTitle: showTitle,
         showDescription: showDescription,
+        curNodePath: curNodePath,
         class: fieldClass,
         attrs: fieldAttrs,
         style: fieldStyle
@@ -10609,7 +10655,8 @@ var ArrayFieldTuple = {
         title: title,
         description: description,
         showTitle: showTitle,
-        showDescription: showDescription
+        showDescription: showDescription,
+        curNodePath: curNodePath
       }, fieldAttrs), {}, {
         class: fieldClass,
         style: fieldStyle
@@ -11198,8 +11245,14 @@ function createForm() {
         }); // 只注册一次
 
         Form.installed = true;
-      } // rootFormData
+      } // 使用provide 传递跨组件数据
 
+
+      provide('genFormProvide', computed(function () {
+        return {
+          fallbackLabel: props.fallbackLabel
+        };
+      })); // rootFormData
 
       var rootFormData = ref$1(getDefaultFormState(props.schema, props.modelValue, props.schema));
       var footerParams = computed(function () {
@@ -11743,9 +11796,25 @@ var WIDGET_MAP = {
       setup: function setup(props, _ref) {
         var attrs = _ref.attrs;
         return function () {
-          return h(InputWidget, _objectSpread2({
-            type: 'color'
-          }, attrs));
+          return h(InputWidget, _objectSpread2(_objectSpread2({}, attrs), {}, {
+            style: _objectSpread2(_objectSpread2({}, attrs.style || {}), {}, {
+              maxWidth: '180px'
+            })
+          }), {
+            addonAfter: function addonAfter() {
+              return h(InputWidget, {
+                disabled: attrs.disabled,
+                readonly: attrs.readonly,
+                moduleValue: attrs.moduleValue,
+                'onUpdate:modelValue': attrs['onUpdate:modelValue'],
+                type: 'color',
+                style: {
+                  padding: '0',
+                  width: '50px'
+                }
+              });
+            }
+          });
         };
       }
     },

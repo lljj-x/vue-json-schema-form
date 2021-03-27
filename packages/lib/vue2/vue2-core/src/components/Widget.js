@@ -8,9 +8,11 @@ import {
 
 import { validateFormDataAndTransformMsg } from '@lljj/vjsf-utils/schema/validate';
 import { IconQuestion } from '@lljj/vjsf-utils/icons';
+import { fallbackLabel } from '@lljj/vjsf-utils/formUtils';
 
 export default {
     name: 'Widget',
+    inject: ['genFormProvide'],
     props: {
         // 是否同步formData的值，默认表单元素都需要
         // oneOf anyOf 中的select属于formData之外的数据
@@ -165,8 +167,10 @@ export default {
     render(h) {
         const self = this;
 
+        const { curNodePath } = this.$props;
+
         // 判断是否为根节点
-        const isRootNode = isRootNodePath(this.curNodePath);
+        const isRootNode = isRootNodePath(curNodePath);
 
         const miniDesModel = self.globalOptions.HELPERS.isMiniDes(self.formProps);
 
@@ -212,6 +216,9 @@ export default {
             } : {})
         };
 
+        // 运行配置回退到 属性名
+        const label = fallbackLabel(self.label, (self.widget && this.genFormProvide.fallbackLabel), curNodePath);
+
         return h(
             COMPONENT_MAP.formItem,
             {
@@ -225,7 +232,7 @@ export default {
                     ...self.labelWidth ? { labelWidth: self.labelWidth } : {},
                     ...this.isFormData ? {
                         // 这里对根节点打特殊标志，绕过elementUi无prop属性不校验
-                        prop: isRootNode ? '__$$root' : path2prop(self.curNodePath),
+                        prop: isRootNode ? '__$$root' : path2prop(curNodePath),
                         rules: [
                             {
                                 validator(rule, value, callback) {
@@ -239,7 +246,7 @@ export default {
                                         customFormats: self.$props.customFormats,
                                         errorSchema: self.errorSchema,
                                         required: self.required,
-                                        propPath: path2prop(self.curNodePath)
+                                        propPath: path2prop(curNodePath)
                                     });
                                     if (errors.length > 0) return callback(errors[0].message);
 
@@ -247,7 +254,7 @@ export default {
                                     const curCustomRule = self.$props.customRule;
                                     if (curCustomRule && (typeof curCustomRule === 'function')) {
                                         return curCustomRule({
-                                            field: self.curNodePath,
+                                            field: curNodePath,
                                             value,
                                             rootFormData: self.rootFormData,
                                             callback
@@ -274,14 +281,14 @@ export default {
                 },
             },
             [
-                self.label ? h('span', {
+                label ? h('span', {
                     slot: 'label',
                     class: {
                         genFormLabel: true,
                         genFormItemRequired: self.required,
                     },
                 }, [
-                    `${self.label}`,
+                    `${label}`,
                     miniDescriptionVNode,
                     `${(self.formProps && self.formProps.labelSuffix) || ''}`
                 ]) : null,

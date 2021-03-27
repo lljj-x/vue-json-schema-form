@@ -5,8 +5,8 @@
 import { computedCurPath } from '@lljj/vjsf-utils/vueUtils';
 import { getUiOptions, replaceArrayIndex } from '@lljj/vjsf-utils/formUtils';
 
+import FieldGroupWrap from '@lljj/vjsf-utils/components/FieldGroupWrap';
 import SchemaField from '../../SchemaField';
-import FieldGroupWrap from '../../../components/FieldGroupWrap';
 import ArrayOrderList from '../components/ArrayOrderList';
 
 import vueProps from '../../props';
@@ -80,7 +80,8 @@ export default {
                     title,
                     description,
                     showTitle,
-                    showDescription
+                    showDescription,
+                    curNodePath
                 },
                 class: {
                     ...context.data.class,

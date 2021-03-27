@@ -16,6 +16,10 @@ export default {
         default: () => ({}),
         required: true
     },
+    fallbackLabel: {
+        type: Boolean,
+        default: false,
+    },
     formProps: {
         type: Object,
         default: () => ({}),

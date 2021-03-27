@@ -174,7 +174,7 @@ export function getUiOptions({
 
     // 计算ui配置
     return {
-        title: schema.title, // 默认使用 schema 的配置
+        title: schema.title /* || curNodePath.split('.').pop() */, // 默认使用 schema 的配置
         description: schema.description,
 
         // 特殊处理部分
@@ -406,4 +406,16 @@ export function optionsList(schema, uiSchema, curNodePath, rootFormData) {
         return { label, value };
     });
 
+}
+
+export function fallbackLabel(oriLabel, isFallback, curNodePath) {
+    if (oriLabel) return oriLabel;
+    if (isFallback) {
+        const backLabel = curNodePath.split('.').pop();
+
+        // 过滤纯数字字符串
+        if (backLabel && (backLabel !== `${Number(backLabel)}`)) return backLabel;
+    }
+
+    return '';
 }

@@ -8,10 +8,10 @@ import { allowAdditionalItems, getUiOptions, replaceArrayIndex } from '@lljj/vjs
 import getDefaultFormState from '@lljj/vjsf-utils/schema/getDefaultFormState';
 import { computedCurPath } from '@lljj/vjsf-utils/vue3Utils';
 import { cutOff } from '@lljj/vjsf-utils/arrayUtils';
+import FieldGroupWrap from '@lljj/vjsf-utils/components/FieldGroupWrap';
 import vueProps from '../../props';
 
 import SchemaField from '../../SchemaField';
-import FieldGroupWrap from '../../../components/FieldGroupWrap';
 import ArrayOrderList from '../components/ArrayOrderList';
 
 export default {
@@ -133,6 +133,7 @@ export default {
                     description,
                     showTitle,
                     showDescription,
+                    curNodePath,
                     ...fieldAttrs,
                     class: fieldClass,
                     style: fieldStyle,

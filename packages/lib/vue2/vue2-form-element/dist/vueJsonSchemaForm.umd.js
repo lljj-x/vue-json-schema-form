@@ -8578,7 +8578,9 @@
 
 
     return _objectSpread2(_objectSpread2({
-      title: schema.title,
+      title: schema.title
+      /* || curNodePath.split('.').pop() */
+      ,
       // 默认使用 schema 的配置
       description: schema.description
     }, spec), getUserUiOptions({
@@ -8820,6 +8822,17 @@
       };
     });
   }
+  function fallbackLabel(oriLabel, isFallback, curNodePath) {
+    if (oriLabel) return oriLabel;
+
+    if (isFallback) {
+      var backLabel = curNodePath.split('.').pop(); // 过滤纯数字字符串
+
+      if (backLabel && backLabel !== "".concat(Number(backLabel))) return backLabel;
+    }
+
+    return '';
+  }
 
   var formUtils = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -8837,7 +8850,8 @@
     isFixedItems: isFixedItems,
     isMultiSelect: isMultiSelect,
     allowAdditionalItems: allowAdditionalItems,
-    optionsList: optionsList
+    optionsList: optionsList,
+    fallbackLabel: fallbackLabel
   });
 
   var ajv$1 = createAjvInstance();
@@ -9379,6 +9393,10 @@
         return {};
       }
     },
+    fallbackLabel: {
+      type: Boolean,
+      default: false
+    },
     schema: {
       type: Object,
       default: function _default() {
@@ -9468,85 +9486,6 @@
     }
   };
 
-  /**
-   * Created by Liu.Jun on 2020/4/22 18:58.
-   */
-  // 递归参数，统一props
-  var vueProps$1 = {
-    formProps: {
-      type: null
-    },
-    // 全局的配置，用于 初始化差异，适配不同的ui框架
-    globalOptions: {
-      type: null
-    },
-    // 当前节点schema
-    schema: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    },
-    // 当前节点Ui Schema
-    uiSchema: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    },
-    // 当前节点Error Schema
-    errorSchema: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    },
-    // 自定义校验
-    customRule: {
-      type: Function,
-      default: null
-    },
-    // 自定义校验规则
-    customFormats: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    },
-    // 根节点 Schema
-    rootSchema: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    },
-    // 根节点的数据
-    rootFormData: {
-      type: null,
-      default: function _default() {
-        return {};
-      }
-    },
-    // 当前节点路径
-    curNodePath: {
-      type: String,
-      default: ''
-    },
-    // 是否必填
-    required: {
-      type: Boolean,
-      default: false
-    },
-    // 是否需要校验数据组
-    // object array 类型默认会最后追加一个校验组件校验整体数据
-    needValidFieldGroup: {
-      type: Boolean,
-      default: true
-    }
-  };
-
-  //
-  //
   //
   //
   //
@@ -9569,7 +9508,13 @@
   //
   var script = {
     name: 'FieldGroupWrap',
+    inject: ['genFormProvide'],
     props: {
+      // 当前节点路径
+      curNodePath: {
+        type: String,
+        default: ''
+      },
       showTitle: {
         type: Boolean,
         default: true
@@ -9585,6 +9530,20 @@
       description: {
         type: String,
         default: ''
+      }
+    },
+    computed: {
+      trueTitle: function trueTitle() {
+        var title = this.title;
+
+        if (title) {
+          return title;
+        }
+
+        var genFormProvide = this.genFormProvide.value || this.genFormProvide;
+        var backTitle = genFormProvide.fallbackLabel && this.curNodePath.split('.').pop();
+        if (backTitle !== "".concat(Number(backTitle))) return backTitle;
+        return '';
       }
     }
   };
@@ -9687,16 +9646,16 @@
 
     return _c("div", {
       staticClass: "fieldGroupWrap"
-    }, [[_vm.showTitle && _vm.title ? _c("h3", {
+    }, [_vm.showTitle && _vm.trueTitle ? _c("h3", {
       staticClass: "fieldGroupWrap_title"
-    }, [_vm._v("\n            " + _vm._s(_vm.title) + "\n        ")]) : _vm._e(), _vm._v(" "), _vm.showDescription && _vm.description ? _c("p", {
+    }, [_vm._v("\n        " + _vm._s(_vm.trueTitle) + "\n    ")]) : _vm._e(), _vm._v(" "), _vm.showDescription && _vm.description ? _c("p", {
       staticClass: "fieldGroupWrap_des",
       domProps: {
         innerHTML: _vm._s(_vm.description)
       }
-    }) : _vm._e()], _vm._v(" "), _c("div", {
+    }) : _vm._e(), _vm._v(" "), _c("div", {
       staticClass: "fieldGroupWrap_box"
-    }, [_vm._t("default")], 2)], 2);
+    }, [_vm._t("default")], 2)]);
   };
 
   var __vue_staticRenderFns__ = [];
@@ -9723,6 +9682,83 @@
     render: __vue_render__,
     staticRenderFns: __vue_staticRenderFns__
   }, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
+
+  /**
+   * Created by Liu.Jun on 2020/4/22 18:58.
+   */
+  // 递归参数，统一props
+  var vueProps$1 = {
+    formProps: {
+      type: null
+    },
+    // 全局的配置，用于 初始化差异，适配不同的ui框架
+    globalOptions: {
+      type: null
+    },
+    // 当前节点schema
+    schema: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    // 当前节点Ui Schema
+    uiSchema: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    // 当前节点Error Schema
+    errorSchema: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    // 自定义校验
+    customRule: {
+      type: Function,
+      default: null
+    },
+    // 自定义校验规则
+    customFormats: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    // 根节点 Schema
+    rootSchema: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    // 根节点的数据
+    rootFormData: {
+      type: null,
+      default: function _default() {
+        return {};
+      }
+    },
+    // 当前节点路径
+    curNodePath: {
+      type: String,
+      default: ''
+    },
+    // 是否必填
+    required: {
+      type: Boolean,
+      default: false
+    },
+    // 是否需要校验数据组
+    // object array 类型默认会最后追加一个校验组件校验整体数据
+    needValidFieldGroup: {
+      type: Boolean,
+      default: true
+    }
+  };
 
   /* script */
 
@@ -9978,6 +10014,7 @@
 
   var Widget = {
     name: 'Widget',
+    inject: ['genFormProvide'],
     props: {
       // 是否同步formData的值，默认表单元素都需要
       // oneOf anyOf 中的select属于formData之外的数据
@@ -10154,9 +10191,10 @@
       }
     },
     render: function render(h) {
-      var self = this; // 判断是否为根节点
+      var self = this;
+      var curNodePath = this.$props.curNodePath; // 判断是否为根节点
 
-      var isRootNode = isRootNodePath(this.curNodePath);
+      var isRootNode = isRootNodePath(curNodePath);
       var miniDesModel = self.globalOptions.HELPERS.isMiniDes(self.formProps);
       var descriptionVNode = self.description ? h('div', {
         domProps: {
@@ -10185,8 +10223,10 @@
         width: self.width,
         flexBasis: self.width,
         paddingRight: '10px'
-      } : {});
+      } : {}); // 运行配置回退到 属性名
 
+
+      var label = fallbackLabel(self.label, self.widget && this.genFormProvide.fallbackLabel, curNodePath);
       return h(COMPONENT_MAP.formItem, {
         class: _objectSpread2(_objectSpread2({}, self.fieldClass), {}, {
           genFormItem: true
@@ -10197,7 +10237,7 @@
           labelWidth: self.labelWidth
         } : {}), this.isFormData ? {
           // 这里对根节点打特殊标志，绕过elementUi无prop属性不校验
-          prop: isRootNode ? '__$$root' : path2prop(self.curNodePath),
+          prop: isRootNode ? '__$$root' : path2prop(curNodePath),
           rules: [{
             validator: function validator(rule, value, callback) {
               if (isRootNode) value = self.rootFormData; // 校验是通过对schema逐级展开校验 这里只捕获根节点错误
@@ -10209,7 +10249,7 @@
                 customFormats: self.$props.customFormats,
                 errorSchema: self.errorSchema,
                 required: self.required,
-                propPath: path2prop(self.curNodePath)
+                propPath: path2prop(curNodePath)
               });
               if (errors.length > 0) return callback(errors[0].message); // customRule 如果存在自定义校验
 
@@ -10217,7 +10257,7 @@
 
               if (curCustomRule && typeof curCustomRule === 'function') {
                 return curCustomRule({
-                  field: self.curNodePath,
+                  field: curNodePath,
                   value: value,
                   rootFormData: self.rootFormData,
                   callback: callback
@@ -10242,13 +10282,13 @@
             }, [props.error]) : null;
           }
         }
-      }, [self.label ? h('span', {
+      }, [label ? h('span', {
         slot: 'label',
         class: {
           genFormLabel: true,
           genFormItemRequired: self.required
         }
-      }, ["".concat(self.label), miniDescriptionVNode, "".concat(self.formProps && self.formProps.labelSuffix || '')]) : null, // description
+      }, ["".concat(label), miniDescriptionVNode, "".concat(self.formProps && self.formProps.labelSuffix || '')]) : null, // description
       // 非mini模式显示 description
       !miniDesModel ? descriptionVNode : null, h( // 关键输入组件
       self.widget, {
@@ -10371,7 +10411,8 @@
           title: title,
           description: description,
           showTitle: showTitle,
-          showDescription: showDescription
+          showDescription: showDescription,
+          curNodePath: curNodePath
         },
         class: _objectSpread2(_objectSpread2({}, context.data.class), fieldClass),
         attrs: fieldAttrs,
@@ -10761,7 +10802,8 @@
           title: title,
           description: description,
           showTitle: showTitle,
-          showDescription: showDescription
+          showDescription: showDescription,
+          curNodePath: curNodePath
         },
         class: _objectSpread2(_objectSpread2({}, context.data.class), fieldClass),
         attrs: fieldAttrs,
@@ -10920,7 +10962,7 @@
               required: ![].concat(schema.additionalItems.type).includes('null'),
               uiSchema: _objectSpread2(_objectSpread2({}, uiSchema.additionalItems), tempUiSchema),
               errorSchema: errorSchema.additionalItems,
-              curNodePath: computedCurPath(_this.curNodePath, index + schema.items.length)
+              curNodePath: computedCurPath(curNodePath, index + schema.items.length)
             })
           })
         };
@@ -10933,7 +10975,8 @@
           title: title,
           description: description,
           showTitle: showTitle,
-          showDescription: showDescription
+          showDescription: showDescription,
+          curNodePath: curNodePath
         },
         class: fieldClass,
         attrs: fieldAttrs,
@@ -11551,6 +11594,11 @@
     return {
       name: 'VueForm',
       props: vueProps,
+      provide: function provide() {
+        return {
+          genFormProvide: this.genFormProvide
+        };
+      },
       data: function data() {
         var formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema); // 保持v-model双向数据及时性
 
@@ -11560,6 +11608,11 @@
         };
       },
       computed: {
+        genFormProvide: function genFormProvide() {
+          return {
+            fallbackLabel: this.fallbackLabel
+          };
+        },
         footerParams: function footerParams() {
           return _objectSpread2({
             show: true,

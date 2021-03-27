@@ -5,8 +5,8 @@
 import { orderProperties, getUiOptions } from '@lljj/vjsf-utils/formUtils';
 import { computedCurPath, getPathVal } from '@lljj/vjsf-utils/vueUtils';
 import { isObject } from '@lljj/vjsf-utils/utils';
+import FieldGroupWrap from '@lljj/vjsf-utils/components/FieldGroupWrap';
 import vueProps from '../props';
-import FieldGroupWrap from '../../components/FieldGroupWrap';
 import Widget from '../../components/Widget';
 
 // eslint-disable-next-line import/no-cycle
@@ -98,7 +98,8 @@ export default {
                     title,
                     description,
                     showTitle,
-                    showDescription
+                    showDescription,
+                    curNodePath
                 },
                 class: { ...context.data.class, ...fieldClass },
                 attrs: fieldAttrs,

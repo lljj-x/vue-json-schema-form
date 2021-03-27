@@ -178,6 +178,7 @@
                             :custom-formats="customFormats"
                             :form-footer="trueFormFooter"
                             :form-props="trueFormProps"
+                            :fallback-label="true"
                             @on-form-mounted="handleFormMounted"
                             @on-change="handleDataChange"
                             @on-cancel="handleCancel"
