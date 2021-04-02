@@ -14,7 +14,7 @@
 **各版本api和使用形式99%一致，仅有如下差异：**
 ::: warning 各版本差异
 * vue3 emit事件都会去掉on前缀，详细看这里 [事件 Emit Event](/zh/guide/basic-config.html#事件-emit-event)
-* vue3 antDv `v-model` 不使用 `modelValue` props，这里需要做个转换，[详细参见](/zh/guide/#vue3-ant-v-model-%E7%89%B9%E6%AE%8A%E5%A4%84%E7%90%86)
+* vue3 antd Vue `v-model` 不使用 `modelValue` props，这里需要做个转换，[详细参见](/zh/guide/#vue3-ant-v-model-%E7%89%B9%E6%AE%8A%E5%A4%84%E7%90%86)
 :::
 
 ### @lljj/vue-json-schema-form
