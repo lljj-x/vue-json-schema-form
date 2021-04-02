@@ -630,7 +630,7 @@ formFooter = {
 
 当 `schema` 没有配置 `title`，是否使用当前属性名做为表单 `label`
 
-如：`street_address` 表单项是否显示 `label` 为 `street_address`
+如下，配置 `fallback-label` 为 `true`， `label` 将显示为 `street_address`
 ```js
 schema = {
     properties: {
