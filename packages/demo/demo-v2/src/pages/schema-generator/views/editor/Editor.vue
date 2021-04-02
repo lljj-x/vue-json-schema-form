@@ -173,7 +173,7 @@ export default {
                 fallbackLabel: true
             }
         };
-    },    
+    },
     data() {
         return {
             closeToolbar: false,
