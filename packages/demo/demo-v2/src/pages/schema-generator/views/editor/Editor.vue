@@ -167,6 +167,13 @@ export default {
         EditorHeader,
         NestedEditor
     },
+    provide() {
+        return {
+            genFormProvide: {
+                fallbackLabel: true
+            }
+        };
+    },    
     data() {
         return {
             closeToolbar: false,
