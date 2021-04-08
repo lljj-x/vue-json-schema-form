@@ -14,7 +14,9 @@
 
 ## 交流群
 
-QQ群：`146845780` ，欢迎入群讨论
+QQ群：`146845780`，*反应不及时🙄*
+
+**使用问题请优先通过 [Github issue](https://github.com/lljj-x/vue-json-schema-form/issues) 提交**
 
 ![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vjsf11.jpg)
 
