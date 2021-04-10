@@ -1,5 +1,6 @@
 import Ajv from 'ajv';
 import i18n from '../i18n';
+import retrieveSchema from './retriev';
 
 import {
     isObject, deepEquals
@@ -245,7 +246,7 @@ export function isValid(schema, data) {
 export function getMatchingOption(formData, options, rootSchema, haveAllFields = false) {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < options.length; i++) {
-        const option = options[i];
+        const option = retrieveSchema(options[i], rootSchema, formData);
 
         // If the schema describes an object then we need to add slightly more
         // strict matching to the schema, because unless the schema uses the

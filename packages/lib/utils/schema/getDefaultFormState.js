@@ -96,7 +96,11 @@ function computeDefaults(
             includeUndefinedValues
         ));
     } else if ('oneOf' in schema) {
-        const matchSchema = schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)];
+        const matchSchema = retrieveSchema(
+            schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)],
+            rootSchema,
+            formData
+        );
         if (schema.properties && matchSchema.properties) {
             // 对象 oneOf 需要合并原属性和 oneOf 属性
             const mergeSchema = mergeObjects(schema, matchSchema);
@@ -106,7 +110,12 @@ function computeDefaults(
             schema = matchSchema;
         }
     } else if ('anyOf' in schema) {
-        const matchSchema = schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema)];
+        const matchSchema = retrieveSchema(
+            schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema)],
+            rootSchema,
+            formData
+        );
+
         if (schema.properties && matchSchema.properties) {
             // 对象 anyOf 需要合并原属性和 anyOf 属性
             const mergeSchema = mergeObjects(schema, matchSchema);
@@ -116,7 +125,6 @@ function computeDefaults(
             schema = matchSchema;
         }
     }
-
     // Not defaults defined for this node, fallback to generic typed ones.
     if (typeof defaults === 'undefined') {
         defaults = schema.default;

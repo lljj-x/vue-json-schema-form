@@ -9070,7 +9070,7 @@ function getMatchingOption(formData, options, rootSchema) {
 
   // eslint-disable-next-line no-plusplus
   for (var i = 0; i < options.length; i++) {
-    var option = options[i]; // If the schema describes an object then we need to add slightly more
+    var option = retrieveSchema(options[i], rootSchema, formData); // If the schema describes an object then we need to add slightly more
     // strict matching to the schema, because unless the schema uses the
     // "requires" keyword, an object will match the schema as long as it
     // doesn't have matching keys with a conflicting type. To do this we use an
@@ -9213,7 +9213,7 @@ function computeDefaults(_schema, parentDefaults, rootSchema) {
       return computeDefaults(itemSchema, Array.isArray(parentDefaults) ? parentDefaults[idx] : undefined, rootSchema, formData, includeUndefinedValues);
     });
   } else if ('oneOf' in schema) {
-    var matchSchema = schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)];
+    var matchSchema = retrieveSchema(schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)], rootSchema, formData);
 
     if (schema.properties && matchSchema.properties) {
       // 对象 oneOf 需要合并原属性和 oneOf 属性
@@ -9224,7 +9224,7 @@ function computeDefaults(_schema, parentDefaults, rootSchema) {
       schema = matchSchema;
     }
   } else if ('anyOf' in schema) {
-    var _matchSchema = schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema)];
+    var _matchSchema = retrieveSchema(schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema)], rootSchema, formData);
 
     if (schema.properties && _matchSchema.properties) {
       // 对象 anyOf 需要合并原属性和 anyOf 属性
