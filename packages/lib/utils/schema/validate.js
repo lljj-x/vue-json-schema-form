@@ -259,6 +259,10 @@ export function getMatchingOption(formData, options, rootSchema, haveAllFields =
             // Create an "anyOf" schema that requires at least one of the keys in the
             // "properties" object
             const requiresAnyOf = {
+                // 如果后代节点存在 $ref 需要正常引用
+                ...(rootSchema.definitions ? {
+                    definitions: rootSchema.definitions
+                } : {}),
                 anyOf: Object.keys(option.properties).map(key => ({
                     required: [key],
                 })),
@@ -290,6 +294,7 @@ export function getMatchingOption(formData, options, rootSchema, haveAllFields =
 
             // 如果编辑回填数据的场景 可直接使用 required 判断
             if (!haveAllFields) delete augmentedSchema.required;
+
 
             if (isValid(augmentedSchema, formData)) {
                 return i;
