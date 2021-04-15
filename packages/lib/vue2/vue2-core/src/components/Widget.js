@@ -129,7 +129,8 @@ export default {
         },
         formProps: null,
         getWidget: null,
-        globalOptions: null // 全局配置
+        globalOptions: null, // 全局配置
+        onChange: null
     },
     computed: {
         value: {
@@ -320,8 +321,12 @@ export default {
                                 // 为了兼容 number 小数点后0结尾的数据场景
                                 // 比如 1. 1.010 这类特殊数据输入是不需要触发 新值的设置，否则会导致schema校验为非数字
                                 // 但由于element为了解另外的问题，会在nextTick时强制同步dom的值等于vm的值所以无法通过这种方式来hack，这里旧的这份逻辑依旧保留 不过update一直为true
-                                if (formatValue.update && self.value !== formatValue.value) {
+                                const preVal = self.value;
+                                if (formatValue.update && preVal !== formatValue.value) {
                                     self.value = formatValue.value;
+                                    if (self.onChange) {
+                                        self.onChange(formatValue.value, preVal);
+                                    }
                                 }
                             }
                         }

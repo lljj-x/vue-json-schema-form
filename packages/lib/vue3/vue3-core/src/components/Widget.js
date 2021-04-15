@@ -125,7 +125,8 @@ export default {
         },
         formProps: null,
         getWidget: null,
-        globalOptions: null // 全局配置
+        globalOptions: null, // 全局配置
+        onChange: null
     },
     emits: ['change'],
     inheritAttrs: true,
@@ -313,7 +314,13 @@ export default {
                                     modelValue: widgetValue.value, // v-model
                                     ref: widgetRef,
                                     'onUpdate:modelValue': function updateModelValue(event) {
-                                        widgetValue.value = event;
+                                        const preVal = widgetValue.value;
+                                        if (preVal !== event) {
+                                            widgetValue.value = event;
+                                            if (props.onChange) {
+                                                props.onChange(event, preVal);
+                                            }
+                                        }
                                     },
                                     ...otherAttrs
                                 }

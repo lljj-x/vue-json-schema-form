@@ -8667,7 +8667,8 @@
         emptyValue = uiOptions.emptyValue,
         width = uiOptions.width,
         getWidget = uiOptions.getWidget,
-        uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget"]);
+        onChange = uiOptions.onChange,
+        uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "onChange"]);
 
     return {
       widget: widget,
@@ -8683,6 +8684,7 @@
       fieldClass: fieldClass,
       emptyValue: emptyValue,
       getWidget: getWidget,
+      onChange: onChange,
       uiProps: uiProps
     };
   } // 解析用户配置的 errorSchema options
@@ -9129,13 +9131,16 @@
       if (option.properties) {
         // Create an "anyOf" schema that requires at least one of the keys in the
         // "properties" object
-        var requiresAnyOf = {
+        var requiresAnyOf = _objectSpread2(_objectSpread2({}, rootSchema.definitions ? {
+          definitions: rootSchema.definitions
+        } : {}), {}, {
           anyOf: Object.keys(option.properties).map(function (key) {
             return {
               required: [key]
             };
           })
-        };
+        });
+
         var augmentedSchema = void 0; // If the "anyOf" keyword already exists, wrap the augmentation in an "allOf"
 
         if (option.anyOf) {
@@ -9925,8 +9930,9 @@
       },
       formProps: null,
       getWidget: null,
-      globalOptions: null // 全局配置
-
+      globalOptions: null,
+      // 全局配置
+      onChange: null
     },
     emits: ['change'],
     inheritAttrs: true,
@@ -10083,7 +10089,15 @@
               // v-model
               ref: widgetRef,
               'onUpdate:modelValue': function updateModelValue(event) {
-                widgetValue.value = event;
+                var preVal = widgetValue.value;
+
+                if (preVal !== event) {
+                  widgetValue.value = event;
+
+                  if (props.onChange) {
+                    props.onChange(event, preVal);
+                  }
+                }
               }
             }, otherAttrs))] : []));
           }

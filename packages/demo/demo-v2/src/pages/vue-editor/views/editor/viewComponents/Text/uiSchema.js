@@ -7,6 +7,9 @@ export default {
         'ui:options': {
             getWidget(widgetVm) {
                 console.log(widgetVm);
+            },
+            onChange(newVal, oldVal) {
+                console.log('change:', newVal, oldVal);
             }
         }
     }

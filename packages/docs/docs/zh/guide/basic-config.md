@@ -169,6 +169,12 @@ uiSchema = {
                 console.log(widgetVm);
             },
 
+            // onChange
+            // 支持版本 1.3
+            onChange(newVal, oldVal) {
+                console.log('change:', newVal, oldVal);
+            },
+
             // 显示标题？只对 type为`object`、`array` 类型有效
             showTitle: true,
 

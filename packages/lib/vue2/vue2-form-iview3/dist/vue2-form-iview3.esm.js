@@ -8619,7 +8619,8 @@ function getWidgetConfig(_ref6) {
       emptyValue = uiOptions.emptyValue,
       width = uiOptions.width,
       getWidget = uiOptions.getWidget,
-      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget"]);
+      onChange = uiOptions.onChange,
+      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "onChange"]);
 
   return {
     widget: widget,
@@ -8635,6 +8636,7 @@ function getWidgetConfig(_ref6) {
     fieldClass: fieldClass,
     emptyValue: emptyValue,
     getWidget: getWidget,
+    onChange: onChange,
     uiProps: uiProps
   };
 } // 解析用户配置的 errorSchema options
@@ -9081,13 +9083,16 @@ function getMatchingOption(formData, options, rootSchema) {
     if (option.properties) {
       // Create an "anyOf" schema that requires at least one of the keys in the
       // "properties" object
-      var requiresAnyOf = {
+      var requiresAnyOf = _objectSpread2(_objectSpread2({}, rootSchema.definitions ? {
+        definitions: rootSchema.definitions
+      } : {}), {}, {
         anyOf: Object.keys(option.properties).map(function (key) {
           return {
             required: [key]
           };
         })
-      };
+      });
+
       var augmentedSchema = void 0; // If the "anyOf" keyword already exists, wrap the augmentation in an "allOf"
 
       if (option.anyOf) {
@@ -10147,8 +10152,9 @@ var Widget = {
     },
     formProps: null,
     getWidget: null,
-    globalOptions: null // 全局配置
-
+    globalOptions: null,
+    // 全局配置
+    onChange: null
   },
   computed: {
     value: {
@@ -10304,8 +10310,14 @@ var Widget = {
           // 比如 1. 1.010 这类特殊数据输入是不需要触发 新值的设置，否则会导致schema校验为非数字
           // 但由于element为了解另外的问题，会在nextTick时强制同步dom的值等于vm的值所以无法通过这种方式来hack，这里旧的这份逻辑依旧保留 不过update一直为true
 
-          if (formatValue.update && self.value !== formatValue.value) {
+          var preVal = self.value;
+
+          if (formatValue.update && preVal !== formatValue.value) {
             self.value = formatValue.value;
+
+            if (self.onChange) {
+              self.onChange(formatValue.value, preVal);
+            }
           }
         }
       }
