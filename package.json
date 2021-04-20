@@ -49,12 +49,17 @@
     "devDependencies": {
         "@commitlint/cli": "^8.3.5",
         "@commitlint/config-conventional": "^8.3.4",
+        "@vue/cli-plugin-babel": "^4.5.12",
+        "@vue/cli-plugin-eslint": "^4.5.12",
+        "@vue/cli-service": "^4.5.12",
         "@vue/compiler-sfc": "^3.0.0",
         "commitizen": "^4.1.2",
         "conventional-changelog-cli": "^2.0.34",
         "cz-conventional-changelog": "^3.2.0",
         "husky": "^4.2.5",
-        "lerna": "^3.22.1"
+        "lerna": "^3.22.1",
+        "vuepress": "^1.8.2",
+        "webpack-manifest-plugin": "^3.1.1"
     },
     "version": "0.0.0"
 }
