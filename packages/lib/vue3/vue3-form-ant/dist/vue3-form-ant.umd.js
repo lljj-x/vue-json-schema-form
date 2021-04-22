@@ -10049,7 +10049,12 @@
                   widgetValue.value = event;
 
                   if (props.onChange) {
-                    props.onChange(event, preVal);
+                    props.onChange({
+                      curVal: event,
+                      preVal: preVal,
+                      parentFormData: getPathVal(props.rootFormData, props.curNodePath, 1),
+                      rootFormData: props.rootFormData
+                    });
                   }
                 }
               }

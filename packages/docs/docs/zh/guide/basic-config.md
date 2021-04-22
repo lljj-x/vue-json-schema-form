@@ -171,8 +171,15 @@ uiSchema = {
 
             // onChange
             // 支持版本 1.3
-            onChange(newVal, oldVal) {
-                console.log('change:', newVal, oldVal);
+            /**
+             *
+             * @param curVal 当前值
+             * @param preVal 上一次的值
+             * @param parentFormData 当前父节点的值，响应式的值可在这里设置其它需要联动的值
+             * @param rootFormData 当前父节点的值，响应式的值可在这里设置其它需要联动的值
+             */
+            onChange({ curVal, preVal, parentFormData, rootFormData }) {
+                console.log('change:', curVal, preVal, parentFormData, rootFormData);
             },
 
             // 显示标题？只对 type为`object`、`array` 类型有效

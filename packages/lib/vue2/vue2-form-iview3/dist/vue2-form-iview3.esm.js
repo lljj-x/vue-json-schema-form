@@ -10316,7 +10316,12 @@ var Widget = {
             self.value = formatValue.value;
 
             if (self.onChange) {
-              self.onChange(formatValue.value, preVal);
+              self.onChange({
+                curVal: formatValue.value,
+                preVal: preVal,
+                parentFormData: getPathVal$1(self.rootFormData, self.curNodePath, 1),
+                rootFormData: self.rootFormData
+              });
             }
           }
         }

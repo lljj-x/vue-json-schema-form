@@ -8,8 +8,8 @@ export default {
             getWidget(widgetVm) {
                 console.log(widgetVm);
             },
-            onChange(newVal, oldVal) {
-                console.log('change:', newVal, oldVal);
+            onChange(data) {
+                console.log('change:', data);
             }
         }
     }

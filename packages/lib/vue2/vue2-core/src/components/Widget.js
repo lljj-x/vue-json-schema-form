@@ -325,7 +325,12 @@ export default {
                                 if (formatValue.update && preVal !== formatValue.value) {
                                     self.value = formatValue.value;
                                     if (self.onChange) {
-                                        self.onChange(formatValue.value, preVal);
+                                        self.onChange({
+                                            curVal: formatValue.value,
+                                            preVal,
+                                            parentFormData: getPathVal(self.rootFormData, self.curNodePath, 1),
+                                            rootFormData: self.rootFormData
+                                        });
                                     }
                                 }
                             }
