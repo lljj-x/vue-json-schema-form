@@ -1,6 +1,6 @@
 # @lljj/vue3-form-ant
 
-基于 [Element Plus](https://element-plus.org/) 、Vue3、 [JSON Schema](https://json-schema.org/understanding-json-schema/index.html) 生成表单
+基于 [Antd Vue](https://2x.antdv.com/components/overview-cn/) 、Vue3、 [JSON Schema](https://json-schema.org/understanding-json-schema/index.html) 生成表单
 
 > 通过 [@lljj/vue3-form-core](https://github.com/lljj-x/vue-json-schema-form/tree/master/packages/lib/vue3/vue3-core) 适配 ElementPlus 库
 
