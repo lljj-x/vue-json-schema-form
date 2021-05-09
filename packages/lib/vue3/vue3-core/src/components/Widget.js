@@ -128,7 +128,7 @@ export default {
         globalOptions: null, // 全局配置
         onChange: null
     },
-    emits: ['change'],
+    emits: ['otherDataChange'],
     inheritAttrs: true,
     setup(props, { emit }) {
         const genFormProvide = inject('genFormProvide');
@@ -143,8 +143,9 @@ export default {
                 const trueValue = (value === '' || value === null) ? props.emptyValue : value;
                 if (props.isFormData) {
                     setPathVal(props.rootFormData, props.curNodePath, trueValue);
+                } else {
+                    emit('otherDataChange', trueValue);
                 }
-                emit('change', trueValue);
             }
         });
 

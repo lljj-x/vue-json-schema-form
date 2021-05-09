@@ -9934,7 +9934,7 @@
       // 全局配置
       onChange: null
     },
-    emits: ['change'],
+    emits: ['otherDataChange'],
     inheritAttrs: true,
     setup: function setup(props, _ref) {
       var emit = _ref.emit;
@@ -9950,9 +9950,9 @@
 
           if (props.isFormData) {
             setPathVal(props.rootFormData, props.curNodePath, trueValue);
+          } else {
+            emit('otherDataChange', trueValue);
           }
-
-          emit('change', trueValue);
         }
       }); // 枚举类型默认值为第一个选项
 
@@ -10994,9 +10994,7 @@
     setup: function setup(props) {
       var computedCurSelectIndexByFormData = function computedCurSelectIndexByFormData(formData) {
         var index = getMatchingOption(formData, props.selectList, props.rootSchema, true);
-        if (index !== 0) return index; // 找不到默认等于原本的值
-
-        return props.curSelectIndex || 0;
+        return index || 0;
       }; // 当前选中 option 项
 
 
@@ -11048,7 +11046,7 @@
           curValue: curSelectIndex.value,
           globalOptions: props.globalOptions
         }, selectWidgetConfig), {}, {
-          onChange: function onChange(event) {
+          onOtherDataChange: function onOtherDataChange(event) {
             curSelectIndex.value = event;
           }
         }));
@@ -11084,7 +11082,11 @@
                 key = _ref2[0],
                 value = _ref2[1];
 
-            if (value !== undefined) {
+            if (value !== undefined && (curFormData[key] === undefined || props.selectList[newVal].properties[key].const !== undefined)) {
+              // 这里没找到一个比较合理的新旧值合并方式
+              //
+              // 1. 如果anyOf里面同名属性中的schema包含了 const 配置，产生了新的值这里做覆盖处理
+              // 2. 其它场景保留同名key的旧的值
               setPathVal(curFormData, key, value);
             }
           });

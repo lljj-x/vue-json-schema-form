@@ -145,8 +145,9 @@ export default {
                 const trueValue = (value === '' || value === null) ? this.emptyValue : value;
                 if (this.isFormData) {
                     setPathVal(this.rootFormData, this.curNodePath, trueValue);
+                } else {
+                    this.$emit('onOtherDataChange', trueValue);
                 }
-                this.$emit('onChange', trueValue);
             }
         }
     },

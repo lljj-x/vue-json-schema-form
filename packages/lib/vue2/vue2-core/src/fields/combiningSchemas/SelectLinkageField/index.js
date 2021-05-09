@@ -43,10 +43,8 @@ export default {
     methods: {
         computedCurSelectIndexByFormData(formData) {
             const index = getMatchingOption(formData, this.selectList, this.rootSchema, true);
-            if (index !== 0) return index;
 
-            // 找不到默认等于原本的值
-            return this.curSelectIndex || 0;
+            return index || 0;
         },
 
         // 下拉选项 VNode
@@ -101,7 +99,7 @@ export default {
                         ...selectWidgetConfig
                     },
                     on: {
-                        onChange: (event) => {
+                        onOtherDataChange: (event) => {
                             this.curSelectIndex = event;
                         }
                     }
@@ -145,13 +143,20 @@ export default {
             // 设置新值
             if (isObject(newOptionData)) {
                 Object.entries(newOptionData).forEach(([key, value]) => {
-                    if (value !== undefined) {
+                    if (value !== undefined && (curFormData[key] === undefined || this.selectList[newVal].properties[key].const !== undefined)) {
+                        // 这里没找到一个比较合理的新旧值合并方式
+                        //
+                        // 1. 如果anyOf里面同名属性中的schema包含了 const 配置，产生了新的值这里做覆盖处理
+                        // 2. 其它场景保留同名key的旧的值
                         setPathVal(curFormData, key, value);
                     }
                 });
             } else {
                 setPathVal(this.rootFormData, this.curNodePath, newOptionData || curFormData);
             }
+
+            // 可添加一个配置通知外部这里变更
+            // todo: onChangeOption
         }
     },
     render(h) {

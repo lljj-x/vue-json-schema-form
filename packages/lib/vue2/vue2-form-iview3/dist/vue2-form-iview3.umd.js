@@ -10179,9 +10179,9 @@
 
           if (this.isFormData) {
             setPathVal(this.rootFormData, this.curNodePath, trueValue);
+          } else {
+            this.$emit('onOtherDataChange', trueValue);
           }
-
-          this.$emit('onChange', trueValue);
         }
       }
     },
@@ -11274,9 +11274,7 @@
     methods: {
       computedCurSelectIndexByFormData: function computedCurSelectIndexByFormData(formData) {
         var index = getMatchingOption(formData, this.selectList, this.rootSchema, true);
-        if (index !== 0) return index; // 找不到默认等于原本的值
-
-        return this.curSelectIndex || 0;
+        return index || 0;
       },
       // 下拉选项 VNode
       getSelectBoxVNode: function getSelectBoxVNode() {
@@ -11329,7 +11327,7 @@
             globalOptions: this.globalOptions
           }, selectWidgetConfig),
           on: {
-            onChange: function onChange(event) {
+            onOtherDataChange: function onOtherDataChange(event) {
               _this.curSelectIndex = event;
             }
           }
@@ -11341,6 +11339,8 @@
       // 如果object 类型 option有添加属性 这里做移除
       // 对新option计算默认值
       curSelectIndex: function curSelectIndex(newVal, oldVal) {
+        var _this2 = this;
+
         var curFormData = getPathVal$1(this.rootFormData, this.curNodePath); // 计算出 新选项默认值
 
         var newOptionData = getDefaultFormState(this.selectList[newVal], undefined, this.rootSchema);
@@ -11367,17 +11367,23 @@
                 key = _ref2[0],
                 value = _ref2[1];
 
-            if (value !== undefined) {
+            if (value !== undefined && (curFormData[key] === undefined || _this2.selectList[newVal].properties[key].const !== undefined)) {
+              // 这里没找到一个比较合理的新旧值合并方式
+              //
+              // 1. 如果anyOf里面同名属性中的schema包含了 const 配置，产生了新的值这里做覆盖处理
+              // 2. 其它场景保留同名key的旧的值
               setPathVal(curFormData, key, value);
             }
           });
         } else {
           setPathVal(this.rootFormData, this.curNodePath, newOptionData || curFormData);
-        }
+        } // 可添加一个配置通知外部这里变更
+        // todo: onChangeOption
+
       }
     },
     render: function render(h) {
-      var _this2 = this,
+      var _this3 = this,
           _class4;
 
       var curNodePath = this.$props.curNodePath;
@@ -11426,14 +11432,14 @@
           curNodePath: curNodePath,
           rootFormData: this.rootFormData
         }), function (key) {
-          return key === _this2.combiningType ? undefined : "ui:".concat(key);
+          return key === _this3.combiningType ? undefined : "ui:".concat(key);
         });
         var userErrOptions = filterObject(getUserErrOptions({
           schema: this.schema,
           uiSchema: this.uiSchema,
           errorSchema: this.errorSchema
         }), function (key) {
-          return key === _this2.combiningType ? undefined : "err:".concat(key);
+          return key === _this3.combiningType ? undefined : "err:".concat(key);
         });
         childrenVNodeList.push(h(SchemaField, {
           key: "appendSchema_".concat(this.combiningType),
