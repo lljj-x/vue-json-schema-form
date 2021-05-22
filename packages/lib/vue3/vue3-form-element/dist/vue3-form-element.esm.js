@@ -11446,7 +11446,9 @@ function createForm() {
           }, _defineProperty(_class, "genFromComponent_".concat(props.schema.id, "Form"), !!props.schema.id), _defineProperty(_class, "layoutColumn", !inline), _defineProperty(_class, "layoutColumn-".concat(layoutColumn), !inline), _class),
           setFormRef: function setFormRef(form) {
             formRef = form;
-            emit('form-mounted', form);
+            emit('form-mounted', form, {
+              formData: rootFormData.value
+            });
           },
           model: rootFormData
         }, schemaProps.formProps), {

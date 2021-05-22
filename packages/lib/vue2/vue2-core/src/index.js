@@ -104,7 +104,9 @@ export default function createForm(globalOptions = {}) {
             },
         },
         mounted() {
-            this.$emit('on-form-mounted', this.$refs.genEditForm);
+            this.$emit('on-form-mounted', this.$refs.genEditForm, {
+                formData: this.formData
+            });
         },
         render(h) {
             const self = this;

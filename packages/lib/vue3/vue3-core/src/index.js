@@ -171,7 +171,9 @@ export default function createForm(globalOptions = {}) {
                         },
                         setFormRef: (form) => {
                             formRef = form;
-                            emit('form-mounted', form);
+                            emit('form-mounted', form, {
+                                formData: rootFormData.value
+                            });
                         },
                         model: rootFormData,
                         ...schemaProps.formProps

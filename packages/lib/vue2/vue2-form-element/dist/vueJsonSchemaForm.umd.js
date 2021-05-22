@@ -11681,7 +11681,9 @@
         }
       },
       mounted: function mounted() {
-        this.$emit('on-form-mounted', this.$refs.genEditForm);
+        this.$emit('on-form-mounted', this.$refs.genEditForm, {
+          formData: this.formData
+        });
       },
       render: function render(h) {
         var _class;

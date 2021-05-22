@@ -787,7 +787,7 @@ vue3的版本中为 `change`，去掉 `on` 前缀
 > 引用类型，只有重新对对象赋值，否则newVal 等于 oldVal 参见 [vue watch](https://cn.vuejs.org/v2/api/#vm-watch)
 
 ### on-form-mounted
-* 参数(formRef)
+* 参数(formRef, { formData })
 
 通过该方法可以获取到当前ui框架的form组件实例，可用来执行form组件的一些方法，如(`validate`)
 
