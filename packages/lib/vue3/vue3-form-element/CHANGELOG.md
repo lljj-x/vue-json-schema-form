@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/lljj-x/vue-json-schema-form/compare/v1.6.0...v1.6.1) (2021-05-26)
+
+
+### Bug Fixes
+
+* **lib:** 修复 d.ts 申明文件错误 ([860c3b4](https://github.com/lljj-x/vue-json-schema-form/commit/860c3b42a38ac3e76b2e16c3d74a45c7cd95dfa1))
+
+
+
+
+
 # [1.6.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.5.0...v1.6.0) (2021-05-22)
 
 
