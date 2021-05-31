@@ -545,13 +545,13 @@
     }
 
     return {
-      year: date.getUTCFullYear(),
-      month: f(date.getUTCMonth() + 1),
+      year: date.getFullYear(),
+      month: f(date.getMonth() + 1),
       // oh you, javascript.
-      day: f(date.getUTCDate()),
-      hour: f(includeTime ? date.getUTCHours() : 0),
-      minute: f(includeTime ? date.getUTCMinutes() : 0),
-      second: f(includeTime ? date.getUTCSeconds() : 0)
+      day: f(date.getDate()),
+      hour: f(includeTime ? date.getHours() : 0),
+      minute: f(includeTime ? date.getMinutes() : 0),
+      second: f(includeTime ? date.getSeconds() : 0)
     };
   }
 
