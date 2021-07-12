@@ -9113,6 +9113,10 @@
     } catch (e) {
       return false;
     }
+  } // ajv valida
+
+  function ajvValid(schema, data) {
+    return ajv$1.validate(schema, data);
   } // oneOf anyOf 通过formData的值来找到当前匹配项索引
 
   function getMatchingOption(formData, options, rootSchema) {
@@ -9181,6 +9185,7 @@
     ajvValidateFormData: ajvValidateFormData,
     validateFormDataAndTransformMsg: validateFormDataAndTransformMsg,
     isValid: isValid,
+    ajvValid: ajvValid,
     getMatchingOption: getMatchingOption
   });
 

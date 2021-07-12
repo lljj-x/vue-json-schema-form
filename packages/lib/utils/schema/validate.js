@@ -242,6 +242,11 @@ export function isValid(schema, data) {
     }
 }
 
+// ajv valida
+export function ajvValid(schema, data) {
+    return ajv.validate(schema, data);
+}
+
 // oneOf anyOf 通过formData的值来找到当前匹配项索引
 export function getMatchingOption(formData, options, rootSchema, haveAllFields = false) {
     // eslint-disable-next-line no-plusplus
