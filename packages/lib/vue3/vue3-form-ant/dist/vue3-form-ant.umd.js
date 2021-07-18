@@ -11834,11 +11834,16 @@
               })
             }), {
               addonAfter: function addonAfter() {
-                return Vue.h(InputWidget, {
+                return Vue.h('input', {
                   disabled: attrs.disabled,
                   readonly: attrs.readonly,
-                  moduleValue: attrs.moduleValue,
-                  'onUpdate:modelValue': attrs['onUpdate:modelValue'],
+                  value: attrs.modelValue,
+                  onInput: function onInput(e) {
+                    attrs['onUpdate:modelValue'](e.target.value);
+                  },
+                  onChange: function onChange(e) {
+                    attrs['onUpdate:modelValue'](e.target.value);
+                  },
                   type: 'color',
                   style: {
                     padding: '0',
