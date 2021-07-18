@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.4](https://github.com/lljj-x/vue-json-schema-form/compare/v1.6.3...v1.6.4) (2021-07-18)
+
+
+### Bug Fixes
+
+* **vue3 antd:** 修复color format选择颜色 ([378c2e1](https://github.com/lljj-x/vue-json-schema-form/commit/378c2e1aa6767553998cacf52321a6d5b5bee84e))
+
+
+
+
+
 ## [1.6.3](https://github.com/lljj-x/vue-json-schema-form/compare/v1.6.2...v1.6.3) (2021-07-12)
 
 **Note:** Version bump only for package vue-element-schema-form
