@@ -166,6 +166,12 @@ export default function jsonSchema2ComponentList(code, toolItems) {
 
             // 处理子节点
             const properties = Object.keys(curObjNode.properties);
+            let uiOrder
+            if (curSchema.type === "array" && curSchema.items) {
+                uiOrder = curSchema.items['ui:order']
+            } else {
+                uiOrder = curSchema['ui:order']
+            }
             const orderedProperties = formUtils.orderProperties(properties, curSchema['ui:order']);
 
             // 直接扩展当前节点了
