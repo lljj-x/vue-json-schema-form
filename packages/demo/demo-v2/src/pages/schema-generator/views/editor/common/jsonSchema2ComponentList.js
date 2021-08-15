@@ -166,7 +166,7 @@ export default function jsonSchema2ComponentList(code, toolItems) {
 
             // 处理子节点
             const properties = Object.keys(curObjNode.properties);
-            const orderedProperties = formUtils.orderProperties(properties, curSchema['ui:order']);
+            const orderedProperties = formUtils.orderProperties(properties, curObjNode['ui:order']);
 
             // 直接扩展当前节点了
             const childSchema = orderedProperties.map(item => ({
