@@ -121,6 +121,7 @@ export default function createForm(globalOptions = {}) {
                         props: {
                             globalOptions,
                             okBtn: self.footerParams.okBtn,
+                            okBtnProps: self.footerParams.okBtnProps,
                             cancelBtn: self.footerParams.cancelBtn,
                             formItemAttrs: self.footerParams.formItemAttrs,
                         },
