@@ -5,6 +5,18 @@
 export default {
     txt: {
         'ui:options': {
+            renderScopedSlots(h) {
+                return {
+                    append: () => h('span', '.com')
+                };
+            },
+            renderChildren(h) {
+                return [
+                    h('span', {
+                        slot: 'suffix',
+                    }, '后缀')
+                ];
+            },
             getWidget(widgetVm) {
                 console.log(widgetVm);
             },

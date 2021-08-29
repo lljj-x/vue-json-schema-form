@@ -129,6 +129,8 @@ export default {
         },
         formProps: null,
         getWidget: null,
+        renderScopedSlots: null, // 作用域插槽
+        renderChildren: null, // 子节点 插槽
         globalOptions: null, // 全局配置
         onChange: null
     },
@@ -309,6 +311,9 @@ export default {
                             value: this.value, // v-model
                         },
                         ref: 'widgetRef',
+                        ...(self.renderScopedSlots ? {
+                            scopedSlots: self.renderScopedSlots(h) || {}
+                        } : {}),
                         on: {
                             'hook:mounted': function widgetMounted() {
                                 // 提供一种特殊的配置 允许直接访问到 widget vm
@@ -336,7 +341,8 @@ export default {
                                 }
                             }
                         }
-                    }
+                    },
+                    self.renderChildren ? self.renderChildren(h) : null
                 )
             ]
         );

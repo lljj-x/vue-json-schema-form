@@ -8621,8 +8621,10 @@
         emptyValue = uiOptions.emptyValue,
         width = uiOptions.width,
         getWidget = uiOptions.getWidget,
+        renderScopedSlots = uiOptions.renderScopedSlots,
+        renderChildren = uiOptions.renderChildren,
         onChange = uiOptions.onChange,
-        uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "onChange"]);
+        uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange"]);
 
     return {
       widget: widget,
@@ -8638,6 +8640,8 @@
       fieldClass: fieldClass,
       emptyValue: emptyValue,
       getWidget: getWidget,
+      renderScopedSlots: renderScopedSlots,
+      renderChildren: renderChildren,
       onChange: onChange,
       uiProps: uiProps
     };
@@ -9889,6 +9893,8 @@
       },
       formProps: null,
       getWidget: null,
+      renderScopedSlots: null,
+      // 作用域插槽
       globalOptions: null,
       // 全局配置
       onChange: null
@@ -10063,7 +10069,7 @@
                   }
                 }
               }
-            }, otherAttrs))] : []));
+            }, otherAttrs), _objectSpread2({}, props.renderScopedSlots ? typeof props.renderScopedSlots === 'function' ? props.renderScopedSlots() : props.renderScopedSlots : {}))] : []));
           }
         }));
       };
