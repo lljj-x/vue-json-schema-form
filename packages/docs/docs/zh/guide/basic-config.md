@@ -283,7 +283,7 @@ uiSchema = {
 ```
 
 * scopedSlots - `renderScopedSlots` （vue3、vue2）
-> vue3版本 h 为全局api，`import { h } from 'vue'
+> vue3版本 h 为全局api，`import { h } from 'vue'`
 >
 > 同时，vue3 版本配置 `renderScopedSlots` 可以为纯对象、vue3不区分scoped slots
 
@@ -293,7 +293,6 @@ uiSchema = {
         // vue2
         // scoped slots 使用render函数来实现
         // 配置 renderScopedSlots 返回对象key为slotName，函数体返回vnode
-        // renderScopedSlots 可以为function、或者如下纯对象的形式
         // render 函数参考：https://cn.vuejs.org/v2/guide/render-function.html#%E6%B7%B1%E5%85%A5%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1
         renderScopedSlots(h){
             return {
@@ -305,7 +304,7 @@ uiSchema = {
     'ui:options': {
         // vue3
         // slots 使用render函数来实现
-        // 配置 renderScopedSlots 返回对象key为slotName，函数体返回vnode
+        // vue3 renderScopedSlots 可以为function、或者如下纯对象的形式
         // vue3 render 函数参考：https://v3.cn.vuejs.org/guide/render-function.html#%E6%8F%92%E6%A7%BD
         renderScopedSlots: {
             default: (props) =>h('span', props.text)
