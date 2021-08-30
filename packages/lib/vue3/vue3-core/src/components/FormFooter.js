@@ -53,10 +53,11 @@ export default {
                     style: {
                         marginLeft: '10px'
                     },
-                    ...Object.assign({ type: 'primary' }, props.okBtnProps),
+                    type: 'primary',
                     onClick() {
                         emit('submit');
-                    }
+                    },
+                    ...props.okBtnProps
                 }, {
                     default: () => props.okBtn
                 })
