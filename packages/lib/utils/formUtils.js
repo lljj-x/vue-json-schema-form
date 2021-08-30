@@ -227,6 +227,8 @@ export function getWidgetConfig({
         emptyValue,
         width,
         getWidget,
+        renderScopedSlots,
+        renderChildren,
         onChange,
         ...uiProps
     } = uiOptions;
@@ -245,6 +247,8 @@ export function getWidgetConfig({
         fieldClass,
         emptyValue,
         getWidget,
+        renderScopedSlots,
+        renderChildren,
         onChange,
         uiProps
     };

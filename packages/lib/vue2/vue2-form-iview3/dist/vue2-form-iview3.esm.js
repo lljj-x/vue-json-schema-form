@@ -8619,8 +8619,10 @@ function getWidgetConfig(_ref6) {
       emptyValue = uiOptions.emptyValue,
       width = uiOptions.width,
       getWidget = uiOptions.getWidget,
+      renderScopedSlots = uiOptions.renderScopedSlots,
+      renderChildren = uiOptions.renderChildren,
       onChange = uiOptions.onChange,
-      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "onChange"]);
+      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange"]);
 
   return {
     widget: widget,
@@ -8636,6 +8638,8 @@ function getWidgetConfig(_ref6) {
     fieldClass: fieldClass,
     emptyValue: emptyValue,
     getWidget: getWidget,
+    renderScopedSlots: renderScopedSlots,
+    renderChildren: renderChildren,
     onChange: onChange,
     uiProps: uiProps
   };
@@ -10157,6 +10161,10 @@ var Widget = {
     },
     formProps: null,
     getWidget: null,
+    renderScopedSlots: null,
+    // 作用域插槽
+    renderChildren: null,
+    // 子节点 插槽
     globalOptions: null,
     // 全局配置
     onChange: null
@@ -10294,14 +10302,17 @@ var Widget = {
     }, ["".concat(label), miniDescriptionVNode, "".concat(self.formProps && self.formProps.labelSuffix || '')]) : null, // description
     // 非mini模式显示 description
     !miniDesModel ? descriptionVNode : null, h( // 关键输入组件
-    self.widget, {
+    self.widget, _objectSpread2(_objectSpread2({
       style: self.widgetStyle,
       class: self.widgetClass,
       attrs: _objectSpread2(_objectSpread2(_objectSpread2({}, self.widgetAttrs), self.uiProps), {}, {
         value: this.value // v-model
 
       }),
-      ref: 'widgetRef',
+      ref: 'widgetRef'
+    }, self.renderScopedSlots ? {
+      scopedSlots: self.renderScopedSlots(h) || {}
+    } : {}), {}, {
       on: {
         'hook:mounted': function widgetMounted() {
           // 提供一种特殊的配置 允许直接访问到 widget vm
@@ -10331,7 +10342,7 @@ var Widget = {
           }
         }
       }
-    })]);
+    }), self.renderChildren ? self.renderChildren(h) : null)]);
   }
 };
 

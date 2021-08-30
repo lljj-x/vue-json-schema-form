@@ -125,6 +125,7 @@ export default {
         },
         formProps: null,
         getWidget: null,
+        renderScopedSlots: null, // 作用域插槽
         globalOptions: null, // 全局配置
         onChange: null
     },
@@ -329,6 +330,11 @@ export default {
                                         }
                                     },
                                     ...otherAttrs
+                                },
+                                {
+                                    ...(props.renderScopedSlots ? (
+                                        typeof props.renderScopedSlots === 'function' ? props.renderScopedSlots() : props.renderScopedSlots
+                                    ) : {})
                                 }
                             )
                         ] : []

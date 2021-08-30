@@ -162,6 +162,26 @@ uiSchema = {
     'ui:labelWidth': '50px',
 
     'ui:options': {
+            // scoped slots 使用render函数来实现
+            // 配置 renderScopedSlots 返回对象key为slotName，函数体返回vnode
+            // render 函数参考：https://cn.vuejs.org/v2/guide/render-function.html#%E6%B7%B1%E5%85%A5%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1
+            renderScopedSlots(h) {
+                return {
+                    append: (props) => h('span', '.com')
+                };
+            },
+
+            // slots，需要使用render函数来实现
+            // 配置 renderChildren ，返回 Vnode[] 其中slot即为slotName
+            // render 函数参考：https://cn.vuejs.org/v2/guide/render-function.html#%E6%B7%B1%E5%85%A5%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1
+            renderChildren(h) {
+                return [
+                    h('span', {
+                        slot: 'suffix',
+                    }, '后缀')
+                ];
+            },
+
             // 获取widget组件实例，非必要场景不建议使用
             // widget组件 mounted 组件后回调该方法传出vm实例
             // 支持版本: "0.4.1"
@@ -194,7 +214,9 @@ uiSchema = {
             attrs: {
                 // 通过 vue render函数 attrs 传递给 Widget 组件，只能配置在叶子节点
                 // 你也配置在外层，程序会合并 attrs 和 其它外层属性 通过 attrs 传递给子组件
-                autofocus: true
+                // 配置在这里的参数都会传给widget组件，当widget组件props和uiSchema通用参数冲突时可以使用attr配置
+                autofocus: true,
+                width: '99px', // 这里直接传给widget组件，而非外层的width配置
             },
             style: {
                 // 通过 vue render函数 style 传递给 Widget 组件，只能配置在叶子节点
@@ -216,7 +238,7 @@ uiSchema = {
                 fieldClass: true
             },
             fieldAttrs: {
-                // 通过 vue render函数 attrs 传递给 Field 组件，支持所有field节点
+                // 通过 vue render函数 attrs 传递给 Field 组件，支持所有节点
                 'attr-x': 'xxx'
             },
 
@@ -231,6 +253,65 @@ uiSchema = {
 >1. `ui:widget` 自定义widget组件参见这里  [自定义 widget](/zh/guide/adv-config.html#自定义widget)
 >1. `ui:widget` 配置 `HiddenWidget` 或者 `hidden` 既可隐藏当前元素
 >1. `ui:hidden` 支持配置表达式，详细参见这里 [ui-schema ui:hidden配置表达式](/zh/guide/data-linkage.html#ui-schema配置表达式)
+
+### ui-schema - slots
+可以通过uiSchema配置render函数传递slot到你的Widget组件，使用方式如下：
+
+> 注意这里vue2版本需要区分slots，和scopeSlots的区别，配置如下
+>
+> [render函数参考官方文档](https://cn.vuejs.org/v2/guide/render-function.html#%E6%B7%B1%E5%85%A5%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1)
+
+* slots - `renderChildren` (仅vue2)
+
+> 注意：vue3 版本所有slots 统一通过 `renderScopedSlots` 形式传递。
+
+```js
+{
+    'ui:options': {
+        // slots，需要使用render函数来实现
+        // 配置 renderChildren ，返回 Vnode[] 其中slot即为slotName
+        // render 函数参考：https://cn.vuejs.org/v2/guide/render-function.html#%E6%B7%B1%E5%85%A5%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1
+        renderChildren(h) {
+            return [
+                h('span', {
+                    slot: 'suffix',
+                }, '后缀')
+            ];
+        }
+    }
+}
+```
+
+* scopedSlots - `renderScopedSlots` （vue3、vue2）
+> vue3版本 h 为全局api，`import { h } from 'vue'`
+>
+> 同时，vue3 版本配置 `renderScopedSlots` 可以为纯对象、vue3不区分scoped slots
+
+```js
+{
+    'ui:options': {
+        // vue2
+        // scoped slots 使用render函数来实现
+        // 配置 renderScopedSlots 返回对象key为slotName，函数体返回vnode
+        // render 函数参考：https://cn.vuejs.org/v2/guide/render-function.html#%E6%B7%B1%E5%85%A5%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1
+        renderScopedSlots(h){
+            return {
+                append: (props) => h('span', '.com')
+            };
+        }
+    },
+
+    'ui:options': {
+        // vue3
+        // slots 使用render函数来实现
+        // vue3 renderScopedSlots 可以为function、或者如下纯对象的形式
+        // vue3 render 函数参考：https://v3.cn.vuejs.org/guide/render-function.html#%E6%8F%92%E6%A7%BD
+        renderScopedSlots: {
+            default: (props) =>h('span', props.text)
+        }
+    }
+}
+```
 
 #### ui-schema配置在schema中
 

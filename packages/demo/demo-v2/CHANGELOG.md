@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.6.4...v1.7.0) (2021-08-29)
+
+
+### Bug Fixes
+
+* **schema-generator:** 修复array 下object排序问题 ([55dc50e](https://github.com/lljj-x/vue-json-schema-form/commit/55dc50e128417a67e9d186d3fcd6e2340d713144))
+
+
+### Features
+
+* **lib:** 支持配置 slots ([27f1501](https://github.com/lljj-x/vue-json-schema-form/commit/27f1501eda01eabd4a723656be56904e9cb0f069)), closes [#45](https://github.com/lljj-x/vue-json-schema-form/issues/45)
+
+
+
+
+
 ## [1.6.3](https://github.com/lljj-x/vue-json-schema-form/compare/v1.6.2...v1.6.3) (2021-07-12)
 
 **Note:** Version bump only for package demo
