@@ -13,6 +13,10 @@ export default {
             type: String,
             default: '保存'
         },
+        okBtnProps: {
+            type: Object,
+            default: () => ({})
+        },
         cancelBtn: {
             type: String,
             default: '取消'
@@ -49,7 +53,7 @@ export default {
                     style: {
                         marginLeft: '10px'
                     },
-                    type: 'primary',
+                    ...Object.assign({ type: 'primary' }, props.okBtnProps),
                     onClick() {
                         emit('submit');
                     }

@@ -629,6 +629,7 @@ export default {
 formFooter = {
     show: true, // 是否显示默认底部
     okBtn: '保存', // 确认按钮文字
+    okBtnProps: { type: 'primary' }, // 传递确认按钮的 props，例如配置按钮 loading 状态 okBtnProps: { loading: true }
     cancelBtn: '取消', // 取消按钮文字
 
     // 透传给formFooter 中的formItem组件的参数
