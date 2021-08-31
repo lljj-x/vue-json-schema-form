@@ -9,6 +9,10 @@ export default {
             type: String,
             default: '保存'
         },
+        okBtnProps: {
+            type: Object,
+            default: () => ({})
+        },
         cancelBtn: {
             type: String,
             default: '取消'
@@ -21,7 +25,9 @@ export default {
     },
     render(h) {
         const self = this;
-        const { okBtn, cancelBtn, globalOptions: { COMPONENT_MAP } } = this.$props;
+        const {
+            okBtn, okBtnProps, cancelBtn, globalOptions: { COMPONENT_MAP }
+        } = this.$props;
 
         return h(COMPONENT_MAP.formItem, {
             class: {
@@ -40,9 +46,7 @@ export default {
                 style: {
                     marginLeft: '10px'
                 },
-                props: {
-                    type: 'primary'
-                },
+                props: { type: 'primary', ...okBtnProps },
                 on: {
                     click() {
                         self.$emit('onSubmit');

@@ -55,6 +55,7 @@ export default function createForm(globalOptions = {}) {
             const footerParams = computed(() => ({
                 show: true,
                 okBtn: '保存',
+                okBtnProps: {},
                 cancelBtn: '取消',
                 ...props.formFooter
             }));
@@ -116,6 +117,7 @@ export default function createForm(globalOptions = {}) {
                     return h(FormFooter, {
                         globalOptions,
                         okBtn: footerParams.value.okBtn,
+                        okBtnProps: footerParams.value.okBtnProps,
                         cancelBtn: footerParams.value.cancelBtn,
                         formItemAttrs: footerParams.value.formItemAttrs,
                         onCancel() {
