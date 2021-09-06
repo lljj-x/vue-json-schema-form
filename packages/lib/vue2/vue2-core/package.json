@@ -1,6 +1,6 @@
 {
     "name": "@lljj/vue2-form-core",
-    "version": "1.7.0",
+    "version": "1.8.0",
     "description": "基于 Vue 、JsonSchema快速构建一个带完整校验的form表单，vue2版本基础框架",
     "main": "src/index.js",
     "module": "src/index.js",
@@ -14,7 +14,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@lljj/vjsf-utils": "1.7.0"
+        "@lljj/vjsf-utils": "1.8.0"
     },
     "repository": "https://github.com/lljj-x/vue-json-schema-form",
     "homepage": "https://github.com/lljj-x/vue-json-schema-form",

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.7.0...v1.8.0) (2021-09-06)
+
+
+### Features
+
+* **vue2:** vue2 添加 widgetListeners 配置 ([50348c2](https://github.com/lljj-x/vue-json-schema-form/commit/50348c27e72813ea16fdcfcea46e6450ccf06018)), closes [#45](https://github.com/lljj-x/vue-json-schema-form/issues/45)
+* **vue2-core:** 暴露 okBtnProps ([c832a07](https://github.com/lljj-x/vue-json-schema-form/commit/c832a07eab0d4174d62da42a739bfa7e1f69fa44))
+
+
+
+
+
 # [1.7.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.6.4...v1.7.0) (2021-08-29)
 
 
