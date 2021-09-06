@@ -221,6 +221,7 @@ export function getWidgetConfig({
         attrs: widgetAttrs,
         class: widgetClass,
         style: widgetStyle,
+        widgetListeners,
         fieldAttrs,
         fieldStyle,
         fieldClass,
@@ -250,6 +251,7 @@ export function getWidgetConfig({
         renderScopedSlots,
         renderChildren,
         onChange,
+        widgetListeners,
         uiProps
     };
 }

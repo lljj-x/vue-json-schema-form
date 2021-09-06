@@ -127,6 +127,7 @@ export default {
             type: Object,
             default: () => ({})
         },
+        widgetListeners: null, // widget组件 emits
         formProps: null,
         getWidget: null,
         renderScopedSlots: null, // 作用域插槽
@@ -315,7 +316,13 @@ export default {
                             scopedSlots: self.renderScopedSlots(h) || {}
                         } : {}),
                         on: {
+                            ...self.widgetListeners ? self.widgetListeners : {},
                             'hook:mounted': function widgetMounted() {
+                                if (self.widgetListeners && self.widgetListeners['hook:mounted']) {
+                                    // eslint-disable-next-line prefer-rest-params
+                                    self.widgetListeners['hook:mounted'].apply(this, [...arguments]);
+                                }
+
                                 // 提供一种特殊的配置 允许直接访问到 widget vm
                                 if (self.getWidget && typeof self.getWidget === 'function') {
                                     self.getWidget.call(null, self.$refs.widgetRef);
@@ -338,6 +345,11 @@ export default {
                                             rootFormData: self.rootFormData
                                         });
                                     }
+                                }
+
+                                if (self.widgetListeners && self.widgetListeners.input) {
+                                    // eslint-disable-next-line prefer-rest-params
+                                    self.widgetListeners.input.apply(this, [...arguments]);
                                 }
                             }
                         }

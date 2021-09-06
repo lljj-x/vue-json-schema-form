@@ -10,6 +10,11 @@ export default {
                     append: () => h('span', '.com')
                 };
             },
+            widgetListeners: {
+                input(event) {
+                    console.log('ui input', event);
+                }
+            },
             renderChildren(h) {
                 return [
                     h('span', {

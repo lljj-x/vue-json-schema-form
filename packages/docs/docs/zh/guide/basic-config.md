@@ -254,6 +254,30 @@ uiSchema = {
 >1. `ui:widget` 配置 `HiddenWidget` 或者 `hidden` 既可隐藏当前元素
 >1. `ui:hidden` 支持配置表达式，详细参见这里 [ui-schema ui:hidden配置表达式](/zh/guide/data-linkage.html#ui-schema配置表达式)
 
+### ui-schema - events
+可以通过uiSchema widgetListeners 配置组件 emit events
+
+:::warning
+* 注意该配置只适合 `vue2`
+* `vue3` 的版本可以直接传递 `ui:onXxx` 即可，参见：[vue3 listeners](https://v3.cn.vuejs.org/guide/migration/listeners-removed.html#%E6%A6%82%E8%A7%88)
+:::
+
+> 如下：通过配置 ui widgetListener配置widget组件内的events
+
+```js
+{
+    'ui:options': {
+        widgetListeners: {
+            input(event) {
+                console.log('ui input', event);
+            }
+        }
+    }
+}
+```
+
+
+
 ### ui-schema - slots
 可以通过uiSchema配置render函数传递slot到你的Widget组件，使用方式如下：
 
