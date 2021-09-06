@@ -8613,6 +8613,7 @@ function getWidgetConfig(_ref6) {
       widgetAttrs = uiOptions.attrs,
       widgetClass = uiOptions.class,
       widgetStyle = uiOptions.style,
+      widgetListeners = uiOptions.widgetListeners,
       fieldAttrs = uiOptions.fieldAttrs,
       fieldStyle = uiOptions.fieldStyle,
       fieldClass = uiOptions.fieldClass,
@@ -8622,7 +8623,7 @@ function getWidgetConfig(_ref6) {
       renderScopedSlots = uiOptions.renderScopedSlots,
       renderChildren = uiOptions.renderChildren,
       onChange = uiOptions.onChange,
-      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange"]);
+      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "widgetListeners", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange"]);
 
   return {
     widget: widget,
@@ -8641,6 +8642,7 @@ function getWidgetConfig(_ref6) {
     renderScopedSlots: renderScopedSlots,
     renderChildren: renderChildren,
     onChange: onChange,
+    widgetListeners: widgetListeners,
     uiProps: uiProps
   };
 } // 解析用户配置的 errorSchema options
@@ -9448,6 +9450,12 @@ var FormFooter = {
       type: String,
       default: '保存'
     },
+    okBtnProps: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
     cancelBtn: {
       type: String,
       default: '取消'
@@ -9464,6 +9472,7 @@ var FormFooter = {
     var self = this;
     var _this$$props = this.$props,
         okBtn = _this$$props.okBtn,
+        okBtnProps = _this$$props.okBtnProps,
         cancelBtn = _this$$props.cancelBtn,
         COMPONENT_MAP = _this$$props.globalOptions.COMPONENT_MAP;
     return h(COMPONENT_MAP.formItem, _objectSpread2({
@@ -9480,9 +9489,9 @@ var FormFooter = {
       style: {
         marginLeft: '10px'
       },
-      props: {
+      props: _objectSpread2({
         type: 'primary'
-      },
+      }, okBtnProps),
       on: {
         click: function click() {
           self.$emit('onSubmit');
@@ -10159,6 +10168,8 @@ var Widget = {
         return {};
       }
     },
+    widgetListeners: null,
+    // widget组件 emits
     formProps: null,
     getWidget: null,
     renderScopedSlots: null,
@@ -10313,9 +10324,14 @@ var Widget = {
     }, self.renderScopedSlots ? {
       scopedSlots: self.renderScopedSlots(h) || {}
     } : {}), {}, {
-      on: {
+      on: _objectSpread2(_objectSpread2({}, self.widgetListeners ? self.widgetListeners : {}), {}, {
         'hook:mounted': function widgetMounted() {
-          // 提供一种特殊的配置 允许直接访问到 widget vm
+          if (self.widgetListeners && self.widgetListeners['hook:mounted']) {
+            // eslint-disable-next-line prefer-rest-params
+            self.widgetListeners['hook:mounted'].apply(this, Array.prototype.slice.call(arguments));
+          } // 提供一种特殊的配置 允许直接访问到 widget vm
+
+
           if (self.getWidget && typeof self.getWidget === 'function') {
             self.getWidget.call(null, self.$refs.widgetRef);
           }
@@ -10340,8 +10356,13 @@ var Widget = {
               });
             }
           }
+
+          if (self.widgetListeners && self.widgetListeners.input) {
+            // eslint-disable-next-line prefer-rest-params
+            self.widgetListeners.input.apply(this, Array.prototype.slice.call(arguments));
+          }
         }
-      }
+      })
     }), self.renderChildren ? self.renderChildren(h) : null)]);
   }
 };
@@ -11707,6 +11728,7 @@ function createForm() {
         props: {
           globalOptions: globalOptions,
           okBtn: self.footerParams.okBtn,
+          okBtnProps: self.footerParams.okBtnProps,
           cancelBtn: self.footerParams.cancelBtn,
           formItemAttrs: self.footerParams.formItemAttrs
         },

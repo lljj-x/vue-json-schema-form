@@ -8615,6 +8615,7 @@
         widgetAttrs = uiOptions.attrs,
         widgetClass = uiOptions.class,
         widgetStyle = uiOptions.style,
+        widgetListeners = uiOptions.widgetListeners,
         fieldAttrs = uiOptions.fieldAttrs,
         fieldStyle = uiOptions.fieldStyle,
         fieldClass = uiOptions.fieldClass,
@@ -8624,7 +8625,7 @@
         renderScopedSlots = uiOptions.renderScopedSlots,
         renderChildren = uiOptions.renderChildren,
         onChange = uiOptions.onChange,
-        uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange"]);
+        uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "widgetListeners", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange"]);
 
     return {
       widget: widget,
@@ -8643,6 +8644,7 @@
       renderScopedSlots: renderScopedSlots,
       renderChildren: renderChildren,
       onChange: onChange,
+      widgetListeners: widgetListeners,
       uiProps: uiProps
     };
   } // 解析用户配置的 errorSchema options
@@ -9447,6 +9449,12 @@
         type: String,
         default: '保存'
       },
+      okBtnProps: {
+        type: Object,
+        default: function _default() {
+          return {};
+        }
+      },
       cancelBtn: {
         type: String,
         default: '取消'
@@ -9484,7 +9492,7 @@
               default: function _default() {
                 return props.cancelBtn;
               }
-            }), Vue.h(resolveComponent(COMPONENT_MAP.button), {
+            }), Vue.h(resolveComponent(COMPONENT_MAP.button), _objectSpread2({
               style: {
                 marginLeft: '10px'
               },
@@ -9492,7 +9500,7 @@
               onClick: function onClick() {
                 emit('submit');
               }
-            }, {
+            }, props.okBtnProps), {
               default: function _default() {
                 return props.okBtn;
               }
@@ -11295,6 +11303,7 @@
           return _objectSpread2({
             show: true,
             okBtn: '保存',
+            okBtnProps: {},
             cancelBtn: '取消'
           }, props.formFooter);
         }); // form组件实例，不需要响应式
@@ -11357,6 +11366,7 @@
             return Vue.h(FormFooter, {
               globalOptions: globalOptions,
               okBtn: footerParams.value.okBtn,
+              okBtnProps: footerParams.value.okBtnProps,
               cancelBtn: footerParams.value.cancelBtn,
               formItemAttrs: footerParams.value.formItemAttrs,
               onCancel: function onCancel() {

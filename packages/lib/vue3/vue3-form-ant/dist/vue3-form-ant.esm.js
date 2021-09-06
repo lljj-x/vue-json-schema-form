@@ -8611,6 +8611,7 @@ function getWidgetConfig(_ref6) {
       widgetAttrs = uiOptions.attrs,
       widgetClass = uiOptions.class,
       widgetStyle = uiOptions.style,
+      widgetListeners = uiOptions.widgetListeners,
       fieldAttrs = uiOptions.fieldAttrs,
       fieldStyle = uiOptions.fieldStyle,
       fieldClass = uiOptions.fieldClass,
@@ -8620,7 +8621,7 @@ function getWidgetConfig(_ref6) {
       renderScopedSlots = uiOptions.renderScopedSlots,
       renderChildren = uiOptions.renderChildren,
       onChange = uiOptions.onChange,
-      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange"]);
+      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "widgetListeners", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange"]);
 
   return {
     widget: widget,
@@ -8639,6 +8640,7 @@ function getWidgetConfig(_ref6) {
     renderScopedSlots: renderScopedSlots,
     renderChildren: renderChildren,
     onChange: onChange,
+    widgetListeners: widgetListeners,
     uiProps: uiProps
   };
 } // 解析用户配置的 errorSchema options
@@ -9443,6 +9445,12 @@ var FormFooter = {
       type: String,
       default: '保存'
     },
+    okBtnProps: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
     cancelBtn: {
       type: String,
       default: '取消'
@@ -9480,7 +9488,7 @@ var FormFooter = {
             default: function _default() {
               return props.cancelBtn;
             }
-          }), h(resolveComponent(COMPONENT_MAP.button), {
+          }), h(resolveComponent(COMPONENT_MAP.button), _objectSpread2({
             style: {
               marginLeft: '10px'
             },
@@ -9488,7 +9496,7 @@ var FormFooter = {
             onClick: function onClick() {
               emit('submit');
             }
-          }, {
+          }, props.okBtnProps), {
             default: function _default() {
               return props.okBtn;
             }
@@ -11291,6 +11299,7 @@ function createForm() {
         return _objectSpread2({
           show: true,
           okBtn: '保存',
+          okBtnProps: {},
           cancelBtn: '取消'
         }, props.formFooter);
       }); // form组件实例，不需要响应式
@@ -11353,6 +11362,7 @@ function createForm() {
           return h(FormFooter, {
             globalOptions: globalOptions,
             okBtn: footerParams.value.okBtn,
+            okBtnProps: footerParams.value.okBtnProps,
             cancelBtn: footerParams.value.cancelBtn,
             formItemAttrs: footerParams.value.formItemAttrs,
             onCancel: function onCancel() {
