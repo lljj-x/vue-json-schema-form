@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.7.0...v1.9.0) (2021-09-06)
+
+
+### Features
+
+* **vue3-core:** 允许传递props至formFooter ([60ee613](https://github.com/lljj-x/vue-json-schema-form/commit/60ee613bda30b818adccd98ad73949ff111df74c))
+
+
+### Performance Improvements
+
+* **vue3-core:** 优化 okBtnProps 的实现方式 ([adfe93e](https://github.com/lljj-x/vue-json-schema-form/commit/adfe93e58a9e8fedc2b0c26484be5691ccc3f65a))
+
+
+
+
+
 # [1.8.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.7.0...v1.8.0) (2021-09-06)
 
 
