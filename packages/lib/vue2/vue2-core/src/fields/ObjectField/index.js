@@ -27,6 +27,9 @@ export default {
             globalOptions
         } = context.props;
 
+        if (schema['ui:widget']) {
+            return h(StringField, context.data);
+        }
         // required
         const isRequired = name => Array.isArray(schema.required) && !!~schema.required.indexOf(name);
 
