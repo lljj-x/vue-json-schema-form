@@ -135,7 +135,14 @@ export default {
             // 设置新值
             if (isObject(newOptionData)) {
                 Object.entries(newOptionData).forEach(([key, value]) => {
-                    if (value !== undefined && (curFormData[key] === undefined || props.selectList[newVal].properties[key].const !== undefined)) {
+                    if (
+                        value !== undefined
+                        && (
+                            curFormData[key] === undefined
+                            || props.selectList[newVal].properties[key].const !== undefined
+                            || isObject(value)
+                        )
+                    ) {
                         // 这里没找到一个比较合理的新旧值合并方式
                         //
                         // 1. 如果anyOf里面同名属性中的schema包含了 const 配置，产生了新的值这里做覆盖处理
