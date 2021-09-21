@@ -178,15 +178,25 @@ uiSchema = {
 :::
 
 ## 自定义Widget
-自定义Widget通过配置 `ui:widget` 字段，不支持直接配置在 `type: object` 中
+自定义Widget通过配置 `ui:widget` 字段
 
-> `0.3` 以上版本支持在 `type: array` 中直接配置 `ui:widget`，如：[配置多文件上传](https://form.lljj.me/#/demo?type=Upload)
+::: tip  快速理解
+* 简单理解：Widget组件就是你的输入组件的最小单元，比如 `input` `checkbox`，并且不和当前form数据耦合，所以组件内不会访问到任何表单的数据，当然你可以通过ui:xx传递进去
+* 使用方法：只需要是一个合法的vue可渲染的组件配置即可
+* props: `value` / `modelValue`
+* 如何更新值：使用v-model，只需要组件内部实现v-model即可，vue2 prop `value`, vue3 prop `modelValue`
+* 其它备注： `ui:xxx` 中的配置也都会和内置组件一样，传递给自定义widget组件
+* 参见文档：[vue2 v-model](https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model)
+   [vue3 v-model](https://v3.cn.vuejs.org/guide/migration/v-model.html)
+:::
 
 * 类型：`String` | `Object` | `Function`  (参见 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0) 第一个参数)
 * 使用场景：需要自定义输入组件，比如结合业务的`图片上传` `商品选择` 等等
 
 ::: warning
 * 自定义的 `Widget` 组件必须接受一个双向绑定 `v-model` 的值
+* `0.3` 以上版本支持在 `type: array` 配置 `ui:widget`，如：[配置多文件上传](https://form.lljj.me/#/demo?type=Upload)
+* 不支持直接配置在 `type: object` 中
 :::
 
 :::demo async function 重置，在实际项目中，实际只需要 `() => import('./xxx.vue')`;
@@ -263,20 +273,24 @@ uiSchema = {
 ## 自定义Field
 自定义field通过配置 `ui-schema` `ui:field` 字段，可以配置在任意需要自定义field的schema节点，参数格式和 [自定义Widget](#自定义widget) 一致
 
-支持配置 [ui:fieldProps](/zh/guide/basic-config.html#ui-schema)，传给自定义field组件，需要在field组件props配置申明该参数
+::: tip  快速理解
+* 简单理解：Field 组件就是Widget组件的父级，来决定Widget组件选择和数据校验
+* 使用方法：只需要是一个合法的vue可渲染的组件配置即可
+* props: 内部渲染所有的 props 都可获取，参见下文 `Field组件props`
+* 如何更新值：需要 vueUtils.getPathVal 、vueUtils.setPathVal 来获取或者更新当前值，[可参见demo](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/docs/docs/.vuepress/injectVue/field/DistpickerField.vue)
+* 其它备注： [ui:fieldProps](/zh/guide/basic-config.html#ui-schema) 可传递 prop fieldProps 到你自定义field组件，需要自己申请props
+* 其它参见后文中的demo
+:::
 
 * 类型：`String` | `Object` | `Function` (参见 [$createElement](https://cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0) 第一个参数)
 * 使用场景：schema配置无法满足，或者想嵌入现用的组件
 
-> 自定义Field 会直接接管后续节点的渲染，意味着自定义节点后渲染逻辑都可以根据使用者需要的场景自行处理，field组件内部一般会包含 `FormItem`，`校验规则`，`输入组件`
-
 ::: warning
-使用者需要自行将值同步回 `formData`
-
-可以直接修改 `rootFormData` 的属性值或者通过 `vueUtils` 提供的方法设置，可以参见后面自定义演示
+* vueUtils.getPathVal 、vueUtils.setPathVal 来获取或者更新当前值，[可参见demo](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/docs/docs/.vuepress/injectVue/field/DistpickerField.vue)
+* 自定义Field 会直接接管后续节点的渲染，意味着自定义节点后渲染逻辑都可以根据使用者需要的场景自行处理，field组件内部一般会包含 `FormItem`，`校验规则`，`输入组件`
 :::
 
-`Field组件` 会接受以下 `props`：
+Field组件 `props`：
 
 :::demo showCode: Props（点击下拉展开）
  ```js
