@@ -266,7 +266,7 @@ export default {
                                     if (callback) return callback();
                                     return Promise.resolve();
                                 },
-                                trigger: 'blur'
+                                trigger: 'change'
                             }
                         ]
                     } : {},

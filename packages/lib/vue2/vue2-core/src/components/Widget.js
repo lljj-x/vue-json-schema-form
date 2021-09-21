@@ -268,7 +268,7 @@ export default {
 
                                     return callback();
                                 },
-                                trigger: 'blur'
+                                trigger: 'change'
                             }
                         ]
                     } : {},
