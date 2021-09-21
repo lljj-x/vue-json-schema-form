@@ -172,12 +172,11 @@ export function getUiOptions({
         }
     }
 
+    if (schema.title) spec.title = schema.title;
+    if (schema.description) spec.description = schema.description;
+
     // 计算ui配置
     return {
-        title: schema.title /* || curNodePath.split('.').pop() */, // 默认使用 schema 的配置
-        description: schema.description,
-
-        // 特殊处理部分
         ...spec,
 
         // 用户配置最高优先级

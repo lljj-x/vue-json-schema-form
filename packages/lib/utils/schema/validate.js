@@ -247,8 +247,9 @@ export function ajvValid(schema, data) {
     return ajv.validate(schema, data);
 }
 
-// oneOf anyOf 通过formData的值来找到当前匹配项索引
-export function getMatchingOption(formData, options, rootSchema, haveAllFields = false) {
+// 如果查找不到
+// return -1
+export function getMatchingIndex(formData, options, rootSchema, haveAllFields = false) {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < options.length; i++) {
         const option = retrieveSchema(options[i], rootSchema, formData);
@@ -308,5 +309,27 @@ export function getMatchingOption(formData, options, rootSchema, haveAllFields =
             return i;
         }
     }
-    return 0;
+
+    // 尝试查找const 配置
+    if (options[0] && options[0].properties) {
+        const constProperty = Object.keys(options[0].properties).find(k => options[0].properties[k].const);
+        if (constProperty) {
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < options.length; i++) {
+                if (
+                    options[i].properties
+                    && options[i].properties[constProperty]
+                    && options[i].properties[constProperty].const === formData[constProperty]) {
+                    return i;
+                }
+            }
+        }
+    }
+    return -1;
+}
+
+// oneOf anyOf 通过formData的值来找到当前匹配项索引
+export function getMatchingOption(formData, options, rootSchema, haveAllFields = false) {
+    const index = getMatchingIndex(formData, options, rootSchema, haveAllFields);
+    return index === -1 ? 0 : index;
 }

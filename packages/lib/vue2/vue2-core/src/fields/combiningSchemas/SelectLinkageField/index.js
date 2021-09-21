@@ -42,9 +42,7 @@ export default {
     },
     methods: {
         computedCurSelectIndexByFormData(formData) {
-            const index = getMatchingOption(formData, this.selectList, this.rootSchema, true);
-
-            return index || 0;
+            return getMatchingOption(formData, this.selectList, this.rootSchema, true);
         },
 
         // 下拉选项 VNode
@@ -213,7 +211,7 @@ export default {
             // 当前节点的ui err配置，用来支持所有选项的统一配置
             // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
             const userUiOptions = filterObject(getUiOptions({
-                schema: this.schema,
+                schema: {},
                 uiSchema: this.uiSchema,
                 containsSpec: false,
                 curNodePath,
@@ -221,7 +219,7 @@ export default {
             }), key => (key === this.combiningType ? undefined : `ui:${key}`));
 
             const userErrOptions = filterObject(getUserErrOptions({
-                schema: this.schema,
+                schema: {},
                 uiSchema: this.uiSchema,
                 errorSchema: this.errorSchema
             }), key => (key === this.combiningType ? undefined : `err:${key}`));
