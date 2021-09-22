@@ -8566,16 +8566,12 @@ function getUiOptions(_ref5) {
         spec.isNumberValue = !(schema.type === 'string');
       }
     }
-  } // 计算ui配置
+  }
 
+  if (schema.title) spec.title = schema.title;
+  if (schema.description) spec.description = schema.description; // 计算ui配置
 
-  return _objectSpread2(_objectSpread2({
-    title: schema.title
-    /* || curNodePath.split('.').pop() */
-    ,
-    // 默认使用 schema 的配置
-    description: schema.description
-  }, spec), getUserUiOptions({
+  return _objectSpread2(_objectSpread2({}, spec), getUserUiOptions({
     schema: schema,
     uiSchema: uiSchema,
     curNodePath: curNodePath,
@@ -9075,9 +9071,10 @@ function isValid(schema, data) {
 
 function ajvValid(schema, data) {
   return ajv$1.validate(schema, data);
-} // oneOf anyOf 通过formData的值来找到当前匹配项索引
+} // 如果查找不到
+// return -1
 
-function getMatchingOption(formData, options, rootSchema) {
+function getMatchingIndex(formData, options, rootSchema) {
   var haveAllFields = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
   // eslint-disable-next-line no-plusplus
@@ -9133,9 +9130,31 @@ function getMatchingOption(formData, options, rootSchema) {
     } else if (isValid(options[i], formData)) {
       return i;
     }
+  } // 尝试查找const 配置
+
+
+  if (options[0] && options[0].properties) {
+    var constProperty = Object.keys(options[0].properties).find(function (k) {
+      return options[0].properties[k].const;
+    });
+
+    if (constProperty) {
+      // eslint-disable-next-line no-plusplus
+      for (var _i = 0; _i < options.length; _i++) {
+        if (options[_i].properties && options[_i].properties[constProperty] && options[_i].properties[constProperty].const === formData[constProperty]) {
+          return _i;
+        }
+      }
+    }
   }
 
-  return 0;
+  return -1;
+} // oneOf anyOf 通过formData的值来找到当前匹配项索引
+
+function getMatchingOption(formData, options, rootSchema) {
+  var haveAllFields = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  var index = getMatchingIndex(formData, options, rootSchema, haveAllFields);
+  return index === -1 ? 0 : index;
 }
 
 var validate$2 = /*#__PURE__*/Object.freeze({
@@ -9144,6 +9163,7 @@ var validate$2 = /*#__PURE__*/Object.freeze({
   validateFormDataAndTransformMsg: validateFormDataAndTransformMsg,
   isValid: isValid,
   ajvValid: ajvValid,
+  getMatchingIndex: getMatchingIndex,
   getMatchingOption: getMatchingOption
 });
 
@@ -10288,7 +10308,7 @@ var Widget = {
 
             return callback();
           },
-          trigger: 'blur'
+          trigger: 'change'
         }]
       } : {}),
       scopedSlots: {
@@ -11302,8 +11322,7 @@ var SelectLinkageField = {
   },
   methods: {
     computedCurSelectIndexByFormData: function computedCurSelectIndexByFormData(formData) {
-      var index = getMatchingOption(formData, this.selectList, this.rootSchema, true);
-      return index || 0;
+      return getMatchingOption(formData, this.selectList, this.rootSchema, true);
     },
     // 下拉选项 VNode
     getSelectBoxVNode: function getSelectBoxVNode() {
@@ -11396,7 +11415,7 @@ var SelectLinkageField = {
               key = _ref2[0],
               value = _ref2[1];
 
-          if (value !== undefined && (curFormData[key] === undefined || _this2.selectList[newVal].properties[key].const !== undefined)) {
+          if (value !== undefined && (curFormData[key] === undefined || _this2.selectList[newVal].properties[key].const !== undefined || isObject(value))) {
             // 这里没找到一个比较合理的新旧值合并方式
             //
             // 1. 如果anyOf里面同名属性中的schema包含了 const 配置，产生了新的值这里做覆盖处理
@@ -11455,7 +11474,7 @@ var SelectLinkageField = {
       // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
 
       var userUiOptions = filterObject(getUiOptions({
-        schema: this.schema,
+        schema: {},
         uiSchema: this.uiSchema,
         containsSpec: false,
         curNodePath: curNodePath,
@@ -11464,7 +11483,7 @@ var SelectLinkageField = {
         return key === _this3.combiningType ? undefined : "ui:".concat(key);
       });
       var userErrOptions = filterObject(getUserErrOptions({
-        schema: this.schema,
+        schema: {},
         uiSchema: this.uiSchema,
         errorSchema: this.errorSchema
       }), function (key) {
