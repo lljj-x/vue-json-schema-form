@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/lljj-x/vue-json-schema-form/compare/v1.9.0...v1.9.1) (2021-09-22)
+
+
+### Bug Fixes
+
+* **anyof:** 新值为object类型直接覆盖 ([d2f9791](https://github.com/lljj-x/vue-json-schema-form/commit/d2f9791ce7d35228edd07257049607177a95fc84)), closes [#77](https://github.com/lljj-x/vue-json-schema-form/issues/77)
+* 修复select组件无法实时校验 ([85d9545](https://github.com/lljj-x/vue-json-schema-form/commit/85d95451b56b9d985ca7094118fbfaca87342322)), closes [#105](https://github.com/lljj-x/vue-json-schema-form/issues/105)
+
+
+
+
+
 # [1.9.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.7.0...v1.9.0) (2021-09-06)
 
 
