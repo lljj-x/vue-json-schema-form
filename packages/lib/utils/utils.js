@@ -71,6 +71,8 @@ export function mergeSchemas(obj1, obj2) {
 export function mergeObjects(obj1, obj2, concatArrays = false) {
     // Recursively merge deeply nested objects.
     const preAcc = Object.assign({}, obj1); // Prevent mutation of source object.
+    if (!isObject(obj2)) return preAcc;
+
     return Object.keys(obj2).reduce((acc, key) => {
         const left = obj1 ? obj1[key] : {};
         const right = obj2[key];

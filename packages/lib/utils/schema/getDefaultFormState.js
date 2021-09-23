@@ -101,14 +101,18 @@ function computeDefaults(
             rootSchema,
             formData
         );
-        if (schema.properties && matchSchema.properties) {
-            // 对象 oneOf 需要合并原属性和 oneOf 属性
-            const mergeSchema = mergeObjects(schema, matchSchema);
-            delete mergeSchema.oneOf;
-            schema = mergeSchema;
-        } else {
-            schema = matchSchema;
-        }
+
+        schema = mergeObjects(schema, matchSchema);
+        delete schema.oneOf;
+
+        // if (schema.properties && matchSchema.properties) {
+        //     // 对象 oneOf 需要合并原属性和 oneOf 属性
+        //     const mergeSchema = mergeObjects(schema, matchSchema);
+        //     delete mergeSchema.oneOf;
+        //     schema = mergeSchema;
+        // } else {
+        //     schema = matchSchema;
+        // }
     } else if ('anyOf' in schema) {
         const matchSchema = retrieveSchema(
             schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema)],
@@ -116,14 +120,17 @@ function computeDefaults(
             formData
         );
 
-        if (schema.properties && matchSchema.properties) {
-            // 对象 anyOf 需要合并原属性和 anyOf 属性
-            const mergeSchema = mergeObjects(schema, matchSchema);
-            delete mergeSchema.anyOf;
-            schema = mergeSchema;
-        } else {
-            schema = matchSchema;
-        }
+        schema = mergeObjects(schema, matchSchema);
+        delete schema.anyOf;
+
+        // if (schema.properties && matchSchema.properties) {
+        //     // 对象 anyOf 需要合并原属性和 anyOf 属性
+        //     const mergeSchema = mergeObjects(schema, matchSchema);
+        //     delete mergeSchema.anyOf;
+        //     schema = mergeSchema;
+        // } else {
+        //     schema = matchSchema;
+        // }
     }
     // Not defaults defined for this node, fallback to generic typed ones.
     if (typeof defaults === 'undefined') {
