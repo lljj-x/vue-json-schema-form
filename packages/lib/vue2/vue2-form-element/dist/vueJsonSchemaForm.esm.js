@@ -258,6 +258,7 @@ function mergeObjects(obj1, obj2) {
   // Recursively merge deeply nested objects.
   var preAcc = Object.assign({}, obj1); // Prevent mutation of source object.
 
+  if (!isObject(obj2)) return preAcc;
   return Object.keys(obj2).reduce(function (acc, key) {
     var left = obj1 ? obj1[key] : {};
     var right = obj2[key];
@@ -415,6 +416,8 @@ var genId = function genIdFn() {
 }(); // 空对象
 
 function isEmptyObject(obj) {
+  if (!obj) return true;
+
   for (var key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
       return false;
@@ -9250,27 +9253,27 @@ function computeDefaults(_schema, parentDefaults, rootSchema) {
     });
   } else if ('oneOf' in schema) {
     var matchSchema = retrieveSchema(schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)], rootSchema, formData);
-
-    if (schema.properties && matchSchema.properties) {
-      // 对象 oneOf 需要合并原属性和 oneOf 属性
-      var mergeSchema = mergeObjects(schema, matchSchema);
-      delete mergeSchema.oneOf;
-      schema = mergeSchema;
-    } else {
-      schema = matchSchema;
-    }
+    schema = mergeObjects(schema, matchSchema);
+    delete schema.oneOf; // if (schema.properties && matchSchema.properties) {
+    //     // 对象 oneOf 需要合并原属性和 oneOf 属性
+    //     const mergeSchema = mergeObjects(schema, matchSchema);
+    //     delete mergeSchema.oneOf;
+    //     schema = mergeSchema;
+    // } else {
+    //     schema = matchSchema;
+    // }
   } else if ('anyOf' in schema) {
     var _matchSchema = retrieveSchema(schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema)], rootSchema, formData);
 
-    if (schema.properties && _matchSchema.properties) {
-      // 对象 anyOf 需要合并原属性和 anyOf 属性
-      var _mergeSchema = mergeObjects(schema, _matchSchema);
-
-      delete _mergeSchema.anyOf;
-      schema = _mergeSchema;
-    } else {
-      schema = _matchSchema;
-    }
+    schema = mergeObjects(schema, _matchSchema);
+    delete schema.anyOf; // if (schema.properties && matchSchema.properties) {
+    //     // 对象 anyOf 需要合并原属性和 anyOf 属性
+    //     const mergeSchema = mergeObjects(schema, matchSchema);
+    //     delete mergeSchema.anyOf;
+    //     schema = mergeSchema;
+    // } else {
+    //     schema = matchSchema;
+    // }
   } // Not defaults defined for this node, fallback to generic typed ones.
 
 
@@ -11435,42 +11438,41 @@ var SelectLinkageField = {
         _class4;
 
     var curNodePath = this.$props.curNodePath;
-    var pathClassName = nodePath2ClassName(curNodePath); // object 需要保持原有属性，如果存在原有属性这里单独渲染
+    var pathClassName = nodePath2ClassName(curNodePath); // is object
 
-    var originVNode = null;
-    var isTypeObject = this.schema.type === 'object' || this.schema.properties;
+    var isTypeObject = this.schema.type === 'object' || this.schema.properties; // 选择附加的节点
 
-    if (isTypeObject && !isEmptyObject(this.schema.properties)) {
-      var _class2;
+    var childrenVNodeList = [this.getSelectBoxVNode()]; // 当前option内容
 
-      var origSchema = Object.assign({}, this.schema);
-      delete origSchema[this.combiningType];
-      originVNode = h(SchemaField, {
-        key: "origin_".concat(this.combiningType),
-        class: (_class2 = {}, _defineProperty(_class2, "".concat(this.combiningType, "_originBox"), true), _defineProperty(_class2, "".concat(pathClassName, "-originBox"), true), _class2),
-        props: _objectSpread2(_objectSpread2({}, this.$props), {}, {
-          schema: origSchema // needValidFieldGroup: false // 单独校验，这里无需处理
-
-        })
-      });
-    } // 选择附加的节点
-
-
-    var childrenVNodeList = [this.getSelectBoxVNode()]; // 当前选中的 oneOf 附加的节点
-
-    var curSelectSchema = this.selectList[this.curSelectIndex];
+    var curSelectSchema = this.selectList[this.curSelectIndex]; // 当前选中节点合并schema
 
     if (curSelectSchema) {
-      // 覆盖父级的属性
       var _this$schema = this.schema,
           _this$combiningType = this.combiningType,
           _ref3 = "".concat(this.combiningType, "Select");
           _this$schema.properties;
           _this$schema[_this$combiningType];
           _this$schema[_ref3];
-          var parentSchema = _objectWithoutProperties(_this$schema, ["properties", _this$combiningType, _ref3].map(_toPropertyKey));
+          var parentSchema = _objectWithoutProperties(_this$schema, ["properties", _this$combiningType, _ref3].map(_toPropertyKey)); // 合并父级schema
 
-      curSelectSchema = Object.assign({}, parentSchema, curSelectSchema); // 当前节点的ui err配置，用来支持所有选项的统一配置
+
+      curSelectSchema = Object.assign({}, parentSchema, curSelectSchema);
+    } // object类型但没有附加属性
+
+
+    var isObjectEmptyAttachProperties = isTypeObject && isEmptyObject(curSelectSchema && curSelectSchema.properties); // 当前选中的 oneOf 附加节点 VNode
+
+    if (curSelectSchema && !isObjectEmptyAttachProperties) {
+      // 覆盖父级的属性
+      var _this$schema2 = this.schema,
+          _this$combiningType2 = this.combiningType,
+          _ref4 = "".concat(this.combiningType, "Select");
+          _this$schema2.properties;
+          _this$schema2[_this$combiningType2];
+          _this$schema2[_ref4];
+          var _parentSchema = _objectWithoutProperties(_this$schema2, ["properties", _this$combiningType2, _ref4].map(_toPropertyKey));
+
+      curSelectSchema = Object.assign({}, _parentSchema, curSelectSchema); // 当前节点的ui err配置，用来支持所有选项的统一配置
       // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
 
       var userUiOptions = filterObject(getUiOptions({
@@ -11503,6 +11505,31 @@ var SelectLinkageField = {
 
         })
       }));
+    } // object 需要保持原有属性，如果存在原有属性这里单独渲染
+
+
+    var originVNode = null;
+
+    if (isTypeObject && !isEmptyObject(this.schema.properties)) {
+      var _class2;
+
+      var _curSelectSchema = curSelectSchema;
+          _curSelectSchema.title;
+          _curSelectSchema.description;
+          _curSelectSchema.properties;
+          var optionSchema = _objectWithoutProperties(_curSelectSchema, ["title", "description", "properties"]); // object 原始项渲染也需要合并anyOf的内容
+
+
+      var origSchema = Object.assign({}, this.schema, optionSchema);
+      delete origSchema[this.combiningType];
+      originVNode = h(SchemaField, {
+        key: "origin_".concat(this.combiningType),
+        class: (_class2 = {}, _defineProperty(_class2, "".concat(this.combiningType, "_originBox"), true), _defineProperty(_class2, "".concat(pathClassName, "-originBox"), true), _class2),
+        props: _objectSpread2(_objectSpread2({}, this.$props), {}, {
+          schema: origSchema // needValidFieldGroup: false // 单独校验，这里无需处理
+
+        })
+      });
     } // oneOf 校验 VNode
 
 

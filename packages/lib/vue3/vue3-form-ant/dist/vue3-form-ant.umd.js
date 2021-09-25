@@ -338,6 +338,7 @@
     // Recursively merge deeply nested objects.
     var preAcc = Object.assign({}, obj1); // Prevent mutation of source object.
 
+    if (!isObject(obj2)) return preAcc;
     return Object.keys(obj2).reduce(function (acc, key) {
       var left = obj1 ? obj1[key] : {};
       var right = obj2[key];
@@ -495,6 +496,8 @@
   }(); // 空对象
 
   function isEmptyObject(obj) {
+    if (!obj) return true;
+
     for (var key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         return false;
@@ -9252,27 +9255,27 @@
       });
     } else if ('oneOf' in schema) {
       var matchSchema = retrieveSchema(schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)], rootSchema, formData);
-
-      if (schema.properties && matchSchema.properties) {
-        // 对象 oneOf 需要合并原属性和 oneOf 属性
-        var mergeSchema = mergeObjects(schema, matchSchema);
-        delete mergeSchema.oneOf;
-        schema = mergeSchema;
-      } else {
-        schema = matchSchema;
-      }
+      schema = mergeObjects(schema, matchSchema);
+      delete schema.oneOf; // if (schema.properties && matchSchema.properties) {
+      //     // 对象 oneOf 需要合并原属性和 oneOf 属性
+      //     const mergeSchema = mergeObjects(schema, matchSchema);
+      //     delete mergeSchema.oneOf;
+      //     schema = mergeSchema;
+      // } else {
+      //     schema = matchSchema;
+      // }
     } else if ('anyOf' in schema) {
       var _matchSchema = retrieveSchema(schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema)], rootSchema, formData);
 
-      if (schema.properties && _matchSchema.properties) {
-        // 对象 anyOf 需要合并原属性和 anyOf 属性
-        var _mergeSchema = mergeObjects(schema, _matchSchema);
-
-        delete _mergeSchema.anyOf;
-        schema = _mergeSchema;
-      } else {
-        schema = _matchSchema;
-      }
+      schema = mergeObjects(schema, _matchSchema);
+      delete schema.anyOf; // if (schema.properties && matchSchema.properties) {
+      //     // 对象 anyOf 需要合并原属性和 anyOf 属性
+      //     const mergeSchema = mergeObjects(schema, matchSchema);
+      //     delete mergeSchema.anyOf;
+      //     schema = mergeSchema;
+      // } else {
+      //     schema = matchSchema;
+      // }
     } // Not defaults defined for this node, fallback to generic typed ones.
 
 
@@ -10097,7 +10100,21 @@
                   }
                 }
               }
-            }, otherAttrs), _objectSpread2({}, props.renderScopedSlots ? typeof props.renderScopedSlots === 'function' ? props.renderScopedSlots() : props.renderScopedSlots : {}))] : []));
+            }, otherAttrs ? function () {
+              return Object.keys(otherAttrs).reduce(function (pre, k) {
+                pre[k] = otherAttrs[k]; // 保证ui配置同名方法 ui方法先执行
+
+                [props.widgetAttrs[k], props.uiProps[k]].forEach(function (uiConfFn) {
+                  if (uiConfFn && typeof uiConfFn === 'function') {
+                    pre[k] = function () {
+                      uiConfFn.apply(void 0, arguments);
+                      pre[k].apply(pre, arguments);
+                    };
+                  }
+                });
+                return pre;
+              }, {});
+            }() : {}), _objectSpread2({}, props.renderScopedSlots ? typeof props.renderScopedSlots === 'function' ? props.renderScopedSlots() : props.renderScopedSlots : {}))] : []));
           }
         }));
       };
@@ -11091,29 +11108,13 @@
         var _class4;
 
         var curNodePath = props.curNodePath;
-        var pathClassName = nodePath2ClassName(curNodePath); // object 需要保持原有属性，如果存在原有属性这里单独渲染
+        var pathClassName = nodePath2ClassName(curNodePath); // is object
 
-        var originVNode = null;
-        var isTypeObject = props.schema.type === 'object' || props.schema.properties;
+        var isTypeObject = props.schema.type === 'object' || props.schema.properties; // 选择附加的节点
 
-        if (isTypeObject && !isEmptyObject(props.schema.properties)) {
-          var _class2;
+        var childrenVNodeList = [getSelectBoxVNode()]; // 当前option内容
 
-          var origSchema = Object.assign({}, props.schema);
-          delete origSchema[props.combiningType];
-          originVNode = Vue.h(SchemaField, _objectSpread2(_objectSpread2({
-            key: "origin_".concat(props.combiningType),
-            class: (_class2 = {}, _defineProperty(_class2, "".concat(props.combiningType, "_originBox"), true), _defineProperty(_class2, "".concat(pathClassName, "-originBox"), true), _class2)
-          }, props), {}, {
-            schema: origSchema // needValidFieldGroup: false // 单独校验，这里无需处理
-
-          }));
-        } // 选择附加的节点
-
-
-        var childrenVNodeList = [getSelectBoxVNode()]; // 当前选中的 oneOf 附加的节点
-
-        var curSelectSchema = props.selectList[curSelectIndex.value];
+        var curSelectSchema = props.selectList[curSelectIndex.value]; // 当前选中节点合并schema
 
         if (curSelectSchema) {
           // 覆盖父级的属性
@@ -11125,9 +11126,15 @@
               _props$schema[_ref3];
               var parentSchema = _objectWithoutProperties(_props$schema, ["properties", _props$combiningType, _ref3].map(_toPropertyKey));
 
-          curSelectSchema = Object.assign({}, parentSchema, curSelectSchema); // 当前节点的ui err配置，用来支持所有选项的统一配置
-          // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
+          curSelectSchema = Object.assign({}, parentSchema, curSelectSchema);
+        } // object类型但没有附加属性
 
+
+        var isObjectEmptyAttachProperties = isTypeObject && isEmptyObject(curSelectSchema && curSelectSchema.properties);
+
+        if (curSelectSchema && !isObjectEmptyAttachProperties) {
+          // 当前节点的ui err配置，用来支持所有选项的统一配置
+          // 取出 oneOf anyOf 同级配置，然后再合并到 当前选中的schema中
           var userUiOptions = filterObject(getUiOptions({
             schema: props.schema,
             uiSchema: props.uiSchema,
@@ -11157,6 +11164,30 @@
             errorSchema: _objectSpread2(_objectSpread2({}, userErrOptions), (props.errorSchema[props.combiningType] || [])[curSelectIndex.value]) // needValidFieldGroup: false // 单独校验，这里无需处理
 
           })));
+        } // object 需要保持原有属性，如果存在原有属性这里单独渲染
+
+
+        var originVNode = null;
+
+        if (isTypeObject && !isEmptyObject(props.schema.properties)) {
+          var _class2;
+
+          var _curSelectSchema = curSelectSchema;
+              _curSelectSchema.title;
+              _curSelectSchema.description;
+              _curSelectSchema.properties;
+              var optionSchema = _objectWithoutProperties(_curSelectSchema, ["title", "description", "properties"]); // object 原始项渲染也需要合并anyOf的内容
+
+
+          var origSchema = Object.assign({}, props.schema, optionSchema);
+          delete origSchema[props.combiningType];
+          originVNode = Vue.h(SchemaField, _objectSpread2(_objectSpread2({
+            key: "origin_".concat(props.combiningType),
+            class: (_class2 = {}, _defineProperty(_class2, "".concat(props.combiningType, "_originBox"), true), _defineProperty(_class2, "".concat(pathClassName, "-originBox"), true), _class2)
+          }, props), {}, {
+            schema: origSchema // needValidFieldGroup: false // 单独校验，这里无需处理
+
+          }));
         } // oneOf 校验 VNode
 
 
@@ -11993,11 +12024,16 @@
                 // @blur="() => {$refs.name.onFieldBlur()}"
                 // @change="() => {$refs.name.onFieldChange()}"
                 return slots.default.call(this, {
-                  onBlur: function onBlur(event) {
-                    var prevDescription = event.target.previousElementSibling; // 存在 description，需要 hack 事件
-
-                    if (prevDescription && prevDescription.classList.contains('genFromWidget_des')) {
+                  onBlur: function onBlur() {
+                    if (formItemRef.value.$el.querySelector('.genFromWidget_des')) {
+                      // 存在 description，需要手动触发校验事件
                       formItemRef.value.onFieldBlur();
+                    }
+                  },
+                  onChange: function onChange() {
+                    if (formItemRef.value.$el.querySelector('.genFromWidget_des')) {
+                      // 存在 description，需要手动触发校验事件
+                      formItemRef.value.onFieldChange();
                     }
                   }
                 });
