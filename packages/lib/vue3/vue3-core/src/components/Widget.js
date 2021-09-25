@@ -329,7 +329,24 @@ export default {
                                             }
                                         }
                                     },
-                                    ...otherAttrs
+                                    ...otherAttrs ? (() => Object.keys(otherAttrs).reduce((pre, k) => {
+                                        pre[k] = otherAttrs[k];
+
+                                        // 保证ui配置同名方法 ui方法先执行
+                                        [
+                                            props.widgetAttrs[k],
+                                            props.uiProps[k]
+                                        ].forEach((uiConfFn) => {
+                                            if (uiConfFn && typeof uiConfFn === 'function') {
+                                                pre[k] = (...args) => {
+                                                    uiConfFn(...args);
+                                                    pre[k](...args);
+                                                };
+                                            }
+                                        });
+
+                                        return pre;
+                                    }, {}))() : {}
                                 },
                                 {
                                     ...(props.renderScopedSlots ? (

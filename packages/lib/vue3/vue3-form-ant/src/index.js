@@ -97,11 +97,16 @@ const globalOptions = {
                             // @blur="() => {$refs.name.onFieldBlur()}"
                             // @change="() => {$refs.name.onFieldChange()}"
                             return slots.default.call(this, {
-                                onBlur: (event) => {
-                                    const prevDescription = event.target.previousElementSibling;
-                                    // 存在 description，需要 hack 事件
-                                    if (prevDescription && prevDescription.classList.contains('genFromWidget_des')) {
+                                onBlur: () => {
+                                    if (formItemRef.value.$el.querySelector('.genFromWidget_des')) {
+                                        // 存在 description，需要手动触发校验事件
                                         formItemRef.value.onFieldBlur();
+                                    }
+                                },
+                                onChange: () => {
+                                    if (formItemRef.value.$el.querySelector('.genFromWidget_des')) {
+                                        // 存在 description，需要手动触发校验事件
+                                        formItemRef.value.onFieldChange();
                                     }
                                 }
                             });
