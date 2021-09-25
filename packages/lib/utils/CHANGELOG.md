@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.2](https://github.com/lljj-x/vue-json-schema-form/compare/v1.9.1...v1.9.2) (2021-09-25)
+
+
+### Bug Fixes
+
+* **lib:** 修复anyof 默认值计算可能丢失属性 ([44bcb44](https://github.com/lljj-x/vue-json-schema-form/commit/44bcb44af63a37847cd3df5614fad2f26bdf307d)), closes [#108](https://github.com/lljj-x/vue-json-schema-form/issues/108)
+* **lib:** 修复anyOf嵌套object 可能丢失部分校验规则的问题 ([5c06294](https://github.com/lljj-x/vue-json-schema-form/commit/5c06294d9a9c978bda1c3724710cfd4ba478af5b))
+
+
+
+
+
 ## [1.9.1](https://github.com/lljj-x/vue-json-schema-form/compare/v1.9.0...v1.9.1) (2021-09-22)
 
 **Note:** Version bump only for package @lljj/vjsf-utils
