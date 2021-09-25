@@ -218,6 +218,8 @@ export const genId = (function genIdFn() {
 
 // 空对象
 export function isEmptyObject(obj) {
+    if (!obj) return true;
+
     for (const key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
             return false;

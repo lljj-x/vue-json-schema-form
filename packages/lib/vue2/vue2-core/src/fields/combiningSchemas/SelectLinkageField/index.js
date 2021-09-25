@@ -168,33 +168,36 @@ export default {
         const { curNodePath } = this.$props;
         const pathClassName = nodePath2ClassName(curNodePath);
 
-        // object 需要保持原有属性，如果存在原有属性这里单独渲染
-        let originVNode = null;
+        // is object
         const isTypeObject = (this.schema.type === 'object' || this.schema.properties);
-        if (isTypeObject && !isEmptyObject(this.schema.properties)) {
-            const origSchema = Object.assign({}, this.schema);
-            delete origSchema[this.combiningType];
-
-            originVNode = h(SchemaField, {
-                key: `origin_${this.combiningType}`,
-                class: {
-                    [`${this.combiningType}_originBox`]: true,
-                    [`${pathClassName}-originBox`]: true
-                },
-                props: {
-                    ...this.$props,
-                    schema: origSchema,
-                    // needValidFieldGroup: false // 单独校验，这里无需处理
-                }
-            });
-        }
 
         // 选择附加的节点
         const childrenVNodeList = [this.getSelectBoxVNode()];
 
-        // 当前选中的 oneOf 附加的节点
+        // 当前option内容
         let curSelectSchema = this.selectList[this.curSelectIndex];
+
+        // 当前选中节点合并schema
         if (curSelectSchema) {
+            const {
+                // eslint-disable-next-line no-unused-vars
+                properties,
+                // eslint-disable-next-line no-unused-vars
+                [this.combiningType]: combiningType,
+                // eslint-disable-next-line no-unused-vars
+                [`${this.combiningType}Select`]: combiningTypeSelect,
+                ...parentSchema
+            } = this.schema;
+
+            // 合并父级schema
+            curSelectSchema = Object.assign({}, parentSchema, curSelectSchema);
+        }
+
+        // object类型但没有附加属性
+        const isObjectEmptyAttachProperties = isTypeObject && isEmptyObject(curSelectSchema && curSelectSchema.properties);
+
+        // 当前选中的 oneOf 附加节点 VNode
+        if (curSelectSchema && !isObjectEmptyAttachProperties) {
             // 覆盖父级的属性
             const {
                 // eslint-disable-next-line no-unused-vars
@@ -250,6 +253,32 @@ export default {
                     }
                 )
             );
+        }
+
+        // object 需要保持原有属性，如果存在原有属性这里单独渲染
+        let originVNode = null;
+        if (isTypeObject && !isEmptyObject(this.schema.properties)) {
+            const {
+                // eslint-disable-next-line no-unused-vars
+                title, description, properties, ...optionSchema
+            } = curSelectSchema;
+
+            // object 原始项渲染也需要合并anyOf的内容
+            const origSchema = Object.assign({}, this.schema, optionSchema);
+            delete origSchema[this.combiningType];
+
+            originVNode = h(SchemaField, {
+                key: `origin_${this.combiningType}`,
+                class: {
+                    [`${this.combiningType}_originBox`]: true,
+                    [`${pathClassName}-originBox`]: true
+                },
+                props: {
+                    ...this.$props,
+                    schema: origSchema,
+                    // needValidFieldGroup: false // 单独校验，这里无需处理
+                }
+            });
         }
 
         // oneOf 校验 VNode
