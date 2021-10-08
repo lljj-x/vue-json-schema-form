@@ -24,6 +24,9 @@ QQ群：`146845780`，*反应不及时🙄*
 
 ![](https://lljj-xxxx.oss-cn-hongkong.aliyuncs.com/vue-editor.jpg)
 
+* **_活动编辑器项目已经独立了新的仓库，请直接使用 https://github.com/lljj-x/vjsf-demo-editor_**
+* **_活动编辑器项目已经独立了新的仓库，请直接使用 https://github.com/lljj-x/vjsf-demo-editor_**
+
 1、 安装依赖
 ```ssh
 yarn install
