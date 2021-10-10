@@ -8191,10 +8191,9 @@
             // 获取最小公倍数
             acc[key] = scm(left, right);
           } else {
-            if (left !== right) {
-              throw new Error('无法合并如下数据');
-            }
-
+            // if (left !== right) {
+            //     throw new Error('无法合并如下数据');
+            // }
             acc[key] = left;
           }
         } else {
@@ -8230,7 +8229,7 @@
 
       return mergeSchemaAllOf.apply(void 0, [originProperties].concat(_toConsumableArray(allOf)));
     } catch (e) {
-      console.warn("\u65E0\u6CD5\u5408\u5E76allOf\uFF0C\u4E22\u5F03allOf\u914D\u7F6E\u7EE7\u7EED\u6E32\u67D3: \n".concat(e)); // eslint-disable-next-line no-unused-vars
+      console.error("\u65E0\u6CD5\u5408\u5E76allOf\uFF0C\u4E22\u5F03allOf\u914D\u7F6E\u7EE7\u7EED\u6E32\u67D3: \n".concat(e)); // eslint-disable-next-line no-unused-vars
 
       resolvedAllOfRefSchema.allOf;
           var resolvedSchemaWithoutAllOf = _objectWithoutProperties(resolvedAllOfRefSchema, ["allOf"]);

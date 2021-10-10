@@ -297,10 +297,9 @@ function mergeSchemaAllOf(...args) {
                     // 获取最小公倍数
                     acc[key] = scm(left, right);
                 } else {
-                    if (left !== right) {
-                        throw new Error('无法合并如下数据');
-                    }
-
+                    // if (left !== right) {
+                    //     throw new Error('无法合并如下数据');
+                    // }
                     acc[key] = left;
                 }
             } else {
@@ -329,7 +328,7 @@ export function resolveAllOf(schema, rootSchema, formData) {
         const { allOf, ...originProperties } = resolvedAllOfRefSchema;
         return mergeSchemaAllOf(originProperties, ...allOf);
     } catch (e) {
-        console.warn(`无法合并allOf，丢弃allOf配置继续渲染: \n${e}`);
+        console.error(`无法合并allOf，丢弃allOf配置继续渲染: \n${e}`);
         // eslint-disable-next-line no-unused-vars
         const { allOf: errAllOf, ...resolvedSchemaWithoutAllOf } = resolvedAllOfRefSchema;
         return resolvedSchemaWithoutAllOf;
