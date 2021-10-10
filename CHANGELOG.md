@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.3](https://github.com/lljj-x/vue-json-schema-form/compare/v1.9.2...v1.9.3) (2021-10-10)
+
+
+### Bug Fixes
+
+* **lib:** allOf merge 相同类型直接使用左边 ([c0bd0cd](https://github.com/lljj-x/vue-json-schema-form/commit/c0bd0cde9f15b4ca928fec84b4831a5cb459aa43)), closes [#116](https://github.com/lljj-x/vue-json-schema-form/issues/116)
+
+
+
+
+
 ## [1.9.2](https://github.com/lljj-x/vue-json-schema-form/compare/v1.9.1...v1.9.2) (2021-09-25)
 
 
