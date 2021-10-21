@@ -177,7 +177,8 @@ export default {
             // 判断是否为根节点
             const isRootNode = isRootNodePath(props.curNodePath);
 
-            const miniDesModel = props.globalOptions.HELPERS.isMiniDes(props.formProps);
+            const isMiniDes = props.formProps && props.formProps.isMiniDes;
+            const miniDesModel = isMiniDes || props.globalOptions.HELPERS.isMiniDes(props.formProps);
 
             const descriptionVNode = (props.description) ? h(
                 'div',
