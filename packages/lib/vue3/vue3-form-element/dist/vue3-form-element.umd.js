@@ -10018,7 +10018,8 @@
       return function () {
         // 判断是否为根节点
         var isRootNode = isRootNodePath(props.curNodePath);
-        var miniDesModel = props.globalOptions.HELPERS.isMiniDes(props.formProps);
+        var isMiniDes = props.formProps && props.formProps.isMiniDes;
+        var miniDesModel = isMiniDes || props.globalOptions.HELPERS.isMiniDes(props.formProps);
         var descriptionVNode = props.description ? Vue.h('div', {
           innerHTML: props.description,
           class: {

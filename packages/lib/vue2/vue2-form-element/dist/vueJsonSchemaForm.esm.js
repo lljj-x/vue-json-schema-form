@@ -10239,7 +10239,8 @@ var Widget = {
     var curNodePath = this.$props.curNodePath; // 判断是否为根节点
 
     var isRootNode = isRootNodePath(curNodePath);
-    var miniDesModel = self.globalOptions.HELPERS.isMiniDes(self.formProps);
+    var isMiniDes = self.formProps && self.formProps.isMiniDes;
+    var miniDesModel = isMiniDes || self.globalOptions.HELPERS.isMiniDes(self.formProps);
     var descriptionVNode = self.description ? h('div', {
       domProps: {
         innerHTML: self.description
