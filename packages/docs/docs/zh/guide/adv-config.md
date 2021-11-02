@@ -180,6 +180,8 @@ uiSchema = {
 ## 自定义Widget
 自定义Widget通过配置 `ui:widget` 字段
 
+**自定义widget组件实现 `v-model` 来实现同步值到formData，`ui:xxx` 配置会以 `props` 的形式传递给自定义的widget**
+
 ::: tip  快速理解
 * 简单理解：Widget组件就是你的输入组件的最小单元，比如 `input` `checkbox`，并且不和当前form数据耦合，所以组件内不会访问到任何表单的数据，当然你可以通过ui:xx传递进去
 * 使用方法：只需要是一个合法的vue可渲染的组件配置即可
@@ -199,7 +201,7 @@ uiSchema = {
 * 不支持直接配置在 `type: object` 中
 :::
 
-:::demo async function 重置，在实际项目中，实际只需要 `() => import('./xxx.vue')`;
+:::demo 如下 componentOptions，实际场景这里可以是 `import componentOptions from './widget-components/XXX.vue'`
 ```html
 <template>
     <vue-form
@@ -210,17 +212,43 @@ uiSchema = {
     </vue-form>
 </template>
 <script>
+    // 实际场景这里可以是 import componentOptions from './widget-components/XXX.vue'
+    // 这里为了方便演示demo，直接通过render函数
+    const componentOptions = {
+        name: 'TestAsyncWidget',
+        props: {
+            value: {
+                type: null,
+                default: ''
+            }
+        },
+        render(h) {
+            return h('div', {style: { padding: '4px', boxShadow: '0 0  4px 1px rgba(0,0,0,0.1)' }}, [
+                h('button', {
+                    attrs: {type: 'button'},
+                    style: {marginRight: '6px'},
+                    on: {
+                        click: () => {
+                            this.$emit('input', String(new Date()))
+                        }
+                    }
+                }, '点击更新时间'),
+                h('span', this.value),
+            ]);
+        }
+    }
+
    export default {
         data() {
             return {
                 formData: {},
                 schema: {
-                    title: '自定义Widget',
+                    title: '自定义Widget (显示代码查看demo)',
                     type: 'object',
                     required: ['inputText', 'numberEnumRadio'],
                     properties: {
                         inputText: {
-                            title: '通过async function重置为span标签',
+                            title: '可以配置全局组件名、或者异步组件函数，或者同步组件options等',
                             type: 'string',
                             default: String(new Date())
                         },
@@ -237,29 +265,8 @@ uiSchema = {
                         'ui:widget': 'RadioWidget'
                     },
                     inputText: {
-                        'ui:widget': () => Promise.resolve({
-                            name: 'TestAsyncWidget',
-                            props: {
-                                value: {
-                                    type: null,
-                                    default: ''
-                                }
-                            },
-                            render(h) {
-                                return h('div', {style: { padding: '4px', boxShadow: '0 0  4px 1px rgba(0,0,0,0.1)' }}, [
-                                    h('button', {
-                                        attrs: {type: 'button'},
-                                        style: {marginRight: '6px'},
-                                        on: {
-                                            click: () => {
-                                                this.$emit('input', String(new Date()))
-                                            }
-                                        }
-                                    }, '点击更新时间'),
-                                    h('span', this.value),
-                                ]);
-                            }
-                        }),
+                        // 配置组件构造函数或者直接配置全局组件名，比如 'el-input'
+                        'ui:widget': componentOptions,
                     }
                 }
             }
@@ -273,8 +280,10 @@ uiSchema = {
 ## 自定义Field
 自定义field通过配置 `ui-schema` `ui:field` 字段，可以配置在任意需要自定义field的schema节点，参数格式和 [自定义Widget](#自定义widget) 一致
 
+**配置field组件通过 vueUtils.getPathVal 、vueUtils.setPathVal 来同步值到formData**
+
 ::: tip  快速理解
-* 简单理解：Field 组件就是Widget组件的父级，来决定Widget组件选择和数据校验
+* 简单理解：Field 组件就是Widget组件的父级，来决定Widget组件选择和数据校验，一般都包含formItem组件
 * 使用方法：只需要是一个合法的vue可渲染的组件配置即可
 * props: 内部渲染所有的 props 都可获取，参见下文 `Field组件props`
 * 如何更新值：需要 vueUtils.getPathVal 、vueUtils.setPathVal 来获取或者更新当前值，[可参见demo](https://github.com/lljj-x/vue-json-schema-form/blob/master/packages/docs/docs/.vuepress/injectVue/field/DistpickerField.vue)
