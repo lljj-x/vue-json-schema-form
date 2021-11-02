@@ -775,6 +775,7 @@ formProps = {
     inlineFooter: false, // 如果想要保存按钮和表单元素一行显示，需要配置 true
     labelSuffix: '：', // label后缀
     labelPosition: 'top', // 表单域标签的位置
+    isMiniDes: 'false', // 是否优先mini形式显示描述信息（label文字和描述信息同行显示）
 }
 ```
 
