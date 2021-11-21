@@ -118,20 +118,14 @@ const globalOptions = {
         button: 'a-button',
         popover: defineComponent({
             setup(props, { attrs, slots }) {
-                const {
-                    default: contentSlot,
-                    reference: defaultSlot,
-                } = slots;
-
                 return () => h(vueUtils.resolveComponent('a-popover'), {
                     attrs
                 }, {
-                    default: defaultSlot,
-                    content: contentSlot,
+                    default: slots.reference,
+                    content: slots.default,
                 });
             }
         }),
-
     },
     HELPERS: {
         // 是否mini显示 description
