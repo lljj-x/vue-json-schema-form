@@ -771,7 +771,7 @@ schema = {
 // 默认值
 formProps = {
     layoutColumn: 1, // 1 2 3 ，支持 1 2 3 列布局，如果使用inline表单这里配置无效
-    inline: false, // 行内表单模式
+    inline: false, // 行内表单模式，建议：开启时labelPosition不要配置top, antd不要配置labelCol wrapperCol
     inlineFooter: false, // 如果想要保存按钮和表单元素一行显示，需要配置 true
     labelSuffix: '：', // label后缀
     labelPosition: 'top', // 表单域标签的位置

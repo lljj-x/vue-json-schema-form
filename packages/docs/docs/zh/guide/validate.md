@@ -32,6 +32,10 @@ const customRule = ({
 };
 ```
 
+:::warning 各版本差异
+* vue3 antd不包含callback参数，请使用Promise形式，如 `return Promise.reject('错误信息')`
+:::
+
 详细参数解释如下：
 >* `field`： 当前节点的 `field` 路径，和 `formData` 数据结构对应， 通过 `.` 连接，如： `imgList.0.imgUrl`，
 >实在不清楚可以通过 `Vue DevTools` 查看对应组件的 `curNodePath` 参数
