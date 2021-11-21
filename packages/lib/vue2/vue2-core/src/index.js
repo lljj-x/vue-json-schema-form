@@ -142,7 +142,7 @@ export default function createForm(globalOptions = {}) {
                     }) : undefined;
 
             const {
-                layoutColumn = 1, inlineFooter, inline, ...formProps
+                layoutColumn = 1, inlineFooter, ...formProps
             } = self.$props.formProps;
 
             const props = {
@@ -161,6 +161,8 @@ export default function createForm(globalOptions = {}) {
                     ...formProps,
                 }
             };
+
+            const inline = formProps.inline;
 
             return h(
                 globalOptions.COMPONENT_MAP.form,

@@ -141,7 +141,7 @@ export default function createForm(globalOptions = {}) {
 
             return () => {
                 const {
-                    layoutColumn = 1, inlineFooter, inline, ...otherFormProps
+                    layoutColumn = 1, inlineFooter, ...otherFormProps
                 } = props.formProps;
                 const schemaProps = {
                     schema: props.schema,
@@ -160,6 +160,7 @@ export default function createForm(globalOptions = {}) {
                     }
                 };
 
+                const inline = otherFormProps.inline;
                 return h(
                     resolveComponent(globalOptions.COMPONENT_MAP.form),
                     {

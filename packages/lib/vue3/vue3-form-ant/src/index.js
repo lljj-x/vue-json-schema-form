@@ -61,6 +61,14 @@ const globalOptions = {
                         setFormRef, labelPosition, labelWidth, model, ...otherAttrs
                     } = attrs;
 
+                    if (otherAttrs.inline) {
+                        Object.assign(otherAttrs, {
+                            layout: 'inline',
+                            // labelCol: undefined,
+                            // wrapperCol: undefined
+                        });
+                    }
+
                     return h(vueUtils.resolveComponent('a-form'), {
                         ref: formRef,
                         model: model.value,
@@ -132,7 +140,7 @@ const globalOptions = {
         isMiniDes(formProps) {
             return formProps && (
                 ['left', 'right'].includes(formProps.labelPosition)
-                || formProps.layout === 'horizontal'
+                || formProps.layout === 'horizontal' || formProps.inline === true
             );
         }
     }

@@ -250,11 +250,11 @@
         }
     }*/
     &.formInline {
-        .genFormItem {
+        /*.genFormItem {
             display: inline-block;
             margin-right: 10px;
             vertical-align: top;
-        }
+        }*/
         .validateWidget {
             margin-right: 0;
         }
