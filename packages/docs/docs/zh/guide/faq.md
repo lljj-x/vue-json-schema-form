@@ -12,7 +12,7 @@
     <vue-form
         v-model="formData"
         :schema="schema"
-        :uiSchema="uiSchema"
+        :ui-schema="uiSchema"
     >
     </vue-form>
 </template>
