@@ -104,6 +104,7 @@ export default function createForm(globalOptions = {}) {
             },
         },
         mounted() {
+            this.$$uiFormRef = this.$refs.genEditForm;
             this.$emit('on-form-mounted', this.$refs.genEditForm, {
                 formData: this.formData
             });

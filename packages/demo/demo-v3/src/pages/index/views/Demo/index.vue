@@ -194,6 +194,7 @@
                         </template>
                         <component
                             :is="curVueForm"
+                            ref="schemaForm"
                             :key="pageKey"
                             v-model="formData"
                             :schema="schema"
@@ -203,6 +204,7 @@
                             :form-footer="trueFormFooter"
                             :form-props="trueFormProps"
                             :fallback-label="true"
+                            @keyup.native.enter="handleSearch"
                             @form-mounted="handleFormMounted"
                             @change="handleDataChange"
                             @cancel="handleCancel"
@@ -453,6 +455,9 @@ export default {
             Object.assign(this, defaultState, Object.assign(schemaTypes[this.curType], queryParamsObj, {
                 formProps
             }));
+        },
+        handleSearch() {
+            console.log('$$uiFormRef', this.$refs.schemaForm.$$uiFormRef);
         },
         handleFormMounted(formRef) {
             console.log('Ui form component:', formRef);

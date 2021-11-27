@@ -11373,10 +11373,10 @@
       setup: function setup(props, _ref) {
         var slots = _ref.slots,
             emit = _ref.emit;
+        // global components
+        var internalInstance = Vue.getCurrentInstance();
 
         if (!Form.installed && globalOptions.WIDGET_MAP.widgetComponents) {
-          // global components
-          var internalInstance = Vue.getCurrentInstance();
           Object.entries(globalOptions.WIDGET_MAP.widgetComponents).forEach(function (_ref2) {
             var _ref3 = _slicedToArray(_ref2, 2),
                 componentName = _ref3[0],
@@ -11522,6 +11522,7 @@
             }, _defineProperty(_class, "genFromComponent_".concat(props.schema.id, "Form"), !!props.schema.id), _defineProperty(_class, "layoutColumn", !inline), _defineProperty(_class, "layoutColumn-".concat(layoutColumn), !inline), _class),
             setFormRef: function setFormRef(form) {
               formRef = form;
+              internalInstance.ctx.$$uiFormRef = formRef;
               emit('form-mounted', form, {
                 formData: rootFormData.value
               });

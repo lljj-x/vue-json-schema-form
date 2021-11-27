@@ -170,6 +170,7 @@
                         </div>
                         <component
                             :is="curVueForm"
+                            ref="schemaForm"
                             :key="pageKey"
                             v-model="formData"
                             :schema="schema"
@@ -179,6 +180,7 @@
                             :form-footer="trueFormFooter"
                             :form-props="trueFormProps"
                             :fallback-label="true"
+                            @keyup.native.enter="handleSearch"
                             @on-form-mounted="handleFormMounted"
                             @on-change="handleDataChange"
                             @on-cancel="handleCancel"
@@ -298,6 +300,9 @@ export default {
         this.initData();
     },
     methods: {
+        async handleSearch() {
+            console.log('$$uiFormRef', this.$refs.schemaForm.$$uiFormRef);
+        },
         handleUiChange(value) {
             const formatStr = jsonCode => JSON.stringify(JSON.parse(jsonCode));
 
