@@ -1,6 +1,6 @@
 {
     "name": "docs",
-    "version": "1.9.5",
+    "version": "1.10.0",
     "private": true,
     "license": "Apache-2.0",
     "scripts": {
@@ -9,7 +9,7 @@
         "build": "vuepress build docs"
     },
     "dependencies": {
-        "@lljj/vue-json-schema-form": "1.9.5",
+        "@lljj/vue-json-schema-form": "1.10.0",
         "element-ui": "^2.13.2",
         "v-distpicker": "^1.2.7"
     },
