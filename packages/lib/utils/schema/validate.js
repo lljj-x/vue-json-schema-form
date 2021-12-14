@@ -238,6 +238,7 @@ export function isValid(schema, data) {
     try {
         return ajv.validate(schema, data);
     } catch (e) {
+        console.error('isValid', JSON.stringify(schema, null, 2), data, e);
         return false;
     }
 }
