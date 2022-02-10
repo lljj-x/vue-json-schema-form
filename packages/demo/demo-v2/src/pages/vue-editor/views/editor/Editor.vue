@@ -1,5 +1,7 @@
 <template>
+    <TestDemo v-if="false"></TestDemo>
     <div
+        v-else
         v-loading="loading"
         :class="{
             [$style.previewBox]: isPreview
@@ -136,6 +138,7 @@ import * as arrayMethods from 'demo-common/utils/array';
 import componentWithDialog from 'demo-common/components/component-with-dialog';
 
 import JsonPerttyPrint from 'demo-common/components/JsonPerttyPrint.vue';
+import TestDemo from './TestDemo';
 import EditorToolBar from './EditorToolBar.vue';
 import EditorHeader from './EditorHeader.vue';
 import ViewComponentWrap from './components/ViewComponentWrap.vue';
@@ -157,6 +160,7 @@ export default {
     name: 'Editor',
     components: {
         ...components,
+        TestDemo,
         VueElementForm,
         Draggable,
         EditorToolBar,

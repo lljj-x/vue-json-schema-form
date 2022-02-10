@@ -42,6 +42,7 @@ export default function createForm(globalOptions = {}) {
         data() {
             const formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema);
 
+            debugger;
             // 保持v-model双向数据及时性
             this.emitFormDataChange(formData, this.value);
 
