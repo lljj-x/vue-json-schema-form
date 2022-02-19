@@ -791,6 +791,13 @@ formProps = {
 }
 ```
 
+### strict-mode
+严格模式，开启后计算表单默认值时会对 `anyOf`/`onyOf` 做严格匹配。参见 issue: [#157](https://github.com/lljj-x/vue-json-schema-form/issues/157)
+
+* 类型：`boolean`
+* default：`false`
+
+
 ## 事件 Emit Event
 emit所有事件如下：
 

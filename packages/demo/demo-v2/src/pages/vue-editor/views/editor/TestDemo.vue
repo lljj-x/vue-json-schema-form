@@ -5,6 +5,7 @@
     >
         <VueElementForm
             v-model="formData"
+            strict-mode
             class="demo-form-box"
             :schema="schema"
             @on-submit="handleSubmit"

@@ -20,6 +20,10 @@ export default {
         type: Boolean,
         default: false,
     },
+    strictMode: {
+        type: Boolean,
+        default: false,
+    },
     formProps: {
         type: Object,
         default: () => ({}),

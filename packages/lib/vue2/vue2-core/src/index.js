@@ -40,7 +40,7 @@ export default function createForm(globalOptions = {}) {
             };
         },
         data() {
-            const formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema);
+            const formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema, this.$props.strictMode);
 
             // 保持v-model双向数据及时性
             this.emitFormDataChange(formData, this.value);
@@ -96,7 +96,7 @@ export default function createForm(globalOptions = {}) {
             // 避免用于双向绑定v-model 可能导致的循环调用
             willReceiveProps(newVal, oldVal) {
                 if (!deepEquals(newVal, oldVal)) {
-                    const formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema);
+                    const formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema, this.$props.strictMode);
                     if (!deepEquals(this.formData, formData)) {
                         this.formData = formData;
                     }
