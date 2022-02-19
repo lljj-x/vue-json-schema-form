@@ -42,7 +42,6 @@ export default function createForm(globalOptions = {}) {
         data() {
             const formData = getDefaultFormState(this.$props.schema, this.$props.value, this.$props.schema);
 
-            debugger;
             // 保持v-model双向数据及时性
             this.emitFormDataChange(formData, this.value);
 
@@ -176,6 +175,11 @@ export default function createForm(globalOptions = {}) {
                         [`genFromComponent_${this.schema.id}Form`]: !!this.schema.id,
                         layoutColumn: !inline,
                         [`layoutColumn-${layoutColumn}`]: !inline
+                    },
+                    nativeOn: {
+                        submit(e) {
+                            e.preventDefault();
+                        }
                     },
                     ref: 'genEditForm',
                     props: {

@@ -180,6 +180,10 @@ export default function createForm(globalOptions = {}) {
                                 formData: rootFormData.value
                             });
                         },
+                        // 阻止form默认submit
+                        onSubmit(e) {
+                            e.preventDefault();
+                        },
                         model: rootFormData,
                         ...schemaProps.formProps
                     },
