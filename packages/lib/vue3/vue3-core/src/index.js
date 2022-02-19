@@ -51,7 +51,7 @@ export default function createForm(globalOptions = {}) {
             })));
 
             // rootFormData
-            const rootFormData = ref(getDefaultFormState(props.schema, props.modelValue, props.schema));
+            const rootFormData = ref(getDefaultFormState(props.schema, props.modelValue, props.schema, props.strictMode));
             const footerParams = computed(() => ({
                 show: true,
                 okBtn: '保存',
@@ -78,7 +78,7 @@ export default function createForm(globalOptions = {}) {
             // 更新props
             const willReceiveProps = (newVal, oldVal) => {
                 if (!deepEquals(newVal, oldVal)) {
-                    const tempVal = getDefaultFormState(props.schema, props.modelValue, props.schema);
+                    const tempVal = getDefaultFormState(props.schema, props.modelValue, props.schema, props.strictMode);
                     if (!deepEquals(rootFormData.value, tempVal)) {
                         rootFormData.value = tempVal;
                     }
@@ -179,6 +179,10 @@ export default function createForm(globalOptions = {}) {
                             emit('form-mounted', form, {
                                 formData: rootFormData.value
                             });
+                        },
+                        // 阻止form默认submit
+                        onSubmit(e) {
+                            e.preventDefault();
                         },
                         model: rootFormData,
                         ...schemaProps.formProps

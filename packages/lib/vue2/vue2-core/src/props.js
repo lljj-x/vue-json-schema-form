@@ -24,6 +24,10 @@ export default {
         type: Boolean,
         default: false,
     },
+    strictMode: {
+        type: Boolean,
+        default: false,
+    },
     schema: {
         type: Object,
         default: () => ({}),

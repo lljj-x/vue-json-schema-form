@@ -1,4 +1,4 @@
-/** @license @lljj/vue3-form-ant (c) 2020-2021 Liu.Jun License: Apache-2.0 */
+/** @license @lljj/vue3-form-ant (c) 2020-2022 Liu.Jun License: Apache-2.0 */
 import { resolveComponent as resolveComponent$1, h, openBlock, createBlock, toDisplayString, createCommentVNode, createVNode, renderSlot, inject, computed, ref as ref$1, watch, toRaw, getCurrentInstance, provide, defineComponent, onMounted } from 'vue';
 
 function _typeof(obj) {
@@ -9212,6 +9212,7 @@ function mergeDefaultsWithFormData(defaults, formData) {
 function computeDefaults(_schema, parentDefaults, rootSchema) {
   var rawFormData = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
   var includeUndefinedValues = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+  var haveAllFields = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
   var schema = isObject(_schema) ? _schema : {};
   var formData = isObject(rawFormData) ? rawFormData : {}; // allOf 处理合并数据
 
@@ -9232,7 +9233,7 @@ function computeDefaults(_schema, parentDefaults, rootSchema) {
   } else if ('$ref' in schema) {
     // Use referenced schema defaults for this node.
     var refSchema = findSchemaDefinition(schema.$ref, rootSchema);
-    return computeDefaults(refSchema, defaults, rootSchema, formData, includeUndefinedValues);
+    return computeDefaults(refSchema, defaults, rootSchema, formData, includeUndefinedValues, haveAllFields);
   } else if (
   /* ('dependencies' in schema) {
   const resolvedSchema = resolveDependencies(schema, rootSchema, formData);
@@ -9241,15 +9242,16 @@ function computeDefaults(_schema, parentDefaults, rootSchema) {
   defaults,
   rootSchema,
   formData,
-  includeUndefinedValues
+  includeUndefinedValues,
+  haveAllFields
   );
   } else if */
   isFixedItems(schema)) {
     defaults = schema.items.map(function (itemSchema, idx) {
-      return computeDefaults(itemSchema, Array.isArray(parentDefaults) ? parentDefaults[idx] : undefined, rootSchema, formData, includeUndefinedValues);
+      return computeDefaults(itemSchema, Array.isArray(parentDefaults) ? parentDefaults[idx] : undefined, rootSchema, formData, includeUndefinedValues, haveAllFields);
     });
   } else if ('oneOf' in schema) {
-    var matchSchema = retrieveSchema(schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)], rootSchema, formData);
+    var matchSchema = retrieveSchema(schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema, haveAllFields)], rootSchema, formData);
     schema = mergeObjects(schema, matchSchema);
     delete schema.oneOf; // if (schema.properties && matchSchema.properties) {
     //     // 对象 oneOf 需要合并原属性和 oneOf 属性
@@ -9260,7 +9262,7 @@ function computeDefaults(_schema, parentDefaults, rootSchema) {
     //     schema = matchSchema;
     // }
   } else if ('anyOf' in schema) {
-    var _matchSchema = retrieveSchema(schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema)], rootSchema, formData);
+    var _matchSchema = retrieveSchema(schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema, haveAllFields)], rootSchema, formData);
 
     schema = mergeObjects(schema, _matchSchema);
     delete schema.anyOf; // if (schema.properties && matchSchema.properties) {
@@ -9288,7 +9290,7 @@ function computeDefaults(_schema, parentDefaults, rootSchema) {
       return Object.keys(schema.properties || {}).reduce(function (acc, key) {
         // Compute the defaults for this node, with the parent defaults we might
         // have from a previous run: defaults[key].
-        var computedDefault = computeDefaults(schema.properties[key], (defaults || {})[key], rootSchema, (formData || {})[key], includeUndefinedValues);
+        var computedDefault = computeDefaults(schema.properties[key], (defaults || {})[key], rootSchema, (formData || {})[key], includeUndefinedValues, haveAllFields);
 
         if (includeUndefinedValues || computedDefault !== undefined) {
           acc[key] = computedDefault;
@@ -9301,14 +9303,14 @@ function computeDefaults(_schema, parentDefaults, rootSchema) {
       // Inject defaults into existing array defaults
       if (Array.isArray(defaults)) {
         defaults = defaults.map(function (item, idx) {
-          return computeDefaults(schema.items[idx] || schema.additionalItems || {}, item, rootSchema, {}, includeUndefinedValues);
+          return computeDefaults(schema.items[idx] || schema.additionalItems || {}, item, rootSchema, {}, includeUndefinedValues, haveAllFields);
         });
       } // Deeply inject defaults into already existing form data
 
 
       if (Array.isArray(rawFormData)) {
         defaults = rawFormData.map(function (item, idx) {
-          return computeDefaults(schema.items, (defaults || {})[idx], rootSchema, item, {}, includeUndefinedValues);
+          return computeDefaults(schema.items, (defaults || {})[idx], rootSchema, item, {}, includeUndefinedValues, haveAllFields);
         });
       }
 
@@ -9320,7 +9322,7 @@ function computeDefaults(_schema, parentDefaults, rootSchema) {
             var defaultEntries = defaults || []; // populate the array with the defaults
 
             var fillerSchema = Array.isArray(schema.items) ? schema.additionalItems : schema.items;
-            var fillerEntries = fillObj(new Array(schema.minItems - defaultsLength), computeDefaults(fillerSchema, fillerSchema.defaults, rootSchema, {}, includeUndefinedValues));
+            var fillerEntries = fillObj(new Array(schema.minItems - defaultsLength), computeDefaults(fillerSchema, fillerSchema.defaults, rootSchema, {}, includeUndefinedValues, haveAllFields));
             return defaultEntries.concat(fillerEntries);
           }
         } else {
@@ -9339,13 +9341,14 @@ function computeDefaults(_schema, parentDefaults, rootSchema) {
 function getDefaultFormState(_schema, formData) {
   var rootSchema = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
   var includeUndefinedValues = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+  var haveAllFields = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
   if (!isObject(_schema)) {
     throw new Error("Invalid schema: ".concat(_schema));
   }
 
   var schema = retrieveSchema(_schema, rootSchema, formData);
-  var defaults = computeDefaults(schema, _schema.default, rootSchema, formData, includeUndefinedValues);
+  var defaults = computeDefaults(schema, _schema.default, rootSchema, formData, includeUndefinedValues, haveAllFields);
 
   if (typeof formData === 'undefined') {
     // No form data? Use schema defaults.
@@ -9416,6 +9419,10 @@ var vueProps = {
     required: true
   },
   fallbackLabel: {
+    type: Boolean,
+    default: false
+  },
+  strictMode: {
     type: Boolean,
     default: false
   },
@@ -11345,7 +11352,7 @@ function createForm() {
         };
       })); // rootFormData
 
-      var rootFormData = ref$1(getDefaultFormState(props.schema, props.modelValue, props.schema));
+      var rootFormData = ref$1(getDefaultFormState(props.schema, props.modelValue, props.schema, props.strictMode));
       var footerParams = computed(function () {
         return _objectSpread2({
           show: true,
@@ -11370,7 +11377,7 @@ function createForm() {
 
       var willReceiveProps = function willReceiveProps(newVal, oldVal) {
         if (!deepEquals(newVal, oldVal)) {
-          var tempVal = getDefaultFormState(props.schema, props.modelValue, props.schema);
+          var tempVal = getDefaultFormState(props.schema, props.modelValue, props.schema, props.strictMode);
 
           if (!deepEquals(rootFormData.value, tempVal)) {
             rootFormData.value = tempVal;
@@ -11476,6 +11483,10 @@ function createForm() {
             emit('form-mounted', form, {
               formData: rootFormData.value
             });
+          },
+          // 阻止form默认submit
+          onSubmit: function onSubmit(e) {
+            e.preventDefault();
           },
           model: rootFormData
         }, schemaProps.formProps), {

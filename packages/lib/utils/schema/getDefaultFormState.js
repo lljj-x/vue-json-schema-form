@@ -49,7 +49,8 @@ function computeDefaults(
     parentDefaults,
     rootSchema,
     rawFormData = {},
-    includeUndefinedValues = false
+    includeUndefinedValues = false,
+    haveAllFields = false
 ) {
     let schema = isObject(_schema) ? _schema : {};
     const formData = isObject(rawFormData) ? rawFormData : {};
@@ -76,7 +77,8 @@ function computeDefaults(
             defaults,
             rootSchema,
             formData,
-            includeUndefinedValues
+            includeUndefinedValues,
+            haveAllFields
         );
     } else if /* ('dependencies' in schema) {
         const resolvedSchema = resolveDependencies(schema, rootSchema, formData);
@@ -85,7 +87,8 @@ function computeDefaults(
             defaults,
             rootSchema,
             formData,
-            includeUndefinedValues
+            includeUndefinedValues,
+            haveAllFields
         );
     } else if */ (isFixedItems(schema)) {
         defaults = schema.items.map((itemSchema, idx) => computeDefaults(
@@ -93,11 +96,12 @@ function computeDefaults(
             Array.isArray(parentDefaults) ? parentDefaults[idx] : undefined,
             rootSchema,
             formData,
-            includeUndefinedValues
+            includeUndefinedValues,
+            haveAllFields
         ));
     } else if ('oneOf' in schema) {
         const matchSchema = retrieveSchema(
-            schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)],
+            schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema, haveAllFields)],
             rootSchema,
             formData
         );
@@ -115,7 +119,7 @@ function computeDefaults(
         // }
     } else if ('anyOf' in schema) {
         const matchSchema = retrieveSchema(
-            schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema)],
+            schema.anyOf[getMatchingOption(formData, schema.anyOf, rootSchema, haveAllFields)],
             rootSchema,
             formData
         );
@@ -151,7 +155,8 @@ function computeDefaults(
                 (defaults || {})[key],
                 rootSchema,
                 (formData || {})[key],
-                includeUndefinedValues
+                includeUndefinedValues,
+                haveAllFields
             );
             if (includeUndefinedValues || computedDefault !== undefined) {
                 acc[key] = computedDefault;
@@ -167,7 +172,8 @@ function computeDefaults(
                 item,
                 rootSchema,
                 {},
-                includeUndefinedValues
+                includeUndefinedValues,
+                haveAllFields
             ));
         }
 
@@ -179,7 +185,8 @@ function computeDefaults(
                 rootSchema,
                 item,
                 {},
-                includeUndefinedValues
+                includeUndefinedValues,
+                haveAllFields
             ));
         }
         if (schema.minItems) {
@@ -194,7 +201,7 @@ function computeDefaults(
 
                     const fillerEntries = fillObj(
                         new Array(schema.minItems - defaultsLength), computeDefaults(
-                            fillerSchema, fillerSchema.defaults, rootSchema, {}, includeUndefinedValues
+                            fillerSchema, fillerSchema.defaults, rootSchema, {}, includeUndefinedValues, haveAllFields
                         )
                     );
                     return defaultEntries.concat(fillerEntries);
@@ -216,7 +223,8 @@ export default function getDefaultFormState(
     _schema,
     formData,
     rootSchema = {},
-    includeUndefinedValues = true
+    includeUndefinedValues = true,
+    haveAllFields = false
 ) {
     if (!isObject(_schema)) {
         throw new Error(`Invalid schema: ${_schema}`);
@@ -228,7 +236,8 @@ export default function getDefaultFormState(
         _schema.default,
         rootSchema,
         formData,
-        includeUndefinedValues
+        includeUndefinedValues,
+        haveAllFields
     );
 
     if (typeof formData === 'undefined') {
