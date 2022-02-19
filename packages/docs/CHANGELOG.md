@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.10.0...v1.11.0) (2022-02-19)
+
+
+### Bug Fixes
+
+* **lib:** 添加严格模式配置，更精准计算anyOf 默认值 ([2cd65bb](https://github.com/lljj-x/vue-json-schema-form/commit/2cd65bb5f275a021f1cc368e4c63387163c94d57)), closes [#157](https://github.com/lljj-x/vue-json-schema-form/issues/157)
+
+
+
+
+
 # [1.10.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.9.5...v1.10.0) (2021-11-28)
 
 **Note:** Version bump only for package docs
