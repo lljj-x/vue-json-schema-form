@@ -3,33 +3,9 @@
  */
 
 import { defineComponent, h } from 'vue';
-import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
+import { resolveComponent, modelValueComponent } from '@lljj/vjsf-utils/vue3Utils';
 
-// 转换antdv 非moduleValue的v-model组件
-export const modelValueComponent = (component, {
-    model = 'value'
-} = {}) => defineComponent({
-    inheritAttrs: false,
-    setup(props, { attrs, slots }) {
-        return () => {
-            const {
-                modelValue: value,
-                'onUpdate:modelValue': onUpdateValue,
-                ...otherAttrs
-            } = attrs;
-
-            // eg: 'a-input'
-            return h(resolveComponent(component), {
-                [model]: value,
-                [`onUpdate:${model}`]: onUpdateValue,
-                ...otherAttrs
-            }, slots);
-        };
-    }
-});
-
-// 转换antdv 时间日期选择，moment format时间戳number类型报错兼容
-export const numberTimeComponent = component => defineComponent({
+const numberTimeComponent = component => defineComponent({
     inheritAttrs: false,
     setup(props, { attrs, slots }) {
 
@@ -61,3 +37,10 @@ export const numberTimeComponent = component => defineComponent({
         };
     }
 });
+
+export {
+    // 转换antdv 非moduleValue的v-model组件
+    modelValueComponent,
+
+    numberTimeComponent
+};

@@ -2,7 +2,7 @@
  * Created by Liu.Jun on 2020/4/25 14:45.
  */
 
-import { resolveComponent as _resolveComponent } from 'vue';
+import { defineComponent, h, resolveComponent as _resolveComponent } from 'vue';
 
 export {
     nodePath2ClassName, isRootNodePath, computedCurPath, getPathVal, path2prop
@@ -34,3 +34,26 @@ export function resolveComponent(component) {
 
     return component;
 }
+
+// 转换antdv、naive等非moduleValue的v-model组件
+export const modelValueComponent = (component, {
+    model = 'value'
+} = {}) => defineComponent({
+    inheritAttrs: false,
+    setup(props, { attrs, slots }) {
+        return () => {
+            const {
+                modelValue: value,
+                'onUpdate:modelValue': onUpdateValue,
+                ...otherAttrs
+            } = attrs;
+
+            // eg: 'a-input'
+            return h(resolveComponent(component), {
+                [model]: value,
+                [`onUpdate:${model}`]: onUpdateValue,
+                ...otherAttrs
+            }, slots);
+        };
+    }
+});

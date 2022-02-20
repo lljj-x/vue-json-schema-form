@@ -14,6 +14,7 @@
         "@lljj/vue3-form-element": "1.11.0",
         "ajv-i18n": "^3.5.0",
         "ant-design-vue": "^2.0.1",
+        "naive-ui": "^2.25.2",
         "demo-common": "1.2.0",
         "vue": "^3.0.0",
         "vuedraggable": "2.23.2"

@@ -252,6 +252,30 @@ const VueAntForm = defineAsyncComponent(async () => {
     };
 });
 
+const VueNaiveForm = defineAsyncComponent(async () => {
+    // eslint-disable-next-line no-unused-vars
+    const [naive, antForm] = await Promise.all([
+        import('demo-common/components/Naive/index.js'),
+        import('@lljj/vue3-form-naive/src/index')
+    ]);
+
+    return {
+        name: 'naiveFormWrap',
+        setup(props, { attrs, slots }) {
+            // hack 动态install antDv，因为我不知其它地方如何获取 vue app
+            if (!installedAntdv) {
+                const instance = getCurrentInstance();
+                instance.appContext.app.use(naive.default);
+                installedAntdv = true;
+            }
+
+            return () => h(antForm.default, {
+                ...attrs
+            }, slots);
+        }
+    };
+});
+
 const typeItems = Object.keys(schemaTypes);
 
 export default {
@@ -260,6 +284,7 @@ export default {
         CodeEditor,
         VueElementForm,
         VueAntForm,
+        VueNaiveForm,
         EditorHeader
     },
     data() {
@@ -273,6 +298,9 @@ export default {
             }, {
                 name: 'antdv',
                 component: 'VueAntForm'
+            }, {
+                name: 'Naive',
+                component: 'VueNaiveForm'
             }],
             customFormats: {
                 price(value) {
@@ -286,7 +314,7 @@ export default {
             return this.$route.query.type;
         },
         isUseLabelWidth() {
-            return this.curVueForm === 'VueElementForm';
+            return this.curVueForm !== 'VueAntForm';
         },
         trueFormProps() {
             if (!this.formProps) return {};

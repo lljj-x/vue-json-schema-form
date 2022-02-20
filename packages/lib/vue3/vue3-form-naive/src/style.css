@@ -1,0 +1,10 @@
+/* element plus 重置样式*/
+.genFromComponent {
+    .n-form-item-blank {
+        flex-wrap: wrap;
+        .genFromWidget_des {
+            width: 100%;
+            flex-shrink: 0;
+        }
+    }
+}
