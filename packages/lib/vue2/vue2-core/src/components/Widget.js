@@ -187,7 +187,8 @@ export default {
                     innerHTML: self.description
                 },
                 class: {
-                    genFromWidget_des: true
+                    genFromWidget_des: true,
+                    genFromWidget_des_mini: miniDesModel
                 }
             },
         ) : null;

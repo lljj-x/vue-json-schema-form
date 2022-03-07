@@ -185,7 +185,8 @@ export default {
                 {
                     innerHTML: props.description,
                     class: {
-                        genFromWidget_des: true
+                        genFromWidget_des: true,
+                        genFromWidget_des_mini: miniDesModel
                     }
                 },
             ) : null;

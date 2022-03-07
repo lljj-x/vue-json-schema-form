@@ -31,4 +31,6 @@ app.use(ElementPlus);
 // mount
 app.mount('#app');
 
+app.config.unwrapInjectedRef = true;
+
 window.app1 = app;

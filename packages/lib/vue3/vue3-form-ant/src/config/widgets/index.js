@@ -21,6 +21,7 @@ const widgetComponents = {
     DateTimePickerWidget,
     UploadWidget,
     InputWidget: modelValueComponent('a-input'),
+    TextAreaWidget: modelValueComponent('a-textarea'),
     InputNumberWidget: modelValueComponent('a-input-number'),
     AutoCompleteWidget: modelValueComponent('a-auto-complete'),
     SliderWidget: modelValueComponent('a-slider'),

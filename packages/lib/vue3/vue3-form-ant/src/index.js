@@ -126,9 +126,7 @@ const globalOptions = {
         button: 'a-button',
         popover: defineComponent({
             setup(props, { attrs, slots }) {
-                return () => h(vueUtils.resolveComponent('a-popover'), {
-                    attrs
-                }, {
+                return () => h(vueUtils.resolveComponent('a-popover'), attrs, {
                     default: slots.reference,
                     content: slots.default,
                 });

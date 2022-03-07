@@ -11,7 +11,7 @@
                     <el-slider
                         v-model="formProps.labelWidth"
                         style="width: 70px; margin-right: 6px;"
-                        size="mini"
+                        size="small"
                         :format-tooltip="sliderFormat"
                     ></el-slider>
                 </template>
@@ -23,7 +23,7 @@
                         :min="3"
                         :max="15"
                         style="width: 70px; margin-right: 6px;"
-                        size="mini"
+                        size="small"
                     ></el-slider>
                     <span style="font-size: 13px;">wrapperCol：</span>
                     <el-slider
@@ -31,21 +31,21 @@
                         :min="5"
                         :max="24"
                         style="width: 70px; margin-right: 6px;"
-                        size="mini"
+                        size="small"
                     ></el-slider>
                 </template>
 
                 <el-checkbox
                     v-model="formProps.inline"
                     style="margin-right: 6px;"
-                    size="mini"
+                    size="small"
                 >
                     Inline
                 </el-checkbox>
                 <el-checkbox
                     v-model="formFooter.show"
                     style="margin-right: 6px;"
-                    size="mini"
+                    size="small"
                 >
                     底部
                 </el-checkbox>
@@ -178,7 +178,7 @@
                                     <el-select
                                         v-model="curVueForm"
                                         placeholder="ui"
-                                        size="mini"
+                                        size="small"
                                         style="margin-left: 10px;width: 130px;"
                                         @change="handleUiChange"
                                     >
@@ -225,14 +225,14 @@ import EditorHeader from 'demo-common/components/EditorHeader.vue';
 import CodeEditor from 'demo-common/components/CodeEditor';
 import schemaTypes from 'demo-common/schemaTypes';
 
-const VueElementForm = defineAsyncComponent(() => import('@lljj/vue3-form-element'));
+const VueElementForm = defineAsyncComponent(() => import('@lljj/vue3-form-element/src/index'));
 
 let installedAntdv = false;
 const VueAntForm = defineAsyncComponent(async () => {
     // eslint-disable-next-line no-unused-vars
     const [antdv, antForm] = await Promise.all([
         import('demo-common/components/Antdv/index.js'),
-        import('@lljj/vue3-form-ant')
+        import('@lljj/vue3-form-ant/src/index')
     ]);
 
     return {
@@ -339,16 +339,16 @@ export default {
             };
         },
         trueFormFooter() {
-            const {
-                labelColSpan,
-                wrapperColSpan
-            } = this.formProps;
+            // const {
+            // labelColSpan,
+            // wrapperColSpan
+            // } = this.formProps;
 
             return this.isUseLabelWidth ? (this.formFooter || {}) : {
                 formItemAttrs: {
                     wrapperCol: {
-                        span: wrapperColSpan,
-                        offset: labelColSpan
+                        span: 24,
+                        offset: 0
                     }
                 }
             };
@@ -435,7 +435,7 @@ export default {
                     labelPosition: 'top',
                     inlineFooter: false,
                     labelColSpan: 10,
-                    wrapperColSpan: 12,
+                    wrapperColSpan: 24,
                     layoutColumn: 1
                 },
             };

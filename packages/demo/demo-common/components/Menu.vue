@@ -96,8 +96,8 @@ export default {
             padding-left: 14px;
             padding-right: 0;
             margin: 0 20px;
-            height: 80px;
-            line-height: 80px;
+            height: 54px;
+            line-height: 54px;
         }
     }
     .menuLink {
