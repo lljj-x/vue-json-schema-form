@@ -93,7 +93,15 @@ const globalOptions = {
             }
         }),
         button: 'n-button',
-        popover: 'n-popover'
+        // popover: ,
+        popover: defineComponent({
+            setup(props, { attrs, slots }) {
+                return () => h(vueUtils.resolveComponent('n-popover'), attrs, {
+                    trigger: slots.reference,
+                    default: slots.default,
+                });
+            }
+        }),
     },
     HELPERS: {
         // 是否mini显示 description

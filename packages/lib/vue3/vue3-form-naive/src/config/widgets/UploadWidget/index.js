@@ -4,7 +4,6 @@
 
 import { h, ref, getCurrentInstance } from 'vue';
 import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
-import { openNewPage } from '@lljj/vjsf-utils/utils';
 
 // mock
 // https://run.mocky.io/v3/518d7af7-204f-45ab-9628-a6e121dab8ca
@@ -38,12 +37,16 @@ export default {
         const defaultFileList = attrs.fileList || (() => {
             if (isArrayValue) {
                 return curModelValue.map((item, index) => ({
+                    id: String(index),
+                    status: 'finished',
                     name: `已上传文件（${index + 1}）`,
                     url: item
                 }));
             }
             if (curModelValue) {
                 return [{
+                    id: '1',
+                    status: 'finished',
                     name: '已上传文件',
                     url: curModelValue
                 }];
@@ -55,10 +58,16 @@ export default {
         // fileList
         const fileListRef = ref(defaultFileList);
 
-        const getUrl = fileItem => (
-            fileItem
-            && ((fileItem.response && props.responseFileUrl(fileItem.response)) || fileItem.url))
-            || '';
+        const getUrl = (eventTarget) => {
+            let resJson = {};
+            try {
+                resJson = JSON.parse(eventTarget.response);
+            } catch (e) {
+                // nothing..
+            }
+
+            return ((props.responseFileUrl(resJson)) || resJson.url) || '';
+        };
 
         const emitValue = (emitFileList) => {
             // v-model
@@ -66,13 +75,16 @@ export default {
 
             if (isArrayValue) {
                 curValue = emitFileList.length ? emitFileList.reduce((pre, item) => {
-                    const url = getUrl(item);
+                    const url = item.url;
                     if (url) pre.push(url);
                     return pre;
                 }, []) : [];
             } else {
                 const fileItem = emitFileList[emitFileList.length - 1];
-                curValue = getUrl(fileItem);
+                const url = fileItem && fileItem.url;
+                if (url) {
+                    curValue = url;
+                }
             }
 
             emit('update:modelValue', curValue);
@@ -81,43 +93,37 @@ export default {
         const globalProperties = getCurrentInstance().appContext.config.globalProperties;
 
         return () => {
+            // eslint-disable-next-line no-unused-vars
+            const { 'onUpdate:modelValue': onUpdate, ...otherAttrs } = attrs;
             const data = {
                 fileList: fileListRef.value,
-                'on-exceed': () => {
-                    if (globalProperties.$message) {
-                        globalProperties.$message.warning('超出文件上传数');
-                    }
-                },
                 'on-error': () => {
                     if (globalProperties.$message) {
                         globalProperties.$message.error('文件上传失败');
                     }
                 },
-                'on-preview': (file) => {
-                    const url = getUrl(file);
-                    if (url) openNewPage(url);
-                },
-                ...attrs,
-                'on-remove': (file, fileList) => {
+                ...otherAttrs,
+                'onUpdate:fileList': (fileList) => {
                     emitValue(fileList);
-                    if (attrs['on-remove']) {
-                        attrs['on-remove'](file, fileList);
-                    }
                 },
-                'on-success': (response, file, fileList) => {
-                    emitValue(fileList);
+                'on-change': ({ fileList }) => {
+                    fileListRef.value = fileList;
+                },
+                'on-finish': ({
+                    file,
+                    event
+                }) => {
                     // 用户注册的 onSuccess
-                    if (attrs['on-success']) {
-                        attrs['on-success'](response, file, fileList);
-                    }
+                    file.url = getUrl(event.target);
+                    return file;
                 }
             };
 
-            if (!isArrayValue) data.limit = 1;
+            if (!isArrayValue) data.max = 1;
 
             const childVNode = {
                 default: () => h(
-                    resolveComponent('el-button'),
+                    resolveComponent('n-button'),
                     {
                         type: 'primary'
                     },
@@ -127,8 +133,7 @@ export default {
                 ),
                 ...(props.slots || {}),
             };
-
-            return h(resolveComponent('el-upload'), data, childVNode);
+            return h(resolveComponent('n-upload'), data, childVNode);
         };
     }
 };

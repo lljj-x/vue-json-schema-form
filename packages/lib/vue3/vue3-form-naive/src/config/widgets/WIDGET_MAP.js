@@ -3,8 +3,6 @@
  */
 
 // widget 组件对应elementUi 配置表
-
-import { modelValueComponent } from '@lljj/vjsf-utils/vue3Utils';
 import widgetComponents from './index';
 
 const {
@@ -13,18 +11,22 @@ const {
     SelectWidget,
     TimePickerWidget,
     DatePickerWidget,
-    DateTimePickerWidget
+    DateTimePickerWidget,
+    InputWidget,
+    SwitchWidget,
+    InputNumberWidget,
+    ColorWidget
 } = widgetComponents;
 
 export default {
     types: {
-        boolean: modelValueComponent('n-switch'),
-        string: modelValueComponent('n-input'),
-        number: modelValueComponent('n-input-number'),
-        integer: modelValueComponent('n-input-number'),
+        boolean: SwitchWidget,
+        string: InputWidget,
+        number: InputNumberWidget,
+        integer: InputNumberWidget,
     },
     formats: {
-        color: modelValueComponent('n-color-picker'),
+        color: ColorWidget,
         time: TimePickerWidget, // 20:20:39+00:00
         date: DatePickerWidget, // 2018-11-13
         'date-time': DateTimePickerWidget, // 2018-11-13T20:20:39+00:00

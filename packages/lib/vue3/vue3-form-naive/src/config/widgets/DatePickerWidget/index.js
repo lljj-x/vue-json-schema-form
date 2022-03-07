@@ -1,50 +1,34 @@
 /**
- * Created by Liu.Jun on 2020/7/22 13:21.
+ * Created by Liu.Jun on 2021/2/23 10:21 下午.
  */
 
 import { h } from 'vue';
 import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
 
-import { parseDateString } from '@lljj/vjsf-utils/utils';
-
-function isEmptyValue(value) {
-    return value === null || value === '' || (Array.isArray(value) && value.every(item => item === ''));
-}
-
-const formatDateStr = (dateString) => {
-    const {
-        year,
-        month,
-        day
-    } = parseDateString(dateString, false);
-    return `${year}-${month}-${day}`;
-};
-
-export default {
+const baseComponent = {
     name: 'DatePickerWidget',
     inheritAttrs: false,
-    setup(props, { attrs, slots }) {
+    setup(props, { attrs }) {
         return () => {
-            const { isNumberValue, isRange, ...otherProps } = attrs || {};
-            return h(resolveComponent('el-date-picker'), {
+            const {
+                isNumberValue, isRange, modelValue, 'onUpdate:modelValue': onUpdateFormattedValue, ...otherAttrs
+            } = attrs;
+            const trueValue = isRange ? (modelValue && modelValue.length === 0 ? null : modelValue) : modelValue;
+
+            return h(resolveComponent('n-date-picker'), {
                 type: isRange ? 'daterange' : 'date',
-                ...otherProps,
-                'onUpdate:modelValue': (val) => {
-                    let trueVal;
-                    if (isRange) {
-                        trueVal = isEmptyValue(val)
-                            ? []
-                            : val.map(
-                                item => (isNumberValue ? (new Date(item)).valueOf() : formatDateStr(item, isNumberValue))
-                            );
-                    } else {
-                        trueVal = isEmptyValue(val)
-                            ? undefined
-                            : isNumberValue ? (new Date(val)).valueOf() : formatDateStr(val, isNumberValue);
-                    }
-                    attrs['onUpdate:modelValue'].apply(attrs, [trueVal]);
+                ...otherAttrs,
+                ...isNumberValue ? {
+                    value: trueValue,
+                    onUpdateValue: onUpdateFormattedValue
+                } : {
+                    valueFormat: isNumberValue ? 'T' : 'yyyy-MM-dd',
+                    formattedValue: trueValue,
+                    onUpdateFormattedValue,
                 }
-            }, slots);
+            });
         };
     }
 };
+
+export default baseComponent;

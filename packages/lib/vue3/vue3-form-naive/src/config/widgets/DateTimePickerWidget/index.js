@@ -1,33 +1,34 @@
 /**
- * Created by Liu.Jun on 2020/7/22 13:21.
+ * Created by Liu.Jun on 2021/2/23 10:21 下午.
  */
 
 import { h } from 'vue';
 import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
 
-export default {
-    name: 'DateTimePickerWidget',
+const baseComponent = {
+    name: 'DatePickerWidget',
     inheritAttrs: false,
-    setup(props, { attrs, slots }) {
-        const trueValue = (isRange, isNumberValue, val) => {
-            if (isRange) {
-                return (val === null) ? [] : val.map(item => (new Date(item))[isNumberValue ? 'valueOf' : 'toISOString']());
-            }
-            return (val === null) ? undefined : (new Date(val))[isNumberValue ? 'valueOf' : 'toISOString']();
-        };
-
+    setup(props, { attrs }) {
         return () => {
-            const { isNumberValue, isRange, ...otherProps } = attrs || {};
-            return h(resolveComponent('el-date-picker'), {
+            const {
+                isNumberValue, isRange, modelValue, 'onUpdate:modelValue': onUpdateFormattedValue, ...otherAttrs
+            } = attrs;
+            const trueValue = isRange ? (modelValue && modelValue.length === 0 ? null : modelValue) : modelValue;
+
+            return h(resolveComponent('n-date-picker'), {
                 type: isRange ? 'datetimerange' : 'datetime',
-                ...otherProps,
-
-                'onUpdate:modelValue': (val) => {
-                    const trueVal = trueValue(isRange, isNumberValue, val);
-
-                    attrs['onUpdate:modelValue'].apply(attrs, [trueVal]);
+                ...otherAttrs,
+                ...isNumberValue ? {
+                    value: trueValue,
+                    onUpdateValue: onUpdateFormattedValue
+                } : {
+                    valueFormat: isNumberValue ? 'T' : 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'',
+                    formattedValue: trueValue,
+                    onUpdateFormattedValue,
                 }
-            }, slots);
+            });
         };
     }
 };
+
+export default baseComponent;
