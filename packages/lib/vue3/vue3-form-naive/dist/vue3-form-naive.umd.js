@@ -251,10 +251,6 @@
     return path;
   }
 
-  /**
-   * Created by Liu.Jun on 2020/4/25 14:45.
-   */
-
   var pathSeparator$1 = '.'; // 删除当前path值
 
   function deletePathVal(vueData, name) {
@@ -277,13 +273,38 @@
   function resolveComponent(component) {
     if (typeof component === 'string') return Vue.resolveComponent(component);
     return component;
-  }
+  } // 转换antdv、naive等非moduleValue的v-model组件
+
+  var modelValueComponent = function modelValueComponent(component) {
+    var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+        _ref$model = _ref.model,
+        model = _ref$model === void 0 ? 'value' : _ref$model;
+
+    return Vue.defineComponent({
+      inheritAttrs: false,
+      setup: function setup(props, _ref2) {
+        var attrs = _ref2.attrs,
+            slots = _ref2.slots;
+        return function () {
+          var _objectSpread2$1;
+
+          var value = attrs.modelValue,
+              onUpdateValue = attrs['onUpdate:modelValue'],
+              otherAttrs = _objectWithoutProperties(attrs, ["modelValue", "onUpdate:modelValue"]); // eg: 'a-input'
+
+
+          return Vue.h(resolveComponent(component), _objectSpread2((_objectSpread2$1 = {}, _defineProperty(_objectSpread2$1, model, value), _defineProperty(_objectSpread2$1, "onUpdate:".concat(model), onUpdateValue), _objectSpread2$1), otherAttrs), slots);
+        };
+      }
+    });
+  };
 
   var vue3Utils = /*#__PURE__*/Object.freeze({
     __proto__: null,
     deletePathVal: deletePathVal,
     setPathVal: setPathVal,
     resolveComponent: resolveComponent,
+    modelValueComponent: modelValueComponent,
     nodePath2ClassName: nodePath2ClassName,
     isRootNodePath: isRootNodePath,
     computedCurPath: computedCurPath,
@@ -523,41 +544,6 @@
     }, {});
   }
 
-  var f = function f(s) {
-    return "0".concat(s).substr(-2);
-  };
-
-  function parseDateString(dateString) {
-    var includeTime = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-    if (!dateString) {
-      return {
-        year: -1,
-        month: -1,
-        day: -1,
-        hour: includeTime ? -1 : 0,
-        minute: includeTime ? -1 : 0,
-        second: includeTime ? -1 : 0
-      };
-    }
-
-    var date = new Date(dateString);
-
-    if (Number.isNaN(date.getTime())) {
-      throw new Error("Unable to parse date ".concat(dateString));
-    }
-
-    return {
-      year: date.getFullYear(),
-      month: f(date.getMonth() + 1),
-      // oh you, javascript.
-      day: f(date.getDate()),
-      hour: f(includeTime ? date.getHours() : 0),
-      minute: f(includeTime ? date.getMinutes() : 0),
-      second: f(includeTime ? date.getSeconds() : 0)
-    };
-  }
-
   function lowerCase(str) {
     if (undefined === str) return str;
     return String(str).replace(/^./, function (s) {
@@ -573,17 +559,6 @@
   function scm(a, b) {
     return a * b / gcd(a, b);
   } // 打开新页面
-
-  function openNewPage(url) {
-    var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '_blank';
-    var a = document.createElement('a');
-    a.style.display = 'none';
-    a.target = target;
-    a.href = url;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
 
   // $ref 引用
   function getPathVal$1(obj, pathStr) {
@@ -9444,7 +9419,7 @@
     }
   }
 
-  var css_248z = ".genFromComponent{font-size:14px;line-height:1;word-wrap:break-word;word-break:break-word;padding:0;margin:0}.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px}.genFromComponent .genFormIcon{width:12px;height:12px;vertical-align:top}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .fieldGroupWrap+.fieldGroupWrap .fieldGroupWrap_title{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{padding:0;margin-top:0;margin-bottom:2px;font-size:12px;line-height:20px;color:#999;text-align:left}.genFromComponent .formItemErrorBox{margin:0 auto;color:#ff5757;padding-top:2px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:16px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .genFormIcon-qs{fill:#606266;vertical-align:middle;display:inline-block;width:16px;height:16px;margin-left:2px;margin-top:-2px;cursor:pointer}.genFromComponent .genFormItemRequired:before{content:\"*\";color:#f56c6c;margin-right:4px}.genFromComponent .appendCombining_box{margin-bottom:22px}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .appendCombining_box{padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .validateWidget{margin-bottom:0!important;width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important;padding:0!important}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField:not(.genFormItem){margin-bottom:22px}.genFromComponent .arrayField:not(.genFormItem) .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 12px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{padding-top:15px;-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_index,.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px}.genFromComponent .arrayListItem_index{top:6px;line-height:18px;height:18px;padding:0 6px;background-color:rgba(0,0,0,.28);color:#fff;font-size:12px;border-radius:2px}.genFromComponent .arrayListItem_operateTool{width:75px;right:9px;top:-1px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;padding:6px;margin:0;font-size:0;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}.genFromComponent .formFooter_item{text-align:right;border-top:1px solid rgba(0,0,0,.08);padding-top:10px}.genFromComponent.formInlineFooter>.fieldGroupWrap{display:inline-block;margin-right:10px}.genFromComponent.formInline .validateWidget{margin-right:0}.genFromComponent.formInline .formFooter_item{border-top:none;padding-top:0}.layoutColumn .layoutColumn_w100{width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important}.layoutColumn .fieldGroupWrap_box{width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-ms-flex-line-pack:start;align-content:flex-start}.layoutColumn .fieldGroupWrap_box>div{width:100%;-ms-flex-preferred-size:100%;flex-basis:100%}.layoutColumn .fieldGroupWrap_box>.genFormItem{-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;-ms-flex-negative:0;flex-shrink:0;-webkit-box-sizing:border-box;box-sizing:border-box;padding-right:10px}.layoutColumn.layoutColumn-1 .fieldGroupWrap_box>.genFormItem{padding-right:0}.layoutColumn.layoutColumn-2 .fieldGroupWrap_box>.genFormItem{width:50%;-ms-flex-preferred-size:50%;flex-basis:50%}.layoutColumn.layoutColumn-3 .fieldGroupWrap_box>.genFormItem{width:33.333%;-ms-flex-preferred-size:33.333%;flex-basis:33.333%}";
+  var css_248z = ".genFromComponent{font-size:14px;line-height:1;word-wrap:break-word;word-break:break-word;padding:0;margin:0}.genFromComponent a,.genFromComponent h1,.genFromComponent h2,.genFromComponent h3,.genFromComponent li,.genFromComponent p,.genFromComponent ul{font-size:14px}.genFromComponent .genFormIcon{width:12px;height:12px;vertical-align:top}.genFromComponent .genFormBtn{display:inline-block;line-height:1;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #dcdfe6;color:#606266;-webkit-appearance:none;text-align:center;-webkit-box-sizing:border-box;box-sizing:border-box;outline:none;margin:0;-webkit-transition:.1s;transition:.1s;font-weight:500;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;padding:12px 20px;font-size:14px;border-radius:4px}.genFromComponent .genFormBtn.is-plain:focus,.genFromComponent .genFormBtn.is-plain:hover{background:#fff;border-color:#409eff;color:#409eff}.genFromComponent .hiddenWidget{display:none}.genFromComponent .fieldGroupWrap+.fieldGroupWrap .fieldGroupWrap_title{margin-top:20px}.genFromComponent .fieldGroupWrap_title{position:relative;display:block;width:100%;line-height:26px;margin-bottom:8px;font-size:15px;font-weight:700;border:0}.genFromComponent .fieldGroupWrap_des{font-size:12px;line-height:20px;margin-bottom:10px;color:#999}.genFromComponent .genFromWidget_des{padding:0;margin-top:0;margin-bottom:2px;font-size:12px;line-height:20px;color:#999;text-align:left;width:100%;-ms-flex-negative:0;flex-shrink:0}.genFromComponent .formItemErrorBox{margin:0 auto;color:#ff5757;padding-top:2px;position:absolute;top:100%;left:0;display:-webkit-box!important;line-height:16px;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:1;white-space:normal;font-size:12px;text-align:left}.genFromComponent .genFormIcon-qs{fill:#606266;vertical-align:middle;display:inline-block;width:16px;height:16px;margin-left:2px;margin-top:-2px;cursor:pointer}.genFromComponent .genFormItemRequired:before{content:\"*\";color:#f56c6c;margin-right:4px}.genFromComponent .appendCombining_box{margin-bottom:22px}.genFromComponent .appendCombining_box .appendCombining_box{margin-bottom:10px}.genFromComponent .appendCombining_box{padding:10px;background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .validateWidget{margin-bottom:0!important;width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important;padding:0!important}.genFromComponent .validateWidget .formItemErrorBox{padding:5px 0;position:relative}.genFromComponent .arrayField:not(.genFormItem){margin-bottom:22px}.genFromComponent .arrayField:not(.genFormItem) .arrayField{margin-bottom:10px}.genFromComponent .arrayOrderList{background:hsla(0,0%,94.9%,.8);-webkit-box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1);box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 0 3px 1px rgba(0,0,0,.1)}.genFromComponent .arrayOrderList_item{position:relative;padding:25px 10px 12px;border-radius:2px;margin-bottom:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.genFromComponent .arrayOrderList_bottomAddBtn{text-align:right;padding:15px 10px;margin-bottom:10px}.genFromComponent .bottomAddBtn{width:40%;min-width:10px;max-width:180px}.genFromComponent .arrayListItem_content{padding-top:15px;-webkit-box-flex:1;-ms-flex:1;flex:1;margin:0 auto;-webkit-box-shadow:0 -1px 0 0 rgba(0,0,0,.05);box-shadow:0 -1px 0 0 rgba(0,0,0,.05)}.genFromComponent .arrayListItem_index,.genFromComponent .arrayListItem_operateTool{position:absolute;height:25px}.genFromComponent .arrayListItem_index{top:6px;line-height:18px;height:18px;padding:0 6px;background-color:rgba(0,0,0,.28);color:#fff;font-size:12px;border-radius:2px}.genFromComponent .arrayListItem_operateTool{width:75px;right:9px;top:-1px;text-align:right;font-size:0}.genFromComponent .arrayListItem_btn{vertical-align:top;display:inline-block;padding:6px;margin:0;font-size:0;-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;border:none;cursor:pointer;text-align:center;background:transparent;color:#666}.genFromComponent .arrayListItem_btn:hover{opacity:.6}.genFromComponent .arrayListItem_btn[disabled]{color:#999;opacity:.3!important;cursor:not-allowed}.genFromComponent .arrayListItem_orderBtn-bottom,.genFromComponent .arrayListItem_orderBtn-top{background-color:#f0f9eb}.genFromComponent .arrayListItem_btn-delete{background-color:#fef0f0}.genFromComponent .formFooter_item{text-align:right;border-top:1px solid rgba(0,0,0,.08);padding-top:10px}.genFromComponent.formInlineFooter>.fieldGroupWrap{display:inline-block;margin-right:10px}.genFromComponent.formInline .validateWidget{margin-right:0}.genFromComponent.formInline .formFooter_item{border-top:none;padding-top:0}.genFromWidget_des_mini{font-size:14px;line-height:1.5715}.layoutColumn .layoutColumn_w100{width:100%!important;-ms-flex-preferred-size:100%!important;flex-basis:100%!important}.layoutColumn .fieldGroupWrap_box{width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-ms-flex-line-pack:start;align-content:flex-start}.layoutColumn .fieldGroupWrap_box>div{width:100%;-ms-flex-preferred-size:100%;flex-basis:100%}.layoutColumn .fieldGroupWrap_box>.genFormItem{-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;-ms-flex-negative:0;flex-shrink:0;-webkit-box-sizing:border-box;box-sizing:border-box;padding-right:10px}.layoutColumn.layoutColumn-1 .fieldGroupWrap_box>.genFormItem{padding-right:0}.layoutColumn.layoutColumn-2 .fieldGroupWrap_box>.genFormItem{width:50%;-ms-flex-preferred-size:50%;flex-basis:50%}.layoutColumn.layoutColumn-3 .fieldGroupWrap_box>.genFormItem{width:33.333%;-ms-flex-preferred-size:33.333%;flex-basis:33.333%}";
   styleInject(css_248z);
 
   /**
@@ -10030,7 +10005,8 @@
         var descriptionVNode = props.description ? Vue.h('div', {
           innerHTML: props.description,
           class: {
-            genFromWidget_des: true
+            genFromWidget_des: true,
+            genFromWidget_des_mini: miniDesModel
           }
         }) : null;
         var COMPONENT_MAP = props.globalOptions.COMPONENT_MAP;
@@ -11556,7 +11532,10 @@
     return Form;
   }
 
-  var script$6 = {
+  /**
+   * Created by Liu.Jun on 2021/2/23 10:21 下午.
+   */
+  var baseComponent = {
     name: 'CheckboxesWidget',
     props: {
       enumOptions: {
@@ -11565,48 +11544,41 @@
         },
         type: [Array]
       }
+    },
+    setup: function setup(props, _ref) {
+      var attrs = _ref.attrs;
+      return function () {
+        return Vue.h(resolveComponent('n-checkbox-group'), attrs, {
+          default: function _default() {
+            return Vue.h(resolveComponent('n-space'), {
+              itemStyle: 'display: flex'
+            }, {
+              default: function _default() {
+                return props.enumOptions.map(function (item, index) {
+                  return Vue.h(resolveComponent('n-checkbox'), {
+                    key: index,
+                    value: item.value
+                  }, {
+                    default: function _default() {
+                      return item.label;
+                    }
+                  });
+                });
+              }
+            });
+          }
+        });
+      };
     }
   };
+  var moduleValeComponent = modelValueComponent(baseComponent, {
+    model: 'value'
+  });
 
-  function render$6(_ctx, _cache, $props, $setup, $data, $options) {
-    var _component_el_checkbox = Vue.resolveComponent("el-checkbox");
-
-    var _component_el_checkbox_group = Vue.resolveComponent("el-checkbox-group");
-
-    return Vue.openBlock(), Vue.createBlock(_component_el_checkbox_group, _ctx.$attrs, {
-      default: Vue.withCtx(function () {
-        return [(Vue.openBlock(true), Vue.createBlock(Vue.Fragment, null, Vue.renderList($props.enumOptions, function (item, index) {
-          return Vue.openBlock(), Vue.createBlock(_component_el_checkbox, {
-            key: index,
-            label: item.value
-          }, {
-            default: Vue.withCtx(function () {
-              return [Vue.createTextVNode(Vue.toDisplayString(item.label), 1
-              /* TEXT */
-              )];
-            }),
-            _: 2
-            /* DYNAMIC */
-
-          }, 1032
-          /* PROPS, DYNAMIC_SLOTS */
-          , ["label"]);
-        }), 128
-        /* KEYED_FRAGMENT */
-        ))];
-      }),
-      _: 1
-      /* STABLE */
-
-    }, 16
-    /* FULL_PROPS */
-    );
-  }
-
-  script$6.render = render$6;
-  script$6.__file = "src/config/widgets/CheckboxesWidget/index.vue";
-
-  var script$7 = {
+  /**
+   * Created by Liu.Jun on 2021/2/23 10:21 下午.
+   */
+  var baseComponent$1 = {
     name: 'RadioWidget',
     props: {
       enumOptions: {
@@ -11615,48 +11587,32 @@
         },
         type: [Array]
       }
+    },
+    setup: function setup(props, _ref) {
+      var attrs = _ref.attrs;
+      return function () {
+        return Vue.h(resolveComponent('n-radio-group'), attrs, {
+          default: function _default() {
+            return props.enumOptions.map(function (item, index) {
+              return Vue.h(resolveComponent('n-radio'), {
+                key: index,
+                value: item.value
+              }, {
+                default: function _default() {
+                  return item.label;
+                }
+              });
+            });
+          }
+        });
+      };
     }
   };
+  var moduleValeComponent$1 = modelValueComponent(baseComponent$1, {
+    model: 'value'
+  });
 
-  function render$7(_ctx, _cache, $props, $setup, $data, $options) {
-    var _component_el_radio = Vue.resolveComponent("el-radio");
-
-    var _component_el_radio_group = Vue.resolveComponent("el-radio-group");
-
-    return Vue.openBlock(), Vue.createBlock(_component_el_radio_group, _ctx.$attrs, {
-      default: Vue.withCtx(function () {
-        return [(Vue.openBlock(true), Vue.createBlock(Vue.Fragment, null, Vue.renderList($props.enumOptions, function (item, index) {
-          return Vue.openBlock(), Vue.createBlock(_component_el_radio, {
-            key: index,
-            label: item.value
-          }, {
-            default: Vue.withCtx(function () {
-              return [Vue.createTextVNode(Vue.toDisplayString(item.label), 1
-              /* TEXT */
-              )];
-            }),
-            _: 2
-            /* DYNAMIC */
-
-          }, 1032
-          /* PROPS, DYNAMIC_SLOTS */
-          , ["label"]);
-        }), 128
-        /* KEYED_FRAGMENT */
-        ))];
-      }),
-      _: 1
-      /* STABLE */
-
-    }, 16
-    /* FULL_PROPS */
-    );
-  }
-
-  script$7.render = render$7;
-  script$7.__file = "src/config/widgets/RadioWidget/index.vue";
-
-  var script$8 = {
+  var baseComponent$2 = {
     name: 'SelectWidget',
     props: {
       enumOptions: {
@@ -11665,191 +11621,89 @@
         },
         type: [Array]
       }
+    },
+    setup: function setup(props, _ref) {
+      var attrs = _ref.attrs;
+      return function () {
+        return Vue.h(resolveComponent('n-select'), _objectSpread2({
+          options: props.enumOptions
+        }, attrs));
+      };
     }
   };
+  var moduleValeComponent$2 = modelValueComponent(baseComponent$2, {
+    model: 'value'
+  });
 
-  function render$8(_ctx, _cache, $props, $setup, $data, $options) {
-    var _component_el_option = Vue.resolveComponent("el-option");
-
-    var _component_el_select = Vue.resolveComponent("el-select");
-
-    return Vue.openBlock(), Vue.createBlock(_component_el_select, _ctx.$attrs, {
-      default: Vue.withCtx(function () {
-        return [(Vue.openBlock(true), Vue.createBlock(Vue.Fragment, null, Vue.renderList($props.enumOptions, function (item, index) {
-          return Vue.openBlock(), Vue.createBlock(_component_el_option, {
-            key: index,
-            label: item.label,
-            value: item.value
-          }, null, 8
-          /* PROPS */
-          , ["label", "value"]);
-        }), 128
-        /* KEYED_FRAGMENT */
-        ))];
-      }),
-      _: 1
-      /* STABLE */
-
-    }, 16
-    /* FULL_PROPS */
-    );
-  }
-
-  script$8.render = render$8;
-  script$8.__file = "src/config/widgets/SelectWidget/index.vue";
-
-  function isEmptyValue(value) {
-    return value === null || value === '' || Array.isArray(value) && value.every(function (item) {
-      return item === '';
-    });
-  }
-
-  var formatDateStr = function formatDateStr(dateString) {
-    var _parseDateString = parseDateString(dateString, false),
-        year = _parseDateString.year,
-        month = _parseDateString.month,
-        day = _parseDateString.day;
-
-    return "".concat(year, "-").concat(month, "-").concat(day);
-  };
-
-  var DatePickerWidget = {
+  var baseComponent$3 = {
     name: 'DatePickerWidget',
     inheritAttrs: false,
     setup: function setup(props, _ref) {
-      var attrs = _ref.attrs,
-          slots = _ref.slots;
+      var attrs = _ref.attrs;
       return function () {
-        var _ref2 = attrs || {},
-            isNumberValue = _ref2.isNumberValue,
-            isRange = _ref2.isRange,
-            otherProps = _objectWithoutProperties(_ref2, ["isNumberValue", "isRange"]);
+        var isNumberValue = attrs.isNumberValue,
+            isRange = attrs.isRange,
+            modelValue = attrs.modelValue,
+            onUpdateFormattedValue = attrs['onUpdate:modelValue'],
+            otherAttrs = _objectWithoutProperties(attrs, ["isNumberValue", "isRange", "modelValue", "onUpdate:modelValue"]);
 
-        return Vue.h(resolveComponent('el-date-picker'), _objectSpread2(_objectSpread2({
+        var trueValue = isRange ? modelValue && modelValue.length === 0 ? null : modelValue : modelValue;
+        return Vue.h(resolveComponent('n-date-picker'), _objectSpread2(_objectSpread2({
           type: isRange ? 'daterange' : 'date'
-        }, otherProps), {}, {
-          'onUpdate:modelValue': function onUpdateModelValue(val) {
-            var trueVal;
-
-            if (isRange) {
-              trueVal = isEmptyValue(val) ? [] : val.map(function (item) {
-                return isNumberValue ? new Date(item).valueOf() : formatDateStr(item);
-              });
-            } else {
-              trueVal = isEmptyValue(val) ? undefined : isNumberValue ? new Date(val).valueOf() : formatDateStr(val);
-            }
-
-            attrs['onUpdate:modelValue'].apply(attrs, [trueVal]);
-          }
-        }), slots);
+        }, otherAttrs), isNumberValue ? {
+          value: trueValue,
+          onUpdateValue: onUpdateFormattedValue
+        } : {
+          valueFormat: isNumberValue ? 'T' : 'yyyy-MM-dd',
+          formattedValue: trueValue,
+          onUpdateFormattedValue: onUpdateFormattedValue
+        }));
       };
     }
   };
 
-  var DateTimePickerWidget = {
-    name: 'DateTimePickerWidget',
+  var baseComponent$4 = {
+    name: 'DatePickerWidget',
     inheritAttrs: false,
     setup: function setup(props, _ref) {
-      var attrs = _ref.attrs,
-          slots = _ref.slots;
-
-      var trueValue = function trueValue(isRange, isNumberValue, val) {
-        if (isRange) {
-          return val === null ? [] : val.map(function (item) {
-            return new Date(item)[isNumberValue ? 'valueOf' : 'toISOString']();
-          });
-        }
-
-        return val === null ? undefined : new Date(val)[isNumberValue ? 'valueOf' : 'toISOString']();
-      };
-
+      var attrs = _ref.attrs;
       return function () {
-        var _ref2 = attrs || {},
-            isNumberValue = _ref2.isNumberValue,
-            isRange = _ref2.isRange,
-            otherProps = _objectWithoutProperties(_ref2, ["isNumberValue", "isRange"]);
+        var isNumberValue = attrs.isNumberValue,
+            isRange = attrs.isRange,
+            modelValue = attrs.modelValue,
+            onUpdateFormattedValue = attrs['onUpdate:modelValue'],
+            otherAttrs = _objectWithoutProperties(attrs, ["isNumberValue", "isRange", "modelValue", "onUpdate:modelValue"]);
 
-        return Vue.h(resolveComponent('el-date-picker'), _objectSpread2(_objectSpread2({
+        var trueValue = isRange ? modelValue && modelValue.length === 0 ? null : modelValue : modelValue;
+        return Vue.h(resolveComponent('n-date-picker'), _objectSpread2(_objectSpread2({
           type: isRange ? 'datetimerange' : 'datetime'
-        }, otherProps), {}, {
-          'onUpdate:modelValue': function onUpdateModelValue(val) {
-            var trueVal = trueValue(isRange, isNumberValue, val);
-            attrs['onUpdate:modelValue'].apply(attrs, [trueVal]);
-          }
-        }), slots);
+        }, otherAttrs), isNumberValue ? {
+          value: trueValue,
+          onUpdateValue: onUpdateFormattedValue
+        } : {
+          valueFormat: isNumberValue ? 'T' : 'yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'',
+          formattedValue: trueValue,
+          onUpdateFormattedValue: onUpdateFormattedValue
+        }));
       };
     }
   };
 
-  var formatTimeStr = function formatTimeStr(dateString) {
-    var _parseDateString = parseDateString(dateString, true),
-        hour = _parseDateString.hour,
-        minute = _parseDateString.minute,
-        second = _parseDateString.second;
-
-    return "".concat(hour, ":").concat(minute, ":").concat(second);
-  };
-
-  var formatTimeObj = function formatTimeObj(timeStr) {
-    if (timeStr instanceof Date) {
-      return timeStr;
-    } // 取当前时间 改时分秒
-
-
-    if (typeof timeStr === 'string') {
-      var _timeStr$split = timeStr.split(':'),
-          _timeStr$split2 = _slicedToArray(_timeStr$split, 3),
-          hours = _timeStr$split2[0],
-          minutes = _timeStr$split2[1],
-          seconds = _timeStr$split2[2];
-
-      var curTime = new Date();
-      curTime.setHours(+hours);
-      curTime.setMinutes(+minutes);
-      curTime.setSeconds(+seconds);
-      return curTime;
-    } // 其它格式清空
-
-
-    return undefined;
-  };
-
-  var TimePickerWidget = {
+  var baseComponent$5 = {
     name: 'TimePickerWidget',
     inheritAttrs: false,
-    props: {
-      modelValue: {
-        default: null,
-        type: null
-      }
-    },
     setup: function setup(props, _ref) {
-      var attrs = _ref.attrs,
-          slots = _ref.slots;
-      // hack element plus timePicker 变为object类型
-      var originValue = Vue.ref(formatTimeObj(props.modelValue)); // 不需要响应式
-
-      var formatValue = props.modelValue; // 如果外部修改了值
-
-      Vue.watch(function () {
-        return props.modelValue;
-      }, function (newVal) {
-        if (newVal !== formatValue) {
-          // 更新内部值
-          originValue.value = formatTimeObj(newVal);
-        }
-      });
+      var attrs = _ref.attrs;
       return function () {
-        return Vue.h(resolveComponent('el-time-picker'), _objectSpread2(_objectSpread2({}, attrs), {}, {
-          modelValue: originValue.value,
-          'onUpdate:modelValue': function onUpdateModelValue(val) {
-            originValue.value = val; // 更新并缓存内部 timeStr
+        var modelValue = attrs.modelValue,
+            onUpdateFormattedValue = attrs['onUpdate:modelValue'],
+            otherAttrs = _objectWithoutProperties(attrs, ["modelValue", "onUpdate:modelValue"]);
 
-            formatValue = val === null ? undefined : formatTimeStr(val); // 更新外部的值
-
-            attrs['onUpdate:modelValue'].apply(attrs, [formatValue]);
-          }
-        }), slots);
+        return Vue.h(resolveComponent('n-time-picker'), _objectSpread2(_objectSpread2({}, otherAttrs), {}, {
+          valueFormat: 'HH:mm:ss',
+          formattedValue: modelValue,
+          onUpdateFormattedValue: onUpdateFormattedValue
+        }));
       };
     }
   };
@@ -11892,6 +11746,8 @@
         if (isArrayValue) {
           return curModelValue.map(function (item, index) {
             return {
+              id: String(index),
+              status: 'finished',
               name: "\u5DF2\u4E0A\u4F20\u6587\u4EF6\uFF08".concat(index + 1, "\uFF09"),
               url: item
             };
@@ -11900,6 +11756,8 @@
 
         if (curModelValue) {
           return [{
+            id: '1',
+            status: 'finished',
             name: '已上传文件',
             url: curModelValue
           }];
@@ -11911,8 +11769,15 @@
 
       var fileListRef = Vue.ref(defaultFileList);
 
-      var getUrl = function getUrl(fileItem) {
-        return fileItem && (fileItem.response && props.responseFileUrl(fileItem.response) || fileItem.url) || '';
+      var getUrl = function getUrl(eventTarget) {
+        var resJson = {};
+
+        try {
+          resJson = JSON.parse(eventTarget.response);
+        } catch (e) {// nothing..
+        }
+
+        return props.responseFileUrl(resJson) || resJson.url || '';
       };
 
       var emitValue = function emitValue(emitFileList) {
@@ -11921,13 +11786,17 @@
 
         if (isArrayValue) {
           curValue = emitFileList.length ? emitFileList.reduce(function (pre, item) {
-            var url = getUrl(item);
+            var url = item.url;
             if (url) pre.push(url);
             return pre;
           }, []) : [];
         } else {
           var fileItem = emitFileList[emitFileList.length - 1];
-          curValue = getUrl(fileItem);
+          var url = fileItem && fileItem.url;
+
+          if (url) {
+            curValue = url;
+          }
         }
 
         emit('update:modelValue', curValue);
@@ -11935,44 +11804,39 @@
 
       var globalProperties = Vue.getCurrentInstance().appContext.config.globalProperties;
       return function () {
+        // eslint-disable-next-line no-unused-vars
+        attrs['onUpdate:modelValue'];
+            var otherAttrs = _objectWithoutProperties(attrs, ["onUpdate:modelValue"]);
+
         var data = _objectSpread2(_objectSpread2({
           fileList: fileListRef.value,
-          'on-exceed': function onExceed() {
-            if (globalProperties.$message) {
-              globalProperties.$message.warning('超出文件上传数');
-            }
-          },
           'on-error': function onError() {
             if (globalProperties.$message) {
               globalProperties.$message.error('文件上传失败');
             }
-          },
-          'on-preview': function onPreview(file) {
-            var url = getUrl(file);
-            if (url) openNewPage(url);
           }
-        }, attrs), {}, {
-          'on-remove': function onRemove(file, fileList) {
+        }, otherAttrs), {}, {
+          'onUpdate:fileList': function onUpdateFileList(fileList) {
             emitValue(fileList);
-
-            if (attrs['on-remove']) {
-              attrs['on-remove'](file, fileList);
-            }
           },
-          'on-success': function onSuccess(response, file, fileList) {
-            emitValue(fileList); // 用户注册的 onSuccess
-
-            if (attrs['on-success']) {
-              attrs['on-success'](response, file, fileList);
-            }
+          'on-change': function onChange(_ref2) {
+            var fileList = _ref2.fileList;
+            fileListRef.value = fileList;
+          },
+          'on-finish': function onFinish(_ref3) {
+            var file = _ref3.file,
+                event = _ref3.event;
+            // 用户注册的 onSuccess
+            file.url = getUrl(event.target);
+            return file;
           }
         });
 
-        if (!isArrayValue) data.limit = 1;
+        if (!isArrayValue) data.max = 1;
 
         var childVNode = _objectSpread2({
           default: function _default() {
-            return Vue.h(resolveComponent('el-button'), {
+            return Vue.h(resolveComponent('n-button'), {
               type: 'primary'
             }, {
               default: function _default() {
@@ -11982,7 +11846,7 @@
           }
         }, props.slots || {});
 
-        return Vue.h(resolveComponent('el-upload'), data, childVNode);
+        return Vue.h(resolveComponent('n-upload'), data, childVNode);
       };
     }
   };
@@ -11991,13 +11855,21 @@
    * Created by Liu.Jun on 2020/5/17 10:41 下午.
    */
   var widgetComponents = {
-    CheckboxesWidget: script$6,
-    RadioWidget: script$7,
-    SelectWidget: script$8,
-    TimePickerWidget: TimePickerWidget,
-    DatePickerWidget: DatePickerWidget,
-    DateTimePickerWidget: DateTimePickerWidget,
-    UploadWidget: UploadWidget
+    CheckboxesWidget: moduleValeComponent,
+    RadioWidget: moduleValeComponent$1,
+    SelectWidget: moduleValeComponent$2,
+    TimePickerWidget: baseComponent$5,
+    DatePickerWidget: baseComponent$3,
+    DateTimePickerWidget: baseComponent$4,
+    UploadWidget: UploadWidget,
+    InputWidget: modelValueComponent('n-input'),
+    ColorWidget: modelValueComponent('n-color-picker'),
+    TextAreaWidget: modelValueComponent('n-textarea'),
+    InputNumberWidget: modelValueComponent('n-input-number'),
+    AutoCompleteWidget: modelValueComponent('n-auto-complete'),
+    SliderWidget: modelValueComponent('n-slider'),
+    RateWidget: modelValueComponent('n-rate'),
+    SwitchWidget: modelValueComponent('n-switch')
   };
 
   /**
@@ -12006,23 +11878,27 @@
   var CheckboxesWidget = widgetComponents.CheckboxesWidget,
       RadioWidget = widgetComponents.RadioWidget,
       SelectWidget = widgetComponents.SelectWidget,
-      TimePickerWidget$1 = widgetComponents.TimePickerWidget,
-      DatePickerWidget$1 = widgetComponents.DatePickerWidget,
-      DateTimePickerWidget$1 = widgetComponents.DateTimePickerWidget;
+      TimePickerWidget = widgetComponents.TimePickerWidget,
+      DatePickerWidget = widgetComponents.DatePickerWidget,
+      DateTimePickerWidget = widgetComponents.DateTimePickerWidget,
+      InputWidget = widgetComponents.InputWidget,
+      SwitchWidget = widgetComponents.SwitchWidget,
+      InputNumberWidget = widgetComponents.InputNumberWidget,
+      ColorWidget = widgetComponents.ColorWidget;
   var WIDGET_MAP = {
     types: {
-      boolean: 'n-switch',
-      string: 'n-input',
-      number: 'n-input-number',
-      integer: 'n-input-number'
+      boolean: SwitchWidget,
+      string: InputWidget,
+      number: InputNumberWidget,
+      integer: InputNumberWidget
     },
     formats: {
-      color: 'n-color-picker',
-      time: TimePickerWidget$1,
+      color: ColorWidget,
+      time: TimePickerWidget,
       // 20:20:39+00:00
-      date: DatePickerWidget$1,
+      date: DatePickerWidget,
       // 2018-11-13
-      'date-time': DateTimePickerWidget$1 // 2018-11-13T20:20:39+00:00
+      'date-time': DateTimePickerWidget // 2018-11-13T20:20:39+00:00
 
     },
     common: {
@@ -12033,7 +11909,7 @@
     widgetComponents: widgetComponents
   };
 
-  var css_248z$1 = ".genFromComponent.el-form--label-top .el-form-item__label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .el-checkbox,.genFromComponent .el-color-picker{vertical-align:top}";
+  var css_248z$1 = ".genFromComponent .n-form-item-blank{-ms-flex-wrap:wrap;flex-wrap:wrap}.genFromComponent .n-form-item.n-form-item--top-labelled{grid-template-rows:none}.genFromComponent .formFooter_item .n-form-item-blank{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end}.genFromComponent .n-form-item-feedback--error .n-form-item-feedback__line{display:-webkit-box!important;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;text-align:left;line-height:1.2;font-size:12px}.genFromComponent .validateWidget .n-form-item-blank,.genFromComponent .validateWidget .n-form-item-feedback-wrapper{min-height:auto}";
   styleInject(css_248z$1);
 
   var globalOptions = {
@@ -12044,28 +11920,93 @@
         setup: function setup(props, _ref) {
           var attrs = _ref.attrs,
               slots = _ref.slots;
+          // 处理 labelPosition 参数和 label-placement 之间的关系
+          var labelPositionMap = {
+            top: {
+              labelAlign: 'left',
+              labelPlacement: 'top'
+            },
+            left: {
+              labelAlign: 'left',
+              labelPlacement: 'left'
+            },
+            right: {
+              labelAlign: 'right',
+              labelPlacement: 'left'
+            }
+          };
           var formRef = Vue.ref(null);
 
           if (attrs.setFormRef) {
             Vue.onMounted(function () {
+              // form组件实例上重置一个 validate 方法
+              formRef.value.$$validate = function (callBack) {
+                formRef.value.validate(function (errors) {
+                  if (errors) {
+                    return callBack(false, errors);
+                  }
+
+                  return callBack(true);
+                });
+              };
+
               attrs.setFormRef(formRef.value);
             });
           }
 
           return function () {
-            // eslint-disable-next-line no-unused-vars
             attrs.setFormRef;
-                var otherAttrs = _objectWithoutProperties(attrs, ["setFormRef"]);
+                var labelPosition = attrs.labelPosition,
+                model = attrs.model,
+                otherAttrs = _objectWithoutProperties(attrs, ["setFormRef", "labelPosition", "model"]);
 
-            return Vue.h(resolveComponent('n-form'), _objectSpread2({
-              ref: formRef
-            }, otherAttrs), slots);
+            return Vue.h(resolveComponent('n-form'), _objectSpread2(_objectSpread2({
+              ref: formRef,
+              model: model.value
+            }, labelPositionMap[labelPosition || 'top']), otherAttrs), slots);
           };
         }
       }),
-      formItem: 'n-form-item',
+      formItem: Vue.defineComponent({
+        inheritAttrs: false,
+        setup: function setup(props, _ref2) {
+          var attrs = _ref2.attrs,
+              slots = _ref2.slots;
+          return function () {
+            var prop = attrs.prop,
+                rules = attrs.rules,
+                originAttrs = _objectWithoutProperties(attrs, ["prop", "rules"]);
+
+            var childAttrs = _objectSpread2(_objectSpread2({}, originAttrs), {}, {
+              path: prop,
+              rule: (rules || []).map(function (validateRule) {
+                return {
+                  trigger: validateRule.trigger,
+                  asyncValidator: function asyncValidator(rule, value, callback) {
+                    return validateRule.validator(rule, value, callback);
+                  }
+                };
+              })
+            });
+
+            return Vue.h(resolveComponent('n-form-item'), childAttrs, slots);
+          };
+        }
+      }),
       button: 'n-button',
-      popover: 'n-popover'
+      // popover: ,
+      popover: Vue.defineComponent({
+        setup: function setup(props, _ref3) {
+          var attrs = _ref3.attrs,
+              slots = _ref3.slots;
+          return function () {
+            return Vue.h(resolveComponent('n-popover'), attrs, {
+              trigger: slots.reference,
+              default: slots.default
+            });
+          };
+        }
+      })
     },
     HELPERS: {
       // 是否mini显示 description
@@ -12075,6 +12016,7 @@
     }
   };
   var JsonSchemaForm = createForm(globalOptions);
+  var modelValueComponent$1 = modelValueComponent;
 
   exports.SchemaField = SchemaField;
   exports.default = JsonSchemaForm;
@@ -12083,6 +12025,7 @@
   exports.getDefaultFormState = getDefaultFormState;
   exports.globalOptions = globalOptions;
   exports.i18n = i18n;
+  exports.modelValueComponent = modelValueComponent$1;
   exports.schemaValidate = validate$2;
   exports.vueUtils = vue3Utils;
 
