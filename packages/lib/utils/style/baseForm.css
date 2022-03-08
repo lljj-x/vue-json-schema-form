@@ -81,6 +81,8 @@
         line-height: 20px;
         color: #999;
         text-align: left;
+        width: 100%;
+        flex-shrink: 0;
     }
     .formItemErrorBox {
         margin: 0 auto;
@@ -265,6 +267,11 @@
     }
 }
 
+/*popover 弹出可能appendtobody*/
+.genFromWidget_des_mini {
+    font-size: 14px;
+    line-height: 1.5715;
+}
 
 /* 适配多列布局 */
 :root {

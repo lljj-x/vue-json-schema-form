@@ -12,7 +12,7 @@
 * [DatePickerWidget](#datepickerwidget)
 * [DateTimePickerWidget](#datetimepickerwidget)
 * [UploadWidget](#uploadwidget)
-* [vue3 ant 特有的](#vue3-ant-特有的全局组件)
+* [vue3 ant、naiveUi 特有的](#vue3-ant、naiveui-特有的全局组件)
 
 
 :::tip
@@ -150,18 +150,19 @@ export default {
 ## DateTimePickerWidget
 > 内部使用 `DatePicker / DateTimePicker` 组件，支持参数透传
 
-## vue3 ant 特有的全局组件
+## vue3 ant、naiveUi 特有的全局组件
 > 内部使用 `DatePicker / DateTimePicker` 组件，支持参数透
 
-vue3 ant 由于v-model不使用 `model: modelValue`，所以对常用的组件做了转换，如下：
+vue3 ant和naiveUi 由于 `v-model` 默认不使用 `model: modelValue`，所以对常用的组件做了转换，如下：
 
-| 组件名      | 对应ant组件 |
-| ----------- | ----------- |
-| InputWidget      | a-input       |
-| InputNumberWidget   | a-input-number        |
-| AutoCompleteWidget   | a-auto-complete        |
-| SliderWidget   | a-slider        |
-| SwitchWidget   | a-switch        |
-| RateWidget   | a-rate        |
+| 组件名      | 对应ant组件 | 对应Naive组件 |
+| ----------- | ----------- |----------- |
+| InputWidget      | a-input       |n-input       |
+| TextAreaWidget      | a-textarea       |n-input       |
+| InputNumberWidget   | a-input-number        |n-input-number        |
+| AutoCompleteWidget   | a-auto-complete        |n-auto-complete       |
+| SliderWidget   | a-slider        |n-slider       |
+| SwitchWidget   | a-switch        |a-switch       |
+| RateWidget   | a-rate        |a-rate       |
 
-
+快速转换 `modelValue` 可参考：[转换v-model组件 `modelValue` 到其它](/zh/guide/#vue3-ant、naiveui-v-model-特殊处理)

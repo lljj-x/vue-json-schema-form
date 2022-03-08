@@ -1,0 +1,36 @@
+/* element plus 重置样式*/
+.genFromComponent {
+    .n-form-item-blank {
+        flex-wrap: wrap;
+    }
+
+    /*如果引起问题可以覆盖*/
+    .n-form-item.n-form-item--top-labelled {
+        grid-template-rows: none;
+    }
+
+    .formFooter_item {
+        .n-form-item-blank {
+            justify-content: flex-end;
+        }
+    }
+
+    .n-form-item-feedback--error {
+        .n-form-item-feedback__line {
+            display: -webkit-box!important;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            white-space: normal;
+            text-align: left;
+            line-height: 1.2;
+            font-size: 12px;
+        }
+    }
+    .validateWidget {
+        .n-form-item-blank, .n-form-item-feedback-wrapper{
+            min-height: auto;
+        }
+    }
+}

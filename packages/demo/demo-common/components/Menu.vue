@@ -15,10 +15,7 @@
                     :class="$style.menuLink"
                     href="https://vue-json-schema-form.lljj.me/"
                 >
-                    <i
-                        class="el-icon-s-home"
-                        :class="$style.menuIcon"
-                    ></i>文档
+                    文档
                 </a>
             </el-menu-item>
             <el-menu-item index="2">
@@ -26,10 +23,7 @@
                     :class="$style.menuLink"
                     href="/"
                 >
-                    <i
-                        class="el-icon-lollipop"
-                        :class="$style.menuIcon"
-                    ></i>Playground
+                    Playground
                 </a>
             </el-menu-item>
             <el-menu-item
@@ -40,10 +34,7 @@
                     :class="$style.menuLink"
                     href="/vue-editor.html#/editor"
                 >
-                    <i
-                        class="el-icon-ice-cream-round"
-                        :class="$style.menuIcon"
-                    ></i>活动编辑器
+                    活动编辑器
                 </a>
             </el-menu-item>
             <el-menu-item
@@ -54,10 +45,7 @@
                     :class="$style.menuLink"
                     href="/schema-generator.html#/index"
                 >
-                    <i
-                        class="el-icon-cold-drink"
-                        :class="$style.menuIcon"
-                    ></i>Schema 生成器
+                    Schema 生成器
                 </a>
             </el-menu-item>
             <el-menu-item index="5">
@@ -66,10 +54,7 @@
                     href="https://github.com/lljj-x/vue-json-schema-form"
                     target="_blank"
                 >
-                    <i
-                        class="el-icon-star-off"
-                        :class="$style.menuIcon"
-                    ></i>Github
+                    Github
                 </a>
             </el-menu-item>
         </el-menu>
@@ -84,7 +69,6 @@ export default {
 
 <style module>
 .box {
-    margin: 0 auto;
     :global {
         .el-menu.el-menu--horizontal {
             border-bottom: none;
@@ -93,11 +77,11 @@ export default {
             border-bottom-width: 3px;
         }
         .el-menu--horizontal>.el-menu-item {
-            padding-left: 14px;
-            padding-right: 0;
+            padding-left: 8px;
+            padding-right: 8px;
             margin: 0 20px;
-            height: 80px;
-            line-height: 80px;
+            height: 54px;
+            line-height: 54px;
         }
     }
     .menuLink {

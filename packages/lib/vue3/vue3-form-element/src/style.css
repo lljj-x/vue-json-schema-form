@@ -3,11 +3,18 @@
     &.el-form--label-top {
         .el-form-item__label {
             line-height: 26px;
-            padding-bottom: 6px;
-            font-size: 14px;
+        }
+        .genFromWidget_des {
+            margin-bottom: 4px;
+            margin-top: -4px;
         }
     }
     .el-checkbox, .el-color-picker{
         vertical-align: top;
+    }
+    .formFooter_item {
+        .el-form-item__content {
+            justify-content: flex-end;
+        }
     }
 }
