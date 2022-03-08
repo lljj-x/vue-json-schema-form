@@ -50,6 +50,7 @@
         "@commitlint/cli": "^8.3.5",
         "@commitlint/config-conventional": "^8.3.4",
         "@vue/compiler-sfc": "^3.0.0",
+        "naive-ui": "^2.26.1",
         "commitizen": "^4.1.2",
         "conventional-changelog-cli": "^2.0.34",
         "cz-conventional-changelog": "^3.2.0",

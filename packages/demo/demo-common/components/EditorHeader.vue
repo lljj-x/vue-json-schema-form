@@ -104,7 +104,7 @@ export default {
         }
         .logo {
             display: block;
-            height: 30px;
+            height: 25px;
         }
     }
     .menu {
