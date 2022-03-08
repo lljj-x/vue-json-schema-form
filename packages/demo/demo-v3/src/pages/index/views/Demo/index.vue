@@ -225,14 +225,14 @@ import EditorHeader from 'demo-common/components/EditorHeader.vue';
 import CodeEditor from 'demo-common/components/CodeEditor';
 import schemaTypes from 'demo-common/schemaTypes';
 
-const VueElementForm = defineAsyncComponent(() => import('@lljj/vue3-form-element/src/index'));
+const VueElementForm = defineAsyncComponent(() => import('@lljj/vue3-form-element'));
 
 let installedAntdv = false;
 const VueAntForm = defineAsyncComponent(async () => {
     // eslint-disable-next-line no-unused-vars
     const [antdv, antForm] = await Promise.all([
         import('demo-common/components/Antdv/index.js'),
-        import('@lljj/vue3-form-ant/src/index')
+        import('@lljj/vue3-form-ant')
     ]);
 
     return {
@@ -252,21 +252,22 @@ const VueAntForm = defineAsyncComponent(async () => {
     };
 });
 
+let installedNaive = false;
 const VueNaiveForm = defineAsyncComponent(async () => {
     // eslint-disable-next-line no-unused-vars
     const [naive, antForm] = await Promise.all([
         import('demo-common/components/Naive/index.js'),
-        import('@lljj/vue3-form-naive/src/index')
+        import('@lljj/vue3-form-naive')
     ]);
 
     return {
         name: 'naiveFormWrap',
         setup(props, { attrs, slots }) {
-            // hack 动态install antDv，因为我不知其它地方如何获取 vue app
-            if (!installedAntdv) {
+            // hack 动态install naive，因为我不知其它地方如何获取 vue app
+            if (!installedNaive) {
                 const instance = getCurrentInstance();
                 instance.appContext.app.use(naive.default);
-                installedAntdv = true;
+                installedNaive = true;
             }
 
             return () => h(antForm.default, {
@@ -296,7 +297,7 @@ export default {
                 name: 'ElementPlus',
                 component: 'VueElementForm'
             }, {
-                name: 'antdv',
+                name: 'Antdv',
                 component: 'VueAntForm'
             }, {
                 name: 'Naive',

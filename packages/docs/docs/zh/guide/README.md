@@ -38,6 +38,12 @@
 * umd script 标签形式引入暴露全局变量 `window.vue3FormElement`，`window.vue3FormElement.default` 暴露组件
 * [playground](https://form.lljj.me/v3/#/demo?type=Simple)
 
+### @lljj/vue3-form-naive
+* 适配ui库：`Vue3` `antdv`
+* package name : `@lljj/vue3-form-naive`
+* umd cdn地址：[@lljj/vue3-form-naive cdn](https://cdn.jsdelivr.net/npm/@lljj/vue3-form-naive/dist/vue3-form-naive.umd.min.js)
+* umd script 标签形式引入暴露全局变量 `window.vue3FormNaive`，`window.vue3FormNaive.default` 暴露组件
+* [playground](https://form.lljj.me/v3/#/demo?type=Simple&ui=VueNaiveForm)
 
 ### @lljj/vue3-form-ant
 * 适配ui库：`Vue3` `antdv`
@@ -46,29 +52,31 @@
 * umd script 标签形式引入暴露全局变量 `window.vue3FormAnt`，`window.vue3FormAnt.default` 暴露组件
 * [playground](https://form.lljj.me/v3/#/demo?type=Simple&ui=VueAntForm)
 
-#### vue3 ant v-model 特殊处理
+#### vue3 ant、naiveUi v-model 特殊处理
 例如 `a-input` 组件，ant vue3需要使用 `v-model:value`，但在整个框架内部 `v-model` 都是使用 `modelValue`，所以这里就需要对不一致的props通过中间组件组做转换。
 
-你可以自行转换也可以使用内置方法 `modelValueComponent` 转换，如下：
+你可以自行转换，也可以使用内置方法 `modelValueComponent` 转换，如下：
 ```js
-import { modelValueComponent } from '@lljj/vue3-form-ant';
-
 // 返回一个接受 modelValue 和 update:modelValue v-model的组件
+import { modelValueComponent } from '@lljj/vue3-form-ant';
 const MyFixInputComponent = modelValueComponent('a-input', {
     model: 'value' // 这里要根据ant组件 model的参数传递
 });
+
+// naive 也是类似操作
+import { modelValueComponent } from '@lljj/vue3-form-naive';
+const MyFixInputComponent = modelValueComponent('n-input', {
+    model: 'value' // 这里要根据naive组件 model的参数传递
+});
 ```
 
-**这样使用起来还是有些麻烦，目前已经对常用的Widget组件做了内置，参见 [ant vue 附加全局Widget组件](/zh/guide/components.html#vue3-ant-特有的全局组件)**
-
-----------------------------
-
-::: tip
-后续的文档都以 `@lljj/vue-json-schema-form` 为例
+:::tip
+这样使用起来还是有些麻烦，目前已经对常用的Widget组件做了内置，
+参见 [ant、naiveUi vue 附加全局Widget组件](/zh/guide/components.html#vue3-ant、naiveui-特有的全局组件)
 :::
 
-
 ## 快速开始
+> **后续的文档都以 `@lljj/vue-json-schema-form` 为例**
 
 ### npm
 
