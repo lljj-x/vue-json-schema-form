@@ -11859,9 +11859,6 @@ var UploadWidget = {
   }
 };
 
-/**
- * Created by Liu.Jun on 2020/5/17 10:41 下午.
- */
 var widgetComponents = {
   CheckboxesWidget: moduleValeComponent,
   RadioWidget: moduleValeComponent$1,
@@ -11871,6 +11868,37 @@ var widgetComponents = {
   DateTimePickerWidget: moduleValeComponent$4,
   UploadWidget: UploadWidget,
   InputWidget: modelValueComponent('a-input'),
+  ColorWidget: {
+    setup: function setup(props, _ref) {
+      var attrs = _ref.attrs;
+      return function () {
+        return h(widgetComponents.InputWidget, _objectSpread2(_objectSpread2({}, attrs), {}, {
+          style: _objectSpread2(_objectSpread2({}, attrs.style || {}), {}, {
+            maxWidth: '180px'
+          })
+        }), {
+          addonAfter: function addonAfter() {
+            return h('input', {
+              disabled: attrs.disabled,
+              readonly: attrs.readonly,
+              value: attrs.modelValue,
+              onInput: function onInput(e) {
+                attrs['onUpdate:modelValue'](e.target.value);
+              },
+              onChange: function onChange(e) {
+                attrs['onUpdate:modelValue'](e.target.value);
+              },
+              type: 'color',
+              style: {
+                padding: '0',
+                width: '50px'
+              }
+            });
+          }
+        });
+      };
+    }
+  },
   TextAreaWidget: modelValueComponent('a-textarea'),
   InputNumberWidget: modelValueComponent('a-input-number'),
   AutoCompleteWidget: modelValueComponent('a-auto-complete'),
@@ -11881,6 +11909,9 @@ var widgetComponents = {
   })
 };
 
+/**
+ * Created by Liu.Jun on 2020/4/21 18:23.
+ */
 var InputWidget = widgetComponents.InputWidget,
     InputNumberWidget = widgetComponents.InputNumberWidget,
     SwitchWidget = widgetComponents.SwitchWidget,
@@ -11889,7 +11920,8 @@ var InputWidget = widgetComponents.InputWidget,
     SelectWidget = widgetComponents.SelectWidget,
     TimePickerWidget = widgetComponents.TimePickerWidget,
     DatePickerWidget = widgetComponents.DatePickerWidget,
-    DateTimePickerWidget = widgetComponents.DateTimePickerWidget;
+    DateTimePickerWidget = widgetComponents.DateTimePickerWidget,
+    ColorWidget = widgetComponents.ColorWidget;
 var WIDGET_MAP = {
   types: {
     boolean: SwitchWidget,
@@ -11898,37 +11930,7 @@ var WIDGET_MAP = {
     integer: InputNumberWidget
   },
   formats: {
-    color: {
-      setup: function setup(props, _ref) {
-        var attrs = _ref.attrs;
-        return function () {
-          return h(InputWidget, _objectSpread2(_objectSpread2({}, attrs), {}, {
-            style: _objectSpread2(_objectSpread2({}, attrs.style || {}), {}, {
-              maxWidth: '180px'
-            })
-          }), {
-            addonAfter: function addonAfter() {
-              return h('input', {
-                disabled: attrs.disabled,
-                readonly: attrs.readonly,
-                value: attrs.modelValue,
-                onInput: function onInput(e) {
-                  attrs['onUpdate:modelValue'](e.target.value);
-                },
-                onChange: function onChange(e) {
-                  attrs['onUpdate:modelValue'](e.target.value);
-                },
-                type: 'color',
-                style: {
-                  padding: '0',
-                  width: '50px'
-                }
-              });
-            }
-          });
-        };
-      }
-    },
+    color: ColorWidget,
     time: TimePickerWidget,
     // 20:20:39+00:00
     date: DatePickerWidget,
