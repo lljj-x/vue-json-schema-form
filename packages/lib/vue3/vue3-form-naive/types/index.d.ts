@@ -1,5 +1,6 @@
 import JsonSchemaForm from './vueForm';
 import getDefaultFormState from './getDefaultFormState';
+import modelValueComponent from './modelValueComponent';
 import fieldProps from './fieldProps';
 import vueUtils from './vueUtils';
 import formUtils from './formUtils';
@@ -16,7 +17,8 @@ export {
     vueUtils,
     formUtils,
     schemaValidate,
-    i18n
+    i18n,
+    modelValueComponent
 };
 
 export class SchemaField {}
