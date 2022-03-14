@@ -30,7 +30,7 @@ export function getComponentsAndInitToolsConfig(configTools) {
     ], []);
 
     // 注册组件结构
-    const data = componentList.reduce((preVal, { componentPack }) => {
+    const data = componentList.reduce((preVal, { name: configItemName, componentPack }) => {
         // 修改原数据
         // 生成 From组件和View组件 Name
         const needViewName = !componentPack.componentViewName;
@@ -38,7 +38,7 @@ export function getComponentsAndInitToolsConfig(configTools) {
 
         // 需要生成viewName 或者 formName
         if (needViewName || needFormName) {
-            const id = ((componentPack.propsSchema && (componentPack.propsSchema.id || componentPack.propsSchema.$id)) || genId());
+            const id = configItemName || genId();
             if (needViewName) componentPack.componentViewName = `View${id}`;
             if (needFormName) componentPack.componentFormName = `Form${id}`;
         }

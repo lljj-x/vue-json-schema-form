@@ -49,36 +49,43 @@ const tools = [
             maxNum: 2,
             viewWidth: '1920px',
             icon: 'el-icon-picture',
+            name: 'CarouselImg',
             componentPack: componentPackCarouselImg
         }, {
             title: '秒杀商品',
             maxNum: 3,
             icon: 'el-icon-picture',
+            name: 'FlashSaleGoodsList',
             componentPack: componentPackFlashSaleGoodsList
         }, {
             title: '多图(5)',
             maxNum: 5,
             icon: 'el-icon-picture',
+            name: 'MultipleImg5',
             componentPack: componentPackMultipleImg5
         }, {
             title: '多图(2-3)',
             maxNum: 10,
             icon: 'el-icon-s-grid',
+            name: 'MultipleImg2_3',
             componentPack: componentPackMultipleImg23
         }, {
             title: '多图(1-3)',
             maxNum: 10,
             icon: 'el-icon-s-grid',
+            name: 'MultipleImg1_3',
             componentPack: componentPackMultipleImg13
         }, {
             title: '分类管区',
             maxNum: 10,
             icon: 'el-icon-s-grid',
+            name: 'CategoryGoods',
             componentPack: componentPackCategoryGoods
         }, {
             title: '纯文本',
             maxNum: 20,
             icon: 'el-icon-notebook-1',
+            name: 'Text',
             componentPack: componentPackText
         }]
     },
@@ -89,6 +96,7 @@ const tools = [
             maxNum: 1,
             icon: 'el-icon-s-goods',
             componentPack: componentPackAllGoodsList,
+            name: 'AllGoodsList',
             additional: {
                 bottomDisplay: true,
                 unRemove: true // 不可移除
@@ -97,6 +105,7 @@ const tools = [
             title: '推荐商品',
             maxNum: 1,
             icon: 'el-icon-s-goods',
+            name: 'RecommendedGoodsList',
             componentPack: componentPackRecommendedGoodsList
         }]
     },
@@ -106,6 +115,7 @@ const tools = [
             title: '优惠券',
             maxNum: 1,
             icon: 'el-icon-s-ticket',
+            name: 'Coupon',
             componentPack: componentPackCoupon
         }]
     }

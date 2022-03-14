@@ -34,30 +34,35 @@ const tools = [
             maxNum: 2,
             viewWidth: '100%',
             icon: 'el-icon-picture',
+            name: 'MCarouselImg',
             componentPack: componentPackCarouselImg
         }, {
             title: '纯文本',
             maxNum: 20,
             viewWidth: '100%',
             icon: 'el-icon-notebook-1',
+            name: 'MText',
             componentPack: componentPackText
         }, {
             title: '分类条',
             maxNum: 5,
             viewWidth: '100%',
             icon: 'el-icon-notebook-1',
+            name: 'MCategoryList',
             componentPack: CategoryList
         }, {
             title: '推荐商品',
             maxNum: 5,
             viewWidth: '100%',
             icon: 'el-icon-notebook-1',
+            name: 'MRecommendGoods',
             componentPack: RecommendGoods
         }, {
             title: '测试自定义form',
             maxNum: 5,
             viewWidth: '100%',
             icon: 'el-icon-notebook-1',
+            name: 'MTestModule',
             componentPack: Test
         }]
     }

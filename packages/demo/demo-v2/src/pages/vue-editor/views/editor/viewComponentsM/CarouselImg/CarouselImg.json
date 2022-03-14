@@ -1,6 +1,5 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "id": "MCarouselImg",
     "type": "object",
     "properties": {
         "imgList": {
