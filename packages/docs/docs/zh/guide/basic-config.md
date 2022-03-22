@@ -743,6 +743,31 @@ formFooter = {
 }
 ```
 
+#### formFooter show: false 如何手动校验
+配置了 formFooter `show: false` 需要手动触发表单校验、提交等操作，可以参考如下方法：
+1. 可以直接使用表单实例的 [$$uiFormRef](/zh/guide/basic-config.html#uiformref) 属性获取ui组件form引用，比如elementUi的elForm组件，然后直接调用对应的 `validate` 方法即可
+
+```html
+<template>
+  <vjsf ref="myForm" />
+</template>
+
+<script>
+export default {
+  async submit() {
+    // 伪代码
+    await this.$refs.myForm.$$uiFormRef.validate()
+    this.postData()
+  }
+}
+</script>
+```
+
+2. 如果你的提交按钮还是在表单内，可以直接使用 scope slot 参数中获取到表单引用
+
+参考：[slot-scope](/zh/guide/basic-config.html#插槽-scope-slot)
+
+
 ### fallback-label
 * 类型：`boolean`
 * default：`false`
