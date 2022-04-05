@@ -11383,7 +11383,9 @@ var SelectLinkageField = {
         props: _objectSpread2({
           isFormData: false,
           curValue: this.curSelectIndex,
-          globalOptions: this.globalOptions
+          globalOptions: this.globalOptions,
+          rootFormData: this.rootFormData,
+          curNodePath: this.curNodePath
         }, selectWidgetConfig),
         on: {
           onOtherDataChange: function onOtherDataChange(event) {

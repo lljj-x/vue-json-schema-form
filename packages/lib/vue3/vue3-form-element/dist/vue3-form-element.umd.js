@@ -11129,6 +11129,8 @@
           class: _defineProperty({}, "fieldSelect_".concat(props.combiningType), true),
           isFormData: false,
           curValue: curSelectIndex.value,
+          curNodePath: props.curNodePath,
+          rootFormData: props.rootFormData,
           globalOptions: props.globalOptions
         }, selectWidgetConfig), {}, {
           onOtherDataChange: function onOtherDataChange(event) {
