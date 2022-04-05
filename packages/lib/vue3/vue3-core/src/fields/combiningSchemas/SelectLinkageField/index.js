@@ -92,6 +92,8 @@ export default {
                     },
                     isFormData: false,
                     curValue: curSelectIndex.value,
+                    curNodePath: props.curNodePath,
+                    rootFormData: props.rootFormData,
                     globalOptions: props.globalOptions,
                     ...selectWidgetConfig,
                     onOtherDataChange: (event) => {
