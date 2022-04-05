@@ -94,6 +94,8 @@ export default {
                         isFormData: false,
                         curValue: this.curSelectIndex,
                         globalOptions: this.globalOptions,
+                        rootFormData: this.rootFormData,
+                        curNodePath: this.curNodePath,
                         ...selectWidgetConfig
                     },
                     on: {
