@@ -118,7 +118,9 @@ export function getUserUiOptions({
                 return { ...options, ...value };
             }
 
-            if (key.indexOf('ui:') === 0) {
+            // https://github.com/lljj-x/vue-json-schema-form/issues/170
+            // ui:hidden需要作为内置属性使用，不能直接透传给widget组件，如果组件需要只能在ui:options 中使用hidden传递
+            if (key !== 'ui:hidden' && key.indexOf('ui:') === 0) {
                 // 只对 ui:xxx 配置形式支持表达式
                 return {
                     ...options,
