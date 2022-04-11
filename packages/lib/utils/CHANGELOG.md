@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.2](https://github.com/lljj-x/vue-json-schema-form/compare/v1.12.1...v1.12.2) (2022-04-11)
+
+
+### Bug Fixes
+
+* **lib:** ui:hidden 透传到widget组件 ([f63094e](https://github.com/lljj-x/vue-json-schema-form/commit/f63094ee85659d1fea45bd789321817c08664ffa)), closes [#170](https://github.com/lljj-x/vue-json-schema-form/issues/170)
+
+
+
+
+
 # [1.12.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.11.0...v1.12.0) (2022-03-08)
 
 
