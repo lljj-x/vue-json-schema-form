@@ -21,7 +21,7 @@ import VueForm from '@lljj/vue-json-schema-form';
 * CDN
 ```html
 # As a script served from a CDN
-<script src="//cdn.jsdelivr.net/npm/@lljj/vue-json-schema-form/dist/vueJsonSchemaForm.umd.min.js"></script>
+<script src="//npm.elemecdn.com/@lljj/vue-json-schema-form/dist/vueJsonSchemaForm.umd.min.js"></script>
 ```
 
 ::: tip Global import
