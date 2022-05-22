@@ -10246,7 +10246,7 @@
         // array 渲染为多选框时默认为空数组
         if (this.schema.items) {
           this.value = [];
-        } else if (this.required) {
+        } else if (this.required && this.formProps.defaultSelectFirstOption) {
           this.value = this.uiProps.enumOptions[0].value;
         }
       }
@@ -11819,9 +11819,16 @@
         var _self$$props$formProp = self.$props.formProps,
             _self$$props$formProp2 = _self$$props$formProp.layoutColumn,
             layoutColumn = _self$$props$formProp2 === void 0 ? 1 : _self$$props$formProp2,
-            inlineFooter = _self$$props$formProp.inlineFooter,
-            formProps = _objectWithoutProperties(_self$$props$formProp, ["layoutColumn", "inlineFooter"]);
+            inlineFooter = _self$$props$formProp.inlineFooter;
+            _self$$props$formProp.labelSuffix;
+            _self$$props$formProp.isMiniDes;
+            _self$$props$formProp.defaultSelectFirstOption;
+            var uiFormProps = _objectWithoutProperties(_self$$props$formProp, ["layoutColumn", "inlineFooter", "labelSuffix", "isMiniDes", "defaultSelectFirstOption"]);
 
+        var _uiFormProps$inline = uiFormProps.inline,
+            inline = _uiFormProps$inline === void 0 ? false : _uiFormProps$inline,
+            _uiFormProps$labelPos = uiFormProps.labelPosition,
+            labelPosition = _uiFormProps$labelPos === void 0 ? 'top' : _uiFormProps$labelPos;
         var props = {
           schema: this.schema,
           uiSchema: this.uiSchema,
@@ -11836,11 +11843,12 @@
           globalOptions: globalOptions,
           // 全局配置，差异化ui框架
           formProps: _objectSpread2({
-            labelPosition: 'top',
-            labelSuffix: '：'
-          }, formProps)
+            labelPosition: labelPosition,
+            labelSuffix: '：',
+            defaultSelectFirstOption: true,
+            inline: inline
+          }, self.$props.formProps)
         };
-        var inline = formProps.inline;
         return h(globalOptions.COMPONENT_MAP.form, {
           class: (_class = {
             genFromComponent: true,
@@ -11854,8 +11862,10 @@
           },
           ref: 'genEditForm',
           props: _objectSpread2({
-            model: self.formData
-          }, props.formProps)
+            model: self.formData,
+            labelPosition: labelPosition,
+            inline: inline
+          }, uiFormProps)
         }, [h(SchemaField, {
           props: props
         }), defaultSlot]);

@@ -801,6 +801,7 @@ formProps = {
     labelSuffix: '：', // label后缀
     labelPosition: 'top', // 表单域标签的位置
     isMiniDes: false, // 是否优先mini形式显示描述信息（label文字和描述信息同行显示）
+    defaultSelectFirstOption: true, // 单选框必填，是否默认选中第一个
 }
 ```
 

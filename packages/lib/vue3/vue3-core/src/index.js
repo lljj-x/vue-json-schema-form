@@ -141,8 +141,12 @@ export default function createForm(globalOptions = {}) {
 
             return () => {
                 const {
-                    layoutColumn = 1, inlineFooter, ...otherFormProps
+                    // eslint-disable-next-line no-unused-vars
+                    layoutColumn = 1, inlineFooter, labelSuffix, isMiniDes, defaultSelectFirstOption, ...uiFormProps
                 } = props.formProps;
+
+                const { inline = false, labelPosition = 'top' } = uiFormProps;
+
                 const schemaProps = {
                     schema: props.schema,
                     uiSchema: props.uiSchema,
@@ -154,13 +158,14 @@ export default function createForm(globalOptions = {}) {
                     curNodePath: '', // 当前节点路径
                     globalOptions, // 全局配置，差异化ui框架
                     formProps: {
+                        labelPosition,
                         labelSuffix: '：',
-                        labelPosition: 'top',
-                        ...otherFormProps,
+                        defaultSelectFirstOption: true,
+                        inline,
+                        ...props.formProps
                     }
                 };
 
-                const inline = otherFormProps.inline;
                 return h(
                     resolveComponent(globalOptions.COMPONENT_MAP.form),
                     {
@@ -185,7 +190,9 @@ export default function createForm(globalOptions = {}) {
                             e.preventDefault();
                         },
                         model: rootFormData,
-                        ...schemaProps.formProps
+                        labelPosition,
+                        inline,
+                        ...uiFormProps
                     },
                     {
                         default: () => [

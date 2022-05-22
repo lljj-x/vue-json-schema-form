@@ -337,7 +337,8 @@ export default {
                     inline: false,
                     labelPosition: 'top',
                     inlineFooter: false,
-                    layoutColumn: 1
+                    layoutColumn: 1,
+                    // defaultSelectFirstOption: false
                 }
             };
         },
