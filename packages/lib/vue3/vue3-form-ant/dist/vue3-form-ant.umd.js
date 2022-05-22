@@ -9985,7 +9985,7 @@
         // array 渲染为多选框时默认为空数组
         if (props.schema.items) {
           widgetValue.value = [];
-        } else if (props.required) {
+        } else if (props.required && props.formProps.defaultSelectFirstOption) {
           widgetValue.value = props.uiProps.enumOptions[0].value;
         }
       } // 获取到widget组件实例
@@ -11479,9 +11479,16 @@
           var _props$formProps = props.formProps,
               _props$formProps$layo = _props$formProps.layoutColumn,
               layoutColumn = _props$formProps$layo === void 0 ? 1 : _props$formProps$layo,
-              inlineFooter = _props$formProps.inlineFooter,
-              otherFormProps = _objectWithoutProperties(_props$formProps, ["layoutColumn", "inlineFooter"]);
+              inlineFooter = _props$formProps.inlineFooter;
+              _props$formProps.labelSuffix;
+              _props$formProps.isMiniDes;
+              _props$formProps.defaultSelectFirstOption;
+              var uiFormProps = _objectWithoutProperties(_props$formProps, ["layoutColumn", "inlineFooter", "labelSuffix", "isMiniDes", "defaultSelectFirstOption"]);
 
+          var _uiFormProps$inline = uiFormProps.inline,
+              inline = _uiFormProps$inline === void 0 ? false : _uiFormProps$inline,
+              _uiFormProps$labelPos = uiFormProps.labelPosition,
+              labelPosition = _uiFormProps$labelPos === void 0 ? 'top' : _uiFormProps$labelPos;
           var schemaProps = {
             schema: props.schema,
             uiSchema: props.uiSchema,
@@ -11496,11 +11503,12 @@
             globalOptions: globalOptions,
             // 全局配置，差异化ui框架
             formProps: _objectSpread2({
+              labelPosition: labelPosition,
               labelSuffix: '：',
-              labelPosition: 'top'
-            }, otherFormProps)
+              defaultSelectFirstOption: true,
+              inline: inline
+            }, props.formProps)
           };
-          var inline = otherFormProps.inline;
           return Vue.h(resolveComponent(globalOptions.COMPONENT_MAP.form), _objectSpread2({
             class: (_class = {
               genFromComponent: true,
@@ -11518,8 +11526,10 @@
             onSubmit: function onSubmit(e) {
               e.preventDefault();
             },
-            model: rootFormData
-          }, schemaProps.formProps), {
+            model: rootFormData,
+            labelPosition: labelPosition,
+            inline: inline
+          }, uiFormProps), {
             default: function _default() {
               return [Vue.h(SchemaField, schemaProps), getDefaultSlot()];
             }

@@ -159,7 +159,7 @@ export default {
             // array 渲染为多选框时默认为空数组
             if (props.schema.items) {
                 widgetValue.value = [];
-            } else if (props.required) {
+            } else if (props.required && props.formProps.defaultSelectFirstOption) {
                 widgetValue.value = props.uiProps.enumOptions[0].value;
             }
         }

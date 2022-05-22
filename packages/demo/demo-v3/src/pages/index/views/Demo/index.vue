@@ -435,9 +435,10 @@ export default {
                     inline: false,
                     labelPosition: 'top',
                     inlineFooter: false,
-                    labelColSpan: 10,
-                    wrapperColSpan: 24,
-                    layoutColumn: 1
+                    labelColSpan: 6,
+                    wrapperColSpan: 16,
+                    layoutColumn: 1,
+                    // defaultSelectFirstOption: false
                 },
             };
         },

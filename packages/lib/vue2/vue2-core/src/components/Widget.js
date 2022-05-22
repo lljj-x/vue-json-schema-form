@@ -164,7 +164,7 @@ export default {
             // array 渲染为多选框时默认为空数组
             if (this.schema.items) {
                 this.value = [];
-            } else if (this.required) {
+            } else if (this.required && this.formProps.defaultSelectFirstOption) {
                 this.value = this.uiProps.enumOptions[0].value;
             }
         }
