@@ -10844,21 +10844,18 @@ var ArrayFieldSpecialFormat = {
   props: vueProps$1,
   setup: function setup(props, _ref) {
     var attrs = _ref.attrs;
-    var schema = props.schema,
-        uiSchema = props.uiSchema,
-        curNodePath = props.curNodePath,
-        rootFormData = props.rootFormData,
-        globalOptions = props.globalOptions;
-    var widgetConfig = getWidgetConfig({
-      schema: _objectSpread2({
-        'ui:widget': globalOptions.WIDGET_MAP.formats[schema.format]
-      }, schema),
-      uiSchema: uiSchema,
-      curNodePath: curNodePath,
-      rootFormData: rootFormData
+    var widgetConfig = computed(function () {
+      return getWidgetConfig({
+        schema: _objectSpread2({
+          'ui:widget': props.globalOptions.WIDGET_MAP.formats[props.schema.format]
+        }, props.schema),
+        uiSchema: props.uiSchema,
+        curNodePath: props.curNodePath,
+        rootFormData: props.rootFormData
+      });
     });
     return function () {
-      return h(Widget, _objectSpread2(_objectSpread2(_objectSpread2({}, attrs), props), widgetConfig));
+      return h(Widget, _objectSpread2(_objectSpread2(_objectSpread2({}, attrs), props), widgetConfig.value));
     };
   }
 };
