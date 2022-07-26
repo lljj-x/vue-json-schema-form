@@ -9637,14 +9637,16 @@
     },
     computed: {
       trueTitle: function trueTitle() {
+        var _genFormProvide$fallb;
+
         var title = this.title;
 
         if (title) {
           return title;
         }
 
-        var genFormProvide = this.genFormProvide.value || this.genFormProvide;
-        var backTitle = genFormProvide.fallbackLabel && this.curNodePath.split('.').pop();
+        var genFormProvide = this.genFormProvide;
+        var backTitle = (genFormProvide.value && genFormProvide.value.fallbackLabel || ((_genFormProvide$fallb = genFormProvide.fallbackLabel) === null || _genFormProvide$fallb === void 0 ? void 0 : _genFormProvide$fallb.value)) && this.curNodePath.split('.').pop();
         if (backTitle !== "".concat(Number(backTitle))) return backTitle;
         return '';
       }
@@ -10082,7 +10084,7 @@
         } : {}); // 运行配置回退到 属性名
 
 
-        var _label = fallbackLabel(props.label, props.widget && genFormProvide.value.fallbackLabel, props.curNodePath);
+        var _label = fallbackLabel(props.label, props.widget && genFormProvide.fallbackLabel.value, props.curNodePath);
 
         return Vue.h(resolveComponent(COMPONENT_MAP.formItem), _objectSpread2(_objectSpread2(_objectSpread2({
           class: _objectSpread2(_objectSpread2({}, props.fieldClass), {}, {
@@ -11419,11 +11421,12 @@
         } // 使用provide 传递跨组件数据
 
 
-        Vue.provide('genFormProvide', Vue.computed(function () {
-          return {
-            fallbackLabel: props.fallbackLabel
-          };
-        })); // rootFormData
+        var _toRefs = Vue.toRefs(props),
+            fallbackLabel = _toRefs.fallbackLabel;
+
+        Vue.provide('genFormProvide', {
+          fallbackLabel: fallbackLabel
+        }); // rootFormData
 
         var rootFormData = Vue.ref(getDefaultFormState(props.schema, props.modelValue, props.schema, props.strictMode));
         var footerParams = Vue.computed(function () {
