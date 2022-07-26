@@ -52,11 +52,9 @@ export default {
                 return title;
             }
 
-            const genFormProvide = this.genFormProvide;
-
-            const backTitle = ((genFormProvide.value && genFormProvide.value.fallbackLabel)
-                || genFormProvide.fallbackLabel?.value)
-                && this.curNodePath.split('.').pop();
+            const genFormProvide = this.genFormProvide?.value || this.genFormProvide;
+            const fallbackLabel = genFormProvide.fallbackLabel?.value || genFormProvide.fallbackLabel;
+            const backTitle = fallbackLabel && this.curNodePath.split('.').pop();
             if (backTitle !== `${Number(backTitle)}`) return backTitle;
 
             return '';

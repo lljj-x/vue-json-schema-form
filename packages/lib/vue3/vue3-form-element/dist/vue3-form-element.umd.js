@@ -9637,7 +9637,7 @@
     },
     computed: {
       trueTitle: function trueTitle() {
-        var _genFormProvide$fallb;
+        var _this$genFormProvide, _genFormProvide$fallb;
 
         var title = this.title;
 
@@ -9645,8 +9645,9 @@
           return title;
         }
 
-        var genFormProvide = this.genFormProvide;
-        var backTitle = (genFormProvide.value && genFormProvide.value.fallbackLabel || ((_genFormProvide$fallb = genFormProvide.fallbackLabel) === null || _genFormProvide$fallb === void 0 ? void 0 : _genFormProvide$fallb.value)) && this.curNodePath.split('.').pop();
+        var genFormProvide = ((_this$genFormProvide = this.genFormProvide) === null || _this$genFormProvide === void 0 ? void 0 : _this$genFormProvide.value) || this.genFormProvide;
+        var fallbackLabel = ((_genFormProvide$fallb = genFormProvide.fallbackLabel) === null || _genFormProvide$fallb === void 0 ? void 0 : _genFormProvide$fallb.value) || genFormProvide.fallbackLabel;
+        var backTitle = fallbackLabel && this.curNodePath.split('.').pop();
         if (backTitle !== "".concat(Number(backTitle))) return backTitle;
         return '';
       }
