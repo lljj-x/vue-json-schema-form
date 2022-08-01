@@ -3,7 +3,7 @@
  */
 
 import {
-    getCurrentInstance, watch, ref, computed, h, provide, toRefs
+    getCurrentInstance, watch, ref, computed, h, provide, toRef
 } from 'vue';
 
 import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
@@ -46,7 +46,7 @@ export default function createForm(globalOptions = {}) {
             }
 
             // 使用provide 传递跨组件数据
-            const { fallbackLabel } = toRefs(props);
+            const fallbackLabel = toRef(props, 'fallbackLabel');
             provide('genFormProvide', {
                 fallbackLabel,
             });
