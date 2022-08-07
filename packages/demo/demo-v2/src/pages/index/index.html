@@ -23,23 +23,23 @@
     <script>
         require.config({ paths: { 'vs': '//lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/monaco-editor/0.20.0/min/vs/' }});
 
-        try {
-            // https://github.com/microsoft/monaco-editor/blob/master/docs/integrate-amd-cross.md
-            window.MonacoEnvironment = {
-                getWorkerUrl: function(workerId, label) {
-                    const code = encodeURIComponent(`
-                    self.MonacoEnvironment = {
-                      baseUrl: 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/monaco-editor/0.20.0/min/'
-                    };
-                    importScripts('https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/monaco-editor/0.20.0/min/vs//base/worker/workerMain.js');
-                `);
-
-                    return 'data:text/javascript;charset=utf-8,' + code;
-                }
-            };
-        } catch (e) {
-            // nothing ....
-        }
+        // try {
+        //     // https://github.com/microsoft/monaco-editor/blob/master/docs/integrate-amd-cross.md
+        //     window.MonacoEnvironment = {
+        //         getWorkerUrl: function(workerId, label) {
+        //             const code = encodeURIComponent(`
+        //                 self.MonacoEnvironment = {
+        //                   baseUrl: 'https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/monaco-editor/0.20.0/min/'
+        //                 };
+        //                 importScripts('https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/monaco-editor/0.20.0/min/vs/base/worker/workerMain.js');
+        //             `);
+        //
+        //             return 'data:text/javascript;charset=utf-8,' + code;
+        //         }
+        //     };
+        // } catch (e) {
+        //     // nothing ....
+        // }
     </script>
 </body>
 </html>
