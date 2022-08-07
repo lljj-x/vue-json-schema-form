@@ -32,7 +32,7 @@ function createAjvInstance() {
     ajvInstance.addFormat(
         'color',
         // eslint-disable-next-line max-len
-        /^(#?([0-9A-Fa-f]{3}){1,2}\b|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow|(rgba?|hlsa?)\(.*\))$/
+        /^(#?([0-9A-Fa-f]{3,4}){1,2}\b|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow|(rgba?|hsla?)\(.*\))$/
     );
     return ajvInstance;
 }
