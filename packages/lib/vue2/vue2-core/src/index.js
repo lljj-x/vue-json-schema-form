@@ -51,9 +51,7 @@ export default function createForm(globalOptions = {}) {
         },
         computed: {
             genFormProvide() {
-                return {
-                    fallbackLabel: this.fallbackLabel
-                };
+                return this.$props;
             },
             footerParams() {
                 return {
