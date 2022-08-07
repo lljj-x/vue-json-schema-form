@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.13.1...v1.14.0) (2022-08-07)
+
+
+### Bug Fixes
+
+* **lib:** 修复color 校验 ([2b49753](https://github.com/lljj-x/vue-json-schema-form/commit/2b4975375ba6f322d8dbdac08a1870bbd7335d22))
+* **lib:** 宽松color format 校验 ([d32d079](https://github.com/lljj-x/vue-json-schema-form/commit/d32d079cd73fe16234ef30ae693f0bd3ab1b75fe))
+
+
+### Features
+
+* 修复fallbackLabel的错误判断 && 优化代码 ([d23da39](https://github.com/lljj-x/vue-json-schema-form/commit/d23da39dbf51a017e0a439512164f3977b520ff6))
+* **vue3 core:** 修复provide警告 ([711c932](https://github.com/lljj-x/vue-json-schema-form/commit/711c932e71ead9667f65777e6b65578c76087ce1))
+* **vue3core:** 整理代码 ([54e9db4](https://github.com/lljj-x/vue-json-schema-form/commit/54e9db4090155e0e6a78788dccb5c6208f9cb812))
+
+
+
+
+
 ## [1.12.2](https://github.com/lljj-x/vue-json-schema-form/compare/v1.12.1...v1.12.2) (2022-04-11)
 
 

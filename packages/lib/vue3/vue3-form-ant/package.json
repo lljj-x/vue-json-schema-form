@@ -1,6 +1,6 @@
 {
     "name": "@lljj/vue3-form-ant",
-    "version": "1.13.1",
+    "version": "1.14.0",
     "description": "基于 Vue3 、Antdv、JsonSchema快速构建一个带完整校验的form表单",
     "main": "dist/vue3-form-ant.umd.min.js",
     "module": "dist/vue3-form-ant.esm.min.js",
@@ -15,8 +15,8 @@
         "jsonSchema"
     ],
     "dependencies": {
-        "@lljj/vjsf-utils": "1.12.2",
-        "@lljj/vue3-form-core": "1.13.1"
+        "@lljj/vjsf-utils": "1.14.0",
+        "@lljj/vue3-form-core": "1.14.0"
     },
     "typings": "types/index.d.ts",
     "files": [
