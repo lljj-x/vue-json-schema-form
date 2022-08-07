@@ -9637,14 +9637,25 @@
     },
     computed: {
       trueTitle: function trueTitle() {
+        var _this$genFormProvide$;
+
         var title = this.title;
 
         if (title) {
           return title;
         }
 
-        var genFormProvide = this.genFormProvide.value || this.genFormProvide;
-        var backTitle = genFormProvide.fallbackLabel && this.curNodePath.split('.').pop();
+        var fallbackLabel;
+
+        if (typeof ((_this$genFormProvide$ = this.genFormProvide.fallbackLabel) === null || _this$genFormProvide$ === void 0 ? void 0 : _this$genFormProvide$.value) === 'boolean') {
+          var _this$genFormProvide$2;
+
+          fallbackLabel = (_this$genFormProvide$2 = this.genFormProvide.fallbackLabel) === null || _this$genFormProvide$2 === void 0 ? void 0 : _this$genFormProvide$2.value;
+        } else {
+          fallbackLabel = this.genFormProvide.fallbackLabel;
+        }
+
+        var backTitle = fallbackLabel && this.curNodePath.split('.').pop();
         if (backTitle !== "".concat(Number(backTitle))) return backTitle;
         return '';
       }
@@ -10082,7 +10093,7 @@
         } : {}); // 运行配置回退到 属性名
 
 
-        var _label = fallbackLabel(props.label, props.widget && genFormProvide.value.fallbackLabel, props.curNodePath);
+        var _label = fallbackLabel(props.label, props.widget && genFormProvide.fallbackLabel.value, props.curNodePath);
 
         return Vue.h(resolveComponent(COMPONENT_MAP.formItem), _objectSpread2(_objectSpread2(_objectSpread2({
           class: _objectSpread2(_objectSpread2({}, props.fieldClass), {}, {
@@ -11419,11 +11430,10 @@
         } // 使用provide 传递跨组件数据
 
 
-        Vue.provide('genFormProvide', Vue.computed(function () {
-          return {
-            fallbackLabel: props.fallbackLabel
-          };
-        })); // rootFormData
+        var fallbackLabel = Vue.toRef(props, 'fallbackLabel');
+        Vue.provide('genFormProvide', {
+          fallbackLabel: fallbackLabel
+        }); // rootFormData
 
         var rootFormData = Vue.ref(getDefaultFormState(props.schema, props.modelValue, props.schema, props.strictMode));
         var footerParams = Vue.computed(function () {

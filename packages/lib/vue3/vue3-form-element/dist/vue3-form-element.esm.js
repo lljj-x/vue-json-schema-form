@@ -1,5 +1,5 @@
 /** @license @lljj/vue3-form-element (c) 2020-2022 Liu.Jun License: Apache-2.0 */
-import { resolveComponent as resolveComponent$1, defineComponent, h, openBlock, createBlock, toDisplayString, createCommentVNode, createVNode, renderSlot, inject, computed, ref as ref$1, watch, toRaw, getCurrentInstance, provide, withCtx, Fragment, renderList, createTextVNode, onMounted } from 'vue';
+import { resolveComponent as resolveComponent$1, defineComponent, h, openBlock, createBlock, toDisplayString, createCommentVNode, createVNode, renderSlot, inject, computed, ref as ref$1, watch, toRaw, getCurrentInstance, toRef, provide, withCtx, Fragment, renderList, createTextVNode, onMounted } from 'vue';
 
 function _typeof(obj) {
   "@babel/helpers - typeof";
@@ -9633,14 +9633,25 @@ var script = {
   },
   computed: {
     trueTitle: function trueTitle() {
+      var _this$genFormProvide$;
+
       var title = this.title;
 
       if (title) {
         return title;
       }
 
-      var genFormProvide = this.genFormProvide.value || this.genFormProvide;
-      var backTitle = genFormProvide.fallbackLabel && this.curNodePath.split('.').pop();
+      var fallbackLabel;
+
+      if (typeof ((_this$genFormProvide$ = this.genFormProvide.fallbackLabel) === null || _this$genFormProvide$ === void 0 ? void 0 : _this$genFormProvide$.value) === 'boolean') {
+        var _this$genFormProvide$2;
+
+        fallbackLabel = (_this$genFormProvide$2 = this.genFormProvide.fallbackLabel) === null || _this$genFormProvide$2 === void 0 ? void 0 : _this$genFormProvide$2.value;
+      } else {
+        fallbackLabel = this.genFormProvide.fallbackLabel;
+      }
+
+      var backTitle = fallbackLabel && this.curNodePath.split('.').pop();
       if (backTitle !== "".concat(Number(backTitle))) return backTitle;
       return '';
     }
@@ -10078,7 +10089,7 @@ var Widget = {
       } : {}); // 运行配置回退到 属性名
 
 
-      var _label = fallbackLabel(props.label, props.widget && genFormProvide.value.fallbackLabel, props.curNodePath);
+      var _label = fallbackLabel(props.label, props.widget && genFormProvide.fallbackLabel.value, props.curNodePath);
 
       return h(resolveComponent(COMPONENT_MAP.formItem), _objectSpread2(_objectSpread2(_objectSpread2({
         class: _objectSpread2(_objectSpread2({}, props.fieldClass), {}, {
@@ -11415,11 +11426,10 @@ function createForm() {
       } // 使用provide 传递跨组件数据
 
 
-      provide('genFormProvide', computed(function () {
-        return {
-          fallbackLabel: props.fallbackLabel
-        };
-      })); // rootFormData
+      var fallbackLabel = toRef(props, 'fallbackLabel');
+      provide('genFormProvide', {
+        fallbackLabel: fallbackLabel
+      }); // rootFormData
 
       var rootFormData = ref$1(getDefaultFormState(props.schema, props.modelValue, props.schema, props.strictMode));
       var footerParams = computed(function () {

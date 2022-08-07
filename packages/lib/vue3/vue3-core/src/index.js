@@ -3,7 +3,7 @@
  */
 
 import {
-    getCurrentInstance, watch, ref, computed, h, provide
+    getCurrentInstance, watch, ref, computed, h, provide, toRef
 } from 'vue';
 
 import { resolveComponent } from '@lljj/vjsf-utils/vue3Utils';
@@ -46,10 +46,10 @@ export default function createForm(globalOptions = {}) {
             }
 
             // 使用provide 传递跨组件数据
-            provide('genFormProvide', computed(() => ({
-                fallbackLabel: props.fallbackLabel
-            })));
-
+            const fallbackLabel = toRef(props, 'fallbackLabel');
+            provide('genFormProvide', {
+                fallbackLabel,
+            });
             // rootFormData
             const rootFormData = ref(getDefaultFormState(props.schema, props.modelValue, props.schema, props.strictMode));
             const footerParams = computed(() => ({

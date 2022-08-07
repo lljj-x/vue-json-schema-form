@@ -216,7 +216,7 @@ export default {
             };
 
             // 运行配置回退到 属性名
-            const label = fallbackLabel(props.label, (props.widget && genFormProvide.value.fallbackLabel), props.curNodePath);
+            const label = fallbackLabel(props.label, (props.widget && genFormProvide.fallbackLabel.value), props.curNodePath);
             return h(
                 resolveComponent(COMPONENT_MAP.formItem),
                 {

@@ -52,9 +52,13 @@ export default {
                 return title;
             }
 
-            const genFormProvide = this.genFormProvide.value || this.genFormProvide;
-
-            const backTitle = genFormProvide.fallbackLabel && this.curNodePath.split('.').pop();
+            let fallbackLabel;
+            if (typeof this.genFormProvide.fallbackLabel?.value === 'boolean') {
+                fallbackLabel = this.genFormProvide.fallbackLabel?.value;
+            } else {
+                fallbackLabel = this.genFormProvide.fallbackLabel;
+            }
+            const backTitle = fallbackLabel && this.curNodePath.split('.').pop();
             if (backTitle !== `${Number(backTitle)}`) return backTitle;
 
             return '';
