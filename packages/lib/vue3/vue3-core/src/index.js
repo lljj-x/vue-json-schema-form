@@ -51,7 +51,12 @@ export default function createForm(globalOptions = {}) {
                 fallbackLabel,
             });
             // rootFormData
-            const rootFormData = ref(getDefaultFormState(props.schema, props.modelValue, props.schema, props.strictMode));
+            const rootFormData = ref(
+              Object.assign(
+                  props.modelValue,
+                  getDefaultFormState(props.schema, props.modelValue, props.schema, props.strictMode)
+              )
+            );
             const footerParams = computed(() => ({
                 show: true,
                 okBtn: '保存',
