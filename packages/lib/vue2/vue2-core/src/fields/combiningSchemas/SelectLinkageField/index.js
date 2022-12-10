@@ -159,7 +159,7 @@ export default {
                     }
                 });
             } else {
-                setPathVal(this.rootFormData, this.curNodePath, newOptionData || curFormData);
+                setPathVal(this.rootFormData, this.curNodePath, newOptionData === undefined ? curFormData : newOptionData);
             }
 
             // 可添加一个配置通知外部这里变更
