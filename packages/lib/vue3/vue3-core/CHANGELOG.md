@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.1](https://github.com/lljj-x/vue-json-schema-form/compare/v1.14.0...v1.14.1) (2022-12-12)
+
+
+### Bug Fixes
+
+* **lib:** 修复 anyOf 下schema没有重新resolve ([4678bb0](https://github.com/lljj-x/vue-json-schema-form/commit/4678bb0859cde67fd43e5f8569993d838901c34a)), closes [#247](https://github.com/lljj-x/vue-json-schema-form/issues/247)
+* **lib:** 修复null值 不能重新赋值问题 ([14abc97](https://github.com/lljj-x/vue-json-schema-form/commit/14abc97411f2fa1679c8727df2b094485ca17809)), closes [#245](https://github.com/lljj-x/vue-json-schema-form/issues/245)
+
+
+
+
+
 # [1.14.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.13.1...v1.14.0) (2022-08-07)
 
 

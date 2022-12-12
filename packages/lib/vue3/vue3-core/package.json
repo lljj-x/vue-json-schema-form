@@ -1,6 +1,6 @@
 {
     "name": "@lljj/vue3-form-core",
-    "version": "1.14.0",
+    "version": "1.14.1",
     "description": "基于 Vue3 、JsonSchema快速构建一个带完整校验的form表单，vue3版本基础框架",
     "main": "src/index.js",
     "module": "src/index.js",
