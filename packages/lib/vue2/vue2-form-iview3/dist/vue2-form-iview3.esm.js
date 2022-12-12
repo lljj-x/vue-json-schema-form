@@ -11441,7 +11441,12 @@ var SelectLinkageField = {
               key = _ref2[0],
               value = _ref2[1];
 
-          if (value !== undefined && (curFormData[key] === undefined || _this2.selectList[newVal].properties[key].const !== undefined || isObject(value))) {
+          if (value !== undefined && (curFormData[key] === undefined || isObject(value) || function () {
+            var _newSelectSchema$prop;
+
+            var newSelectSchema = retrieveSchema(_this2.selectList[newVal], _this2.rootSchema);
+            return ((_newSelectSchema$prop = newSelectSchema.properties[key]) === null || _newSelectSchema$prop === void 0 ? void 0 : _newSelectSchema$prop.const) !== undefined;
+          }())) {
             // 这里没找到一个比较合理的新旧值合并方式
             //
             // 1. 如果anyOf里面同名属性中的schema包含了 const 配置，产生了新的值这里做覆盖处理
@@ -11450,7 +11455,7 @@ var SelectLinkageField = {
           }
         });
       } else {
-        setPathVal(this.rootFormData, this.curNodePath, newOptionData || curFormData);
+        setPathVal(this.rootFormData, this.curNodePath, newOptionData === undefined ? curFormData : newOptionData);
       } // 可添加一个配置通知外部这里变更
       // todo: onChangeOption
 
