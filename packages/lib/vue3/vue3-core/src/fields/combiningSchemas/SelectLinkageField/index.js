@@ -153,7 +153,7 @@ export default {
                     }
                 });
             } else {
-                setPathVal(props.rootFormData, props.curNodePath, newOptionData || curFormData);
+                setPathVal(props.rootFormData, props.curNodePath, newOptionData === undefined ? curFormData : newOptionData);
             }
         });
 
