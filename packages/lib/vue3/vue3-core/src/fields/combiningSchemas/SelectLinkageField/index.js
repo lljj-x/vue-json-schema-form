@@ -141,8 +141,15 @@ export default {
                         value !== undefined
                         && (
                             curFormData[key] === undefined
-                            || props.selectList[newVal].properties[key].const !== undefined
                             || isObject(value)
+                            || ((() => {
+                                const newSelectSchema = retrieveSchema(
+                                    props.selectList[newVal],
+                                    props.rootSchema
+                                );
+
+                                return newSelectSchema.properties[key]?.const !== undefined;
+                            })())
                         )
                     ) {
                         // 这里没找到一个比较合理的新旧值合并方式
