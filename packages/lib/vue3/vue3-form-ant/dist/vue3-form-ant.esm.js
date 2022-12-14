@@ -10010,7 +10010,7 @@ var Widget = {
       // 判断是否为根节点
       var isRootNode = isRootNodePath(props.curNodePath);
       var isMiniDes = props.formProps && props.formProps.isMiniDes;
-      var miniDesModel = isMiniDes || props.globalOptions.HELPERS.isMiniDes(props.formProps);
+      var miniDesModel = isMiniDes;
       var descriptionVNode = props.description ? h('div', {
         innerHTML: props.description,
         class: {

@@ -178,7 +178,7 @@ export default {
             const isRootNode = isRootNodePath(props.curNodePath);
 
             const isMiniDes = props.formProps && props.formProps.isMiniDes;
-            const miniDesModel = isMiniDes || props.globalOptions.HELPERS.isMiniDes(props.formProps);
+            const miniDesModel = isMiniDes;
 
             const descriptionVNode = (props.description) ? h(
                 'div',
