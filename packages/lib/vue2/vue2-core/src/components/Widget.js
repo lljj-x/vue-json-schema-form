@@ -178,7 +178,6 @@ export default {
         const isRootNode = isRootNodePath(curNodePath);
 
         const isMiniDes = self.formProps && self.formProps.isMiniDes;
-        const miniDesModel = isMiniDes || self.globalOptions.HELPERS.isMiniDes(self.formProps);
 
         const descriptionVNode = (self.description) ? h(
             'div',
@@ -188,14 +187,14 @@ export default {
                 },
                 class: {
                     genFromWidget_des: true,
-                    genFromWidget_des_mini: miniDesModel
+                    genFromWidget_des_mini: isMiniDes
                 }
             },
         ) : null;
 
         const { COMPONENT_MAP } = self.globalOptions;
 
-        const miniDescriptionVNode = (miniDesModel && descriptionVNode) ? h(COMPONENT_MAP.popover, {
+        const miniDescriptionVNode = (isMiniDes && descriptionVNode) ? h(COMPONENT_MAP.popover, {
             style: {
                 margin: '0 2px',
                 fontSize: '16px',
@@ -302,7 +301,7 @@ export default {
 
                 // description
                 // 非mini模式显示 description
-                !miniDesModel ? descriptionVNode : null,
+                !isMiniDes ? descriptionVNode : null,
                 h( // 关键输入组件
                     self.widget,
                     {

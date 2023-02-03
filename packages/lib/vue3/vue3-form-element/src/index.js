@@ -48,9 +48,9 @@ const globalOptions = {
     },
     HELPERS: {
         // 是否mini显示 description
-        isMiniDes(formProps) {
-            return formProps && ['left', 'right'].includes(formProps.labelPosition);
-        }
+        // isMiniDes(formProps) {
+        //     return formProps && ['left', 'right'].includes(formProps.labelPosition);
+        // }
     }
 };
 
