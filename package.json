@@ -7,7 +7,8 @@
     "workspaces": [
         "packages/lib/**",
         "packages/docs",
-        "packages/demo/**"
+        "packages/demo/**",
+        "packages/test"
     ],
     "scripts": {
         "docs:dev": "yarn workspace docs dev",
