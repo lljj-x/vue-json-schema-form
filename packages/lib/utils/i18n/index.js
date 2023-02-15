@@ -8,6 +8,8 @@
 
 import localizeZh from './localize/zh';
 
+
+
 export default {
     $$currentLocalizeFn: localizeZh,
     getCurrentLocalize() {
