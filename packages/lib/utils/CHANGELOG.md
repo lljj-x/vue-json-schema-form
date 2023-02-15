@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.14.2...v1.15.0) (2023-02-15)
+
+
+### Features
+
+* **utils:** update 测试version changelog ([8f1d0ad](https://github.com/lljj-x/vue-json-schema-form/commit/8f1d0ad9a24e0c6c8f83231aa8f7134d83b61e0e))
+* **utils:** 升级了xx 组件支持xx ([38d0432](https://github.com/lljj-x/vue-json-schema-form/commit/38d0432f74466f02fd7193e179682af7bd00cb21))
+
+
+
+
+
 # [1.14.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.13.1...v1.14.0) (2022-08-07)
 
 
