@@ -1,0 +1,11 @@
+{
+    "name": "test",
+    "version": "1.15.0",
+    "private": true,
+    "license": "Apache-2.0",
+    "scripts": {
+        "dev": "vuepress dev docs",
+        "dev:debug": "vuepress dev docs --no-cache --debug",
+        "build": "vuepress build docs"
+    }
+}

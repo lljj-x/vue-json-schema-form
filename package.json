@@ -34,7 +34,8 @@
         "packages:build": "lerna run --stream --sort build",
         "publish1": "yarn run lib:build && lerna publish",
         "autoPublish": "lerna publish --conventional-commits --yes",
-        "autoVersion": "lerna version --conventional-commits --yes"
+        "autoVersion": "lerna version --conventional-commits --yes",
+        "p": "run newVersion && run build &&  && pusblish"
     },
     "config": {
         "commitizen": {
