@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.15.0...v1.16.0) (2023-02-15)
+
+
+### Features
+
+* **test:** update 测试version changelog ([749de57](https://github.com/lljj-x/vue-json-schema-form/commit/749de57c42b77bf7b8110d5b7236d85ef4334ca4))
+* **test:** 添加一个测试包 ([f2f0085](https://github.com/lljj-x/vue-json-schema-form/commit/f2f008512b78e1a856018e724543d0197ecbc957))
+
+
+
+
+
 # [1.15.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.14.2...v1.15.0) (2023-02-15)
 
 
