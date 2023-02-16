@@ -896,10 +896,11 @@
         }
       }
     }),
-    HELPERS: {// 是否mini显示 description
-      // isMiniDes(formProps) {
-      //     return formProps && ['left', 'right'].includes(formProps.labelPosition);
-      // }
+    HELPERS: {
+      // 是否mini显示 description
+      isMiniDes: function isMiniDes(formProps) {
+        return formProps && ['left', 'right'].includes(formProps.labelPosition);
+      }
     }
   });
   var JsonSchemaFormIview3 = createVue2Core__default['default'](globalOptions); // 存在Vue 全局变量默认注册 VueForm 组件

@@ -670,13 +670,11 @@ var globalOptions = {
       }
     })
   },
-  HELPERS: {// 是否mini显示 description
-    // isMiniDes(formProps) {
-    //     return formProps && (
-    //         ['left', 'right'].includes(formProps.labelPosition)
-    //         || formProps.layout === 'horizontal' || formProps.inline === true
-    //     );
-    // }
+  HELPERS: {
+    // 是否mini显示 description
+    isMiniDes: function isMiniDes(formProps) {
+      return formProps && (['left', 'right'].includes(formProps.labelPosition) || formProps.layout === 'horizontal' || formProps.inline === true);
+    }
   }
 };
 var JsonSchemaForm = createVue3Core(globalOptions);
