@@ -1,4 +1,4 @@
-/** @license @lljj/vue3-form-element (c) 2020-2022 Liu.Jun License: Apache-2.0 */
+/** @license @lljj/vue3-form-element (c) 2020-2023 Liu.Jun License: Apache-2.0 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('vue')) :
   typeof define === 'function' && define.amd ? define(['exports', 'vue'], factory) :
@@ -10060,7 +10060,7 @@
         // 判断是否为根节点
         var isRootNode = isRootNodePath(props.curNodePath);
         var isMiniDes = props.formProps && props.formProps.isMiniDes;
-        var miniDesModel = isMiniDes || props.globalOptions.HELPERS.isMiniDes(props.formProps);
+        var miniDesModel = isMiniDes !== null && isMiniDes !== void 0 ? isMiniDes : props.globalOptions.HELPERS.isMiniDes(props.formProps);
         var descriptionVNode = props.description ? Vue.h('div', {
           innerHTML: props.description,
           class: {

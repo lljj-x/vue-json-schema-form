@@ -1,4 +1,4 @@
-/** @license @lljj/vue3-form-ant (c) 2020-2022 Liu.Jun License: Apache-2.0 */
+/** @license @lljj/vue3-form-ant (c) 2020-2023 Liu.Jun License: Apache-2.0 */
 import { resolveComponent as resolveComponent$1, defineComponent, h, openBlock, createBlock, toDisplayString, createCommentVNode, createVNode, renderSlot, inject, computed, ref as ref$1, watch, toRaw, getCurrentInstance, toRef, provide, onMounted } from 'vue';
 
 function _typeof(obj) {
@@ -10010,7 +10010,7 @@ var Widget = {
       // 判断是否为根节点
       var isRootNode = isRootNodePath(props.curNodePath);
       var isMiniDes = props.formProps && props.formProps.isMiniDes;
-      var miniDesModel = isMiniDes || props.globalOptions.HELPERS.isMiniDes(props.formProps);
+      var miniDesModel = isMiniDes !== null && isMiniDes !== void 0 ? isMiniDes : props.globalOptions.HELPERS.isMiniDes(props.formProps);
       var descriptionVNode = props.description ? h('div', {
         innerHTML: props.description,
         class: {

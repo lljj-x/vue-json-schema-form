@@ -1,4 +1,4 @@
-/** @license @lljj/vue-json-schema-form (c) 2020-2022 Liu.Jun License: Apache-2.0 */
+/** @license @lljj/vue-json-schema-form (c) 2020-2023 Liu.Jun License: Apache-2.0 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('vue')) :
   typeof define === 'function' && define.amd ? define(['exports', 'vue'], factory) :
@@ -10268,7 +10268,7 @@
 
       var isRootNode = isRootNodePath(curNodePath);
       var isMiniDes = self.formProps && self.formProps.isMiniDes;
-      var miniDesModel = isMiniDes || self.globalOptions.HELPERS.isMiniDes(self.formProps);
+      var miniDesModel = isMiniDes !== null && isMiniDes !== void 0 ? isMiniDes : self.globalOptions.HELPERS.isMiniDes(self.formProps);
       var descriptionVNode = self.description ? h('div', {
         domProps: {
           innerHTML: self.description
