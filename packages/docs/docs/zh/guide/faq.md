@@ -1,5 +1,11 @@
 # 常见问题
 
+## Vue2、Vue3 提示相关的ui组件找不到
+* https://github.com/lljj-x/vue-json-schema-form/issues/169
+* https://github.com/lljj-x/vue-json-schema-form/issues/268
+
+vue2 注册全局组件，或者vue3注册当前app实例公共组件
+
 ## select筛选框的值可以动态配置吗
 
 * 基于 JsonSchema 的方案，配置 `enum` 和 `enumNames` 动态更新即可， schema原本也为响应式数据

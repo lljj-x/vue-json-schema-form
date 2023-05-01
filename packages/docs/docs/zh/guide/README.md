@@ -19,6 +19,7 @@
 
 ### @lljj/vue-json-schema-form
 * 适配ui库：`Vue2` `ElementUi`
+  * 注意需要全局注册Element相关组件，也可根据控制台提示按需use
 * package name: `@lljj/vue-json-schema-form`
 * umd cdn地址：[@lljj/vue-json-schema-form cdn](https://npm.elemecdn.com/@lljj/vue-json-schema-form/dist/vueJsonSchemaForm.umd.min.js)
 * umd script 标签形式引入暴露全局变量 `window.vueJsonSchemaForm`，`window.vueJsonSchemaForm.default` 暴露组件，同时会注册 `VueForm` 全局组件
@@ -26,6 +27,7 @@
 
 ### @lljj/vue2-form-iview3
 * 适配ui库：`Vue2` `iview3`
+  * 注意需要全局注册 iview3 相关组件，也可根据控制台提示按需use
 * package name: `@lljj/vue2-form-iview3`
 * umd cdn地址：[@lljj/vue2-form-iview3 cdn](https://npm.elemecdn.com/@lljj/vue2-form-iview3/dist/vue2-form-iview3.umd.min.js)
 * umd script 标签形式引入暴露全局变量 `window.vue2FormIview3`，`window.vue2FormIview3.default` 暴露组件，同时会注册 `vue2FormIview3` 全局组件
@@ -33,13 +35,15 @@
 
 ### @lljj/vue3-form-element
 * 适配ui库：`Vue3` `ElementPlus`
+    * 注意需要全局注册 ElementPlus 相关组件，也可根据控制台提示按需use
 * package name : `@lljj/vue3-form-element`
 * umd cdn地址：[@lljj/vue3-form-element cdn](https://npm.elemecdn.com/@lljj/vue3-form-element/dist/vue3-form-element.umd.min.js)
 * umd script 标签形式引入暴露全局变量 `window.vue3FormElement`，`window.vue3FormElement.default` 暴露组件
 * [playground](https://form.lljj.me/v3/#/demo?type=Simple)
 
 ### @lljj/vue3-form-naive
-* 适配ui库：`Vue3` `antdv`
+* 适配ui库：`Vue3` `naive`
+  * 注意需要全局注册 vue3 naive 相关组件，也可根据控制台提示按需use
 * package name : `@lljj/vue3-form-naive`
 * umd cdn地址：[@lljj/vue3-form-naive cdn](https://npm.elemecdn.com/@lljj/vue3-form-naive/dist/vue3-form-naive.umd.min.js)
 * umd script 标签形式引入暴露全局变量 `window.vue3FormNaive`，`window.vue3FormNaive.default` 暴露组件
@@ -47,6 +51,7 @@
 
 ### @lljj/vue3-form-ant
 * 适配ui库：`Vue3` `antdv`
+    * 注意需要全局注册 vue3 antdv 相关组件，也可根据控制台提示按需use
 * package name : `@lljj/vue3-form-ant`
 * umd cdn地址：[@lljj/vue3-form-ant cdn](https://npm.elemecdn.com/@lljj/vue3-form-ant/dist/vue3-form-ant.umd.min.js)
 * umd script 标签形式引入暴露全局变量 `window.vue3FormAnt`，`window.vue3FormAnt.default` 暴露组件
