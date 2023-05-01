@@ -8,7 +8,7 @@ import { allowAdditionalItems, getUiOptions, replaceArrayIndex } from '@lljj/vjs
 import getDefaultFormState from '@lljj/vjsf-utils/schema/getDefaultFormState';
 import { computedCurPath } from '@lljj/vjsf-utils/vue3Utils';
 import { cutOff } from '@lljj/vjsf-utils/arrayUtils';
-import FieldGroupWrap from '@lljj/vjsf-utils/components/FieldGroupWrap';
+import FieldGroupWrap from '@lljj/vjsf-utils/components/FieldGroupWrap.vue';
 import vueProps from '../../props';
 
 import SchemaField from '../../SchemaField';

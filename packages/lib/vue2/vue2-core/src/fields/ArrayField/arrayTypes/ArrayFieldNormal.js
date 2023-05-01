@@ -5,7 +5,7 @@
 import { computedCurPath } from '@lljj/vjsf-utils/vueUtils';
 import { getUiOptions, replaceArrayIndex } from '@lljj/vjsf-utils/formUtils';
 
-import FieldGroupWrap from '@lljj/vjsf-utils/components/FieldGroupWrap';
+import FieldGroupWrap from '@lljj/vjsf-utils/components/FieldGroupWrap.vue';
 import SchemaField from '../../SchemaField';
 import ArrayOrderList from '../components/ArrayOrderList';
 
