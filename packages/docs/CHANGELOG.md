@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.14.2...v1.15.0) (2023-05-01)
+
+
+### Features
+
+* **lib:** 支持配置 formProps.popover 透传给ui组件 popover ([4c7cc51](https://github.com/lljj-x/vue-json-schema-form/commit/4c7cc51c7c094e6280b3bcd9b3164dac075de6f1)), closes [#269](https://github.com/lljj-x/vue-json-schema-form/issues/269)
+
+
+
+
+
 ## [1.14.2](https://github.com/lljj-x/vue-json-schema-form/compare/v1.14.1...v1.14.2) (2022-12-12)
 
 **Note:** Version bump only for package docs
