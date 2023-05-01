@@ -8509,7 +8509,8 @@ function getUiField(FIELDS_MAP, _ref3) {
   } // 不支持的类型
 
 
-  throw new Error("\u4E0D\u652F\u6301\u7684field\u7C7B\u578B ".concat(schema.type));
+  console.error('当前schema:', schema);
+  throw new Error("\u4E0D\u652F\u6301\u7684field\u7C7B\u578B, type: ".concat(schema.type));
 } // 解析用户配置的 uiSchema options
 
 function getUserUiOptions(_ref4) {
@@ -10007,6 +10008,8 @@ var Widget = {
     }
 
     return function () {
+      var _props$formProps;
+
       // 判断是否为根节点
       var isRootNode = isRootNodePath(props.curNodePath);
       var isMiniDes = props.formProps && props.formProps.isMiniDes;
@@ -10019,7 +10022,7 @@ var Widget = {
         }
       }) : null;
       var COMPONENT_MAP = props.globalOptions.COMPONENT_MAP;
-      var miniDescriptionVNode = miniDesModel && descriptionVNode ? h(resolveComponent(COMPONENT_MAP.popover), {
+      var miniDescriptionVNode = miniDesModel && descriptionVNode ? h(resolveComponent(COMPONENT_MAP.popover), _objectSpread2({
         style: {
           margin: '0 2px',
           fontSize: '16px',
@@ -10027,7 +10030,7 @@ var Widget = {
         },
         placement: 'top',
         trigger: 'hover'
-      }, {
+      }, (_props$formProps = props.formProps) === null || _props$formProps === void 0 ? void 0 : _props$formProps.popover), {
         default: function _default() {
           return descriptionVNode;
         },
@@ -11491,7 +11494,8 @@ function createForm() {
             _props$formProps.labelSuffix;
             _props$formProps.isMiniDes;
             _props$formProps.defaultSelectFirstOption;
-            var uiFormProps = _objectWithoutProperties(_props$formProps, ["layoutColumn", "inlineFooter", "labelSuffix", "isMiniDes", "defaultSelectFirstOption"]);
+            _props$formProps.popover;
+            var uiFormProps = _objectWithoutProperties(_props$formProps, ["layoutColumn", "inlineFooter", "labelSuffix", "isMiniDes", "defaultSelectFirstOption", "popover"]);
 
         var _uiFormProps$inline = uiFormProps.inline,
             inline = _uiFormProps$inline === void 0 ? false : _uiFormProps$inline,

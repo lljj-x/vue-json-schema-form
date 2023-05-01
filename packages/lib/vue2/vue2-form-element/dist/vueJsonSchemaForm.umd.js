@@ -8498,7 +8498,8 @@
     } // 不支持的类型
 
 
-    throw new Error("\u4E0D\u652F\u6301\u7684field\u7C7B\u578B ".concat(schema.type));
+    console.error('当前schema:', schema);
+    throw new Error("\u4E0D\u652F\u6301\u7684field\u7C7B\u578B, type: ".concat(schema.type));
   } // 解析用户配置的 uiSchema options
 
   function getUserUiOptions(_ref4) {
@@ -10263,6 +10264,8 @@
       }
     },
     render: function render(h) {
+      var _self$formProps;
+
       var self = this;
       var curNodePath = this.$props.curNodePath; // 判断是否为根节点
 
@@ -10285,10 +10288,10 @@
           fontSize: '16px',
           cursor: 'pointer'
         },
-        props: {
+        props: _objectSpread2({
           placement: 'top',
           trigger: 'hover'
-        }
+        }, (_self$formProps = self.formProps) === null || _self$formProps === void 0 ? void 0 : _self$formProps.popover)
       }, [descriptionVNode, h(__vue_component__$5, {
         slot: 'reference'
       })]) : null; // form-item style
@@ -11837,7 +11840,8 @@
             _self$$props$formProp.labelSuffix;
             _self$$props$formProp.isMiniDes;
             _self$$props$formProp.defaultSelectFirstOption;
-            var uiFormProps = _objectWithoutProperties(_self$$props$formProp, ["layoutColumn", "inlineFooter", "labelSuffix", "isMiniDes", "defaultSelectFirstOption"]);
+            _self$$props$formProp.popover;
+            var uiFormProps = _objectWithoutProperties(_self$$props$formProp, ["layoutColumn", "inlineFooter", "labelSuffix", "isMiniDes", "defaultSelectFirstOption", "popover"]);
 
         var _uiFormProps$inline = uiFormProps.inline,
             inline = _uiFormProps$inline === void 0 ? false : _uiFormProps$inline,
