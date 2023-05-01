@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.14.2...v1.17.0) (2023-05-01)
+
+
+### Features
+
+* update dist文件 ([3960544](https://github.com/lljj-x/vue-json-schema-form/commit/3960544f8e685582652ab25db9b455cca6ddcdaf))
+* 保留isMiniDes的默认逻辑 ([5496040](https://github.com/lljj-x/vue-json-schema-form/commit/5496040927653b051fa56002579b5319023be807))
+* 放开miniDesc模式开关的限制 ([81d1834](https://github.com/lljj-x/vue-json-schema-form/commit/81d18347029b2df959eea701b7f198cc2cdafb83))
+* **is-mini-des:** 放开小图标描述信息的控制开关 ([3581f3c](https://github.com/lljj-x/vue-json-schema-form/commit/3581f3cfa670a6a6aa315b42b7aedfb110aefcfb))
+
+
+
+
+
 # [1.16.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.14.2...v1.16.0) (2023-05-01)
 
 
