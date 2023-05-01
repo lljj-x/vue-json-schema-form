@@ -789,9 +789,7 @@ schema = {
 * 类型：`object`
 `form-props` 支持如下两部分参数：
 
-* 固定参数部分
-
-和当前使用的ui库无关
+1. 固定参数部分 (这部分参数和当前使用的ui库无关)
 ```js
 // 默认值
 formProps = {
@@ -802,11 +800,12 @@ formProps = {
     labelPosition: 'top', // 表单域标签的位置
     isMiniDes: false, // 是否优先mini形式显示描述信息（label文字和描述信息同行显示）
     defaultSelectFirstOption: true, // 单选框必填，是否默认选中第一个
+    popover: {}, // 透传给ui 组件库的popver组件，比如element ui Popover，antd a-popover
 }
 ```
 
-* 当前ui库form组件的参数
-如上固定参数以外的参数，都会传给当前ui库的form组件，比如elementUi el-form、IView i-form ...
+2. 当前ui库form组件的参数
+如上固定参数以外的参数，都会透传给当前ui库的form组件，比如elementUi el-form、IView i-form ...
 ```js
 formProps = {
     layoutColumn: 2, // 1 2 3 ，支持 1 2 3 列布局，如果使用inline表单这里配置无效
