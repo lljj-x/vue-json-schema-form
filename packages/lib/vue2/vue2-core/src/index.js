@@ -142,7 +142,7 @@ export default function createForm(globalOptions = {}) {
 
             const {
                 // eslint-disable-next-line no-unused-vars
-                layoutColumn = 1, inlineFooter, labelSuffix, isMiniDes, defaultSelectFirstOption, ...uiFormProps
+                layoutColumn = 1, inlineFooter, labelSuffix, isMiniDes, defaultSelectFirstOption, popover, ...uiFormProps
             } = self.$props.formProps;
 
             const { inline = false, labelPosition = 'top' } = uiFormProps;

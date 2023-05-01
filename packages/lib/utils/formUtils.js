@@ -99,7 +99,8 @@ export function getUiField(FIELDS_MAP, {
     }
 
     // 不支持的类型
-    throw new Error(`不支持的field类型 ${schema.type}`);
+    console.error('当前schema:', schema);
+    throw new Error(`不支持的field类型, type: ${schema.type}`);
 }
 
 // 解析用户配置的 uiSchema options

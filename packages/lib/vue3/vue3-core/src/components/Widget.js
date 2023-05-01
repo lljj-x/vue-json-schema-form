@@ -198,7 +198,8 @@ export default {
                     cursor: 'pointer'
                 },
                 placement: 'top',
-                trigger: 'hover'
+                trigger: 'hover',
+                ...props.formProps?.popover
             }, {
                 default: () => descriptionVNode,
                 reference: () => h(IconQuestion)

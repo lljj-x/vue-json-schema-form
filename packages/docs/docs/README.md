@@ -17,7 +17,7 @@ actionLink: /zh/guide/
 ``` bash
 # 安装
 # vue2+elementUi 版本
-npm install --save @lljj/vue-json-schema-form
+npm install --save @lljj/vue-json-schema-form element-ui
 
 # 或者：
 yarn add @lljj/vue-json-schema-form
@@ -36,6 +36,11 @@ yarn add @lljj/vue-json-schema-form
 <script >
 //  使用
 import VueForm from '@lljj/vue-json-schema-form';
+import Vue from 'vue';
+import ElementUI from 'element-ui';
+
+// 需要配置element全局组件，也可以按需use component
+Vue.use(ElementUI);
 
 export default {
     name: 'Demo',

@@ -202,7 +202,8 @@ export default {
             },
             props: {
                 placement: 'top',
-                trigger: 'hover'
+                trigger: 'hover',
+                ...self.formProps?.popover
             }
         }, [
             descriptionVNode,
