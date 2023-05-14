@@ -1,6 +1,6 @@
 {
     "name": "@lljj/vue3-form-naive",
-    "version": "1.17.0",
+    "version": "1.17.1",
     "description": "基于 Vue3 、Naive、JsonSchema快速构建一个带完整校验的form表单",
     "main": "dist/vue3-form-naive.umd.min.js",
     "module": "dist/vue3-form-naive.esm.min.js",
@@ -16,8 +16,8 @@
         "jsonSchema"
     ],
     "dependencies": {
-        "@lljj/vjsf-utils": "1.17.0",
-        "@lljj/vue3-form-core": "1.17.0"
+        "@lljj/vjsf-utils": "1.17.1",
+        "@lljj/vue3-form-core": "1.17.1"
     },
     "typings": "types/index.d.ts",
     "files": [

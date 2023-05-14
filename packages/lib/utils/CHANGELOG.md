@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.1](https://github.com/lljj-x/vue-json-schema-form/compare/v1.17.0...v1.17.1) (2023-05-14)
+
+
+### Bug Fixes
+
+* **lib:** 优化默认formData 计算逻辑，覆盖无效数据 ([f650884](https://github.com/lljj-x/vue-json-schema-form/commit/f650884ff0b454e423521d7bf41f17e1fc2de9a0)), closes [#299](https://github.com/lljj-x/vue-json-schema-form/issues/299)
+
+
+
+
+
 # [1.17.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.14.2...v1.17.0) (2023-05-01)
 
 **Note:** Version bump only for package @lljj/vjsf-utils
