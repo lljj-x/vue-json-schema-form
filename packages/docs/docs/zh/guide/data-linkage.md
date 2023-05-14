@@ -67,7 +67,8 @@ export default {
                                         'ui:widget': 'HiddenWidget',
                                         title: '类型',
                                         type: 'string',
-                                        default: 'userInfo'
+                                        default: 'userInfo',
+                                        const: 'userInfo'
                                     },
                                     firstName: {
                                         type: 'string',
@@ -88,7 +89,8 @@ export default {
                                         'ui:widget': 'HiddenWidget',
                                         title: '类型',
                                         type: 'string',
-                                        default: 'userId'
+                                        default: 'userId',
+                                        const: 'userId'
                                     },
                                     idCode: {
                                         type: 'string',
