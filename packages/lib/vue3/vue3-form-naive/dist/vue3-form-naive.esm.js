@@ -9209,7 +9209,8 @@ var validate$2 = /*#__PURE__*/Object.freeze({
 function mergeDefaultsWithFormData(defaults, formData) {
   if (Array.isArray(formData)) {
     if (!Array.isArray(defaults)) {
-      defaults = [];
+      console.warn('无效的formData，已覆盖数据', formData);
+      return defaults;
     }
 
     return formData.map(function (value, idx) {
