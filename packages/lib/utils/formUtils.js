@@ -1,5 +1,5 @@
 import retrieveSchema from './schema/retriev';
-import { getPathVal } from './vueUtils';
+import { getPathVal } from './vueCommonUtils';
 
 import { getSchemaType, isObject } from './utils';
 
