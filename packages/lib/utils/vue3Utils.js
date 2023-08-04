@@ -3,10 +3,9 @@
  */
 
 import { defineComponent, h, resolveComponent as _resolveComponent } from 'vue';
-import { pathSeparator } from './vueCommonUtils';
 
 export {
-    nodePath2ClassName, isRootNodePath, computedCurPath, getPathVal, path2prop
+    nodePath2ClassName, isRootNodePath, computedCurPath, getPathVal, path2prop, pathSeparator
 } from './vueCommonUtils';
 
 // 删除当前path值
