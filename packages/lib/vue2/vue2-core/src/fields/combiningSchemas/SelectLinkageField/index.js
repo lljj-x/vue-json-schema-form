@@ -15,7 +15,7 @@ import {
 
 import retrieveSchema from '@lljj/vjsf-utils/schema/retriev';
 import getDefaultFormState from '@lljj/vjsf-utils/schema/getDefaultFormState';
-import { getMatchingOption } from '@lljj/vjsf-utils/schema/validate';
+import { getMatchingOption, isValid } from '@lljj/vjsf-utils/schema/validate';
 
 import vueProps from '../../props';
 import Widget from '../../../components/Widget';
@@ -165,7 +165,14 @@ export default {
                     }
                 });
             } else {
-                setPathVal(this.rootFormData, this.curNodePath, newOptionData === undefined ? curFormData : newOptionData);
+                setPathVal(
+                    this.rootFormData,
+                    this.curNodePath,
+                    (newOptionData === undefined && isValid(retrieveSchema(
+                        this.selectList[newVal],
+                        this.rootSchema
+                    ), curFormData)) ? curFormData : newOptionData
+                );
             }
 
             // 可添加一个配置通知外部这里变更
