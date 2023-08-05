@@ -17,7 +17,7 @@ import {
 
 import retrieveSchema from '@lljj/vjsf-utils/schema/retriev';
 import getDefaultFormState from '@lljj/vjsf-utils/schema/getDefaultFormState';
-import { getMatchingOption } from '@lljj/vjsf-utils/schema/validate';
+import { getMatchingOption, isValid } from '@lljj/vjsf-utils/schema/validate';
 
 import vueProps from '../../props';
 import Widget from '../../../components/Widget';
@@ -160,7 +160,14 @@ export default {
                     }
                 });
             } else {
-                setPathVal(props.rootFormData, props.curNodePath, newOptionData === undefined ? curFormData : newOptionData);
+                setPathVal(
+                    props.rootFormData,
+                    props.curNodePath,
+                    (newOptionData === undefined && isValid(retrieveSchema(
+                        props.selectList[newVal],
+                        props.rootSchema
+                    ), curFormData)) ? curFormData : newOptionData
+                );
             }
         });
 

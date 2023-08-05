@@ -255,7 +255,11 @@ export default {
                                         required: self.required,
                                         propPath: path2prop(curNodePath)
                                     });
-                                    if (errors.length > 0) return callback(errors[0].message);
+                                    if (errors.length > 0) {
+                                        const errMsg = errors[0].message;
+                                        if (callback) callback(errMsg);
+                                        return Promise.reject(errMsg);
+                                    }
 
                                     // customRule 如果存在自定义校验
                                     const curCustomRule = self.$props.customRule;
@@ -268,7 +272,8 @@ export default {
                                         });
                                     }
 
-                                    return callback();
+                                    if (callback) return callback();
+                                    return Promise.resolve();
                                 },
                                 trigger: 'change'
                             }

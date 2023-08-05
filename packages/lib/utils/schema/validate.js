@@ -305,7 +305,7 @@ export function getMatchingIndex(formData, options, rootSchema, haveAllFields = 
             if (isValid(augmentedSchema, formData)) {
                 return i;
             }
-        } else if (isValid(options[i], formData)) {
+        } else if (isValid(option, formData)) {
             return i;
         }
     }
