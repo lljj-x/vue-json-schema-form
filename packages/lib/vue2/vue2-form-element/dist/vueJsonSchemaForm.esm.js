@@ -9132,7 +9132,7 @@ function getMatchingIndex(formData, options, rootSchema) {
       if (isValid(augmentedSchema, formData)) {
         return i;
       }
-    } else if (isValid(options[i], formData)) {
+    } else if (isValid(option, formData)) {
       return i;
     }
   } // 尝试查找const 配置
@@ -10321,7 +10321,13 @@ var Widget = {
               required: self.required,
               propPath: path2prop(curNodePath)
             });
-            if (errors.length > 0) return callback(errors[0].message); // customRule 如果存在自定义校验
+
+            if (errors.length > 0) {
+              var errMsg = errors[0].message;
+              if (callback) callback(errMsg);
+              return Promise.reject(errMsg);
+            } // customRule 如果存在自定义校验
+
 
             var curCustomRule = self.$props.customRule;
 
@@ -10334,7 +10340,8 @@ var Widget = {
               });
             }
 
-            return callback();
+            if (callback) return callback();
+            return Promise.resolve();
           },
           trigger: 'change'
         }]
@@ -11459,7 +11466,7 @@ var SelectLinkageField = {
           }
         });
       } else {
-        setPathVal(this.rootFormData, this.curNodePath, newOptionData === undefined ? curFormData : newOptionData);
+        setPathVal(this.rootFormData, this.curNodePath, newOptionData === undefined && isValid(retrieveSchema(this.selectList[newVal], this.rootSchema), curFormData) ? curFormData : newOptionData);
       } // 可添加一个配置通知外部这里变更
       // todo: onChangeOption
 

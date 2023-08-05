@@ -9201,7 +9201,7 @@
         if (isValid(augmentedSchema, formData)) {
           return i;
         }
-      } else if (isValid(options[i], formData)) {
+      } else if (isValid(option, formData)) {
         return i;
       }
     } // 尝试查找const 配置
@@ -11197,7 +11197,7 @@
             }
           });
         } else {
-          setPathVal(props.rootFormData, props.curNodePath, newOptionData === undefined ? curFormData : newOptionData);
+          setPathVal(props.rootFormData, props.curNodePath, newOptionData === undefined && isValid(retrieveSchema(props.selectList[newVal], props.rootSchema), curFormData) ? curFormData : newOptionData);
         }
       });
       return function () {
