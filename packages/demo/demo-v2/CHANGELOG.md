@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.17.1...v1.18.0) (2023-08-05)
+
+**Note:** Version bump only for package demo
+
+
+
+
+
 ## [1.17.1](https://github.com/lljj-x/vue-json-schema-form/compare/v1.17.0...v1.17.1) (2023-05-14)
 
 **Note:** Version bump only for package demo

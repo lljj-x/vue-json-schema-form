@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.17.1...v1.18.0) (2023-08-05)
+
+
+### Bug Fixes
+
+* **lib:** 修复 match anyOf option未重新retrieve schema 导致无法正确match index的问题 ([44dd77b](https://github.com/lljj-x/vue-json-schema-form/commit/44dd77bd44b2009aac43b57786a8701c4e8c1abc)), closes [#317](https://github.com/lljj-x/vue-json-schema-form/issues/317)
+
+
+
+
+
 ## [1.17.1](https://github.com/lljj-x/vue-json-schema-form/compare/v1.17.0...v1.17.1) (2023-05-14)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.17.1...v1.18.0) (2023-08-05)
+
+
+### Bug Fixes
+
+* **lib:** 修复 anyOf index change 旧值不匹配不会移除的问题 ([22c658a](https://github.com/lljj-x/vue-json-schema-form/commit/22c658a14a4a4bce8b2d50635bef19738ffbd9b4))
+
+
+### Features
+
+* **lib:** vue2版本 formItem 默认支持promise 形式 ([6e48d27](https://github.com/lljj-x/vue-json-schema-form/commit/6e48d277ea3c95a36e56ac166e4c75cf7e920b3d)), closes [#316](https://github.com/lljj-x/vue-json-schema-form/issues/316)
+
+
+
+
+
 ## [1.17.1](https://github.com/lljj-x/vue-json-schema-form/compare/v1.17.0...v1.17.1) (2023-05-14)
 
 **Note:** Version bump only for package @lljj/vue2-form-core
