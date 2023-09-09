@@ -4,7 +4,7 @@
 
 import Vue from 'vue';
 
-export {
+import {
     nodePath2ClassName, isRootNodePath, computedCurPath, getPathVal, path2prop, pathSeparator
 } from './vueCommonUtils';
 
@@ -27,3 +27,7 @@ export function setPathVal(obj, path, value) {
         obj = obj[pathArr[i]];
     }
 }
+
+export {
+    nodePath2ClassName, isRootNodePath, computedCurPath, getPathVal, path2prop, pathSeparator
+};
