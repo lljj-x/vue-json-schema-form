@@ -5,11 +5,8 @@
 import { defineComponent, h, resolveComponent as _resolveComponent } from 'vue';
 
 export {
-    nodePath2ClassName, isRootNodePath, computedCurPath, getPathVal, path2prop
-} from './vueUtils';
-
-// 内部使用 . ，配置数据key不能出现.
-const pathSeparator = '.';
+    nodePath2ClassName, isRootNodePath, computedCurPath, getPathVal, path2prop, pathSeparator
+} from './vueCommonUtils';
 
 // 删除当前path值
 export function deletePathVal(vueData, name) {
