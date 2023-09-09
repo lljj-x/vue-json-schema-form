@@ -4,7 +4,7 @@
 
 import { defineComponent, h, resolveComponent as _resolveComponent } from 'vue';
 
-export {
+import {
     nodePath2ClassName, isRootNodePath, computedCurPath, getPathVal, path2prop, pathSeparator
 } from './vueCommonUtils';
 
@@ -54,3 +54,7 @@ export const modelValueComponent = (component, {
         };
     }
 });
+
+export {
+    nodePath2ClassName, isRootNodePath, computedCurPath, getPathVal, path2prop, pathSeparator
+};
