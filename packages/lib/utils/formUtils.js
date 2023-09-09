@@ -233,6 +233,7 @@ export function getWidgetConfig({
         renderScopedSlots,
         renderChildren,
         onChange,
+        required: uiRequired,
         ...uiProps
     } = uiOptions;
 
@@ -254,7 +255,8 @@ export function getWidgetConfig({
         renderChildren,
         onChange,
         widgetListeners,
-        uiProps
+        uiProps,
+        uiRequired
     };
 }
 
