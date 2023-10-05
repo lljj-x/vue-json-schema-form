@@ -32,4 +32,15 @@
     .ant-form-item-label > label.ant-form-item-no-colon::after {
         display: none;
     }
+
+
+    /* validateWidget 单独的校验不属于输入框的*/
+    .validateWidget>.ant-form-item{
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+        .formItemErrorBox {
+            padding: 5px 0;
+            position: relative;
+        }
+    }
 }

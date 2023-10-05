@@ -228,14 +228,15 @@ import schemaTypes from 'demo-common/schemaTypes';
 const VueElementForm = defineAsyncComponent(() => import('@lljj/vue3-form-element'));
 
 let installedAntdv = false;
-const VueAntForm = defineAsyncComponent(async () => {
+
+const VueAntForms = (async () => {
     // eslint-disable-next-line no-unused-vars
     const [antdv, antForm] = await Promise.all([
         import('demo-common/components/Antdv/index.js'),
         import('@lljj/vue3-form-ant')
     ]);
 
-    return {
+    const antdFormGenerator = (formProperty = 'default') => ({
         name: 'antFormWrap',
         setup(props, { attrs, slots }) {
             // hack 动态install antDv，因为我不知其它地方如何获取 vue app
@@ -245,12 +246,20 @@ const VueAntForm = defineAsyncComponent(async () => {
                 installedAntdv = true;
             }
 
-            return () => h(antForm.default, {
+            return () => h(antForm[formProperty], {
                 ...attrs
             }, slots);
         }
+    });
+
+    return {
+        v3: antdFormGenerator('default'),
+        v4: antdFormGenerator('JsonSchemaFormAntdV4')
     };
-});
+})();
+
+const VueAntForm = defineAsyncComponent(() => VueAntForms.then(res => res.v3));
+const VueAntFormV4 = defineAsyncComponent(() => VueAntForms.then(res => res.v4));
 
 let installedNaive = false;
 const VueNaiveForm = defineAsyncComponent(async () => {
@@ -285,6 +294,7 @@ export default {
         CodeEditor,
         VueElementForm,
         VueAntForm,
+        VueAntFormV4,
         VueNaiveForm,
         EditorHeader
     },
@@ -299,6 +309,9 @@ export default {
             }, {
                 name: 'Antdv',
                 component: 'VueAntForm'
+            }, {
+                name: 'Antdv（特殊适配antd4，未完整测试）',
+                component: 'VueAntFormV4'
             }, {
                 name: 'Naive',
                 component: 'VueNaiveForm'
@@ -315,7 +328,7 @@ export default {
             return this.$route.query.type;
         },
         isUseLabelWidth() {
-            return this.curVueForm !== 'VueAntForm';
+            return this.curVueForm !== 'VueAntForm' && this.curVueForm !== 'VueAntFormV4';
         },
         trueFormProps() {
             if (!this.formProps) return {};
@@ -437,7 +450,7 @@ export default {
                     inlineFooter: false,
                     labelColSpan: 6,
                     wrapperColSpan: 16,
-                    layoutColumn: 1,
+                    layoutColumn: 2,
                     // defaultSelectFirstOption: false
                 },
             };
