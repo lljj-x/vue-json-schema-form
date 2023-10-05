@@ -37,7 +37,7 @@ export default {
             minItems: 4,
             maxItems: 8,
             uniqueItems: true,
-            'ui:onArrayOperate': (formData, command, payload) => {
+            'ui:afterArrayOperate': (formData, command, payload) => {
                 debugger;
             },
             items: {

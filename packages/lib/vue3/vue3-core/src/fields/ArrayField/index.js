@@ -10,7 +10,7 @@ import {
 import getDefaultFormState from '@lljj/vjsf-utils/schema/getDefaultFormState';
 
 import {
-    allowAdditionalItems, isFixedItems, isMultiSelect
+    allowAdditionalItems, isFixedItems, isMultiSelect, getUserUiOptions
 } from '@lljj/vjsf-utils/formUtils';
 import { getPathVal, setPathVal } from '@lljj/vjsf-utils/vue3Utils';
 import { genId, lowerCase } from '@lljj/vjsf-utils/utils';
@@ -61,6 +61,14 @@ export default {
             key: formKeys.value[index],
             value: item
         })));
+
+        // 当前节点的ui配置
+        const uiOptions = computed(() => getUserUiOptions({
+            schema: props.schema,
+            uiSchema: props.uiSchema,
+            curNodePath: props.curNodePath,
+            rootFormData: props.rootFormData
+        }));
 
         // 获取一个新item
         const getNewFormDataRow = () => {
@@ -136,6 +144,11 @@ export default {
 
                 // 修改formData数据
                 curStrategy.apply(null, [curFormData.value, formDataPrams]);
+
+                // onArrayOperate
+                if (uiOptions.value.afterArrayOperate) {
+                    this.uiOptions.afterArrayOperate.call(null, curFormData.value, command, data);
+                }
             } else {
                 throw new Error(`错误 - 未知的操作：[${command}]`);
             }
