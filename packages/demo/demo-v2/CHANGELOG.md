@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.18.0...v1.19.0) (2023-10-05)
+
+
+### Features
+
+* **lib:** 支持配置 fui 自定义function ([955308d](https://github.com/lljj-x/vue-json-schema-form/commit/955308d0c13df87ff7cfcefa1ce104af756c29fe)), closes [#323](https://github.com/lljj-x/vue-json-schema-form/issues/323)
+* **lib:** 添加 afterArrayOperate 配置，支持数组操作回调 ([de1068f](https://github.com/lljj-x/vue-json-schema-form/commit/de1068f0fc413a75401fc1989ff4444feb8e0178)), closes [#323](https://github.com/lljj-x/vue-json-schema-form/issues/323)
+
+
+
+
+
 # [1.18.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.17.1...v1.18.0) (2023-08-05)
 
 **Note:** Version bump only for package demo

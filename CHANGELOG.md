@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.18.0...v1.19.0) (2023-10-05)
+
+
+### Bug Fixes
+
+* 合并 from 'vueCommonUtils' ([a42ffb8](https://github.com/lljj-x/vue-json-schema-form/commit/a42ffb8716efa80014085744c9c84f1bdb860738))
+
+
+### Features
+
+* **lib:** 支持antdv 4x 版本 ([90987f0](https://github.com/lljj-x/vue-json-schema-form/commit/90987f07107124ce569dcdaa63c570f557b56f48)), closes [#323](https://github.com/lljj-x/vue-json-schema-form/issues/323)
+* **lib:** 支持配置 fui 自定义function ([955308d](https://github.com/lljj-x/vue-json-schema-form/commit/955308d0c13df87ff7cfcefa1ce104af756c29fe)), closes [#323](https://github.com/lljj-x/vue-json-schema-form/issues/323)
+* **lib:** 支持配置 ui:required ([84adc7f](https://github.com/lljj-x/vue-json-schema-form/commit/84adc7ffeee9a4cb431db5a890a3f2fdc84d75a5)), closes [#175](https://github.com/lljj-x/vue-json-schema-form/issues/175)
+* **lib:** 添加 afterArrayOperate 配置，支持数组操作回调 ([de1068f](https://github.com/lljj-x/vue-json-schema-form/commit/de1068f0fc413a75401fc1989ff4444feb8e0178)), closes [#323](https://github.com/lljj-x/vue-json-schema-form/issues/323)
+* **utils:** 合并公共配置 ([37c051c](https://github.com/lljj-x/vue-json-schema-form/commit/37c051c994e996bf9c3520a605ed558597aad2d0))
+* 分离公共 Vue 工具 js ([80d3f56](https://github.com/lljj-x/vue-json-schema-form/commit/80d3f56596a1557e1e9a2dcbb8e17d4e4a7aa0db))
+
+
+
+
+
 # [1.18.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.17.1...v1.18.0) (2023-08-05)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.18.0...v1.19.0) (2023-10-05)
+
+
+### Features
+
+* **lib:** 支持antdv 4x 版本 ([90987f0](https://github.com/lljj-x/vue-json-schema-form/commit/90987f07107124ce569dcdaa63c570f557b56f48)), closes [#323](https://github.com/lljj-x/vue-json-schema-form/issues/323)
+
+
+
+
+
 # [1.18.0](https://github.com/lljj-x/vue-json-schema-form/compare/v1.17.1...v1.18.0) (2023-08-05)
 
 **Note:** Version bump only for package demo-v3
