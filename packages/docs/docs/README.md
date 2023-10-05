@@ -4,7 +4,7 @@ pageClass: custom-page-home
 heroImage: /logo.png
 heroText: Vue JSON Schema Form
 tagline: 基于 Vue 、JSON Schema 构建form表单，支持Vue3和多Ui框架
-footer: Apache2.0 Licensed | Copyright © 2020-2020 Jun
+footer: Apache2.0 Licensed | Copyright © 2020-2023 Jun
 actionText: 快速开始 →
 actionLink: /zh/guide/
 ---
