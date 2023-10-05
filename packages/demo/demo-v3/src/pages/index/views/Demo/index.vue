@@ -450,7 +450,7 @@ export default {
                     inlineFooter: false,
                     labelColSpan: 6,
                     wrapperColSpan: 16,
-                    layoutColumn: 2,
+                    layoutColumn: 1,
                     // defaultSelectFirstOption: false
                 },
             };
