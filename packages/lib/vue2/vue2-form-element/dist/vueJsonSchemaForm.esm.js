@@ -8322,10 +8322,7 @@ function retrieveSchema(schema) {
   return resolveSchema$1(schema, rootSchema, formData);
 }
 
-/**
- * Created by Liu.Jun on 2020/4/25 14:45.
- */
-
+// 内部使用 . ，配置数据key不能出现.
 var pathSeparator = '.'; // nodePath 转css类名
 
 function nodePath2ClassName(path) {
@@ -8339,26 +8336,6 @@ function isRootNodePath(path) {
 
 function computedCurPath(prePath, curKey) {
   return prePath === '' ? curKey : [prePath, curKey].join(pathSeparator);
-} // 删除当前path值
-
-function deletePathVal(vueData, name) {
-  Vue.delete(vueData, name);
-} // 设置当前path值
-
-function setPathVal(obj, path, value) {
-  // Vue.set ?
-  var pathArr = path.split(pathSeparator);
-
-  for (var i = 0; i < pathArr.length; i += 1) {
-    if (pathArr.length - i < 2) {
-      // 倒数第一个数据
-      // obj[pathArr[pathArr.length - 1]] = value;
-      Vue.set(obj, pathArr[pathArr.length - 1], value);
-      break;
-    }
-
-    obj = obj[pathArr[i]];
-  }
 } // 获取当前path值
 
 function getPathVal$1(obj, path) {
@@ -8377,17 +8354,6 @@ function getPathVal$1(obj, path) {
 function path2prop(path) {
   return path;
 }
-
-var vueUtils = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  nodePath2ClassName: nodePath2ClassName,
-  isRootNodePath: isRootNodePath,
-  computedCurPath: computedCurPath,
-  deletePathVal: deletePathVal,
-  setPathVal: setPathVal,
-  getPathVal: getPathVal$1,
-  path2prop: path2prop
-});
 
 // 这里打破 JSON Schema 规范
 
@@ -8513,11 +8479,19 @@ function getUserUiOptions(_ref4) {
       // ui:hidden需要作为内置属性使用，不能直接透传给widget组件，如果组件需要只能在ui:options 中使用hidden传递
 
 
-      if (key !== 'ui:hidden' && key.indexOf('ui:') === 0) {
-        // 只对 ui:xxx 配置形式支持表达式
-        return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(3), curNodePath === undefined ? value : handleExpression(rootFormData, curNodePath, value, function () {
-          return value;
-        })));
+      if (key !== 'ui:hidden') {
+        // 处理 ui:xxx  参数
+        if (key.indexOf('ui:') === 0) {
+          // 只对 ui:xxx 配置形式支持表达式
+          return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(3), curNodePath === undefined ? value : handleExpression(rootFormData, curNodePath, value, function () {
+            return value;
+          })));
+        } // 处理 fui:xxx 参数，支持所有的options 通过function配置
+
+
+        if (key.indexOf('fui:') === 0) {
+          return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(4), value.call(null, getPathVal$1(rootFormData, curNodePath, 1), rootFormData, curNodePath)));
+        }
       }
 
       return options;
@@ -8624,7 +8598,8 @@ function getWidgetConfig(_ref6) {
       renderScopedSlots = uiOptions.renderScopedSlots,
       renderChildren = uiOptions.renderChildren,
       onChange = uiOptions.onChange,
-      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "widgetListeners", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange"]);
+      uiRequired = uiOptions.required,
+      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "widgetListeners", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange", "required"]);
 
   return {
     widget: widget,
@@ -8644,7 +8619,8 @@ function getWidgetConfig(_ref6) {
     renderChildren: renderChildren,
     onChange: onChange,
     widgetListeners: widgetListeners,
-    uiProps: uiProps
+    uiProps: uiProps,
+    uiRequired: uiRequired
   };
 } // 解析用户配置的 errorSchema options
 
@@ -9534,6 +9510,42 @@ var FormFooter = {
   }
 };
 
+/**
+ * Created by Liu.Jun on 2020/4/25 14:45.
+ */
+
+function deletePathVal(vueData, name) {
+  Vue.delete(vueData, name);
+} // 设置当前path值
+
+function setPathVal(obj, path, value) {
+  // Vue.set ?
+  var pathArr = path.split(pathSeparator);
+
+  for (var i = 0; i < pathArr.length; i += 1) {
+    if (pathArr.length - i < 2) {
+      // 倒数第一个数据
+      // obj[pathArr[pathArr.length - 1]] = value;
+      Vue.set(obj, pathArr[pathArr.length - 1], value);
+      break;
+    }
+
+    obj = obj[pathArr[i]];
+  }
+}
+
+var vueUtils = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  deletePathVal: deletePathVal,
+  setPathVal: setPathVal,
+  nodePath2ClassName: nodePath2ClassName,
+  isRootNodePath: isRootNodePath,
+  computedCurPath: computedCurPath,
+  getPathVal: getPathVal$1,
+  path2prop: path2prop,
+  pathSeparator: pathSeparator
+});
+
 //
 //
 //
@@ -10119,9 +10131,14 @@ var Widget = {
       type: [String, Function, Object],
       default: null
     },
+    // 通过定义的 schema 计算出来的
     required: {
       type: Boolean,
       default: false
+    },
+    // 通过ui schema 配置传递的props
+    uiRequired: {
+      type: Boolean
     },
     // 解决 JSON Schema和实际输入元素中空字符串 required 判定的差异性
     // 元素输入为 '' 使用 emptyValue 的值
@@ -10243,6 +10260,11 @@ var Widget = {
           this.$emit('onOtherDataChange', trueValue);
         }
       }
+    },
+    realRequired: function realRequired() {
+      var _this$uiRequired;
+
+      return (_this$uiRequired = this.uiRequired) !== null && _this$uiRequired !== void 0 ? _this$uiRequired : this.required;
     }
   },
   created: function created() {
@@ -10251,7 +10273,7 @@ var Widget = {
       // array 渲染为多选框时默认为空数组
       if (this.schema.items) {
         this.value = [];
-      } else if (this.required && this.formProps.defaultSelectFirstOption) {
+      } else if (this.realRequired && this.formProps.defaultSelectFirstOption) {
         this.value = this.uiProps.enumOptions[0].value;
       }
     }
@@ -10318,7 +10340,7 @@ var Widget = {
               uiSchema: self.$props.uiSchema,
               customFormats: self.$props.customFormats,
               errorSchema: self.errorSchema,
-              required: self.required,
+              required: self.realRequired,
               propPath: path2prop(curNodePath)
             });
 
@@ -10363,7 +10385,7 @@ var Widget = {
       slot: 'label',
       class: {
         genFormLabel: true,
-        genFormItemRequired: self.required
+        genFormItemRequired: self.realRequired
       }
     }, ["".concat(label), miniDescriptionVNode, "".concat(self.formProps && self.formProps.labelSuffix || '')]) : null, // description
     // 非mini模式显示 description
@@ -11137,6 +11159,19 @@ var ArrayField = {
     };
   },
   computed: {
+    uiOptions: function uiOptions() {
+      var _this$$props = this.$props,
+          schema = _this$$props.schema,
+          uiSchema = _this$$props.uiSchema,
+          rootFormData = _this$$props.rootFormData,
+          curNodePath = _this$$props.curNodePath;
+      return getUserUiOptions({
+        schema: schema,
+        uiSchema: uiSchema,
+        curNodePath: curNodePath,
+        rootFormData: rootFormData
+      });
+    },
     itemsFormData: function itemsFormData() {
       var formKeys = this.$data.formKeys;
       return this.curFormData.map(function (item, index) {
@@ -11163,9 +11198,9 @@ var ArrayField = {
   methods: {
     // 获取当前的值
     getCuFormData: function getCuFormData() {
-      var _this$$props = this.$props,
-          rootFormData = _this$$props.rootFormData,
-          curNodePath = _this$$props.curNodePath;
+      var _this$$props2 = this.$props,
+          rootFormData = _this$$props2.rootFormData,
+          curNodePath = _this$$props2.curNodePath;
       var value = getPathVal$1(rootFormData, curNodePath);
       if (Array.isArray(value)) return value;
       console.error('error: type array，值必须为 array 类型');
@@ -11173,9 +11208,9 @@ var ArrayField = {
     },
     // 获取一个新item
     getNewFormDataRow: function getNewFormDataRow() {
-      var _this$$props2 = this.$props,
-          schema = _this$$props2.schema,
-          rootSchema = _this$$props2.rootSchema;
+      var _this$$props3 = this.$props,
+          schema = _this$$props3.schema,
+          rootSchema = _this$$props3.rootSchema;
       var itemSchema = schema.items; // https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation
       // 数组为项的集合搭配additionalItems属性需要特殊处理
 
@@ -11260,7 +11295,11 @@ var ArrayField = {
 
         curStrategy.apply(this, [this.$data.formKeys, keysParams]); // 修改formData数据
 
-        curStrategy.apply(this, [this.curFormData, formDataPrams]);
+        curStrategy.apply(this, [this.curFormData, formDataPrams]); // onArrayOperate
+
+        if (this.uiOptions.afterArrayOperate) {
+          this.uiOptions.afterArrayOperate.call(null, this.curFormData, command, data);
+        }
       } else {
         throw new Error("\u9519\u8BEF - \u672A\u77E5\u7684\u64CD\u4F5C\uFF1A[".concat(command, "]"));
       }
@@ -11268,13 +11307,13 @@ var ArrayField = {
   },
   render: function render(h) {
     var self = this;
-    var _this$$props3 = this.$props,
-        schema = _this$$props3.schema,
-        uiSchema = _this$$props3.uiSchema,
-        rootSchema = _this$$props3.rootSchema,
-        rootFormData = _this$$props3.rootFormData,
-        curNodePath = _this$$props3.curNodePath,
-        globalOptions = _this$$props3.globalOptions;
+    var _this$$props4 = this.$props,
+        schema = _this$$props4.schema,
+        uiSchema = _this$$props4.uiSchema,
+        rootSchema = _this$$props4.rootSchema,
+        rootFormData = _this$$props4.rootFormData,
+        curNodePath = _this$$props4.curNodePath,
+        globalOptions = _this$$props4.globalOptions;
 
     if (!schema.hasOwnProperty('items')) {
       throw new Error("[".concat(schema, "] \u8BF7\u5148\u5B9A\u4E49 items\u5C5E\u6027"));

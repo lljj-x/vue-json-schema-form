@@ -50,9 +50,15 @@ export default {
             type: [String, Function, Object],
             default: null
         },
+        // 通过定义的 schema 计算出来的
         required: {
             type: Boolean,
             default: false
+        },
+
+        // 通过ui schema 配置传递的props
+        uiRequired: {
+            type: Boolean
         },
         // 解决 JSON Schema和实际输入元素中空字符串 required 判定的差异性
         // 元素输入为 '' 使用 emptyValue 的值
@@ -152,6 +158,9 @@ export default {
                     this.$emit('onOtherDataChange', trueValue);
                 }
             }
+        },
+        realRequired() {
+            return this.uiRequired ?? this.required;
         }
     },
     created() {
@@ -164,7 +173,7 @@ export default {
             // array 渲染为多选框时默认为空数组
             if (this.schema.items) {
                 this.value = [];
-            } else if (this.required && this.formProps.defaultSelectFirstOption) {
+            } else if (this.realRequired && this.formProps.defaultSelectFirstOption) {
                 this.value = this.uiProps.enumOptions[0].value;
             }
         }
@@ -252,7 +261,7 @@ export default {
                                         uiSchema: self.$props.uiSchema,
                                         customFormats: self.$props.customFormats,
                                         errorSchema: self.errorSchema,
-                                        required: self.required,
+                                        required: self.realRequired,
                                         propPath: path2prop(curNodePath)
                                     });
                                     if (errors.length > 0) {
@@ -297,7 +306,7 @@ export default {
                     slot: 'label',
                     class: {
                         genFormLabel: true,
-                        genFormItemRequired: self.required,
+                        genFormItemRequired: self.realRequired,
                     },
                 }, [
                     `${label}`,

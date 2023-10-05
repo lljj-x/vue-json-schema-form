@@ -17,8 +17,11 @@ export default {
         txt: {
             title: '文字',
             type: 'string',
-            'ui:placeholder': '输入你的内容',
-            'err:required': '必须输入标题文字内容'
+            'err:required': '必须输入标题文字内容',
+            'fui:placeholder': (parent, root, prop) => {
+                console.log(parent, root, prop);
+                return parent.txtColor;
+            },
         },
         txtColor: {
             title: '选择文字颜色',

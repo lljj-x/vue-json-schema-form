@@ -145,10 +145,38 @@ const globalOptions = {
 };
 
 const JsonSchemaForm = createVue3Core(globalOptions);
+const JsonSchemaFormAntdV4 = createVue3Core({
+    ...globalOptions,
+    COMPONENT_MAP: {
+        ...globalOptions.COMPONENT_MAP,
+        formItem: defineComponent({
+            inheritAttrs: false,
+            setup(props, { attrs, slots }) {
+                return () => {
+                    const {
+                        style, class: className, ...originAttrs
+                    } = attrs;
+
+                    return h('div', {
+                        style,
+                        class: className
+                    }, [
+                        h(
+                            globalOptions.COMPONENT_MAP.formItem,
+                            originAttrs,
+                            slots
+                        )
+                    ]);
+                };
+            }
+        })
+    }
+});
 
 export default JsonSchemaForm;
 
 export {
+    JsonSchemaFormAntdV4,
     globalOptions,
     SchemaField,
     getDefaultFormState,

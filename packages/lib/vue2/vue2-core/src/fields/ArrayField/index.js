@@ -6,7 +6,7 @@
 import getDefaultFormState from '@lljj/vjsf-utils/schema/getDefaultFormState';
 
 import {
-    allowAdditionalItems, isFixedItems, isMultiSelect
+    allowAdditionalItems, isFixedItems, isMultiSelect, getUserUiOptions
 } from '@lljj/vjsf-utils/formUtils';
 import { getPathVal, setPathVal } from '@lljj/vjsf-utils/vueUtils';
 import { genId, lowerCase } from '@lljj/vjsf-utils/utils';
@@ -31,6 +31,17 @@ export default {
         };
     },
     computed: {
+        uiOptions() {
+            const {
+                schema, uiSchema, rootFormData, curNodePath
+            } = this.$props;
+            return getUserUiOptions({
+                schema,
+                uiSchema,
+                curNodePath,
+                rootFormData
+            });
+        },
         itemsFormData() {
             const formKeys = this.$data.formKeys;
             return this.curFormData.map((item, index) => ({
@@ -137,6 +148,11 @@ export default {
 
                 // 修改formData数据
                 curStrategy.apply(this, [this.curFormData, formDataPrams]);
+
+                // onArrayOperate
+                if (this.uiOptions.afterArrayOperate) {
+                    this.uiOptions.afterArrayOperate.call(null, this.curFormData, command, data);
+                }
             } else {
                 throw new Error(`错误 - 未知的操作：[${command}]`);
             }

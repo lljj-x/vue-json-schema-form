@@ -211,10 +211,7 @@ function _toPropertyKey(arg) {
   return typeof key === "symbol" ? key : String(key);
 }
 
-/**
- * Created by Liu.Jun on 2020/4/25 14:45.
- */
-
+// 内部使用 . ，配置数据key不能出现.
 var pathSeparator = '.'; // nodePath 转css类名
 
 function nodePath2ClassName(path) {
@@ -228,7 +225,7 @@ function isRootNodePath(path) {
 
 function computedCurPath(prePath, curKey) {
   return prePath === '' ? curKey : [prePath, curKey].join(pathSeparator);
-} // 删除当前path值
+} // 获取当前path值
 
 function getPathVal(obj, path) {
   var leftDeviation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
@@ -247,14 +244,12 @@ function path2prop(path) {
   return path;
 }
 
-var pathSeparator$1 = '.'; // 删除当前path值
-
 function deletePathVal(vueData, name) {
   delete vueData[name];
 } // 设置当前path值
 
 function setPathVal(obj, path, value) {
-  var pathArr = path.split(pathSeparator$1);
+  var pathArr = path.split(pathSeparator);
 
   for (var i = 0; i < pathArr.length; i += 1) {
     if (pathArr.length - i < 2) {
@@ -305,7 +300,8 @@ var vue3Utils = /*#__PURE__*/Object.freeze({
   isRootNodePath: isRootNodePath,
   computedCurPath: computedCurPath,
   getPathVal: getPathVal,
-  path2prop: path2prop
+  path2prop: path2prop,
+  pathSeparator: pathSeparator
 });
 
 /**
@@ -8532,11 +8528,19 @@ function getUserUiOptions(_ref4) {
       // ui:hidden需要作为内置属性使用，不能直接透传给widget组件，如果组件需要只能在ui:options 中使用hidden传递
 
 
-      if (key !== 'ui:hidden' && key.indexOf('ui:') === 0) {
-        // 只对 ui:xxx 配置形式支持表达式
-        return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(3), curNodePath === undefined ? value : handleExpression(rootFormData, curNodePath, value, function () {
-          return value;
-        })));
+      if (key !== 'ui:hidden') {
+        // 处理 ui:xxx  参数
+        if (key.indexOf('ui:') === 0) {
+          // 只对 ui:xxx 配置形式支持表达式
+          return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(3), curNodePath === undefined ? value : handleExpression(rootFormData, curNodePath, value, function () {
+            return value;
+          })));
+        } // 处理 fui:xxx 参数，支持所有的options 通过function配置
+
+
+        if (key.indexOf('fui:') === 0) {
+          return _objectSpread2(_objectSpread2({}, options), {}, _defineProperty({}, key.substring(4), value.call(null, getPathVal(rootFormData, curNodePath, 1), rootFormData, curNodePath)));
+        }
       }
 
       return options;
@@ -8643,7 +8647,8 @@ function getWidgetConfig(_ref6) {
       renderScopedSlots = uiOptions.renderScopedSlots,
       renderChildren = uiOptions.renderChildren,
       onChange = uiOptions.onChange,
-      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "widgetListeners", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange"]);
+      uiRequired = uiOptions.required,
+      uiProps = _objectWithoutProperties(uiOptions, ["widget", "title", "labelWidth", "description", "attrs", "class", "style", "widgetListeners", "fieldAttrs", "fieldStyle", "fieldClass", "emptyValue", "width", "getWidget", "renderScopedSlots", "renderChildren", "onChange", "required"]);
 
   return {
     widget: widget,
@@ -8663,7 +8668,8 @@ function getWidgetConfig(_ref6) {
     renderChildren: renderChildren,
     onChange: onChange,
     widgetListeners: widgetListeners,
-    uiProps: uiProps
+    uiProps: uiProps,
+    uiRequired: uiRequired
   };
 } // 解析用户配置的 errorSchema options
 
@@ -9877,9 +9883,14 @@ var Widget = {
       type: [String, Function, Object],
       default: null
     },
+    // 通过定义的 schema 计算出来的
     required: {
       type: Boolean,
       default: false
+    },
+    // 通过ui schema 配置传递的props
+    uiRequired: {
+      type: Boolean
     },
     // 解决 JSON Schema和实际输入元素中空字符串 required 判定的差异性
     // 元素输入为 '' 使用 emptyValue 的值
@@ -9988,13 +9999,18 @@ var Widget = {
           emit('otherDataChange', trueValue);
         }
       }
+    });
+    var realRequired = computed(function () {
+      var _props$uiRequired;
+
+      return (_props$uiRequired = props.uiRequired) !== null && _props$uiRequired !== void 0 ? _props$uiRequired : props.required;
     }); // 枚举类型默认值为第一个选项
 
     if (props.uiProps.enumOptions && props.uiProps.enumOptions.length > 0 && widgetValue.value === undefined && widgetValue.value !== props.uiProps.enumOptions[0]) {
       // array 渲染为多选框时默认为空数组
       if (props.schema.items) {
         widgetValue.value = [];
-      } else if (props.required && props.formProps.defaultSelectFirstOption) {
+      } else if (realRequired.value && props.formProps.defaultSelectFirstOption) {
         widgetValue.value = props.uiProps.enumOptions[0].value;
       }
     } // 获取到widget组件实例
@@ -10069,7 +10085,7 @@ var Widget = {
               uiSchema: props.uiSchema,
               customFormats: props.customFormats,
               errorSchema: props.errorSchema,
-              required: props.required,
+              required: realRequired.value,
               propPath: path2prop(props.curNodePath)
             }); // 存在校验不通过字段
 
@@ -10111,7 +10127,7 @@ var Widget = {
           return h('span', {
             class: {
               genFormLabel: true,
-              genFormItemRequired: props.required
+              genFormItemRequired: realRequired.value
             }
           }, ["".concat(_label)].concat(_toConsumableArray(miniDescriptionVNode ? [miniDescriptionVNode] : []), ["".concat(props.formProps && props.formProps.labelSuffix || '')]));
         }
@@ -10833,6 +10849,8 @@ var ArrayField = {
   name: 'ArrayField',
   props: vueProps$1,
   setup: function setup(props) {
+    var _this = this;
+
     // 获取当前的值
     var getCurFormData = function getCurFormData() {
       var rootFormData = props.rootFormData,
@@ -10869,6 +10887,15 @@ var ArrayField = {
           key: formKeys.value[index],
           value: item
         };
+      });
+    }); // 当前节点的ui配置
+
+    var uiOptions = computed(function () {
+      return getUserUiOptions({
+        schema: props.schema,
+        uiSchema: props.uiSchema,
+        curNodePath: props.curNodePath,
+        rootFormData: props.rootFormData
       });
     }); // 获取一个新item
 
@@ -10959,7 +10986,11 @@ var ArrayField = {
 
         curStrategy.apply(null, [formKeys.value, keysParams]); // 修改formData数据
 
-        curStrategy.apply(null, [curFormData.value, formDataPrams]);
+        curStrategy.apply(null, [curFormData.value, formDataPrams]); // onArrayOperate
+
+        if (uiOptions.value.afterArrayOperate) {
+          _this.uiOptions.afterArrayOperate.call(null, curFormData.value, command, data);
+        }
       } else {
         throw new Error("\u9519\u8BEF - \u672A\u77E5\u7684\u64CD\u4F5C\uFF1A[".concat(command, "]"));
       }
