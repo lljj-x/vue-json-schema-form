@@ -104,6 +104,16 @@ export default {
 
 用于配置表单展示样式，普通json数据，非 `JSON Schema` 规范
 
+#### fui:xxx function配置
+* `1.9.0` 版本之后，所有ui配置支持通过 `fui:xxx` 使用函数形式的配置，可接受 `parentFormData`、`rootFormData`、 `prop` 三个参数。
+```js
+// 例如配置一个动态的 placeholder 属性
+'fui:placeholder': (parent, root, prop) => {
+    console.log(parent, root, prop);
+    return parent.txtColor;
+}
+```
+
 
 #### ui-schema 表达式
 * `0.2` 版本之后，所有 `ui:xxx` 形式的配置都支持表达式（ui:options内不支持表达式以便区分）
@@ -138,6 +148,24 @@ uiSchema = {
 
     // 覆盖schema description
     'ui:description': '覆盖schema description描述信息',
+
+    // 通过 fui:xxx  配置function 来计算当前的ui options
+    'fui:placeholder': (parent, root, prop) => {
+        console.log(parent, root, prop);
+        return parent.txtColor;
+    },
+
+    // 针对单个字段配置是否需要 required，优先级高于schema的配置'
+    // bool 类型， 'ui:required': true,
+    // 默认 undefined
+    'ui:required': true,
+
+    // 针对数组项的操作回调
+    // 默认 undefined
+    // command 枚举值 moveUp | moveDown | remove | add | batchPush | setNewTarget
+    'ui:afterArrayOperate': (formData, command, payload) => {
+        debugger;
+    },
 
     // 表单元素输入为空时的值，默认 undefined
     'ui:emptyValue': undefined,

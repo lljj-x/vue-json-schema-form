@@ -57,6 +57,11 @@
 * umd script 标签形式引入暴露全局变量 `window.vue3FormAnt`，`window.vue3FormAnt.default` 暴露组件
 * [playground](https://form.lljj.me/v3/#/demo?type=Simple&ui=VueAntForm)
 
+::: warning antd 4x 版本注意：
+* v4版本请使用，import { JsonSchemaFormAntdV4 } from "@lljj/vue3-form-ant";
+* v3版本还是建议使用 default export
+:::
+
 #### vue3 ant、naiveUi v-model 特殊处理
 例如 `a-input` 组件，ant vue3需要使用 `v-model:value`，但在整个框架内部 `v-model` 都是使用 `modelValue`，所以这里就需要对不一致的props通过中间组件组做转换。
 

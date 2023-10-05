@@ -256,6 +256,7 @@
 ## 其它配置
 * 支持通过配置 `ui-schema` 中的 `ui:addable`、`ui:sortable`、`ui:removable` 配置数组是否可添加/排序/移除
 * 支持通过配置 `ui-schema` 中的 `ui:showIndexNumber` 配置是否显示数组item序号
+* 支持通过配置 `ui-schema` 中的 `ui:afterArrayOperate` 来回调数组的相关操作
 * 参见 [ui-schema 配置](https://form.lljj.me/#/demo?type=Arrays)
 
 如：
@@ -265,7 +266,10 @@ uiSchema = {
         addable: false,
         sortable: false,
         removable: false,
-        showIndexNumber: true
+        showIndexNumber: true,
+        'ui:afterArrayOperate': (formData, command, payload) => {
+            debugger;
+        },
     }
 }
 ```
