@@ -12012,7 +12012,7 @@
     widgetComponents: widgetComponents
   };
 
-  var css_248z$1 = ".genFromComponent.ant-form-vertical .ant-form-item-label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .ant-form-item{margin-bottom:22px}.genFromComponent .ant-form-item.ant-form-item-with-help{margin-bottom:2px}.genFromComponent .ant-form-explain{padding-top:2px;display:-webkit-box!important;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;text-align:left;line-height:1.2;font-size:12px}.genFromComponent .validateWidget .ant-form-explain{padding:5px 0;position:relative}.genFromComponent .ant-form-item-label>label.ant-form-item-no-colon:after{display:none}";
+  var css_248z$1 = ".genFromComponent.ant-form-vertical .ant-form-item-label{line-height:26px;padding-bottom:6px;font-size:14px}.genFromComponent .ant-form-item{margin-bottom:22px}.genFromComponent .ant-form-item.ant-form-item-with-help{margin-bottom:2px}.genFromComponent .ant-form-explain{padding-top:2px;display:-webkit-box!important;text-overflow:ellipsis;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;text-align:left;line-height:1.2;font-size:12px}.genFromComponent .validateWidget .ant-form-explain{padding:5px 0;position:relative}.genFromComponent .ant-form-item-label>label.ant-form-item-no-colon:after{display:none}.genFromComponent .validateWidget>.ant-form-item{margin-bottom:0!important;padding:0!important}.genFromComponent .validateWidget>.ant-form-item .formItemErrorBox{padding:5px 0;position:relative}";
   styleInject(css_248z$1);
 
   var globalOptions = {
@@ -12147,7 +12147,29 @@
     }
   };
   var JsonSchemaForm = createForm(globalOptions);
+  var JsonSchemaFormAntdV4 = createForm(_objectSpread2(_objectSpread2({}, globalOptions), {}, {
+    COMPONENT_MAP: _objectSpread2(_objectSpread2({}, globalOptions.COMPONENT_MAP), {}, {
+      formItem: vue.defineComponent({
+        inheritAttrs: false,
+        setup: function setup(props, _ref4) {
+          var attrs = _ref4.attrs,
+              slots = _ref4.slots;
+          return function () {
+            var style = attrs.style,
+                className = attrs.class,
+                originAttrs = _objectWithoutProperties(attrs, ["style", "class"]);
 
+            return vue.h('div', {
+              style: style,
+              class: className
+            }, [vue.h(globalOptions.COMPONENT_MAP.formItem, originAttrs, slots)]);
+          };
+        }
+      })
+    })
+  }));
+
+  exports.JsonSchemaFormAntdV4 = JsonSchemaFormAntdV4;
   exports.SchemaField = SchemaField;
   exports.default = JsonSchemaForm;
   exports.fieldProps = vueProps$1;
